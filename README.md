@@ -1,3 +1,3 @@
 # cancer-models
 
-PDCM Finder - [cancermodels.org](cancermodels.org) web portal code base
+PDCM Finder - [cancermodels.org](https://www.cancermodels.org/) web portal code base
