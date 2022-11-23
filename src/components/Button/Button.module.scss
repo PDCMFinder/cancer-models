@@ -1,0 +1,15 @@
+.Button {
+  background-color: #fff;
+  border: 2px solid blue;
+  color: #000;
+  display: inline-block;
+  padding: 5px 15px;
+  border-radius: 7px;
+  transition: 0.3s;
+  &:hover {
+    background-color: #000;
+    color: #fff;
+    border-color: #fff;
+    scale: 1.2;
+  }
+}
