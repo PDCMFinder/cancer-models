@@ -14,7 +14,7 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>Patient Derived Cancer Models</h1>
-        <Button label="Don't click me" />
+        <Button text="Don't click me" />
       </main>
 
       <footer className={styles.footer}>

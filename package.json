@@ -8,15 +8,22 @@
     "start": "next start",
     "lint": "next lint",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "storybook:build": "build-storybook",
+    "test": "jest",
+    "test:watch": "jest --watchAll"
   },
   "dependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "jest-environment-jsdom": "^29.3.1",
     "next": "13.0.4",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "ts-jest": "^29.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
+    "@jest/globals": "^29.3.1",
     "@storybook/addon-actions": "^6.5.13",
     "@storybook/addon-essentials": "^6.5.13",
     "@storybook/addon-interactions": "^6.5.13",
@@ -26,6 +33,7 @@
     "@storybook/preset-scss": "^1.0.3",
     "@storybook/react": "^6.5.13",
     "@storybook/testing-library": "^0.0.13",
+    "@types/jest": "^29.2.3",
     "@types/node": "18.7.16",
     "@types/react": "18.0.19",
     "@types/react-dom": "18.0.6",
