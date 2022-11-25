@@ -13,6 +13,6 @@ describe("UI Button component", () => {
     const button = screen.getByRole("button");
 
     expect(button).toBeTruthy();
-    expect(button.textContent).toBe("text");
+    expect(button.textContent).toBe(text);
   });
 });
