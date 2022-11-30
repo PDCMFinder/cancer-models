@@ -5,7 +5,5 @@ export default defineConfig({
     setupNodeEvents(on, config) {},
     baseUrl: "http://localhost:3000/",
     specPattern: "./src/components/**/*.cy.{js,jsx,ts,tsx}",
-    video: false,
-    screenshotOnRunFailure: false,
   },
 });

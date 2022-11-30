@@ -92,3 +92,9 @@ next-env.d.ts
 
 # Ignore code-workspaces
 *.code-workspace
+
+### Cypress ###
+cypress/results/*
+cypress/reports/*
+cypress/screenshots/*
+cypress/videos/*
