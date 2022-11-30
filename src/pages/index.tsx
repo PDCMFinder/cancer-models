@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
+import styles from "../styles/Home.module.scss";
+import Button from "../components/Button/Button";
 
 const Home: NextPage = () => {
   return (
@@ -12,7 +13,10 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Patient Derived Cancer Models</h1>
+        <h1 className={`${styles.title} h1Cypress`}>
+          Patient Derived Cancer Models
+        </h1>
+        <Button text="Don't click me" />
       </main>
 
       <footer className={styles.footer}>
