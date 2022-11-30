@@ -10,7 +10,11 @@
     "storybook": "start-storybook -p 6006",
     "storybook:build": "build-storybook",
     "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test:watch": "jest --watchAll",
+    "cy": "start-server-and-test dev 3000 cy:run",
+    "cy:open": "start-server-and-test dev 3000 cy:openDefault",
+    "cy:openDefault": "cypress open",
+    "cy:run": "cypress run"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -19,6 +23,7 @@
     "next": "13.0.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "start-server-and-test": "^1.14.0",
     "ts-jest": "^29.0.3"
   },
   "devDependencies": {
@@ -39,8 +44,10 @@
     "@types/react-dom": "18.0.6",
     "babel-loader": "^8.3.0",
     "css-loader": "^6.7.2",
+    "cypress": "^11.2.0",
     "eslint": "8.23.1",
     "eslint-config-next": "13.0.4",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-storybook": "^0.6.7",
     "sass": "^1.56.1",
     "sass-loader": "^13.2.0",
