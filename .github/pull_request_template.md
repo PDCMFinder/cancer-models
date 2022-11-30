@@ -1,10 +1,9 @@
 ## Issue
-Fixes 
+
+Fixes
 
 ## Description
 
 ## Testing instructions
 
 ## Screenshots (optional)
-
-## Reviewers
