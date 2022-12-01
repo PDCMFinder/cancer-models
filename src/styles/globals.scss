@@ -1,23 +1,19 @@
-html,
+@import "_types";
+@import "_vars";
+@import "_mixins";
+
+html {
+  font-size: 62.5%;
+}
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-a {
-  color: inherit;
-  text-decoration: none;
 }
 * {
   box-sizing: border-box;
-}
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
+  :focus {
+    box-shadow: $focusShadow;
+    border-radius: $br-common;
+    transition: boxShadow 0.3s;
   }
 }
