@@ -1,15 +1,68 @@
+@import "../../styles/vars";
+
 .Button {
-  background-color: #fff;
-  border: 2px solid blue;
-  color: #000;
+  border: 0.1rem solid;
+  padding: 1.1rem 2.2rem;
+  border-radius: $br-common;
+  transition: 0.15s;
+  font-family: $type-secondary;
+  font-size: inherit;
+  text-decoration: none;
+  cursor: pointer;
   display: inline-block;
-  padding: 5px 15px;
-  border-radius: 7px;
-  transition: 0.3s;
-  &:hover {
-    background-color: #000;
-    color: #fff;
-    border-color: #fff;
-    scale: 1.2;
+  background-color: $color-white;
+  line-height: inherit;
+  color: $color-black;
+  margin: 2.5rem 1rem;
+  &--primary {
+    &.Button {
+      &--dark {
+        background-color: $color-secondary-primary;
+        border-color: $color-secondary-secondary;
+        &:hover {
+          background-color: darken($color-secondary-primary, 4%);
+        }
+      }
+      &--light {
+        background-color: $color-secondary-quaternary;
+        border-color: $color-secondary-primary;
+        &:hover {
+          background-color: $color-white;
+        }
+      }
+      &--white {
+        background-color: $color-white;
+        border-color: $color-secondary-tertiary;
+        &:hover {
+          background-color: $color-secondary-quaternary;
+        }
+      }
+    }
+  }
+  &--secondary {
+    background-color: transparent;
+    &.Button {
+      &--dark {
+        border-color: currentColor;
+        color: $color-primary-primary;
+        &:hover {
+          color: $color-black;
+        }
+      }
+      &--light {
+        border-color: currentColor;
+        color: $color-secondary-tertiary;
+        &:hover {
+          color: $color-white;
+        }
+      }
+      &--white {
+        border-color: currentColor;
+        color: $color-white;
+        &:hover {
+          color: $color-secondary-tertiary;
+        }
+      }
+    }
   }
 }
