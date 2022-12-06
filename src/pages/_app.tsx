@@ -5,11 +5,9 @@ import { Space_Mono } from "@next/font/google";
 
 const merriweather = Merriweather({
   weight: "400",
-  subsets: ["latin"],
 });
 const spaceMono = Space_Mono({
   weight: ["400", "700"],
-  subsets: ["latin"],
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -17,8 +15,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <style jsx global>{`
         :root {
-          --type-primary: ${merriweather.style.fontFamily};
-          --type-secondary: ${spaceMono.style.fontFamily};
+          --type-primary: ${merriweather.style.fontFamily}, serif;
+          --type-secondary: ${spaceMono.style.fontFamily}, monospace;
         }
       `}</style>
       <Component {...pageProps} />
