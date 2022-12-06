@@ -1,0 +1,45 @@
+// Colors
+$color-white: #ffffff;
+$color-black: #000000;
+$color-primary-primary: #003e48;
+$color-primary-secondary: #005363;
+$color-primary-tertiary: #47938a;
+$color-primary-quaternary: #c0ede6;
+$color-secondary-primary: #e9b114;
+$color-secondary-secondary: #ffd86b;
+$color-secondary-tertiary: #ffe6a6;
+$color-secondary-quaternary: #f7f5e2;
+$color-focused: #426a8e;
+$color-focused-light: #d4f0fb;
+
+// Typography
+$type-primary: var(--type-primary);
+$type-secondary: var(--type-secondary);
+
+// Font weight
+$fw-normal: 400;
+$fw-bold: 700;
+
+// Breakpoints
+$bp-small: 767px;
+$bp-medium: 992px;
+$bp-large: 1200px;
+$bp-xlarge: 1440px;
+$breakpointsMediaOver: (
+  "small": (
+    min-width: $bp-small,
+  ),
+  "medium": (
+    min-width: $bp-medium,
+  ),
+  "large": (
+    min-width: $bp-large,
+  ),
+  "xlarge": (
+    min-width: $bp-xlarge,
+  ),
+) !default;
+
+// Utils
+$focusShadow: 0 0 0 2px $color-focused, inset 0 0 0 2px $color-focused-light;
+$br-common: 7px;

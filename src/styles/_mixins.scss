@@ -1,0 +1,9 @@
+@import "_vars";
+
+@mixin mediaOver($breakpoint) {
+  @if map-has-key($breakpointsMediaOver, $breakpoint) {
+    @media #{inspect(map-get($breakpointsMediaOver, $breakpoint))} {
+      @content;
+    }
+  }
+}
