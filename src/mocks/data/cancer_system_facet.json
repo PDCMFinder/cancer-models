@@ -1,0 +1,23 @@
+[
+  {
+    "facet_section": "patient_tumour",
+    "facet_name": "Cancer system",
+    "facet_column": "cancer_system",
+    "facet_options": [
+      "Thoracic Cancer",
+      "Reproductive System Cancer",
+      "Skin Cancer",
+      "Connective and Soft Tissue Cancer",
+      "Hematopoietic and Lymphoid System Cancer",
+      "Digestive System Cancer",
+      "Unclassified",
+      "Eye Cancer",
+      "Nervous System Cancer",
+      "Breast Cancer",
+      "Head and Neck Cancer",
+      "Endocrine Cancer",
+      "Urinary System Cancer"
+    ],
+    "facet_example": null
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "facet_section": "model",
+    "facet_name": "Datasource",
+    "facet_column": "data_source",
+    "facet_options": [
+      "Curie-OC",
+      "CMP",
+      "VHIO-BC",
+      "Wistar-MDAnderson-Penn",
+      "HCMI",
+      "VHIO-CRC",
+      "UOM-BC",
+      "DFCI-CPDM",
+      "IRCC-CRC",
+      "TRACE",
+      "IRCC-GC",
+      "JAX",
+      "MDAnderson",
+      "NKI",
+      "PDMR",
+      "VHIO-PC",
+      "HCI-BCM",
+      "Curie-BC",
+      "WUSTL",
+      "LIH",
+      "UMCG",
+      "UOC-BC",
+      "SJCRH",
+      "CRL",
+      "PIVOT",
+      "Curie-LC",
+      "PMLB"
+    ],
+    "facet_example": null
+  }
+]
