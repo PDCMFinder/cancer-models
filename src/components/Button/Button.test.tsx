@@ -4,15 +4,42 @@ import { expect } from "@jest/globals";
 
 import Button from "./Button";
 
-describe("UI Button component", () => {
+describe("Button UI component", () => {
   it("should render a button with text", () => {
-    const text = "Click me";
-
-    render(<Button text={text} />);
+    render(
+      <Button color="dark" priority="primary" htmlTag="button">
+        Button text
+      </Button>
+    );
 
     const button = screen.getByRole("button");
 
     expect(button).toBeTruthy();
-    expect(button.textContent).toBe(text);
+    expect(button.textContent).toBe("Button text");
+  });
+
+  it("should render the component with anchor tag", () => {
+    render(
+      <Button color="dark" priority="primary" htmlTag="a" href="/">
+        Button text
+      </Button>
+    );
+
+    expect(screen.getByRole("link")).toBeTruthy();
+  });
+
+  it("should set external link target to new window", () => {
+    render(
+      <Button
+        color="dark"
+        priority="primary"
+        htmlTag="a"
+        href="https://cancermodels.org"
+      >
+        Button text
+      </Button>
+    );
+
+    expect(screen.getByRole("link").getAttribute("target")).toBe("_blank");
   });
 });
