@@ -18,14 +18,6 @@ import patientTreatmentFacet from "./data/patient_treatment_facet.json";
 import searchIndex from "./data/search_index.json";
 
 export const handlers = [
-  rest.post("/api/login", (req, res, ctx) => {
-    // Persist user's authentication in the session
-    sessionStorage.setItem("is-authenticated", "true");
-    return res(
-      // Respond with a 200 status code
-      ctx.status(200)
-    );
-  }),
   rest.get("/api/models_by_cancer", (req, res, ctx) => {
     try {
       const results = modelsByCancer;
@@ -48,6 +40,14 @@ export const handlers = [
 
       if (req.url.search.includes("neq.search")) results = facetSections;
 
+      return res(ctx.status(200), ctx.json(results));
+    } catch (e) {
+      return res(ctx.status(404));
+    }
+  }),
+  rest.get("/api/search_facet", (req, res, ctx) => {
+    try {
+      let results = [];
       if (req.url.search.includes("eq.dataset_available"))
         results = datasetAvailableFacet;
       if (req.url.search.includes("eq.data_source")) results = dataSourceFacet;
