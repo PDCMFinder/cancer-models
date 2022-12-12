@@ -2,10 +2,9 @@
 @import "_mixins";
 
 body {
-  font-size: 1.8rem;
-  line-height: 2.4rem;
-  font-family: $type-secondary;
-  color: $color-primary-primary;
+	font-size: 2rem;
+	font-family: $type-secondary;
+	color: $color-primary-primary;
 }
 h1,
 .h1,
@@ -15,67 +14,88 @@ h3,
 .h3,
 h4,
 .h4 {
-  letter-spacing: 0.02rem;
-  font-family: $type-primary;
-  color: $color-primary-primary;
-  font-weight: $fw-normal;
-  line-height: 126%;
+	letter-spacing: 0.02rem;
+	font-family: $type-primary;
+	color: $color-primary-primary;
+	font-weight: $fw-normal;
+	line-height: 126%;
 }
 h1,
 .h1 {
-  font-size: 4rem;
+	font-size: 4rem;
 }
 h2,
 .h2 {
-  font-size: 3.4rem;
+	font-size: 3.4rem;
 }
 h3,
 .h3 {
-  font-size: 2.4rem;
+	font-size: 2.4rem;
 }
 h4,
 .h4 {
-  font-size: 2rem;
+	font-size: 2rem;
 }
-@include mediaOver("small") {
-  h1,
-  .h1 {
-    font-size: 6rem;
-  }
-  h2,
-  .h2 {
-    font-size: 4.4rem;
-  }
-  h3,
-  .h3 {
-    font-size: 2.6rem;
-  }
-  h4,
-  .h4 {
-    font-size: 2.2rem;
-  }
+@include mediaOver("sm") {
+	h1,
+	.h1 {
+		font-size: 6rem;
+	}
+	h2,
+	.h2 {
+		font-size: 4.4rem;
+	}
+	h3,
+	.h3 {
+		font-size: 2.6rem;
+	}
+	h4,
+	.h4 {
+		font-size: 2.2rem;
+	}
 }
 b,
 strong {
-  font-weight: $fw-bold;
+	font-weight: $fw-bold;
 }
 a,
 .link--text {
-  color: $color-secondary-primary;
-  text-decoration: underline;
-  &:visited {
-    color: $color-focused;
-  }
-  &:hover {
-    color: $color-black;
-  }
-  &.link--text--light {
-    color: $color-secondary-quaternary;
-    &:hover {
-      color: $color-white;
-    }
-    &:visited {
-      color: $color-focused-light;
-    }
-  }
+	color: $color-secondary-primary;
+	text-decoration: underline;
+	&:visited {
+		color: $color-focused;
+	}
+	&:hover {
+		color: $color-black;
+	}
+	&.link--text--light {
+		color: $color-secondary-quaternary;
+		&:hover {
+			color: $color-white;
+		}
+		&:visited {
+			color: $color-focused-light;
+		}
+	}
+}
+.text {
+	&-white {
+		color: $color-white;
+	}
+	&-end {
+		text-align: end;
+	}
+	&-center {
+		text-align: center;
+	}
+	&-small {
+		font-size: 1.4rem;
+		line-height: 2rem;
+	}
+}
+p {
+	line-height: 2.8rem;
+}
+ul {
+	line-height: 3rem;
 }

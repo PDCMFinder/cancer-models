@@ -12,6 +12,9 @@ $color-secondary-quaternary: #f7f5e2;
 $color-focused: #426a8e;
 $color-focused-light: #d4f0fb;
 
+// Spacing
+$spacing-main-margin-x: var(--main-margin-x);
+
 // Typography
 $type-primary: var(--type-primary);
 $type-secondary: var(--type-secondary);
@@ -20,24 +23,35 @@ $type-secondary: var(--type-secondary);
 $fw-normal: 400;
 $fw-bold: 700;
 
+// Grid
+$col-amount: 12;
+$col-gutter-x: var(--col-gutter-x);
+$col-gutter-y: var(--col-gutter-y);
+
 // Breakpoints
-$bp-small: 767px;
-$bp-medium: 992px;
-$bp-large: 1200px;
-$bp-xlarge: 1440px;
+// If these change, update in JS variables too
+$bp-sm: 576px;
+$bp-md: 768px;
+$bp-lg: 992px;
+$bp-xl: 1200px;
+$bp-xxl: 1440px;
+$bp-names: "xs", "sm", "md", "lg", "xl", "xxl";
 $breakpointsMediaOver: (
-  "small": (
-    min-width: $bp-small,
-  ),
-  "medium": (
-    min-width: $bp-medium,
-  ),
-  "large": (
-    min-width: $bp-large,
-  ),
-  "xlarge": (
-    min-width: $bp-xlarge,
-  ),
+	"sm": (
+		min-width: $bp-sm,
+	),
+	"md": (
+		min-width: $bp-md,
+	),
+	"lg": (
+		min-width: $bp-lg,
+	),
+	"xl": (
+		min-width: $bp-xl,
+	),
+	"xxl": (
+		min-width: $bp-xxl,
+	),
 ) !default;
 
 // Utils

@@ -1,0 +1,27 @@
+@import "vars";
+
+.container {
+	width: calc(100% - $spacing-main-margin-x * 2);
+	padding-right: calc($col-gutter-x * 0.5);
+	padding-left: calc($col-gutter-x * 0.5);
+	margin: 0 auto;
+}
+.row {
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: calc($col-gutter-y * -1);
+	margin-right: calc($col-gutter-x * -0.5);
+	margin-left: calc($col-gutter-x * -0.5);
+	> * {
+		flex-shrink: 0;
+		width: 100%;
+		max-width: 100%;
+		padding-right: calc($col-gutter-x * 0.5);
+		padding-left: calc($col-gutter-x * 0.5);
+		margin-top: $col-gutter-y;
+	}
+}
+.col {
+	flex: 1 0 0%;
+}
+@include colGrid();

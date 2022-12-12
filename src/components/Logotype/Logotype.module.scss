@@ -1,0 +1,28 @@
+@import "../../styles/vars";
+
+.Logotype {
+	&--dark {
+		.Logotype_firstLetter {
+			fill: $color-primary-primary;
+		}
+		.Logotype_notFirstLetter {
+			fill: $color-primary-tertiary;
+		}
+	}
+	&--light {
+		.Logotype_firstLetter {
+			fill: $color-primary-quaternary;
+		}
+		.Logotype_notFirstLetter {
+			fill: $color-primary-tertiary;
+		}
+	}
+	&--white {
+		.Logotype_firstLetter {
+			fill: $color-white;
+		}
+		.Logotype_notFirstLetter {
+			fill: $color-white;
+		}
+	}
+}

@@ -1,9 +1,33 @@
-@import "_vars";
+@import "vars";
 
 @mixin mediaOver($breakpoint) {
-  @if map-has-key($breakpointsMediaOver, $breakpoint) {
-    @media #{inspect(map-get($breakpointsMediaOver, $breakpoint))} {
-      @content;
-    }
-  }
+	@if map-has-key($breakpointsMediaOver, $breakpoint) {
+		@media #{inspect(map-get($breakpointsMediaOver, $breakpoint))} {
+			@content;
+		}
+	} @else {
+		@content;
+	}
+}
+
+@mixin colGrid() {
+	@for $i from 1 through $col-amount {
+		@for $j from 1 through length($bp-names) {
+			@include mediaOver(#{nth($bp-names, $j)}) {
+				@if #{nth($bp-names, $j)} != "xs" {
+					.col-#{$i}-#{nth($bp-names, $j)} {
+						flex: 0 0 auto;
+						width: (100% / $col-amount) * $i;
+						line-height: 0;
+					}
+				} @else {
+					.col-#{$i} {
+						flex: 0 0 auto;
+						width: (100% / $col-amount) * $i;
+						line-height: 0;
+					}
+				}
+			}
+		}
+	}
 }
