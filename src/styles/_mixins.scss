@@ -18,14 +18,14 @@
 					.col-#{$i} {
 						width: (100% / $col-amount) * $i;
 					}
-					.col-offset-#{$i} {
+					.offset-#{$i} {
 						margin-left: (100% / $col-amount) * $i;
 					}
 				} @else {
 					.col-#{nth($bp-names, $j)}-#{$i} {
 						width: (100% / $col-amount) * $i;
 					}
-					.col-offset-#{nth($bp-names, $j)}-#{$i} {
+					.offset-#{nth($bp-names, $j)}-#{$i} {
 						margin-left: (100% / $col-amount) * $i;
 					}
 				}

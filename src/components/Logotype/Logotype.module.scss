@@ -1,7 +1,6 @@
 @import "../../styles/vars";
 
 .Logotype {
-	display: block;
 	&--dark {
 		.Logotype_firstLetter {
 			fill: $color-primary-primary;

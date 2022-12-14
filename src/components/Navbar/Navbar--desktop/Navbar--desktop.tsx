@@ -22,7 +22,7 @@ const NavDesktop = (props: INavProps) => {
 							<Logotype color="dark" />
 						</Link>
 					</div>
-					<div className="col-9 col-xl-8 col-offset-xl-1">
+					<div className="col-9 col-xl-8 offset-xl-1">
 						<ul
 							className={`ul--noStyle align-center justify-content-between m-0 ${styles["Navbar--desktop_item--primary"]}`}
 						>

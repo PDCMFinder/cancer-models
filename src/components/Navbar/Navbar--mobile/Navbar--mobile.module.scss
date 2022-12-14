@@ -24,10 +24,10 @@
 	}
 	.Navbar_item {
 		text-decoration: none;
-	}
-	.Navbar_item--active {
-		text-decoration: underline;
-		color: $color-secondary-tertiary;
+		&--active {
+			text-decoration: underline;
+			color: $color-secondary-tertiary;
+		}
 	}
 }
 .text-white {

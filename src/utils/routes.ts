@@ -11,7 +11,7 @@ export const routes = [
 	{ path: "/about/", name: "About", parent: true, secondary: true },
 	{
 		path: "/about/pdcm-finder",
-		name: "About PDCM Finder",
+		name: "PDCM Finder",
 		childTo: "About",
 	},
 	{

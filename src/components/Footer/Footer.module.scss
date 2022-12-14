@@ -1,9 +1,26 @@
 @import "../../styles/vars";
-
+@import "../../styles/mixins";
 .Footer {
 	background-color: $color-primary-primary;
 	padding: 10rem 0 3.5rem;
 	&_Logotype {
-		height: 4rem;
+		svg {
+			max-height: 4rem;
+			width: 100%;
+			@include mediaOver("lg") {
+				max-height: 3rem;
+			}
+		}
+	}
+	&_item--active {
+		text-decoration: underline;
+		color: $color-secondary-tertiary;
+	}
+	.Footer_row {
+		&--main {
+			> * {
+				margin-bottom: 5rem;
+			}
+		}
 	}
 }
