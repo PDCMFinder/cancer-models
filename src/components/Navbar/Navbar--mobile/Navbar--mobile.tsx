@@ -3,11 +3,11 @@ import { useRouter } from "next/router";
 import CloseIcon from "../../CloseIcon/CloseIcon";
 import Logotype from "../../Logotype/Logotype";
 import useBodyClass from "../../../hooks/useBodyClass";
-import { INavProps } from "../../../../globalTypes";
+import { INavProps, IRoute } from "../../../../globalTypes";
 import ActiveLink from "../../ActiveLink/ActiveLink";
+import Link from "next/link";
 
 import styles from "./Navbar--mobile.module.scss";
-import Link from "next/link";
 
 const NavMobile = (props: INavProps) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -52,7 +52,7 @@ const NavMobile = (props: INavProps) => {
 						<div className="row">
 							<div className="col">
 								<ul className="ul--noStyle">
-									{props.routes.map((route: any) => {
+									{props.routes.map((route: IRoute) => {
 										if (route.parent) {
 											return;
 										} else {

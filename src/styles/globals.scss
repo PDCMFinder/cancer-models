@@ -7,7 +7,6 @@
 :root {
 	--col-gutter-x: 1rem;
 	--col-gutter-y: 0rem;
-
 	@include mediaOver("md") {
 		--col-gutter-x: 1.5rem;
 		--col-gutter-y: 0rem;
@@ -23,7 +22,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osxfont-smoothing: grayscale;
 	@include mediaOver("lg") {
-		--main-margin-x: 6rem;
+		--main-margin-x: 3%;
 	}
 	&.Navbar--mobile--isOpen {
 		overflow: hidden;
@@ -53,8 +52,13 @@ img {
 .flex-column {
 	flex-direction: column;
 }
-.justify-content-between {
-	justify-content: space-between;
+.justify-content {
+	&-between {
+		justify-content: space-between;
+	}
+	&-end {
+		justify-content: end;
+	}
 }
 .align-center {
 	align-items: center;
@@ -77,4 +81,9 @@ button {
 }
 a {
 	display: inline-block;
+}
+.m {
+	&-0 {
+		margin: 0 !important;
+	}
 }

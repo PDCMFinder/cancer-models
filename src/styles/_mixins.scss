@@ -2,7 +2,7 @@
 
 @mixin mediaOver($breakpoint) {
 	@if map-has-key($breakpointsMediaOver, $breakpoint) {
-		@media #{inspect(map-get($breakpointsMediaOver, $breakpoint))} {
+		@media screen and #{inspect(map-get($breakpointsMediaOver, $breakpoint))} {
 			@content;
 		}
 	} @else {
@@ -11,20 +11,22 @@
 }
 
 @mixin colGrid() {
-	@for $i from 1 through $col-amount {
-		@for $j from 1 through length($bp-names) {
-			@include mediaOver(#{nth($bp-names, $j)}) {
-				@if #{nth($bp-names, $j)} != "xs" {
-					.col-#{$i}-#{nth($bp-names, $j)} {
-						flex: 0 0 auto;
+	@for $j from 1 through length($bp-names) {
+		@include mediaOver(#{nth($bp-names, $j)}) {
+			@for $i from 1 through $col-amount {
+				@if #{nth($bp-names, $j)} == "xs" {
+					.col-#{$i} {
 						width: (100% / $col-amount) * $i;
-						line-height: 0;
+					}
+					.col-offset-#{$i} {
+						margin-left: (100% / $col-amount) * $i;
 					}
 				} @else {
-					.col-#{$i} {
-						flex: 0 0 auto;
+					.col-#{nth($bp-names, $j)}-#{$i} {
 						width: (100% / $col-amount) * $i;
-						line-height: 0;
+					}
+					.col-offset-#{nth($bp-names, $j)}-#{$i} {
+						margin-left: (100% / $col-amount) * $i;
 					}
 				}
 			}

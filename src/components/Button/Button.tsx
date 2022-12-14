@@ -1,23 +1,29 @@
 import Link from "next/link";
+import { ReactNode } from "react";
+import ArrowIcon from "../ArrowIcon/ArrowIcon";
 import styles from "./Button.module.scss";
 
 interface IButtonProps {
-	children: string;
+	children: any;
 	priority: "primary" | "secondary";
 	color: "dark" | "light" | "white";
 	htmlTag?: "a" | "button";
 	href?: string;
+	className: string;
+	arrow?: boolean;
 	onClick?: () => void;
 }
 
 const Button = (props: IButtonProps) => {
 	let href = props.href,
 		children = props.children,
+		showArrow = props.arrow,
 		LinkTag: typeof Link | string = Link,
 		classNames = `
       ${styles.Button}
       ${styles[`Button--${props.priority}`]}
       ${styles[`Button--${props.color}`]}
+      ${props.className}
     `,
 		externalLinkProps;
 
@@ -37,14 +43,14 @@ const Button = (props: IButtonProps) => {
 
 		return (
 			<LinkTag className={classNames} href={href} {...externalLinkProps}>
-				{children}
+				{children} {showArrow && <ArrowIcon />}
 			</LinkTag>
 		);
 	}
 
 	return (
 		<button className={classNames} onClick={props.onClick}>
-			{children}
+			{children} {showArrow && <ArrowIcon />}
 		</button>
 	);
 };

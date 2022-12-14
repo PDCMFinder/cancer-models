@@ -24,4 +24,8 @@
 .col {
 	flex: 1 0 0%;
 }
+[class^="col-"] {
+	flex: 0 0 auto;
+	line-height: 0;
+}
 @include colGrid();

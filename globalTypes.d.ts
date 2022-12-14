@@ -1,13 +1,11 @@
-import { IRoute } from "./src/utils/routes";
-
-interface INavProps {
-	routes: IRoute;
+export interface INavProps {
+	routes: IRoute[];
 }
 
-interface IRoute {
+export interface IRoute {
 	path: string;
 	name: string;
+	secondary?: boolean;
 	parent?: boolean;
-	child?: boolean;
 	childTo?: string;
 }
