@@ -3,9 +3,11 @@ export interface INavProps {
 }
 
 export interface IRoute {
-	path: string;
+	path?: string;
 	name: string;
 	secondary?: boolean;
-	parent?: boolean;
-	childTo?: string;
+	children?: {
+		path: string;
+		name: string;
+	}[];
 }

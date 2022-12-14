@@ -48,13 +48,25 @@ const NavMobile = (props: INavProps) => {
 			{/* Container with menu items */}
 			{isMenuOpen && (
 				<div className={`text-white ${styles["Navbar--mobile_menu"]}`}>
-					<div className="container d-flex flex-column justify-content-between h-100">
+					<div className="container d-flex flex-column justify-content-between h-100 text-center">
 						<div className="row">
 							<div className="col">
 								<ul className="ul--noStyle">
 									{props.routes.map((route: IRoute) => {
-										if (route.parent) {
-											return;
+										let children = route.children;
+
+										if (children) {
+											return children.map((child) => (
+												<li key={child.path}>
+													<ActiveLink
+														className={`${styles.Navbar_item} link--text--light`}
+														activeClassName={styles["Navbar_item--active"]}
+														href={child.path}
+													>
+														{child.name}
+													</ActiveLink>
+												</li>
+											));
 										} else {
 											return (
 												<li key={route.path}>
@@ -75,7 +87,7 @@ const NavMobile = (props: INavProps) => {
 						<div className="row">
 							<div className="col">
 								{/* Placeholder, change for API information */}
-								<p className="text-small text-center">
+								<p className="text-small">
 									© 2017-2022
 									<br />
 									Data Release 3.1 | 2022-12-07

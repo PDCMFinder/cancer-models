@@ -7,7 +7,7 @@ import styles from "./Navbar--desktop.module.scss";
 import Button from "../../Button/Button";
 
 const NavDesktop = (props: INavProps) => {
-	// Need to get first secondary item so we can separate them from primary
+	// Need to get first secondary item so we can separate them from primary items
 	const firstSecondary = props.routes.find((el) => el.secondary);
 
 	return (
@@ -27,28 +27,47 @@ const NavDesktop = (props: INavProps) => {
 							className={`ul--noStyle align-center justify-content-between m-0 ${styles["Navbar--desktop_item--primary"]}`}
 						>
 							{props.routes.map((route: IRoute) => {
-								let link = (
+								let link,
+									isFirstSecondary = firstSecondary === route,
+									firstSecondaryClass = "Navbar_item--firstSecondary",
+									children = route.children,
+									path = route.path;
+
+								if (path && path !== "#") {
+									link = (
 										<ActiveLink
 											className={`${styles.Navbar_item} link--text--light`}
 											activeClassName={styles["Navbar_item_link--active"]}
-											href={route.path}
+											href={path}
 										>
 											{route.name}
 										</ActiveLink>
-									),
-									isFirstSecondary = firstSecondary === route;
+									);
+								} else {
+									link = route.name;
+								}
 
-								if (route.childTo) {
-									return;
-								} else if (route.parent) {
+								if (children) {
+									let childrenItems = children.map((child) => (
+										<li key={child.path}>
+											<ActiveLink
+												className={`${styles.Navbar_item} link--text--light`}
+												activeClassName={styles["Navbar_item--active"]}
+												href={child.path}
+											>
+												{child.name}
+											</ActiveLink>
+										</li>
+									));
+
 									return (
 										<li
-											key={route.path}
-											className={
+											key={path}
+											className={`${
 												isFirstSecondary
-													? `${styles["Navbar_item--firstSecondary"]}`
+													? `${styles[firstSecondaryClass]}`
 													: undefined
-											}
+											} dropdownParent`}
 										>
 											<Button
 												color="dark"
@@ -58,15 +77,18 @@ const NavDesktop = (props: INavProps) => {
 											>
 												{link}
 											</Button>
+											<ul className="ul--noStyle dropdownChildren dropdownChildren--flushRight">
+												{childrenItems}
+											</ul>
 										</li>
 									);
 								} else {
 									return (
 										<li
-											key={route.path}
+											key={path}
 											className={
 												isFirstSecondary
-													? `${styles["Navbar_item--firstSecondary"]}`
+													? `${styles[firstSecondaryClass]}`
 													: undefined
 											}
 										>

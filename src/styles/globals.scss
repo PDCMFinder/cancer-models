@@ -79,11 +79,35 @@ button {
 		padding-left: 0;
 	}
 }
+li:not(:last-of-type) {
+	margin-bottom: 0.7rem;
+}
 a {
 	display: inline-block;
 }
 .m {
 	&-0 {
 		margin: 0 !important;
+	}
+}
+.dropdownParent {
+	position: relative;
+	.dropdownChildren {
+		display: none;
+		position: absolute;
+		flex-direction: column;
+		width: 130%;
+		padding: 1rem;
+		background-color: $color-white;
+		border-radius: $br-common;
+		&--flushRight {
+			left: unset;
+			right: 0;
+		}
+	}
+	&:hover {
+		.dropdownChildren {
+			display: flex;
+		}
 	}
 }

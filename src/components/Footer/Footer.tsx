@@ -19,11 +19,11 @@ const Footer = () => {
 					<div className="col-12 col-md-4 col-xl-3">
 						<div className="row">
 							<div className="col-12 col-lg-6">
-								<ul className="ul--noStyle m-0">
+								<ul className={`ul--noStyle ${styles.Footer_nav_firstRow}`}>
 									{routes.map((route: IRoute) => {
-										if (route.parent) {
+										if (route.children) {
 											return;
-										} else if (!route.childTo) {
+										} else {
 											return (
 												<li key={route.path}>
 													<ActiveLink
@@ -41,21 +41,19 @@ const Footer = () => {
 							</div>
 							<div className="col-12 col-lg-6">
 								<ul className="ul--noStyle m-0">
-									{routes.map((route: IRoute) => {
-										if (route.parent) {
-											return;
-										} else if (route.childTo === "About") {
-											return (
-												<li key={route.path}>
+									{routes.map((route) => {
+										if (route.name === "About" && route.children) {
+											return route.children.map((child) => (
+												<li key={child.path}>
 													<ActiveLink
 														className="link--text--light"
 														activeClassName={styles["Footer_item--active"]}
-														href={route.path}
+														href={child.path}
 													>
-														{route.name}
+														{child.name}
 													</ActiveLink>
 												</li>
-											);
+											));
 										}
 									})}
 								</ul>

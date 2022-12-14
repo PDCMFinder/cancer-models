@@ -4,10 +4,6 @@
 .Navbar--desktop {
 	padding: 2.5rem 0;
 	background-color: $color-white;
-	a {
-		color: $color-black;
-		text-decoration: none;
-	}
 	&_logotype--link svg {
 		height: 100%;
 		width: 100%;
@@ -17,12 +13,14 @@
 		}
 	}
 	.Navbar_item {
+		text-decoration: none;
+		color: $color-black;
 		&:hover {
 			color: $color-primary-secondary;
+			text-decoration: underline;
 		}
 		&_link {
-			&--active,
-			&:hover {
+			&--active {
 				text-decoration: underline;
 			}
 		}
