@@ -9,7 +9,7 @@ interface IButtonProps {
 	color: "dark" | "light" | "white";
 	htmlTag?: "a" | "button";
 	href?: string;
-	className: string;
+	className?: string;
 	arrow?: boolean;
 	onClick?: () => void;
 }
@@ -36,21 +36,20 @@ const Button = (props: IButtonProps) => {
 			};
 		}
 
-		// NextJS doesn't run in Storybook, so Link doesn't work
-		if (process.env.STORYBOOK === "true") {
-			LinkTag = "a";
-		}
-
 		return (
 			<LinkTag className={classNames} href={href} {...externalLinkProps}>
-				{children} {showArrow && <ArrowIcon />}
+				<>
+					{children}
+					{showArrow && <ArrowIcon />}
+				</>
 			</LinkTag>
 		);
 	}
 
 	return (
 		<button className={classNames} onClick={props.onClick}>
-			{children} {showArrow && <ArrowIcon />}
+			{children}
+			{showArrow && <ArrowIcon />}
 		</button>
 	);
 };

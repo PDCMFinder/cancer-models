@@ -1,12 +1,12 @@
 interface IShowHideProps {
-	children: JSX.Element;
-	windowWidth?: number;
+	children: any;
+	windowWidth: number;
 	showOver?: number;
 	hideOver?: number;
 }
 
-const ShowHide = ({ windowWidth: _windowWidth, ...props }: IShowHideProps) => {
-	let windowWidth = _windowWidth || "",
+const ShowHide = (props: IShowHideProps) => {
+	let windowWidth = props.windowWidth,
 		showOver = props.showOver,
 		hideOver = props.hideOver;
 

@@ -31,7 +31,8 @@ const NavDesktop = (props: INavProps) => {
 									isFirstSecondary = firstSecondary === route,
 									firstSecondaryClass = "Navbar_item--firstSecondary",
 									children = route.children,
-									path = route.path;
+									path = route.path,
+									name = route.name;
 
 								if (path && path !== "#") {
 									link = (
@@ -40,33 +41,37 @@ const NavDesktop = (props: INavProps) => {
 											activeClassName={styles["Navbar_item_link--active"]}
 											href={path}
 										>
-											{route.name}
+											{name}
 										</ActiveLink>
 									);
 								} else {
-									link = route.name;
+									link = name;
 								}
 
 								if (children) {
-									let childrenItems = children.map((child) => (
-										<li key={child.path}>
-											<ActiveLink
-												className={`${styles.Navbar_item} link--text--light`}
-												activeClassName={styles["Navbar_item--active"]}
-												href={child.path}
-											>
-												{child.name}
-											</ActiveLink>
-										</li>
-									));
+									let childrenItems = children.map((child) => {
+										let childPath = child.path;
+
+										return (
+											<li key={childPath}>
+												<ActiveLink
+													className={`${styles.Navbar_item} link--text--light`}
+													activeClassName={styles["Navbar_item--active"]}
+													href={childPath}
+												>
+													{child.name}
+												</ActiveLink>
+											</li>
+										);
+									});
 
 									return (
 										<li
-											key={path}
+											key={path || name}
 											className={`${
 												isFirstSecondary
 													? `${styles[firstSecondaryClass]}`
-													: undefined
+													: styles["Navbar_item--secondary"]
 											} dropdownParent`}
 										>
 											<Button

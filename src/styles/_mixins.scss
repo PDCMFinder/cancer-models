@@ -16,17 +16,17 @@
 			@for $i from 1 through $col-amount {
 				@if #{nth($bp-names, $j)} == "xs" {
 					.col-#{$i} {
-						width: (100% / $col-amount) * $i;
+						width: calc((100% / $col-amount) * $i);
 					}
 					.offset-#{$i} {
-						margin-left: (100% / $col-amount) * $i;
+						margin-left: calc((100% / $col-amount) * $i);
 					}
 				} @else {
 					.col-#{nth($bp-names, $j)}-#{$i} {
-						width: (100% / $col-amount) * $i;
+						width: calc((100% / $col-amount) * $i);
 					}
 					.offset-#{nth($bp-names, $j)}-#{$i} {
-						margin-left: (100% / $col-amount) * $i;
+						margin-left: calc((100% / $col-amount) * $i);
 					}
 				}
 			}

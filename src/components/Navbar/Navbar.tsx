@@ -13,10 +13,10 @@ const Navbar = () => {
 
 	return (
 		<header>
-			<ShowHide showOver={bpMedium} windowWidth={windowWidth}>
+			<ShowHide showOver={bpMedium} windowWidth={windowWidth || 0}>
 				<NavDesktop routes={routes} />
 			</ShowHide>
-			<ShowHide hideOver={bpMedium} windowWidth={windowWidth}>
+			<ShowHide hideOver={bpMedium} windowWidth={windowWidth || 0}>
 				<NavMobile routes={routes} />
 			</ShowHide>
 		</header>

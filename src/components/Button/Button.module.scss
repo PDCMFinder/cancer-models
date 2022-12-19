@@ -11,10 +11,10 @@
 	cursor: pointer;
 	display: inline-block;
 	background-color: $color-white;
-	line-height: inherit;
+	line-height: 1;
 	color: $color-black;
 	margin: 2.5rem 1rem;
-	display: flex;
+	display: inline-flex;
 	align-items: center;
 	&--primary {
 		&.Button {

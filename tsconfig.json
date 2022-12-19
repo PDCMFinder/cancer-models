@@ -16,6 +16,12 @@
 		"incremental": true,
 		"baseUrl": "http://localhost:3000/"
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-	"exclude": ["node_modules"]
+	"include": [
+		"next-env.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		"cypress-real-events",
+		"./src/jest-setup.ts"
+	],
+	"exclude": ["node_modules", "./cypress.config.ts"]
 }
