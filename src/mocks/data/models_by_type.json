@@ -1,0 +1,18 @@
+[
+  {
+    "model_type": "xenograft",
+    "count": 4618
+  },
+  {
+    "model_type": "cell line",
+    "count": 1459
+  },
+  {
+    "model_type": "organoid",
+    "count": 174
+  },
+  {
+    "model_type": "other",
+    "count": 68
+  }
+]

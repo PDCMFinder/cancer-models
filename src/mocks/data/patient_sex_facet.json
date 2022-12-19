@@ -1,0 +1,9 @@
+[
+  {
+    "facet_section": "patient_tumour",
+    "facet_name": "Patient sex",
+    "facet_column": "patient_sex",
+    "facet_options": ["other", "female", "Not specified", "male"],
+    "facet_example": null
+  }
+]

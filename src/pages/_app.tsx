@@ -10,6 +10,10 @@ const spaceMono = Space_Mono({
   weight: ["400", "700"],
 });
 
+if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
+  require("../mocks");
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
