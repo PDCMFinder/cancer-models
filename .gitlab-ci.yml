@@ -76,7 +76,7 @@ build_dev_image:
       - "$MOUNT_POINT/"
   only:
     refs:
-      - dev
+      - main
 
 deploy-HX-WP-WEBADMIN-dev:
   stage: deploy-dev
