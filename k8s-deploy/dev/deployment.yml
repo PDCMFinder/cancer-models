@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cancer-models-dev
+  namespace: cancer-models-dev
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: cancer-models-dev
+    spec:
+      containers:
+        - name: cancer-models-dev
+          image: "pdxfinder/cancer-models:dev"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
