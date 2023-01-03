@@ -9,14 +9,14 @@ import { routes } from "../../utils/routes";
 const Navbar = () => {
 	const { windowWidth } = useWindowDimensions();
 
-	const bpMedium = breakPoints.medium;
+	const bpLarge = breakPoints.large;
 
 	return (
 		<header>
-			<ShowHide showOver={bpMedium} windowWidth={windowWidth || 0}>
+			<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
 				<NavDesktop routes={routes} />
 			</ShowHide>
-			<ShowHide hideOver={bpMedium} windowWidth={windowWidth || 0}>
+			<ShowHide hideOver={bpLarge} windowWidth={windowWidth || 0}>
 				<NavMobile routes={routes} />
 			</ShowHide>
 		</header>

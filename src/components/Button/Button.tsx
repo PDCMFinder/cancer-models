@@ -8,6 +8,7 @@ interface IButtonProps {
 	priority: "primary" | "secondary";
 	color: "dark" | "light" | "white";
 	htmlTag?: "a" | "button";
+	type?: "button" | "submit" | "reset";
 	href?: string;
 	className?: string;
 	arrow?: boolean;
@@ -19,12 +20,13 @@ const Button = (props: IButtonProps) => {
 		children = props.children,
 		showArrow = props.arrow,
 		LinkTag: typeof Link | string = Link,
+		propsClassName = props.className,
 		classNames = `
       ${styles.Button}
       ${styles[`Button--${props.priority}`]}
       ${styles[`Button--${props.color}`]}
-      ${props.className}
-    `,
+      ${propsClassName ? propsClassName : ""}
+    `.trim(),
 		externalLinkProps;
 
 	if (props.htmlTag === "a" && href) {
@@ -47,7 +49,7 @@ const Button = (props: IButtonProps) => {
 	}
 
 	return (
-		<button className={classNames} onClick={props.onClick}>
+		<button type={props.type} className={classNames} onClick={props.onClick}>
 			{children}
 			{showArrow && <ArrowIcon />}
 		</button>

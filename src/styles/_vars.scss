@@ -1,6 +1,7 @@
 // Colors
 $color-white: #ffffff;
 $color-black: #000000;
+$color-lightGray: #f8f8f8;
 $color-primary-primary: #003e48;
 $color-primary-secondary: #005363;
 $color-primary-tertiary: #47938a;
@@ -14,6 +15,10 @@ $color-focused-light: #d4f0fb;
 
 // Spacing
 $spacing-main-margin-x: var(--main-margin-x);
+$spacing-5: 5rem;
+$spacing-3: 2.5rem;
+$spacing-2: 1.5rem;
+$spacing-1: 1rem;
 
 // Typography
 $type-primary: var(--type-primary);
@@ -35,7 +40,8 @@ $bp-md: 768px;
 $bp-lg: 992px;
 $bp-xl: 1200px;
 $bp-xxl: 1440px;
-$bp-names: "xs", "sm", "md", "lg", "xl", "xxl";
+$bp-xxx: 1660px;
+$bp-names: "xs", "sm", "md", "lg", "xl", "xxl", "xxx";
 $breakpointsMediaOver: (
 	"sm": (
 		min-width: $bp-sm,
@@ -51,6 +57,9 @@ $breakpointsMediaOver: (
 	),
 	"xxl": (
 		min-width: $bp-xxl,
+	),
+	"xxx": (
+		min-width: $bp-xxx,
 	),
 ) !default;
 

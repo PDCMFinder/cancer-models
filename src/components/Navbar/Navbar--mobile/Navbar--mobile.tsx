@@ -38,7 +38,7 @@ const NavMobile = (props: INavProps) => {
 							<Logotype color="white" />
 						</Link>
 					</div>
-					<div className="col-5 text-end">
+					<div className="col-5 text-right">
 						<button onClick={handleToggleMenu}>
 							{!isMenuOpen ? "Menu" : <CloseIcon />}
 						</button>

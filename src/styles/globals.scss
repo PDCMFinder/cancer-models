@@ -46,11 +46,35 @@ svg,
 img {
 	display: block;
 }
-.d-flex {
-	display: flex;
+.d {
+	&-none {
+		display: none;
+	}
+	&-flex {
+		display: flex;
+	}
+	@include mediaOver("lg") {
+		&-lg {
+			&-block {
+				display: block;
+			}
+			&-flex {
+				display: flex;
+			}
+		}
+	}
 }
-.flex-column {
-	flex-direction: column;
+.flex {
+	&-column {
+		flex-direction: column;
+	}
+	@include mediaOver("md") {
+		&-md {
+			&-row {
+				flex-direction: row;
+			}
+		}
+	}
 }
 .justify-content {
 	&-between {
@@ -59,9 +83,19 @@ img {
 	&-end {
 		justify-content: end;
 	}
+	&-center {
+		justify-content: center;
+	}
 }
-.align-center {
-	align-items: center;
+.align {
+	&-center {
+		align-items: center;
+	}
+	&-self {
+		&-end {
+			align-self: flex-end;
+		}
+	}
 }
 .h-100 {
 	height: 100%;
@@ -89,6 +123,115 @@ a {
 	&-0 {
 		margin: 0 !important;
 	}
+	&x {
+		&-0 {
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+		}
+	}
+	&y {
+		&-5 {
+			margin-top: $spacing-5 !important;
+			margin-bottom: $spacing-5 !important;
+		}
+	}
+	&t {
+		&-0 {
+			margin-top: 0 !important;
+		}
+		&-1 {
+			margin-top: $spacing-1 !important;
+		}
+		&-5 {
+			margin-top: $spacing-5 !important;
+		}
+		@include mediaOver("lg") {
+			&-lg {
+				&-1 {
+					margin-top: $spacing-1 !important;
+				}
+				&-3 {
+					margin-top: $spacing-3 !important;
+				}
+			}
+		}
+	}
+	&r {
+		&-3 {
+			margin-right: $spacing-3;
+		}
+	}
+	&l {
+		&-0 {
+			margin-left: 0 !important;
+		}
+	}
+	@include mediaOver("lg") {
+		&-lg {
+			&-0 {
+				margin: 0 !important;
+			}
+		}
+	}
+	&b {
+		&-0 {
+			margin-bottom: 0 !important;
+		}
+		&-5 {
+			margin-bottom: $spacing-5 !important;
+		}
+		@include mediaOver("md") {
+			&-md {
+				&-3 {
+					margin-bottom: $spacing-3;
+				}
+			}
+		}
+	}
+	@include mediaOver("md") {
+		&-md {
+			&-0 {
+				margin: 0 !important;
+			}
+		}
+	}
+}
+.p {
+	&y {
+		&-5 {
+			padding-top: $spacing-5 !important;
+			padding-bottom: $spacing-5 !important;
+		}
+		&-0 {
+			padding-top: 0 !important;
+			padding-bottom: 0 !important;
+		}
+	}
+	&b {
+		&-0 {
+			padding-bottom: 0 !important;
+		}
+	}
+	@include mediaOver("xl") {
+		&y {
+			&-xl {
+				&-4 {
+					padding-top: 4rem !important;
+					padding-bottom: 4rem !important;
+				}
+			}
+		}
+	}
+}
+.ar {
+	&-1 {
+		aspect-ratio: 1;
+	}
+}
+.position {
+	&-relative {
+		position: relative;
+	}
 }
 .dropdownParent {
 	position: relative;
@@ -111,4 +254,58 @@ a {
 			display: flex;
 		}
 	}
+}
+label {
+	line-height: initial;
+	margin-bottom: 0.5rem;
+	display: block;
+	text-align: left;
+}
+input,
+textarea {
+	width: 100%;
+	border: 1px solid $color-primary-tertiary;
+	padding: 1rem;
+	margin-bottom: $spacing-2;
+	max-width: 100%;
+	transition: 0.3s;
+	&:hover {
+		background-color: $color-focused-light;
+	}
+	&:focus {
+		border-color: $color-primary-primary;
+	}
+}
+textarea {
+	min-height: calc(4em + 2rem);
+	min-width: 100%;
+}
+.bg {
+	&-primary-primary {
+		background-color: $color-primary-primary;
+	}
+	&-primary-secondary {
+		background-color: $color-primary-secondary;
+	}
+	&-primary-tertiary {
+		background-color: $color-primary-tertiary;
+	}
+	&-primary-quaternary {
+		background-color: $color-primary-quaternary;
+	}
+	&-white {
+		background-color: $color-white;
+	}
+}
+.flexBreak {
+	flex-basis: 100%;
+	height: 0;
+}
+section {
+	padding: $spacing-5 0;
+}
+hr {
+	background-color: $color-primary-primary;
+	border: none;
+	height: 1px;
 }

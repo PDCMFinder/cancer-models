@@ -1,11 +1,17 @@
 @import "vars";
 
+// To create media queries using breakpoint names found in vars.scss
+// Can take a custom number
 @mixin mediaOver($breakpoint) {
 	@if map-has-key($breakpointsMediaOver, $breakpoint) {
 		@media screen and #{inspect(map-get($breakpointsMediaOver, $breakpoint))} {
 			@content;
 		}
-	} @else {
+	} @else if $breakpoint / 1 == $breakpoint {
+		@media screen and (min-width: #{$breakpoint}px) {
+			@content;
+		}
+	} @else if $breakpoint == "xs" {
 		@content;
 	}
 }
@@ -13,7 +19,7 @@
 @mixin colGrid() {
 	@for $j from 1 through length($bp-names) {
 		@include mediaOver(#{nth($bp-names, $j)}) {
-			@for $i from 1 through $col-amount {
+			@for $i from 0 through $col-amount {
 				@if #{nth($bp-names, $j)} == "xs" {
 					.col-#{$i} {
 						width: calc((100% / $col-amount) * $i);
