@@ -1,0 +1,16 @@
+@import "../../styles/vars";
+
+.CloseIcon {
+	height: 16px;
+	padding-top: 5px;
+	span {
+		height: 2px;
+		width: 20px;
+		background-color: $color-white;
+		display: block;
+		transform: rotate(135deg);
+		&:first-child {
+			transform: rotate(-135deg) translate(-1px, -2px);
+		}
+	}
+}

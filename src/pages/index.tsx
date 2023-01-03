@@ -1,20 +1,8 @@
 import type { NextPage } from "next";
-import Head from "next/head";
+import Button from "../components/Button/Button";
 
 const Home: NextPage = () => {
-  return (
-    <div>
-      <Head>
-        <title>Patient Derived Cancer Models</title>
-        <meta name="description" content="Patient Derived Cancer Models" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main></main>
-
-      <footer></footer>
-    </div>
-  );
+	return <></>;
 };
 
 export default Home;

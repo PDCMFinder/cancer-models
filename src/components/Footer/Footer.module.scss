@@ -1,0 +1,34 @@
+@import "../../styles/vars";
+@import "../../styles/mixins";
+
+.Footer {
+	background-color: $color-primary-primary;
+	padding: 10rem 0 3.5rem;
+	&_Logotype {
+		svg {
+			max-height: 4rem;
+			width: 100%;
+			@include mediaOver("lg") {
+				max-height: 3rem;
+			}
+		}
+	}
+	&_item--active {
+		text-decoration: underline;
+		color: $color-secondary-tertiary;
+	}
+	&_row {
+		&--main {
+			> * {
+				margin-bottom: 5rem;
+			}
+		}
+	}
+	&_nav_firstRow {
+		margin-top: 0;
+		margin-bottom: 0.7rem;
+		@include mediaOver("lg") {
+			margin-bottom: 0;
+		}
+	}
+}
