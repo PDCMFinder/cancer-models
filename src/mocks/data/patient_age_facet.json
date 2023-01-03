@@ -1,0 +1,22 @@
+[
+  {
+    "facet_section": "patient_tumour",
+    "facet_name": "Patient age",
+    "facet_column": "patient_age",
+    "facet_options": [
+      "10 - 19",
+      "60 - 69",
+      "30 - 39",
+      "20 - 29",
+      "2 - 9",
+      "0 - 23 months",
+      "Not specified",
+      "40 - 49",
+      "90 - 99",
+      "70 - 79",
+      "50 - 59",
+      "80 - 89"
+    ],
+    "facet_example": null
+  }
+]

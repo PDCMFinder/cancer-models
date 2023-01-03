@@ -1,0 +1,17 @@
+[
+  {
+    "facet_section": "model",
+    "facet_name": "Dataset available",
+    "facet_column": "dataset_available",
+    "facet_options": [
+      "dosing studies",
+      "mutation",
+      "cytogenetics",
+      "publication",
+      "patient treatment",
+      "copy number alteration",
+      "expression"
+    ],
+    "facet_example": null
+  }
+]

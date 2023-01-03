@@ -1,0 +1,13 @@
+[
+  {
+    "facet_section": "treatment_drug_dosing",
+    "facet_name": "Patient treatment status",
+    "facet_column": "patient_treatment_status",
+    "facet_options": [
+      "Treatment naive",
+      "Not treatment naive",
+      "Not specified"
+    ],
+    "facet_example": null
+  }
+]

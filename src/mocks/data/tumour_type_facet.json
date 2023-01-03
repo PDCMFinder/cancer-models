@@ -1,0 +1,16 @@
+[
+  {
+    "facet_section": "patient_tumour",
+    "facet_name": "Tumour type",
+    "facet_column": "tumour_type",
+    "facet_options": [
+      "Recurrent",
+      "Refractory",
+      "Metastasis",
+      "Metastatic",
+      "Tumour",
+      "Primary"
+    ],
+    "facet_example": null
+  }
+]
