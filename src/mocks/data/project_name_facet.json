@@ -1,0 +1,9 @@
+[
+  {
+    "facet_section": "model",
+    "facet_name": "Project",
+    "facet_column": "project_name",
+    "facet_options": ["Europdx", "Pdxnet"],
+    "facet_example": null
+  }
+]

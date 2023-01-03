@@ -1,0 +1,182 @@
+[
+  {
+    "patient_age": "Not specified",
+    "patient_sex": "male",
+    "external_model_id": "G401",
+    "model_type": "xenograft",
+    "data_source": "PIVOT",
+    "histology": "Rhabdoid Tumor",
+    "primary_site": "kidney",
+    "collection_site": "kidney",
+    "tumour_type": "Primary",
+    "dataset_available": [
+      "mutation",
+      "copy number alteration",
+      "expression",
+      "patient treatment",
+      "publication"
+    ]
+  },
+  {
+    "patient_age": "30 - 39",
+    "patient_sex": "female",
+    "external_model_id": "CRL-1384",
+    "model_type": "xenograft",
+    "data_source": "CRL",
+    "histology": "Breast Cancer",
+    "primary_site": "breast",
+    "collection_site": "brain",
+    "tumour_type": "Metastatic",
+    "dataset_available": [
+      "mutation",
+      "cytogenetics",
+      "copy number alteration",
+      "expression",
+      "patient treatment"
+    ]
+  },
+  {
+    "patient_age": "Not specified",
+    "patient_sex": "Not specified",
+    "external_model_id": "NCH-RBD-1",
+    "model_type": "xenograft",
+    "data_source": "PIVOT",
+    "histology": "Rhabdoid Tumor",
+    "primary_site": "not provided",
+    "collection_site": "lung metastasis",
+    "tumour_type": null,
+    "dataset_available": [
+      "mutation",
+      "copy number alteration",
+      "expression",
+      "patient treatment",
+      "publication"
+    ]
+  },
+  {
+    "patient_age": "Not specified",
+    "patient_sex": "male",
+    "external_model_id": "Rh-30",
+    "model_type": "xenograft",
+    "data_source": "PIVOT",
+    "histology": "Fusion-Positive Rhabdomyosarcoma",
+    "primary_site": "posterior fossa",
+    "collection_site": "bone marrow",
+    "tumour_type": "Primary",
+    "dataset_available": [
+      "mutation",
+      "copy number alteration",
+      "expression",
+      "patient treatment",
+      "publication"
+    ]
+  },
+  {
+    "patient_age": "Not specified",
+    "patient_sex": "male",
+    "external_model_id": "KT-12",
+    "model_type": "xenograft",
+    "data_source": "PIVOT",
+    "histology": "Atypical Teratoid/Rhabdoid Tumor",
+    "primary_site": "ventricular mass",
+    "collection_site": "ventricular mass",
+    "tumour_type": "Primary",
+    "dataset_available": [
+      "mutation",
+      "copy number alteration",
+      "expression",
+      "patient treatment",
+      "publication"
+    ]
+  },
+  {
+    "patient_age": "Not specified",
+    "patient_sex": "female",
+    "external_model_id": "KT-13",
+    "model_type": "xenograft",
+    "data_source": "PIVOT",
+    "histology": "Wilms Tumor",
+    "primary_site": "right kidney",
+    "collection_site": "right kidney",
+    "tumour_type": "Primary",
+    "dataset_available": [
+      "mutation",
+      "copy number alteration",
+      "expression",
+      "patient treatment",
+      "publication"
+    ]
+  },
+  {
+    "patient_age": "Not specified",
+    "patient_sex": "male",
+    "external_model_id": "OS-17",
+    "model_type": "xenograft",
+    "data_source": "PIVOT",
+    "histology": "Osteosarcoma",
+    "primary_site": "not provided",
+    "collection_site": "femur",
+    "tumour_type": "Primary",
+    "dataset_available": [
+      "mutation",
+      "copy number alteration",
+      "expression",
+      "patient treatment",
+      "publication"
+    ]
+  },
+  {
+    "patient_age": "40 - 49",
+    "patient_sex": "female",
+    "external_model_id": "LCF15",
+    "model_type": "xenograft",
+    "data_source": "Curie-LC",
+    "histology": "Lung Adenocarcinoma",
+    "primary_site": "lung",
+    "collection_site": "lung",
+    "tumour_type": "Primary",
+    "dataset_available": [
+      "mutation",
+      "cytogenetics",
+      "copy number alteration",
+      "dosing studies",
+      "publication"
+    ]
+  },
+  {
+    "patient_age": "Not specified",
+    "patient_sex": "male",
+    "external_model_id": "NB-1771",
+    "model_type": "xenograft",
+    "data_source": "PIVOT",
+    "histology": "Neuroblastoma",
+    "primary_site": "not provided",
+    "collection_site": "adrenal mass",
+    "tumour_type": "Primary",
+    "dataset_available": [
+      "mutation",
+      "copy number alteration",
+      "expression",
+      "patient treatment",
+      "publication"
+    ]
+  },
+  {
+    "patient_age": "40 - 49",
+    "patient_sex": "female",
+    "external_model_id": "CRL-1322",
+    "model_type": "xenograft",
+    "data_source": "CRL",
+    "histology": "Breast Cancer",
+    "primary_site": "breast",
+    "collection_site": "brain",
+    "tumour_type": "Metastatic",
+    "dataset_available": [
+      "mutation",
+      "cytogenetics",
+      "copy number alteration",
+      "expression",
+      "patient treatment"
+    ]
+  }
+]

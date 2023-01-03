@@ -1,0 +1,9 @@
+[
+  {
+    "facet_section": "model",
+    "facet_name": "Type",
+    "facet_column": "model_type",
+    "facet_options": ["other", "xenograft", "cell line", "organoid"],
+    "facet_example": null
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "facet_section": "molecular_data",
+    "facet_name": "Breast cancer biomarkers",
+    "facet_column": "breast_cancer_biomarkers",
+    "facet_options": [
+      "PR/PGR positive",
+      "HER2/ERBB2 positive",
+      "PR/PGR negative",
+      "ER/ESR1 negative",
+      "HER2/ERBB2 negative",
+      "ER/ESR1 positive"
+    ],
+    "facet_example": null
+  }
+]

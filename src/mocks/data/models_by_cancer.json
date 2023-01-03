@@ -1,0 +1,1922 @@
+[
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Gastric Adenocarcinoma",
+    "count": 21
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Gastric Choriocarcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Ovarian Serous Cystadenocarcinoma",
+    "count": 4
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Lung Giant Cell Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Pancreatic Acinar Cell Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Anaplastic Large Cell Lymphoma",
+    "count": 9
+  },
+  {
+    "cancer_system": "Skin Cancer",
+    "histology": "Keratoacanthoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Skin Cancer",
+    "histology": "Stage 0 Cutaneous Melanoma AJCC v6 and v7",
+    "count": 2
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Gastric Mucinous Adenocarcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Mantle Cell Lymphoma",
+    "count": 16
+  },
+  {
+    "cancer_system": "Skin Cancer",
+    "histology": "Acral Lentiginous Melanoma",
+    "count": 8
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Marginal Zone Lymphoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Myelodysplastic Syndrome",
+    "count": 4
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Acute Leukemia",
+    "count": 2
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Mature T-Cell and NK-Cell Non-Hodgkin Lymphoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Rhabdoid Tumor",
+    "count": 8
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "T-Cell Prolymphocytic Leukemia",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Peripheral T-Cell Lymphoma, Not Otherwise Specified",
+    "count": 1
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Tonsillar Cancer",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Early T Acute Lymphoblastic Leukemia",
+    "count": 6
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Barrett Adenocarcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Small Cell Sarcoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Bronchogenic Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Colorectal Adenocarcinoma",
+    "count": 243
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Chronic Myelogenous Leukemia, BCR-ABL1 Positive",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Acute Monocytic Leukemia",
+    "count": 10
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Chondrosarcoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Lung Large Cell Carcinoma",
+    "count": 22
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Adult T-Cell Leukemia/Lymphoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Gastric Cancer",
+    "count": 39
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Nasopharyngeal Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Endocrine Cancer",
+    "histology": "Bladder Neuroendocrine Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Gastric Fundus Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Peripheral Neuroblastoma",
+    "count": 35
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Basaloid Squamous Cell Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Childhood Gastrointestinal Stromal Tumor",
+    "count": 1
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Pharyngeal Squamous Cell Carcinoma",
+    "count": 11
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Head and Neck Squamous Cell Carcinoma",
+    "count": 15
+  },
+  {
+    "cancer_system": "Urinary System Cancer",
+    "histology": "Childhood Kidney Wilms Tumor",
+    "count": 5
+  },
+  {
+    "cancer_system": "Eye Cancer",
+    "histology": "Uveal Melanoma",
+    "count": 5
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Ovarian Serous Surface Papillary Adenocarcinoma",
+    "count": 4
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Kidney Ewing Sarcoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Embryonal Tumor with Multilayered Rosettes, Not Otherwise Specified",
+    "count": 3
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Chronic Lymphocytic Leukemia",
+    "count": 6
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Undifferentiated Pleomorphic Sarcoma",
+    "count": 11
+  },
+  {
+    "cancer_system": "Urinary System Cancer",
+    "histology": "Clear Cell Renal Cell Carcinoma",
+    "count": 30
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "T Acute Lymphoblastic Leukemia",
+    "count": 46
+  },
+  {
+    "cancer_system": "Breast Cancer",
+    "histology": "Breast Carcinoma",
+    "count": 102
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Uterine Corpus Leiomyosarcoma",
+    "count": 15
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Acute Myeloid Leukemia",
+    "count": 121
+  },
+  {
+    "cancer_system": "Urinary System Cancer",
+    "histology": "Papillary Renal Cell Carcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Low Grade Ovarian Serous Adenocarcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Endocrine Cancer",
+    "histology": "Small Cell Neuroendocrine Carcinoma",
+    "count": 4
+  },
+  {
+    "cancer_system": "Breast Cancer",
+    "histology": "Breast Ductal Carcinoma",
+    "count": 50
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Hepatobiliary Cancer",
+    "count": 11
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Hard Palate Squamous Cell Carcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "B Acute Lymphoblastic Leukemia",
+    "count": 143
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Hodgkin Lymphoma",
+    "count": 11
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Uterine Corpus Myxoid Leiomyosarcoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Childhood Fibrosarcoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Lung Adenosquamous Carcinoma",
+    "count": 13
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Salivary Gland Mucoepidermoid Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Pancreatic Poorly Differentiated Ductal Adenocarcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Sclerosing Rhabdomyosarcoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Anaplastic Oligodendroglioma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Cervical Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Endocrine Cancer",
+    "histology": "Thyroid Gland Follicular Carcinoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Mucosal Melanoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Vulvar Melanoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Pancreatic Ductal Adenocarcinoma",
+    "count": 196
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Ewing Sarcoma of Bone",
+    "count": 13
+  },
+  {
+    "cancer_system": "Breast Cancer",
+    "histology": "Invasive Breast Carcinoma of No Special Type",
+    "count": 158
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Adrenal Gland Neuroblastoma",
+    "count": 7
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Uterine Cancer",
+    "count": 3
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Tongue Cancer",
+    "count": 1
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Gliosarcoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Biliary Tract Carcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Lung Sarcomatoid Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Breast Cancer",
+    "histology": "Breast Adenocarcinoma with Spindle Cell Metaplasia",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Juvenile Myelomonocytic Leukemia",
+    "count": 1
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Liver Embryonal Sarcoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Pineoblastoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Laryngeal Cancer",
+    "count": 2
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Malignant Ovarian Endometrioid Tumor",
+    "count": 1
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Gestational Choriocarcinoma",
+    "count": 4
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Uterine Carcinosarcoma",
+    "count": 9
+  },
+  {
+    "cancer_system": "Breast Cancer",
+    "histology": "Basal-Like Breast Carcinoma",
+    "count": 11
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Acute Myelomonocytic Leukemia",
+    "count": 1
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Glioblastoma, Not Otherwise Specified",
+    "count": 32
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Colon Mucinous Adenocarcinoma",
+    "count": 18
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Mucinous Cystadenocarcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Askin Tumor",
+    "count": 2
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Erythroleukemia",
+    "count": 4
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Glottic Squamous Cell Carcinoma",
+    "count": 4
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Pancreatic Adenosquamous Carcinoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Cervical Cancer",
+    "count": 4
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Rectal Adenocarcinoma",
+    "count": 54
+  },
+  {
+    "cancer_system": "Urinary System Cancer",
+    "histology": "Bladder Urothelial Carcinoma",
+    "count": 11
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Spindle Cell Rhabdomyosarcoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Gingival Squamous Cell Carcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Endometrial Adenocarcinoma",
+    "count": 25
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Head and Neck Cancer",
+    "count": 6
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Gallbladder Carcinoma",
+    "count": 7
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Recurrent Melanoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Gastric Small Cell Neuroendocrine Carcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Malignant Brain Glioma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Solid Lung Adenocarcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Lung Colloid Adenocarcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Lung Papillary Adenocarcinoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "T Lymphoblastic Lymphoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Recurrent T Acute Lymphoblastic Leukemia",
+    "count": 2
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Endometrial Endometrioid Adenocarcinoma",
+    "count": 5
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Soft Tissue Sarcoma",
+    "count": 33
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Primitive Neuroectodermal Tumor",
+    "count": 10
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Lung Carcinoma",
+    "count": 14
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Leukemia",
+    "count": 16
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Epithelioid Mesothelioma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Fibrosarcoma",
+    "count": 13
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Alveolar Rhabdomyosarcoma",
+    "count": 15
+  },
+  {
+    "cancer_system": "Skin Cancer",
+    "histology": "Cutaneous Nodular Melanoma",
+    "count": 16
+  },
+  {
+    "cancer_system": "Urinary System Cancer",
+    "histology": "Ureter Urothelial Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Embryonal Carcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Human Papillomavirus-Related Cervical Squamous Cell Carcinoma",
+    "count": 12
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Colon Adenocarcinoma",
+    "count": 371
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Pancreatic Neuroendocrine Carcinoma",
+    "count": 4
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Wilms Tumor",
+    "count": 13
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Myeloid Leukemia",
+    "count": 2
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Fusion-Negative Rhabdomyosarcoma",
+    "count": 25
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Pleural Mesothelioma",
+    "count": 12
+  },
+  {
+    "cancer_system": "Breast Cancer",
+    "histology": "Breast Micropapillary Ductal Carcinoma In Situ",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Refractory Lymphoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Ependymoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Atypical Teratoid/Rhabdoid Tumor",
+    "count": 11
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Sarcoma",
+    "count": 10
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Liver and Intrahepatic Bile Duct Carcinoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Brain Astrocytoma",
+    "count": 8
+  },
+  {
+    "cancer_system": "Eye Cancer",
+    "histology": "Retinoblastoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Breast Cancer",
+    "histology": "Triple-Negative Breast Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Bile Duct Adenocarcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Vulvar Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Malignant Epithelioid Cell Type Gastrointestinal Stromal Tumor",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Central Nervous System Lymphoma",
+    "count": 13
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Recurrent Rhabdoid Tumor",
+    "count": 1
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Clear Cell Sarcoma of Soft Tissue",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Hepatosplenic T-Cell Lymphoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Urinary System Cancer",
+    "histology": "Kidney Carcinoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Clivus Chordoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Hilar Cholangiocarcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Skin Cancer",
+    "histology": "Amelanotic Cutaneous Melanoma",
+    "count": 8
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Childhood Epithelioid Sarcoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Ovarian Undifferentiated Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Adult B Acute Lymphoblastic Leukemia",
+    "count": 7
+  },
+  {
+    "cancer_system": "Eye Cancer",
+    "histology": "Childhood Intraocular Retinoblastoma",
+    "count": 38
+  },
+  {
+    "cancer_system": "Skin Cancer",
+    "histology": "Lentigo Maligna Melanoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Colon Cancer",
+    "count": 80
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Undifferentiated Round Cell Sarcoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Gastrointestinal Stromal Tumor",
+    "count": 4
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "T-Cell Large Granular Lymphocyte Leukemia",
+    "count": 1
+  },
+  {
+    "cancer_system": "Urinary System Cancer",
+    "histology": "Renal Pelvis Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Burkitt Lymphoma",
+    "count": 25
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Epithelioid Sarcoma",
+    "count": 4
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Tonsillar Squamous Cell Carcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Uterine Corpus Carcinosarcoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Lung Acinar Adenocarcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Central Nervous System Cancer",
+    "count": 13
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Gastric Neuroendocrine Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Cecum Adenocarcinoma",
+    "count": 23
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Sacral Chordoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Gastroesophageal Junction Adenocarcinoma",
+    "count": 17
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Bone Osteosarcoma",
+    "count": 31
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Vulvar Squamous Cell Carcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Acute Myeloid Leukemia with Maturation",
+    "count": 1
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Childhood Rhabdomyosarcoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Pancreatic Mixed Acinar-Neuroendocrine Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Lymphoma",
+    "count": 12
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Rectal Mucinous Adenocarcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Colorectal Mucinous Adenocarcinoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Duodenal Adenocarcinoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Chronic Eosinophilic Leukemia, Not Otherwise Specified",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "B-Cell Non-Hodgkin Lymphoma",
+    "count": 8
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Hairy Cell Leukemia",
+    "count": 4
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Colorectal Medullary Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Esophageal Cancer",
+    "count": 4
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Embryonal Rhabdomyosarcoma",
+    "count": 5
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Thyroid Gland Anaplastic Carcinoma",
+    "count": 8
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Ovarian Adenocarcinoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Neuroblastoma",
+    "count": 31
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Medulloblastoma",
+    "count": 28
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Postcricoid Squamous Cell Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Endocrine Cancer",
+    "histology": "Lung Large Cell Neuroendocrine Carcinoma",
+    "count": 7
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Pancreatic Moderately Differentiated Ductal Adenocarcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Lung Mucoepidermoid Carcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Endocrine Cancer",
+    "histology": "Hereditary Thyroid Gland Medullary Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Ovarian Leiomyosarcoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Lung Adenocarcinoma",
+    "count": 254
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Oral Cavity Squamous Cell Carcinoma",
+    "count": 16
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Colorectal Cancer",
+    "count": 11
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Bone Sarcoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Endocrine Cancer",
+    "histology": "Extrapulmonary Small Cell Neuroendocrine Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Oral Cavity Cancer",
+    "count": 1
+  },
+  {
+    "cancer_system": "Breast Cancer",
+    "histology": "Breast Ductal Carcinoma In Situ",
+    "count": 2
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Appendix Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Thyroid Gland Squamous Cell Carcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Ovarian Clear Cell Adenocarcinoma",
+    "count": 8
+  },
+  {
+    "cancer_system": "Endocrine Cancer",
+    "histology": "Lung Small Cell Carcinoma",
+    "count": 96
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Pancreatic Undifferentiated Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Lung Non-Small Cell Carcinoma",
+    "count": 101
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Pancreatic Adenocarcinoma",
+    "count": 90
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Anal Cancer",
+    "count": 5
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Refractory Osteosarcoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Breast Cancer",
+    "histology": "Luminal B Breast Carcinoma",
+    "count": 9
+  },
+  {
+    "cancer_system": "Urinary System Cancer",
+    "histology": "Rhabdoid Tumor of the Kidney",
+    "count": 2
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Breast Intracystic Papillary Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Parotid Gland Mucoepidermoid Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Lung Pleomorphic Carcinoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Pleural Sarcomatoid Mesothelioma",
+    "count": 5
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Uterine Corpus Sarcoma",
+    "count": 4
+  },
+  {
+    "cancer_system": "Endocrine Cancer",
+    "histology": "Lung Neuroendocrine Neoplasm",
+    "count": 4
+  },
+  {
+    "cancer_system": "Breast Cancer",
+    "histology": "Invasive Breast Lobular Carcinoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Mycosis Fungoides and Sezary Syndrome",
+    "count": 2
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Lung Cancer",
+    "count": 27
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Malignant Mixed Mesodermal (Mullerian) Tumor",
+    "count": 9
+  },
+  {
+    "cancer_system": "Skin Cancer",
+    "histology": "Skin Squamous Cell Carcinoma",
+    "count": 10
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "High Grade Ovarian Serous Adenocarcinoma",
+    "count": 80
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Glioblastoma, IDH-Wildtype",
+    "count": 29
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Cholangiocarcinoma",
+    "count": 34
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Childhood Soft Tissue Sarcoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Esophageal Adenocarcinoma",
+    "count": 54
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Natural Killer Cell Lymphoblastic Leukemia/Lymphoma",
+    "count": 5
+  },
+  {
+    "cancer_system": "Breast Cancer",
+    "histology": "Breast Adenocarcinoma",
+    "count": 15
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Malignant Ovarian Granulosa Cell Tumor",
+    "count": 1
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Diffuse Intrinsic Pontine Glioma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Melanoma of Unknown Primary",
+    "count": 128
+  },
+  {
+    "cancer_system": "Breast Cancer",
+    "histology": "Multifocal Breast Carcinoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Gastric Tubular Adenocarcinoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Tongue Squamous Cell Carcinoma",
+    "count": 40
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Leiomyosarcoma",
+    "count": 10
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Colon Squamous Cell Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Anal Adenocarcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Acute Biphenotypic Leukemia",
+    "count": 2
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Brain Glioblastoma",
+    "count": 61
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Ovarian Cystadenocarcinoma",
+    "count": 7
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Sezary Syndrome",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Gastric Carcinoma",
+    "count": 76
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Childhood Desmoplastic Small Round Cell Tumor",
+    "count": 5
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Rhabdomyosarcoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Salivary Gland Squamous Cell Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Exocrine Pancreas Cancer",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Extrahepatic Bile Duct Carcinoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Laryngeal Squamous Cell Carcinoma",
+    "count": 17
+  },
+  {
+    "cancer_system": "Skin Cancer",
+    "histology": "Skin Carcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Endocrine Cancer",
+    "histology": "Lung Carcinoid Tumor",
+    "count": 6
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Glioblastoma",
+    "count": 58
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Colorectal Carcinoma",
+    "count": 642
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Rectal Cribriform Comedo-Type Adenocarcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Endometrioid Stromal Sarcoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Adult Liver Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Prostate Adenocarcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Recurrent Malignant Glioma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Malignant Mesothelioma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Primary Effusion Lymphoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "T-Cell Non-Hodgkin Lymphoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Buccal Mucosa Squamous Cell Carcinoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "T Lymphoblastic Leukemia/Lymphoma",
+    "count": 19
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Pleural Biphasic Mesothelioma",
+    "count": 7
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Colon Carcinoma",
+    "count": 24
+  },
+  {
+    "cancer_system": "Breast Cancer",
+    "histology": "Breast Metaplastic Carcinoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Fusion-Positive Rhabdomyosarcoma",
+    "count": 17
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Hepatocellular Carcinoma",
+    "count": 28
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Ovarian Mucinous Adenocarcinoma",
+    "count": 4
+  },
+  {
+    "cancer_system": "Urinary System Cancer",
+    "histology": "Bladder Carcinoma",
+    "count": 36
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Yolk Sac Tumor",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Follicular Lymphoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Endocrine Cancer",
+    "histology": "Cervical Small Cell Neuroendocrine Carcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Anal Squamous Cell Carcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Breast Cancer",
+    "histology": "Breast Lobular Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Adenocarcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Primary Central Chondrosarcoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Embryonal Tumor with Multilayered Rosettes, C19MC-Altered",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Acute Megakaryoblastic Leukemia",
+    "count": 5
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Ewing Sarcoma",
+    "count": 25
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Pancreatic Carcinoma",
+    "count": 28
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Lung Squamous Cell Carcinoma",
+    "count": 210
+  },
+  {
+    "cancer_system": "Breast Cancer",
+    "histology": "Breast Cancer",
+    "count": 68
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Cervical Carcinosarcoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Osteosarcoma",
+    "count": 36
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Central Nervous System Germinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Pharyngeal Cancer",
+    "count": 1
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Supraglottic Squamous Cell Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Urinary System Cancer",
+    "histology": "Bladder Papillary Urothelial Carcinoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Breast Cancer",
+    "histology": "Invasive Breast Carcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Vulvar Leiomyosarcoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Lung Adenocarcinoma In Situ",
+    "count": 1
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Central Nervous System Embryonal Neoplasm",
+    "count": 1
+  },
+  {
+    "cancer_system": "Urinary System Cancer",
+    "histology": "Bladder Cancer",
+    "count": 20
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Ovarian Yolk Sac Tumor",
+    "count": 1
+  },
+  {
+    "cancer_system": "Urinary System Cancer",
+    "histology": "Urothelial Carcinoma",
+    "count": 10
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Centroblastic Lymphoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Mixed Phenotype Acute Leukemia",
+    "count": 1
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Ovarian Carcinoma",
+    "count": 13
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Liposarcoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Intrahepatic Cholangiocarcinoma",
+    "count": 7
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Childhood Neuroblastoma",
+    "count": 17
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Non-Hodgkin Lymphoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Gastric Signet Ring Cell Adenocarcinoma",
+    "count": 5
+  },
+  {
+    "cancer_system": "Skin Cancer",
+    "histology": "Cutaneous Melanoma",
+    "count": 305
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Angioimmunoblastic T-Cell Lymphoma",
+    "count": 4
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Blastic Plasmacytoid Dendritic Cell Neoplasm",
+    "count": 1
+  },
+  {
+    "cancer_system": "Skin Cancer",
+    "histology": "Low-CSD Melanoma",
+    "count": 9
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Anal Canal Squamous Cell Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Brain Cancer",
+    "count": 1
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Ovarian Serous Adenocarcinoma",
+    "count": 19
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Ampulla of Vater Adenocarcinoma",
+    "count": 26
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Amelanotic Melanoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Urinary System Cancer",
+    "histology": "Bladder Adenocarcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Lymphoblastic Lymphoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Childhood Ependymoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Gallbladder Adenocarcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Ovarian Endometrioid Adenocarcinoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Pancreatic Squamous Cell Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Spindle Cell Sarcoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Melanoma",
+    "count": 17
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Prostate Carcinoma",
+    "count": 7
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Cervical Squamous Cell Carcinoma, Not Otherwise Specified",
+    "count": 7
+  },
+  {
+    "cancer_system": "Breast Cancer",
+    "histology": "Breast Lobular Carcinoma In Situ",
+    "count": 1
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Childhood Meningeal Melanoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "B-Cell Prolymphocytic Leukemia",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Aggressive Non-Hodgkin Lymphoma",
+    "count": 4
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Secondary Glioblastoma",
+    "count": 4
+  },
+  {
+    "cancer_system": "Endocrine Cancer",
+    "histology": "Merkel Cell Carcinoma",
+    "count": 7
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Duodenal Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Urinary System Cancer",
+    "histology": "Kidney Wilms Tumor",
+    "count": 1
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Malignant Ovarian Brenner Tumor",
+    "count": 1
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Endometrial Carcinoma",
+    "count": 8
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Primary Cutaneous T-Cell Non-Hodgkin Lymphoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Pleural Epithelioid Mesothelioma",
+    "count": 15
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Prostate Cancer",
+    "count": 5
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Anaplastic Oligodendroglioma, Not Otherwise Specified",
+    "count": 3
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Endometrioid Adenocarcinoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Thoracic Cancer",
+    "histology": "Pleural Malignant Mesothelioma",
+    "count": 5
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Mediastinal Neuroblastoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Hypopharyngeal Squamous Cell Carcinoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Lip and Oral Cavity Squamous Cell Carcinoma",
+    "count": 23
+  },
+  {
+    "cancer_system": "Unclassified",
+    "histology": "Papillary Serous Cystadenocarcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "WHO Grade III Glioma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Pancreatic Cancer",
+    "count": 55
+  },
+  {
+    "cancer_system": "Endocrine Cancer",
+    "histology": "Adrenal Cortex Carcinoma",
+    "count": 4
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Thyroid Gland Cancer",
+    "count": 4
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Cervical Adenocarcinoma",
+    "count": 7
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Childhood Malignant Testicular Germ Cell Tumor",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Gastric Adenosquamous Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Metastatic Bone Sarcoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Plasma Cell Myeloma",
+    "count": 31
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Diffuse Large B-Cell Lymphoma",
+    "count": 43
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Primary Mediastinal (Thymic) Large B-Cell Lymphoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Anaplastic Astrocytoma",
+    "count": 19
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Acute Lymphoblastic Leukemia",
+    "count": 37
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Malignant Gastric Gastrointestinal Stromal Tumor",
+    "count": 2
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Thyroid Gland Sarcoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Ovarian Carcinosarcoma",
+    "count": 5
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Hepatoblastoma",
+    "count": 7
+  },
+  {
+    "cancer_system": "Urinary System Cancer",
+    "histology": "Bladder Squamous Cell Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Hematopoietic and Lymphoid System Cancer",
+    "histology": "Childhood T Acute Lymphoblastic Leukemia",
+    "count": 2
+  },
+  {
+    "cancer_system": "Endocrine Cancer",
+    "histology": "Thyroid Gland Papillary Carcinoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Testicular Cancer",
+    "count": 3
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Endometrial Adenosquamous Carcinoma",
+    "count": 2
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Floor of Mouth Squamous Cell Carcinoma",
+    "count": 6
+  },
+  {
+    "cancer_system": "Urinary System Cancer",
+    "histology": "Renal Cell Carcinoma",
+    "count": 26
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Childhood Liposarcoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Rectosigmoid Adenocarcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Urinary System Cancer",
+    "histology": "Kidney Cancer",
+    "count": 52
+  },
+  {
+    "cancer_system": "Nervous System Cancer",
+    "histology": "Glioblastoma, IDH-Mutant",
+    "count": 3
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Pancreatic Intraductal Papillary-Mucinous Neoplasm with an Associated Invasive Carcinoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Endometrial Serous Adenocarcinoma",
+    "count": 3
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Esophageal Squamous Cell Carcinoma",
+    "count": 32
+  },
+  {
+    "cancer_system": "Reproductive System Cancer",
+    "histology": "Ovarian Cancer",
+    "count": 28
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Extrahepatic Bile Duct Adenosquamous Carcinoma",
+    "count": 1
+  },
+  {
+    "cancer_system": "Head and Neck Cancer",
+    "histology": "Retromolar Trigone Squamous Cell Carcinoma",
+    "count": 4
+  },
+  {
+    "cancer_system": "Breast Cancer",
+    "histology": "Breast Squamous Cell Carcinoma, Acantholytic Variant",
+    "count": 1
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Synovial Sarcoma",
+    "count": 12
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Childhood Osteosarcoma",
+    "count": 37
+  },
+  {
+    "cancer_system": "Digestive System Cancer",
+    "histology": "Small Intestinal Adenocarcinoma",
+    "count": 4
+  },
+  {
+    "cancer_system": "Connective and Soft Tissue Cancer",
+    "histology": "Childhood Synovial Sarcoma",
+    "count": 2
+  }
+]

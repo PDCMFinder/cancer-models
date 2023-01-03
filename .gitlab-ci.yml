@@ -1,0 +1,103 @@
+# To use the Docker Hub docker image
+#image: docker:latest
+image: $CI_REGISTRY/mouse-informatics/docker:latest
+
+variables:
+  # When using dind service we need to instruct docker, to talk with the
+  # daemon started inside of the service. The daemon is available with
+  # a network connection instead of the default /var/run/docker.sock socket.
+  #
+  # The 'docker' hostname is the alias of the service container as described at
+  # https://docs.gitlab.com/ee/ci/docker/using_docker_images.html#accessing-the-services
+  #
+  # Note that if you're using the Kubernetes executor, the variable should be set to
+  # tcp://localhost:2375/ because of how the Kubernetes executor connects services
+  # to the job container
+  # DOCKER_HOST: tcp://localhost:2375/
+  #
+  # For non-Kubernetes executors, we use tcp://docker:2375/
+  DOCKER_HOST: tcp://docker:2375/
+  # When using dind, it's wise to use the overlayfs driver for
+  # improved performance.
+  DOCKER_DRIVER: overlay2
+
+  # Since the docker:dind container and the runner container don’t share their root
+  # filesystem, the job’s working directory can be used as a mount point for children
+  # containers. For example, if you have files you want to share with a child container,
+  # you may create a subdirectory under /builds/$CI_PROJECT_PATH and use it as your
+  # mount point.
+  MOUNT_POINT: /builds/$CI_PROJECT_PATH/mnt
+
+  # For EBI you need to override the definition of CI_REGISTRY to remove the port number
+  CI_REGISTRY: dockerhub.ebi.ac.uk
+  CI_REGISTRY_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH
+
+  #NOW: $(date '+%Y-%m-%d-%H-%M-%S')
+  #NOW: $(date '+%Y-%m-%d')
+
+  # To solve the issue with the Docker in Docker 19.03 service.
+  # Logged as: GitLab.com CI jobs failing if using docker:stable-dind image
+  # see: https://gitlab.com/gitlab-com/gl-infra/production/issues/982
+  DOCKER_TLS_CERTDIR: ""
+
+stages:
+  - build-dev
+  - deploy-dev
+
+build_dev_image:
+  stage: build-dev
+  services:
+    - name: $CI_REGISTRY/mouse-informatics/dind:latest
+      alias: docker
+  except:
+    - schedules
+  before_script:
+    - sed -i "s|FROM node|FROM ${LOCAL_GITLAB_NODE_IMAGE}|g" Dockerfile
+    - sed -i "s|FROM nginx|FROM ${LOCAL_GITLAB_NGINX_IMAGE}|g" Dockerfile
+    - mkdir -p "$MOUNT_POINT"
+    - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
+    - rm .env.production && cp .env.development .env.production
+  script:
+    - |
+      if [[ "${REQUIRES_REBUILD_IMAGE}" == "true" ]]; then
+          echo "Building dev image: ${CI_REGISTRY_IMAGE}:dev" 
+          docker build -t "${CI_REGISTRY_IMAGE}":dev -f Dockerfile .  | tee ${MOUNT_POINT}/build.log
+          docker push "${CI_REGISTRY_IMAGE}":dev  | tee ${MOUNT_POINT}/push.log
+          docker logout ${CI_REGISTRY}
+          echo "Pushing to docker hub"
+          echo "${DOCKER_HUB_PWD}" | docker login --username "${DOCKER_HUB_USER}" --password-stdin
+          docker tag "${CI_REGISTRY_IMAGE}":dev "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":dev
+          docker push "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":dev  | tee ${MOUNT_POINT}/dockerhub-push-latest.log
+      fi
+    - docker logout
+
+  artifacts:
+    paths:
+      - "$MOUNT_POINT/"
+  only:
+    refs:
+      - main
+
+deploy-HX-WP-WEBADMIN-dev:
+  stage: deploy-dev
+  image: dtzar/helm-kubectl:2.13.0
+  script:
+    - kubectl config set-cluster local --server="${HX_WP_WEBADMIN_ENDPOINT}"
+    - kubectl config set clusters.local.certificate-authority-data "${HX_WP_WEBADMIN_CERTIFICATE_AUTHORITY}"
+    - kubectl config set-credentials ${HX_WP_WEBADMIN_DEV_USER} --token="${HX_WP_WEBADMIN_DEV_USER_TOKEN}"
+    - kubectl config set-context "${HX_WP_WEBADMIN_DEV_NAMESPACE}" --cluster=local --user=${HX_WP_WEBADMIN_DEV_USER} --namespace="${HX_WP_WEBADMIN_DEV_NAMESPACE}"
+    - kubectl config use-context "${HX_WP_WEBADMIN_DEV_NAMESPACE}"
+    - kubectl version
+
+    - |
+      if kubectl apply -f k8s-deploy/dev/deployment.yml --record | grep -q unchanged; then
+          echo "=> Patching deployment to force image update."
+          kubectl patch -f k8s-deploy/dev/deployment.yml --record -p "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"ci-last-updated\":\"$(date +'%s')\"}}}}}"
+      else
+        echo "=> Deployment apply has changed the object, no need to force image update."
+      fi
+    - kubectl rollout status -f k8s-deploy/dev/deployment.yml
+    - kubectl get pods,service,deploy,replicaset,ing
+  only:
+    refs:
+      - main

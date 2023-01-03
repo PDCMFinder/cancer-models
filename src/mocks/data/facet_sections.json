@@ -1,0 +1,104 @@
+[
+  {
+    "facet_section": "model",
+    "facet_column": "dataset_available",
+    "facet_name": "Dataset available",
+    "facet_example": null
+  },
+  {
+    "facet_section": "model",
+    "facet_column": "data_source",
+    "facet_name": "Datasource",
+    "facet_example": null
+  },
+  {
+    "facet_section": "patient_tumour",
+    "facet_column": "patient_age",
+    "facet_name": "Patient age",
+    "facet_example": null
+  },
+  {
+    "facet_section": "molecular_data",
+    "facet_column": "makers_with_mutation_data",
+    "facet_name": "Gene mutation",
+    "facet_example": "RTP3"
+  },
+  {
+    "facet_section": "treatment_drug_dosing",
+    "facet_column": "model_treatment_list",
+    "facet_name": "Model dosing",
+    "facet_example": "cyclophosphamide"
+  },
+  {
+    "facet_section": "treatment_drug_dosing",
+    "facet_column": "patient_treatment_status",
+    "facet_name": "Patient treatment status",
+    "facet_example": null
+  },
+  {
+    "facet_section": "model",
+    "facet_column": "model_type",
+    "facet_name": "Type",
+    "facet_example": null
+  },
+  {
+    "facet_section": "molecular_data",
+    "facet_column": "breast_cancer_biomarkers",
+    "facet_name": "Breast cancer biomarkers",
+    "facet_example": null
+  },
+  {
+    "facet_section": "patient_tumour",
+    "facet_column": "cancer_system",
+    "facet_name": "Cancer system",
+    "facet_example": null
+  },
+  {
+    "facet_section": "molecular_data",
+    "facet_column": "makers_with_cytogenetics_data",
+    "facet_name": "Cytogenetics",
+    "facet_example": "ESR1"
+  },
+  {
+    "facet_section": "patient_tumour",
+    "facet_column": "tumour_type",
+    "facet_name": "Tumour type",
+    "facet_example": null
+  },
+  {
+    "facet_section": "patient_tumour",
+    "facet_column": "patient_sex",
+    "facet_name": "Patient sex",
+    "facet_example": null
+  },
+  {
+    "facet_section": "model",
+    "facet_column": "project_name",
+    "facet_name": "Project",
+    "facet_example": null
+  },
+  {
+    "facet_section": "molecular_data",
+    "facet_column": "makers_with_cna_data",
+    "facet_name": "Copy Number Alteration",
+    "facet_example": "RTP3"
+  },
+  {
+    "facet_section": "model",
+    "facet_column": "external_model_id",
+    "facet_name": "Model ID",
+    "facet_example": "TM00015"
+  },
+  {
+    "facet_section": "treatment_drug_dosing",
+    "facet_column": "treatment_list",
+    "facet_name": "Patient treatment",
+    "facet_example": "radiation therapy"
+  },
+  {
+    "facet_section": "molecular_data",
+    "facet_column": "makers_with_expression_data",
+    "facet_name": "Gene Expression",
+    "facet_example": "BEST1"
+  }
+]
