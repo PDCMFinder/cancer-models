@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import CloseIcon from "../../CloseIcon/CloseIcon";
 import Logotype from "../../Logotype/Logotype";
-import useBodyClass from "../../../hooks/useBodyClass";
+import handleBodyClass from "../../../utils/handleBodyClass";
 import { INavProps, IRoute } from "../../../../globalTypes";
 import ActiveLink from "../../ActiveLink/ActiveLink";
 import Link from "next/link";
-
 import styles from "./Navbar--mobile.module.scss";
+
+const ADD = "add",
+	REMOVE = "remove";
 
 const NavMobile = (props: INavProps) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,8 +24,10 @@ const NavMobile = (props: INavProps) => {
 
 	const handleToggleMenu = () => {
 		// Add or remove body class to stylize
-		let addRemoveBodyClass: "add" | "remove" = !isMenuOpen ? "add" : "remove";
-		useBodyClass(["Navbar--mobile--isOpen"], addRemoveBodyClass);
+		let addRemoveBodyClass: typeof ADD | typeof REMOVE = !isMenuOpen
+			? ADD
+			: REMOVE;
+		handleBodyClass(["Navbar--mobile--isOpen"], addRemoveBodyClass);
 		setIsMenuOpen((prev) => !prev);
 	};
 
@@ -56,24 +60,30 @@ const NavMobile = (props: INavProps) => {
 										let children = route.children;
 
 										if (children) {
-											return children.map((child) => (
-												<li key={child.path}>
-													<ActiveLink
-														className={`${styles.Navbar_item} link--text--light`}
-														activeClassName={styles["Navbar_item--active"]}
-														href={child.path}
-													>
-														{child.name}
-													</ActiveLink>
-												</li>
-											));
-										} else {
+											return children.map((child) => {
+												let path = child.path;
+
+												return (
+													<li key={path}>
+														<ActiveLink
+															className={`${styles.Navbar_item} link--text--light`}
+															activeClassName={styles["Navbar_item--active"]}
+															href={path}
+														>
+															{child.name}
+														</ActiveLink>
+													</li>
+												);
+											});
+										} else if (route.path) {
+											let path = route.path;
+
 											return (
-												<li key={route.path}>
+												<li key={path}>
 													<ActiveLink
 														className={`${styles.Navbar_item} link--text--light`}
 														activeClassName={styles["Navbar_item--active"]}
-														href={route.path}
+														href={path}
 													>
 														{route.name}
 													</ActiveLink>
