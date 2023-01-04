@@ -1,0 +1,27 @@
+@import "../../styles/vars";
+
+.SearchResult {
+	&_titleCard {
+		margin-bottom: 2rem;
+		&_content {
+			padding: 0.5rem 1rem;
+		}
+	}
+	&_dataContent {
+		gap: $spacing-2;
+	}
+	&_modelID {
+		font-size: 2.5rem;
+		margin-bottom: 0.3rem;
+	}
+	&_metadata {
+		--col-gutter-x: 10px;
+	}
+	&_metadata span,
+	&_availableData_title {
+		font-size: 1.3rem;
+		color: $color-primary-quaternary;
+		font-family: $type-primary;
+		line-height: 1.2;
+	}
+}

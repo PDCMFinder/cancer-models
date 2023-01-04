@@ -24,7 +24,7 @@ const NavDesktop = (props: INavProps) => {
 					</div>
 					<div className="col-9 col-xl-8 offset-xl-1">
 						<ul
-							className={`ul--noStyle align-center justify-content-between m-0 ${styles["Navbar--desktop_item--primary"]}`}
+							className={`ul-noStyle align-center justify-content-between m-0 ${styles["Navbar--desktop_item--primary"]}`}
 						>
 							{props.routes.map((route: IRoute) => {
 								let link,
@@ -82,7 +82,7 @@ const NavDesktop = (props: INavProps) => {
 											>
 												{link}
 											</Button>
-											<ul className="ul--noStyle dropdownChildren dropdownChildren--flushRight">
+											<ul className="ul-noStyle dropdownChildren dropdownChildren--flushRight">
 												{childrenItems}
 											</ul>
 										</li>

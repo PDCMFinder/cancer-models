@@ -5,7 +5,7 @@ import Button from "../components/Button/Button";
 import bannerImage from "../../public/national-cancer-institute-cT0SCB8pb04-unsplash.jpg";
 import ShowHide from "../components/ShowHide/ShowHide";
 import useWindowDimensions from "../hooks/useWindowDimensions";
-import { breakPoints } from "../utils/breakpoints";
+import breakPoints from "../utils/breakpoints";
 import Card from "../components/Card/Card";
 import BlogPreview from "../components/Blog/BlogPreview";
 import styles from "./index.module.scss";
@@ -52,7 +52,7 @@ const Home: NextPage = () => {
 									color="white"
 									priority="primary"
 									type="submit"
-									className="m-md-0 align-self-end"
+									className="mt-2 m-md-0 align-self-end"
 								>
 									Search
 								</Button>

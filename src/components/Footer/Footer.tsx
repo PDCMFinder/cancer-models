@@ -19,7 +19,7 @@ const Footer = () => {
 					<div className="col-12 col-md-4 col-xl-3">
 						<div className="row">
 							<div className="col-12 col-lg-6">
-								<ul className={`ul--noStyle ${styles.Footer_nav_firstRow}`}>
+								<ul className={`ul-noStyle ${styles.Footer_nav_firstRow}`}>
 									{routes.map((route: IRoute) => {
 										let path = route.path;
 										if (route.children) {
@@ -41,7 +41,7 @@ const Footer = () => {
 								</ul>
 							</div>
 							<div className="col-12 col-lg-6">
-								<ul className="ul--noStyle m-0">
+								<ul className="ul-noStyle m-0">
 									{routes.map((route) => {
 										let children = route.children;
 

@@ -108,9 +108,12 @@ button {
 	cursor: pointer;
 }
 .ul {
-	&--noStyle {
+	&-noStyle {
 		list-style: none;
 		padding-left: 0;
+	}
+	&-twoCols {
+		column-count: 2;
 	}
 }
 li:not(:last-of-type) {
@@ -141,6 +144,9 @@ a {
 		}
 		&-1 {
 			margin-top: $spacing-1 !important;
+		}
+		&-2 {
+			margin-top: $spacing-2 !important;
 		}
 		&-5 {
 			margin-top: $spacing-5 !important;
@@ -297,6 +303,11 @@ textarea {
 		background-color: $color-white;
 	}
 }
+.bc {
+	&-primary-quaternary {
+		border-color: $color-primary-quaternary !important;
+	}
+}
 .flexBreak {
 	flex-basis: 100%;
 	height: 0;
@@ -308,4 +319,15 @@ hr {
 	background-color: $color-primary-primary;
 	border: none;
 	height: 1px;
+}
+.hideElement-accessible {
+	border: 0;
+	clip: rect(1px 1px 1px 1px);
+	clip: rect(1px, 1px, 1px, 1px);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
 }

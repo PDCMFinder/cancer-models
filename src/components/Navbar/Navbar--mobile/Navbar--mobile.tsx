@@ -51,7 +51,7 @@ const NavMobile = (props: INavProps) => {
 					<div className="container d-flex flex-column justify-content-between h-100 text-center">
 						<div className="row">
 							<div className="col">
-								<ul className="ul--noStyle">
+								<ul className="ul-noStyle">
 									{props.routes.map((route: IRoute) => {
 										let children = route.children;
 
