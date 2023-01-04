@@ -62,9 +62,6 @@ a,
 .link--text {
 	color: $color-secondary-primary;
 	text-decoration: underline;
-	&:visited {
-		color: $color-focused;
-	}
 	&:hover {
 		color: $color-black;
 	}
@@ -72,9 +69,6 @@ a,
 		color: $color-secondary-quaternary;
 		&:hover {
 			color: $color-white;
-		}
-		&:visited {
-			color: $color-focused-light;
 		}
 	}
 }
