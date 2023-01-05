@@ -9,7 +9,7 @@ interface IFeedbackSectionProps {
 }
 
 const FeedbackSection = (props: IFeedbackSectionProps) => {
-	let backgroundColorClass;
+	let backgroundColorClass = null;
 
 	switch (props.backgroundColor) {
 		case "light":
