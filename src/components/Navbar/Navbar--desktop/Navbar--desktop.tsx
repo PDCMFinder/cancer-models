@@ -53,7 +53,7 @@ const NavDesktop = (props: INavProps) => {
 										let childPath = child.path;
 
 										return (
-											<li key={childPath}>
+											<li className="mb-0" key={childPath}>
 												<ActiveLink
 													className={`${styles.Navbar_item} link--text--light`}
 													activeClassName={styles["Navbar_item--active"]}
@@ -91,11 +91,10 @@ const NavDesktop = (props: INavProps) => {
 									return (
 										<li
 											key={path}
-											className={
-												isFirstSecondary
-													? `${styles[firstSecondaryClass]}`
-													: undefined
-											}
+											className={`
+                       mb-0
+												${isFirstSecondary ? `${styles[firstSecondaryClass]}` : ""}
+											`.trim()}
 										>
 											{link}
 										</li>
