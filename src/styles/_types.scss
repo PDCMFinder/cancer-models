@@ -80,25 +80,25 @@ a,
 }
 .text {
 	&-white {
-		color: $color-white;
+		color: $color-white !important;
 	}
 	&-right {
-		text-align: right;
+		text-align: right !important;
 	}
 	&-center {
-		text-align: center;
+		text-align: center !important;
 	}
 	&-small {
-		font-size: 1.4rem;
-		line-height: 2rem;
+		font-size: 1.4rem !important;
+		line-height: 2rem !important;
 	}
 	&-bold {
-		font-weight: $fw-bold;
+		font-weight: $fw-bold !important;
 	}
 	@include mediaOver("lg") {
 		&-lg {
 			&-left {
-				text-align: left;
+				text-align: left !important;
 			}
 		}
 	}
