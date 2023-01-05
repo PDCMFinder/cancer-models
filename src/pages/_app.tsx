@@ -5,6 +5,15 @@ import { Merriweather } from "@next/font/google";
 import { Space_Mono } from "@next/font/google";
 import Layout from "../components/Layout/Layout";
 import Head from "next/head";
+import handleBodyClass from "../utils/handleBodyClass";
+
+const USERNAVIGATION_MOUSE = "userNavigation--mouse",
+	USERNAVIGATION_KEYBOARD = "userNavigation--keyboard",
+	ADD = "add",
+	REMOVE = "remove",
+	KEYDOWN = "keydown",
+	MOUSEMOVE = "mousemove",
+	MOUSEDOWN = "mousedown";
 
 const merriweather = Merriweather({
 	weight: "400",
@@ -19,25 +28,25 @@ if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
 
 function CancerModels({ Component, pageProps }: AppProps) {
 	useEffect(() => {
-		document.body.classList.add("userNavigation--mouse");
+		handleBodyClass([USERNAVIGATION_MOUSE], ADD);
 
 		const handleKeyDown = () => {
-			document.body.classList.add("userNavigation--keyboard");
-			document.body.classList.remove("userNavigation--mouse");
+			handleBodyClass([USERNAVIGATION_KEYBOARD], ADD);
+			handleBodyClass([USERNAVIGATION_MOUSE], REMOVE);
 		};
 		const handleMouseMove = () => {
-			document.body.classList.add("userNavigation--mouse");
-			document.body.classList.remove("userNavigation--keyboard");
+			handleBodyClass([USERNAVIGATION_MOUSE], ADD);
+			handleBodyClass([USERNAVIGATION_KEYBOARD], REMOVE);
 		};
 
-		document.addEventListener("keydown", handleKeyDown);
-		document.addEventListener("mousemove", handleMouseMove);
-		document.addEventListener("mousedown", handleMouseMove);
+		document.addEventListener(KEYDOWN, handleKeyDown);
+		document.addEventListener(MOUSEMOVE, handleMouseMove);
+		document.addEventListener(MOUSEDOWN, handleMouseMove);
 
 		return () => {
-			document.removeEventListener("keydown", handleKeyDown);
-			document.removeEventListener("mousemove", handleMouseMove);
-			document.removeEventListener("mousedown", handleMouseMove);
+			document.removeEventListener(KEYDOWN, handleKeyDown);
+			document.removeEventListener(MOUSEMOVE, handleMouseMove);
+			document.removeEventListener(MOUSEDOWN, handleMouseMove);
 		};
 	}, []);
 

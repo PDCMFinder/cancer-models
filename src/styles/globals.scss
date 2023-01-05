@@ -288,19 +288,19 @@ textarea {
 }
 .bg {
 	&-primary-primary {
-		background-color: $color-primary-primary;
+		background-color: $color-primary-primary !important;
 	}
 	&-primary-secondary {
-		background-color: $color-primary-secondary;
+		background-color: $color-primary-secondary !important;
 	}
 	&-primary-tertiary {
-		background-color: $color-primary-tertiary;
+		background-color: $color-primary-tertiary !important;
 	}
 	&-primary-quaternary {
-		background-color: $color-primary-quaternary;
+		background-color: $color-primary-quaternary !important;
 	}
 	&-white {
-		background-color: $color-white;
+		background-color: $color-white !important;
 	}
 }
 .bc {

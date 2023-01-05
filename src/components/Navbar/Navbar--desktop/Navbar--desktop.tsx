@@ -76,8 +76,8 @@ const NavDesktop = (props: INavProps) => {
 										>
 											<Button
 												color="dark"
-												priority="primary"
-												className="m-0"
+												priority="secondary"
+												className="m-0 bg-primary-primary text-white"
 												arrow
 											>
 												{link}
@@ -91,11 +91,10 @@ const NavDesktop = (props: INavProps) => {
 									return (
 										<li
 											key={path}
-											className={
-												isFirstSecondary
-													? `${styles[firstSecondaryClass]}`
-													: undefined
-											}
+											className={`
+                       mb-0
+												${isFirstSecondary ? `${styles[firstSecondaryClass]}` : ""}
+											`.trim()}
 										>
 											{link}
 										</li>
