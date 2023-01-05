@@ -16,9 +16,9 @@ h4,
 .h4 {
 	letter-spacing: 0.02rem;
 	font-family: $type-primary;
-	color: $color-primary-primary;
 	font-weight: $fw-normal;
 	line-height: 126%;
+	margin-bottom: $spacing-2;
 }
 h1,
 .h1 {
@@ -74,20 +74,31 @@ a,
 }
 .text {
 	&-white {
-		color: $color-white;
+		color: $color-white !important;
 	}
-	&-end {
-		text-align: end;
+	&-right {
+		text-align: right !important;
 	}
 	&-center {
-		text-align: center;
+		text-align: center !important;
 	}
 	&-small {
-		font-size: 1.4rem;
-		line-height: 2rem;
+		font-size: 1.4rem !important;
+		line-height: 2rem !important;
+	}
+	&-bold {
+		font-weight: $fw-bold !important;
+	}
+	@include mediaOver("lg") {
+		&-lg {
+			&-left {
+				text-align: left !important;
+			}
+		}
 	}
 }
 p,
-ul {
-	line-height: 2.8rem;
+ul,
+a {
+	line-height: 2.4rem;
 }

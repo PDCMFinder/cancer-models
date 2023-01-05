@@ -1,0 +1,35 @@
+@import "../../styles/vars";
+@import "../../styles/mixins";
+
+.Card {
+	border-radius: $br-common;
+	border-width: 1px 1px 3px 1px;
+	border-color: $color-primary-primary;
+	border-style: solid;
+	width: 100%;
+	overflow: hidden;
+	&_header,
+	&_footer {
+		background-color: $color-lightGray;
+	}
+	&_header,
+	&_content,
+	&_footer {
+		padding: $spacing-2;
+	}
+	&_content {
+		padding-top: $spacing-3;
+		padding-bottom: $spacing-3;
+	}
+	@include mediaOver("md") {
+		&_header,
+		&_content,
+		&_footer {
+			padding: $spacing-3;
+		}
+		&_content {
+			padding-top: 4rem;
+			padding-bottom: 4rem;
+		}
+	}
+}

@@ -31,7 +31,7 @@ const ActiveLink = ({
 
 			const newClassName =
 				linkPathname === activePathname
-					? `${className} ${activeClassName}`.trim()
+					? `${className} text-bold ${activeClassName}`.trim()
 					: className;
 
 			if (newClassName !== computedClassName) {
