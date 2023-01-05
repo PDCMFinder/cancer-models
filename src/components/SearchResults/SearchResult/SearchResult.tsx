@@ -1,9 +1,16 @@
-import Card from "../Card/Card";
+import Card from "../../Card/Card";
 import styles from "./SearchResult.module.scss";
 
-const SearchResult = () => {
+interface ISearchResultProps {
+	className?: string;
+}
+
+const SearchResult = (props: ISearchResultProps) => {
 	return (
-		<Card className="bg-primary-tertiary">
+		<Card
+			className={`bg-primary-tertiary ${props.className}`.trim()}
+			contentClassName="masonry_content"
+		>
 			<Card
 				className={`bg-white bc-primary-quaternary ${styles.SearchResult_titleCard}`}
 				contentClassName={styles.SearchResult_titleCard_content}
@@ -50,7 +57,7 @@ const SearchResult = () => {
 						</p>
 					</div>
 				</div>
-				<div className={`row ${styles.SearchResult_availableData}`}>
+				<div className="row">
 					<div className="col-12">
 						<p
 							className={`text-center ${styles.SearchResult_availableData_title}`}

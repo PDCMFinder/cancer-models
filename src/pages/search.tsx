@@ -1,12 +1,11 @@
 import Button from "../components/Button/Button";
 import Form from "../components/Form/Form";
-import Input from "../components/Input/Input";
 import styles from "./search.module.scss";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import ShowHide from "../components/ShowHide/ShowHide";
 import breakPoints from "../utils/breakpoints";
 import InputAndLabel from "../components/Input/InputAndLabel";
-import SearchResult from "../components/SearchResult/SearchResult";
+import SearchResults from "../components/SearchResults/SearchResults";
 
 const search = () => {
 	const { windowWidth } = useWindowDimensions();
@@ -74,12 +73,7 @@ const search = () => {
 							</div>
 						</div>
 					</div>
-					<div className="row">
-						{/* Map return */}
-						<div className="col-12 col-md-6 col-lg-4">
-							<SearchResult />
-						</div>
-					</div>
+					<SearchResults />
 				</div>
 			</section>
 		</>
