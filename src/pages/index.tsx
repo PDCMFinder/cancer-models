@@ -147,7 +147,7 @@ const Home: NextPage = () => {
 					<div className="container">
 						<div className="row">
 							<div className="col-12 col-lg-6 offset-lg-1 text-center text-white">
-								<p>Already know what you're looking for?</p>
+								<p>Already know what you&#39;re looking for?</p>
 								<Button
 									color="white"
 									priority="secondary"
