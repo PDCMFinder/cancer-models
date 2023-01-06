@@ -7,7 +7,10 @@ import InputAndLabel from "../components/Input/InputAndLabel";
 import SearchResults from "../components/SearchResults/SearchResults";
 import Select from "../components/Input/Select";
 import { useState } from "react";
-import { IInputProps } from "../../globalTypes";
+import styles from "./search.module.scss";
+import CloseIcon from "../components/CloseIcon/CloseIcon";
+import Card from "../components/Card/Card";
+import { createPortal } from "react-dom";
 
 const perPageOptions = [
 	{ text: "9" },
@@ -20,6 +23,8 @@ const search = () => {
 	const { windowWidth } = useWindowDimensions();
 	const [searchInputContent, setSearchInputContent] = useState<string>("");
 	const [resultsPerPage, setResultsPerPage] = useState<number>(9);
+	const [mobileFiltersAreOpen, setMobileFiltersAreOpen] =
+		useState<boolean>(false);
 
 	let bpLarge = breakPoints.large;
 
@@ -29,10 +34,6 @@ const search = () => {
 			| React.ChangeEvent<HTMLTextAreaElement>
 	) => {
 		setSearchInputContent(e.target.value);
-	};
-
-	const handleSearchInputClear = () => {
-		setSearchInputContent("");
 	};
 
 	const handlePerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -66,7 +67,7 @@ const search = () => {
 												priority="secondary"
 												color="white"
 												className="text-white link--text mt-2 mb-0"
-												onClick={handleSearchInputClear}
+												onClick={() => setSearchInputContent("")}
 											>
 												Clear
 											</Button>
@@ -83,7 +84,12 @@ const search = () => {
 								</Form>
 								<ShowHide windowWidth={windowWidth || 0} hideOver={bpLarge}>
 									{/* Opens filter modal for mobile */}
-									<Button priority="secondary" color="white" className="mt-2">
+									<Button
+										priority="secondary"
+										color="white"
+										className="mt-2"
+										onClick={() => setMobileFiltersAreOpen(true)}
+									>
 										Filters
 									</Button>
 								</ShowHide>
@@ -91,12 +97,31 @@ const search = () => {
 						</div>
 					</div>
 				</div>
+				{/* Mobile filters */}
+				<ShowHide windowWidth={windowWidth || 0} hideOver={bpLarge}>
+					{mobileFiltersAreOpen &&
+						createPortal(
+							<div className={styles.mobileFilters}>
+								<Card
+									header={
+										<div className="text-right">
+											<CloseIcon />
+										</div>
+									}
+									className="bg-secondary-quaternary bc-primary-quaternary"
+								>
+									<a href="https://google.com">filters</a>
+								</Card>
+							</div>,
+							document.body
+						)}
+				</ShowHide>
 				{/* Desktop filters */}
 				<ShowHide windowWidth={windowWidth || 0} showOver={bpLarge}>
 					<div className="bg-white">
 						<div className="container">
 							<div className="row">
-								<div className="col-12"></div>
+								<div className="col-12">desktop filters</div>
 							</div>
 						</div>
 					</div>
