@@ -1,3 +1,5 @@
+import React from "react";
+
 const inputTypes = [
 	"button",
 	"checkbox",
@@ -48,4 +50,10 @@ export interface IInputProps {
 	type: typeof inputTypes[number] | "textarea";
 	placeholder: string;
 	className?: string;
+	value?: string;
+	onChange?: (
+		e:
+			| React.ChangeEvent<HTMLInputElement>
+			| React.ChangeEvent<HTMLTextAreaElement>
+	) => void;
 }

@@ -6,6 +6,8 @@ interface IInputAndLabel extends IInputProps, ILabelProps {
 	className?: string;
 	labelClassName?: string;
 	inputClassName?: string;
+	value?: string;
+	onChange?: IInputProps["onChange"];
 }
 
 const InputAndLabel = (props: IInputAndLabel) => {
@@ -19,6 +21,8 @@ const InputAndLabel = (props: IInputAndLabel) => {
 				type={props.type}
 				placeholder={props.placeholder}
 				className={props.inputClassName}
+				onChange={props.onChange}
+				value={props.value}
 			/>
 		</div>
 	);

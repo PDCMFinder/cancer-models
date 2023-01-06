@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 import SearchResult from "./SearchResult/SearchResult";
 import styles from "./SearchResults.module.scss";
-import Card from "../Card/Card";
 
 const RESIZE = "resize";
 
-const SearchResults = () => {
+interface ISearchResultsProps {
+	resultsAmount: number;
+}
+
+const SearchResults = (props: ISearchResultsProps) => {
 	useEffect(() => {
 		/**
 		 * Set appropriate spanning to any masonry item
@@ -75,6 +78,7 @@ const SearchResults = () => {
 
 	return (
 		<div className={`${styles.SearchResults} masonry`}>
+			{/* TODO: Use resultsAmount to paginate */}
 			<SearchResult className="masonry_item" />
 		</div>
 	);

@@ -7,12 +7,39 @@ import InputAndLabel from "../components/Input/InputAndLabel";
 import SearchResults from "../components/SearchResults/SearchResults";
 import Select from "../components/Input/Select";
 import { useState } from "react";
+import { IInputProps } from "../../globalTypes";
+
+const perPageOptions = [
+	{ text: "9" },
+	{ text: "54" },
+	{ text: "99" },
+	{ text: "198" },
+];
 
 const search = () => {
 	const { windowWidth } = useWindowDimensions();
-	const [searchInputContent, setSearchInputContent] = useState("");
+	const [searchInputContent, setSearchInputContent] = useState<string>("");
+	const [resultsPerPage, setResultsPerPage] = useState<number>(9);
 
 	let bpLarge = breakPoints.large;
+
+	const handleSearchChange = (
+		e:
+			| React.ChangeEvent<HTMLInputElement>
+			| React.ChangeEvent<HTMLTextAreaElement>
+	) => {
+		setSearchInputContent(e.target.value);
+	};
+
+	const handleSearchInputClear = () => {
+		setSearchInputContent("");
+	};
+
+	const handlePerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		let numericAmount = parseInt(e.target.value);
+
+		setResultsPerPage(numericAmount);
+	};
 
 	return (
 		<>
@@ -20,7 +47,7 @@ const search = () => {
 				<div className="bg-primary-primary py-5">
 					<div className="container">
 						<div className="row">
-							<div className="col-12">
+							<div className="col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-3">
 								<h1 className="text-white text-center">Cancer Model Finder</h1>
 								<Form>
 									<InputAndLabel
@@ -30,14 +57,16 @@ const search = () => {
 										placeholder="Cancer diagnosis eg. Melanoma"
 										labelClassName="hideElement-accessible"
 										className="mb-0"
+										onChange={handleSearchChange}
+										value={searchInputContent}
 									/>
 									<div className="text-right">
-										{/* TODO: Show clear input button when theres content in input */}
 										{searchInputContent && (
 											<Button
 												priority="secondary"
 												color="white"
 												className="text-white link--text mt-2 mb-0"
+												onClick={handleSearchInputClear}
 											>
 												Clear
 											</Button>
@@ -82,16 +111,18 @@ const search = () => {
 						<div className="col-12 col-md-6">
 							<div className="d-flex align-center justify-content-md-end">
 								<p className="mb-0 mr-1">Models per page:</p>
+								{/* TODO: Show this amount of results per page */}
 								<Select
 									id="perPage"
-									options={[{ text: "6" }, { text: "12" }, { text: "18" }]}
+									options={perPageOptions}
 									className="w-auto mb-0"
+									onChange={handlePerPageChange}
 								/>
 							</div>
 						</div>
 					</div>
 					<div className="row">
-						<SearchResults />
+						<SearchResults resultsAmount={resultsPerPage} />
 					</div>
 				</div>
 			</section>
