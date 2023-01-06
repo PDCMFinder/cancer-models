@@ -2,8 +2,6 @@ import Input from "./Input";
 import Label from "./Label";
 import { IInputProps, ILabelProps } from "../../../globalTypes";
 
-import styles from "./InputAndLabel.module.scss";
-
 interface IInputAndLabel extends IInputProps, ILabelProps {
 	className?: string;
 	labelClassName?: string;

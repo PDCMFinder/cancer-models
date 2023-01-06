@@ -1,21 +1,23 @@
 import Button from "../components/Button/Button";
 import Form from "../components/Form/Form";
-import styles from "./search.module.scss";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import ShowHide from "../components/ShowHide/ShowHide";
 import breakPoints from "../utils/breakpoints";
 import InputAndLabel from "../components/Input/InputAndLabel";
 import SearchResults from "../components/SearchResults/SearchResults";
+import Select from "../components/Input/Select";
+import { useState } from "react";
 
 const search = () => {
 	const { windowWidth } = useWindowDimensions();
+	const [searchInputContent, setSearchInputContent] = useState("");
 
 	let bpLarge = breakPoints.large;
 
 	return (
 		<>
 			<header>
-				<div className="bg-primary-primary">
+				<div className="bg-primary-primary py-5">
 					<div className="container">
 						<div className="row">
 							<div className="col-12">
@@ -31,6 +33,15 @@ const search = () => {
 									/>
 									<div className="text-right">
 										{/* TODO: Show clear input button when theres content in input */}
+										{searchInputContent && (
+											<Button
+												priority="secondary"
+												color="white"
+												className="text-white link--text mt-2 mb-0"
+											>
+												Clear
+											</Button>
+										)}
 										<Button
 											priority="primary"
 											color="dark"
@@ -64,16 +75,28 @@ const search = () => {
 			</header>
 			<section>
 				<div className="container">
-					<div className="row">
-						<div className="col-12">
-							{/* TODO: add models per page select */}
-							<p>Showing 1 to 12 of 510 results</p>
-							<div>
-								<p>Models per page:</p>
+					<div className="row mb-3 align-center">
+						<div className="col-12 col-md-6">
+							<p className="mb-md-0">Showing 1 to 12 of 510 results</p>
+						</div>
+						<div className="col-12 col-md-6">
+							<div className="d-flex align-center justify-content-md-end">
+								<p className="mb-0 mr-1">Models per page:</p>
+								<Select
+									id="perPage"
+									options={[
+										{ option: "6" },
+										{ option: "12" },
+										{ option: "18" },
+									]}
+									className="w-auto mb-0"
+								/>
 							</div>
 						</div>
 					</div>
-					<SearchResults />
+					<div className="row">
+						<SearchResults />
+					</div>
 				</div>
 			</section>
 		</>
