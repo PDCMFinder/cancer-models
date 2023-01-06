@@ -2,7 +2,7 @@ import React from "react";
 
 interface ISelectProps {
 	id: string;
-	options: { value?: string; option: string }[];
+	options: { value?: string; text: string }[];
 	className?: string;
 }
 
@@ -12,12 +12,12 @@ const Select = (props: ISelectProps) => {
 	return (
 		<select name={id} id={id} className={props.className}>
 			{props.options.map((opt) => {
-				let option = opt.option,
-					value = opt.value ? opt.value : option;
+				let text = opt.text,
+					value = opt.value ? opt.value : text;
 
 				return (
 					<option key={value} value={value}>
-						{option}
+						{text}
 					</option>
 				);
 			})}

@@ -84,11 +84,7 @@ const search = () => {
 								<p className="mb-0 mr-1">Models per page:</p>
 								<Select
 									id="perPage"
-									options={[
-										{ option: "6" },
-										{ option: "12" },
-										{ option: "18" },
-									]}
+									options={[{ text: "6" }, { text: "12" }, { text: "18" }]}
 									className="w-auto mb-0"
 								/>
 							</div>
