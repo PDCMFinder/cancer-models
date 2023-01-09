@@ -11,8 +11,6 @@ const CirclePacking: FunctionComponent<CirclePackingProps> = ({
 	data,
 	onCircleClick,
 }) => {
-	console.log(styles);
-
 	return (
 		<ResponsiveCirclePacking
 			data={data}
