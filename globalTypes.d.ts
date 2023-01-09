@@ -48,7 +48,7 @@ export interface ILabelProps {
 export interface IInputProps {
 	name: string;
 	type: typeof inputTypes[number] | "textarea";
-	placeholder: string;
+	placeholder?: string;
 	className?: string;
 	value?: string;
 	onChange?: (

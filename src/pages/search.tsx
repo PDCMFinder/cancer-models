@@ -6,18 +6,22 @@ import breakPoints from "../utils/breakpoints";
 import InputAndLabel from "../components/Input/InputAndLabel";
 import SearchResults from "../components/SearchResults/SearchResults";
 import Select from "../components/Input/Select";
-import { useState } from "react";
+import React, { useState } from "react";
 import styles from "./search.module.scss";
 import CloseIcon from "../components/CloseIcon/CloseIcon";
 import Card from "../components/Card/Card";
 import { createPortal } from "react-dom";
+import handleBodyClass from "../utils/handleBodyClass";
+import SearchFiltersMobile from "../components/SearchFilters/SearchFilters--mobile";
 
 const perPageOptions = [
-	{ text: "9" },
-	{ text: "54" },
-	{ text: "99" },
-	{ text: "198" },
-];
+		{ text: "9" },
+		{ text: "54" },
+		{ text: "99" },
+		{ text: "198" },
+	],
+	ADD = "add",
+	REMOVE = "remove";
 
 const search = () => {
 	const { windowWidth } = useWindowDimensions();
@@ -33,13 +37,23 @@ const search = () => {
 			| React.ChangeEvent<HTMLInputElement>
 			| React.ChangeEvent<HTMLTextAreaElement>
 	) => {
-		setSearchInputContent(e.target.value);
+		const { value } = e.target;
+		setSearchInputContent(value);
 	};
 
 	const handlePerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		let numericAmount = parseInt(e.target.value);
+		const { value } = e.target;
+		let numericAmount = parseInt(value);
 
 		setResultsPerPage(numericAmount);
+	};
+
+	const handleToggleMobileFilters = () => {
+		let addRemoveBodyClass: typeof ADD | typeof REMOVE = !mobileFiltersAreOpen
+			? ADD
+			: REMOVE;
+		handleBodyClass(["overflow-hidden"], addRemoveBodyClass);
+		setMobileFiltersAreOpen((prev) => !prev);
 	};
 
 	return (
@@ -54,7 +68,7 @@ const search = () => {
 									<InputAndLabel
 										label="Cancer Model Finder"
 										name="search"
-										type="text"
+										type="search"
 										placeholder="Cancer diagnosis eg. Melanoma"
 										labelClassName="hideElement-accessible"
 										className="mb-0"
@@ -88,7 +102,7 @@ const search = () => {
 										priority="secondary"
 										color="white"
 										className="mt-2"
-										onClick={() => setMobileFiltersAreOpen(true)}
+										onClick={() => handleToggleMobileFilters()}
 									>
 										Filters
 									</Button>
@@ -104,13 +118,18 @@ const search = () => {
 							<div className={styles.mobileFilters}>
 								<Card
 									header={
-										<div className="text-right">
-											<CloseIcon />
+										<div className="d-flex justify-content-between">
+											<p className="mb-0">Filters</p>
+											<CloseIcon
+												color="dark"
+												onClick={() => handleToggleMobileFilters()}
+											/>
 										</div>
 									}
-									className="bg-secondary-quaternary bc-primary-quaternary"
+									className="h-100 bg-secondary-quaternary bc-primary-quaternary"
+									contentClassName="mobileFilters_card_content"
 								>
-									<a href="https://google.com">filters</a>
+									<SearchFiltersMobile />
 								</Card>
 							</div>,
 							document.body

@@ -18,7 +18,8 @@ const NavMobile = (props: INavProps) => {
 	// Close menu when changing page
 	useEffect(() => {
 		if (isMenuOpen) {
-			setIsMenuOpen((prev) => !prev);
+			setIsMenuOpen(false);
+			handleBodyClass(["overflow-hidden"], REMOVE);
 		}
 	}, [router.asPath]);
 
@@ -27,7 +28,7 @@ const NavMobile = (props: INavProps) => {
 		let addRemoveBodyClass: typeof ADD | typeof REMOVE = !isMenuOpen
 			? ADD
 			: REMOVE;
-		handleBodyClass(["Navbar--mobile--isOpen"], addRemoveBodyClass);
+		handleBodyClass(["overflow-hidden"], addRemoveBodyClass);
 		setIsMenuOpen((prev) => !prev);
 	};
 
@@ -43,9 +44,11 @@ const NavMobile = (props: INavProps) => {
 						</Link>
 					</div>
 					<div className="col-5 text-right">
-						<button onClick={handleToggleMenu}>
-							{!isMenuOpen ? "Menu" : <CloseIcon />}
-						</button>
+						{!isMenuOpen ? (
+							<button onClick={handleToggleMenu}>Menu</button>
+						) : (
+							<CloseIcon onClick={handleToggleMenu} />
+						)}
 					</div>
 				</div>
 			</div>

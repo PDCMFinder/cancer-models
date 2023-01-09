@@ -1,6 +1,7 @@
 import Input from "./Input";
 import Label from "./Label";
 import { IInputProps, ILabelProps } from "../../../globalTypes";
+import styles from "./InputAndLayout.module.scss";
 
 interface IInputAndLabel extends IInputProps, ILabelProps {
 	className?: string;
@@ -11,14 +12,18 @@ interface IInputAndLabel extends IInputProps, ILabelProps {
 }
 
 const InputAndLabel = (props: IInputAndLabel) => {
-	let name = props.name;
+	let name = props.name,
+		type = props.type,
+		alternateLayout =
+			type === "radio" || type === "checkbox" ? "InputAndLabel-alt" : "",
+		className = props.className ? props.className : "";
 
 	return (
-		<div className={props.className}>
+		<div className={`${styles[alternateLayout]} ${className}`.trim()}>
 			<Label name={name} label={props.label} className={props.labelClassName} />
 			<Input
 				name={name}
-				type={props.type}
+				type={type}
 				placeholder={props.placeholder}
 				className={props.inputClassName}
 				onChange={props.onChange}

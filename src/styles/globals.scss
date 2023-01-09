@@ -24,9 +24,6 @@ body {
 	@include mediaOver("lg") {
 		--main-margin-x: 3%;
 	}
-	&.Navbar--mobile--isOpen {
-		overflow: hidden;
-	}
 	&.userNavigation--keyboard *:focus {
 		box-shadow: $focusShadow;
 		border-radius: $br-common;
@@ -122,6 +119,9 @@ button {
 	&-noStyle {
 		list-style: none;
 		padding-left: 0;
+		ul {
+			padding-left: 1rem;
+		}
 	}
 	&-twoCols {
 		column-count: 2;
@@ -236,6 +236,11 @@ a {
 	&b {
 		&-0 {
 			padding-bottom: 0 !important;
+		}
+	}
+	&l {
+		&-0 {
+			padding-left: 0 !important;
 		}
 	}
 	@include mediaOver("xl") {
@@ -359,4 +364,7 @@ hr {
 	&-auto {
 		width: auto;
 	}
+}
+.overflow-hidden {
+	overflow: hidden;
 }
