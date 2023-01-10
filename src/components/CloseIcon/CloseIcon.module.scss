@@ -1,11 +1,10 @@
 @import "../../styles/vars";
 
 .CloseIcon {
-	height: 16px;
-	padding-top: 5px;
+	height: 2rem;
 	span {
 		height: 2px;
-		width: 20px;
+		width: 2rem;
 		display: block;
 		transform: rotate(135deg);
 		&:first-child {

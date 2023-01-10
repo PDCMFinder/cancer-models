@@ -8,22 +8,24 @@ const SearchFiltersMobile = () => {
 				<Button
 					color="dark"
 					priority="secondary"
-					className="link--text m-0 pl-0"
+					className="link-text m-0 pl-0"
 					arrow
+					aria-controls="facetSection-Model"
 				>
 					Model
 				</Button>
-				<ul className="ul-noStyle">
+				<ul className="ul-noStyle" id="facetSection-Model">
 					<li>
 						<Button
 							color="dark"
 							priority="secondary"
-							className="link--text m-0 pl-0"
+							className="link-text m-0 pl-0"
 							arrow
+							aria-controls="facetName-Project"
 						>
 							Project
 						</Button>
-						<ul className="ul-noStyle">
+						<ul className="ul-noStyle" id="facetName-Project">
 							<li>
 								<InputAndLabel name="europdx" type="checkbox" label="Europdx" />
 							</li>
@@ -33,12 +35,13 @@ const SearchFiltersMobile = () => {
 						<Button
 							color="dark"
 							priority="secondary"
-							className="link--text m-0 pl-0"
+							className="link-text m-0 pl-0"
 							arrow
+							aria-controls="facetName-Model ID"
 						>
 							Model ID
 						</Button>
-						<ul className="ul-noStyle">
+						<ul className="ul-noStyle" id="facetName-Model ID">
 							<li>
 								<InputAndLabel
 									name="modelID"

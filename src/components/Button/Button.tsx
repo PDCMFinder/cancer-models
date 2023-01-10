@@ -23,8 +23,8 @@ const Button = (props: IButtonProps) => {
 		propsClassName = props.className,
 		classNames = `
       ${styles.Button}
-      ${styles[`Button--${props.priority}`]}
-      ${styles[`Button--${props.color}`]}
+      ${styles[`Button-${props.priority}`]}
+      ${styles[`Button-${props.color}`]}
       ${propsClassName ? propsClassName : ""}
     `.trim(),
 		externalLinkProps;

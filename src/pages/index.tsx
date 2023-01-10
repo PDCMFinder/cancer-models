@@ -59,7 +59,7 @@ const Home: NextPage = () => {
 							</div>
 						</form>
 						<div className="d-flex justify-content-end">
-							<Link href="/search" className="link--text--light">
+							<Link href="/search" className="link-text-light">
 								Make an advanced search
 							</Link>
 						</div>

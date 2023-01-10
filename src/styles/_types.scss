@@ -59,13 +59,13 @@ strong {
 	font-weight: $fw-bold;
 }
 a,
-.link--text {
+.link-text {
 	color: $color-secondary-primary;
 	text-decoration: underline;
 	&:hover {
 		color: $color-black;
 	}
-	&.link--text--light {
+	&.link-text-light {
 		color: $color-secondary-quaternary;
 		&:hover {
 			color: $color-white;

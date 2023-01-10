@@ -24,7 +24,7 @@ body {
 	@include mediaOver("lg") {
 		--main-margin-x: 3%;
 	}
-	&.userNavigation--keyboard *:focus {
+	&.userNavigation-keyboard *:focus {
 		box-shadow: $focusShadow;
 		border-radius: $br-common;
 		transition: boxShadow 0.3s;
@@ -110,7 +110,7 @@ button {
 	color: inherit;
 	padding: 0;
 	cursor: pointer;
-	&.link--text {
+	&.link-text {
 		text-decoration: underline !important;
 		border: none !important;
 	}
@@ -274,7 +274,7 @@ a {
 		padding: 1rem;
 		background-color: $color-white;
 		border-radius: $br-common;
-		&--flushRight {
+		&-flushRight {
 			left: unset;
 			right: 0;
 		}

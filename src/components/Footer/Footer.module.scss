@@ -13,12 +13,12 @@
 			}
 		}
 	}
-	&_item--active {
+	&_item-active {
 		text-decoration: underline;
 		color: $color-secondary-tertiary;
 	}
 	&_row {
-		&--main {
+		&-main {
 			> * {
 				margin-bottom: 5rem;
 			}

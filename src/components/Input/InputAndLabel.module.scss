@@ -1,0 +1,28 @@
+@import "../../styles/vars";
+
+.InputAndLabel {
+	&-alt {
+		display: flex;
+		flex-direction: row-reverse;
+		justify-content: flex-end;
+		align-items: center;
+		* {
+			margin-bottom: 0;
+		}
+		input {
+			width: auto;
+			margin-right: 0.5rem;
+		}
+	}
+	&-search {
+		display: flex;
+		input {
+			margin-bottom: 0;
+		}
+		button {
+			color: $color-white;
+			background-color: $color-primary-primary;
+			padding-inline: 1.5rem;
+		}
+	}
+}

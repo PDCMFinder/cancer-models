@@ -1,7 +1,7 @@
 @import "../../styles/vars";
 
 .Logotype {
-	&--dark {
+	&-dark {
 		.Logotype_firstLetter {
 			fill: $color-primary-primary;
 		}
@@ -9,7 +9,7 @@
 			fill: $color-primary-tertiary;
 		}
 	}
-	&--light {
+	&-light {
 		.Logotype_firstLetter {
 			fill: $color-primary-quaternary;
 		}
@@ -17,7 +17,7 @@
 			fill: $color-primary-tertiary;
 		}
 	}
-	&--white {
+	&-white {
 		.Logotype_firstLetter {
 			fill: $color-white;
 		}

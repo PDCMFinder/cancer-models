@@ -12,7 +12,7 @@ import CloseIcon from "../components/CloseIcon/CloseIcon";
 import Card from "../components/Card/Card";
 import { createPortal } from "react-dom";
 import handleBodyClass from "../utils/handleBodyClass";
-import SearchFiltersMobile from "../components/SearchFilters/SearchFilters--mobile";
+import SearchFiltersMobile from "../components/SearchFilters/SearchFilters-mobile";
 
 const perPageOptions = [
 		{ text: "9" },
@@ -68,7 +68,7 @@ const search = () => {
 									<InputAndLabel
 										label="Cancer Model Finder"
 										name="search"
-										type="search"
+										type="text"
 										placeholder="Cancer diagnosis eg. Melanoma"
 										labelClassName="hideElement-accessible"
 										className="mb-0"
@@ -80,7 +80,7 @@ const search = () => {
 											<Button
 												priority="secondary"
 												color="white"
-												className="text-white link--text mt-2 mb-0"
+												className="text-white link-text mt-2 mb-0"
 												onClick={() => setSearchInputContent("")}
 											>
 												Clear
@@ -96,6 +96,10 @@ const search = () => {
 										</Button>
 									</div>
 								</Form>
+							</div>
+						</div>
+						<div className="row">
+							<div className="col-12">
 								<ShowHide windowWidth={windowWidth || 0} hideOver={bpLarge}>
 									{/* Opens filter modal for mobile */}
 									<Button

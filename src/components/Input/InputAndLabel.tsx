@@ -1,7 +1,8 @@
 import Input from "./Input";
 import Label from "./Label";
 import { IInputProps, ILabelProps } from "../../../globalTypes";
-import styles from "./InputAndLayout.module.scss";
+import styles from "./InputAndLabel.module.scss";
+import Button from "../Button/Button";
 
 interface IInputAndLabel extends IInputProps, ILabelProps {
 	className?: string;
@@ -14,13 +15,18 @@ interface IInputAndLabel extends IInputProps, ILabelProps {
 const InputAndLabel = (props: IInputAndLabel) => {
 	let name = props.name,
 		type = props.type,
-		alternateLayout =
-			type === "radio" || type === "checkbox" ? "InputAndLabel-alt" : "",
-		className = props.className ? props.className : "";
+		isAlternateLayout =
+			type === "radio" || type === "checkbox"
+				? styles["InputAndLabel-alt"]
+				: type === "search"
+				? styles["InputAndLabel-search"]
+				: "",
+		className = props.className ?? "";
 
 	return (
-		<div className={`${styles[alternateLayout]} ${className}`.trim()}>
+		<div className={`${isAlternateLayout} ${className}`.trim()}>
 			<Label name={name} label={props.label} className={props.labelClassName} />
+			{/* TODO: When type is search, wrap input and button in form */}
 			<Input
 				name={name}
 				type={type}
@@ -29,6 +35,11 @@ const InputAndLabel = (props: IInputAndLabel) => {
 				onChange={props.onChange}
 				value={props.value}
 			/>
+			{type === "search" ? (
+				<>
+					<button>O</button>
+				</>
+			) : null}
 		</div>
 	);
 };

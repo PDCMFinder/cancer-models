@@ -7,8 +7,8 @@ import Layout from "../components/Layout/Layout";
 import Head from "next/head";
 import handleBodyClass from "../utils/handleBodyClass";
 
-const USERNAVIGATION_MOUSE = "userNavigation--mouse",
-	USERNAVIGATION_KEYBOARD = "userNavigation--keyboard",
+const USERNAVIGATION_MOUSE = "userNavigation-mouse",
+	USERNAVIGATION_KEYBOARD = "userNavigation-keyboard",
 	ADD = "add",
 	REMOVE = "remove",
 	KEYDOWN = "keydown",

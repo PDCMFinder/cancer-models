@@ -1,7 +1,7 @@
 import breakPoints from "../../utils/breakpoints";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
-import NavDesktop from "./Navbar--desktop/Navbar--desktop";
-import NavMobile from "./Navbar--mobile/Navbar--mobile";
+import NavDesktop from "./Navbar-desktop/Navbar-desktop";
+import NavMobile from "./Navbar-mobile/Navbar-mobile";
 import ShowHide from "../ShowHide/ShowHide";
 import { routes } from "../../utils/routes";
 
