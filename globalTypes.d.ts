@@ -57,3 +57,7 @@ export interface IInputProps {
 			| React.ChangeEvent<HTMLTextAreaElement>
 	) => void;
 }
+
+export interface IArrowIconProps {
+	direction?: "up" | "right" | "down" | "left";
+}

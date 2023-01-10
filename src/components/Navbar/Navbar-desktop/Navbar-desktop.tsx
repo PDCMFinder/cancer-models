@@ -79,6 +79,7 @@ const NavDesktop = (props: INavProps) => {
 												priority="secondary"
 												className="m-0 bg-primary-primary text-white"
 												arrow
+												arrowDirection="down"
 											>
 												{link}
 											</Button>

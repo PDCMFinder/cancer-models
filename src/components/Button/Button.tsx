@@ -1,7 +1,11 @@
 import Link from "next/link";
-import { ReactNode } from "react";
+import { useState } from "react";
 import ArrowIcon from "../ArrowIcon/ArrowIcon";
 import styles from "./Button.module.scss";
+import { IArrowIconProps } from "../../../globalTypes";
+
+const RIGHT = "right",
+	DOWN = "down";
 
 interface IButtonProps {
 	children: any;
@@ -12,10 +16,15 @@ interface IButtonProps {
 	href?: string;
 	className?: string;
 	arrow?: boolean;
+	arrowDirection?: IArrowIconProps["direction"];
 	onClick?: () => void;
 }
 
 const Button = (props: IButtonProps) => {
+	const [arrowDirection, setArrowDirection] = useState<
+		IArrowIconProps["direction"]
+	>(props.arrowDirection ?? RIGHT);
+
 	let href = props.href,
 		children = props.children,
 		showArrow = props.arrow,
@@ -27,7 +36,18 @@ const Button = (props: IButtonProps) => {
       ${styles[`Button-${props.color}`]}
       ${propsClassName ? propsClassName : ""}
     `.trim(),
-		externalLinkProps;
+		externalLinkProps = null;
+
+	const handleOnClick = () => {
+		if (props.onClick) props.onClick();
+		if (showArrow) {
+			if (arrowDirection === DOWN) {
+				setArrowDirection(props.arrowDirection ?? RIGHT);
+			} else {
+				setArrowDirection(DOWN);
+			}
+		}
+	};
 
 	if (props.htmlTag === "a" && href) {
 		if (href.includes("https://") || href.includes("http://")) {
@@ -42,16 +62,16 @@ const Button = (props: IButtonProps) => {
 			<LinkTag className={classNames} href={href} {...externalLinkProps}>
 				<>
 					{children}
-					{showArrow && <ArrowIcon />}
+					{showArrow && <ArrowIcon direction={arrowDirection} />}
 				</>
 			</LinkTag>
 		);
 	}
 
 	return (
-		<button type={props.type} className={classNames} onClick={props.onClick}>
+		<button type={props.type} className={classNames} onClick={handleOnClick}>
 			{children}
-			{showArrow && <ArrowIcon />}
+			{showArrow && <ArrowIcon direction={arrowDirection} />}
 		</button>
 	);
 };
