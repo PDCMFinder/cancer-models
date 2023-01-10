@@ -8,7 +8,7 @@ const RIGHT = "right",
 	DOWN = "down";
 
 interface IButtonProps {
-	children: any;
+	children: string | JSX.Element;
 	priority: "primary" | "secondary";
 	color: "dark" | "light" | "white";
 	htmlTag?: "a" | "button";
@@ -17,6 +17,7 @@ interface IButtonProps {
 	className?: string;
 	arrow?: boolean;
 	arrowDirection?: IArrowIconProps["direction"];
+	"aria-controls"?: string;
 	onClick?: () => void;
 }
 
@@ -69,7 +70,12 @@ const Button = (props: IButtonProps) => {
 	}
 
 	return (
-		<button type={props.type} className={classNames} onClick={handleOnClick}>
+		<button
+			aria-controls={props["aria-controls"]}
+			type={props.type}
+			className={classNames}
+			onClick={handleOnClick}
+		>
 			{children}
 			{showArrow && <ArrowIcon direction={arrowDirection} />}
 		</button>

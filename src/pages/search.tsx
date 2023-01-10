@@ -121,6 +121,7 @@ const search = () => {
 						createPortal(
 							<div className={styles.mobileFilters}>
 								<Card
+									headerClassName="sticky-top"
 									header={
 										<div className="d-flex justify-content-between">
 											<p className="mb-0">Filters</p>
@@ -130,7 +131,7 @@ const search = () => {
 											/>
 										</div>
 									}
-									className="h-100 bg-secondary-quaternary bc-primary-quaternary"
+									className="h-100 bg-secondary-quaternary bc-primary-quaternary overflow-scroll"
 									contentClassName="mobileFilters_card_content"
 								>
 									<SearchFiltersMobile />

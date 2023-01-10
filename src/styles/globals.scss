@@ -197,6 +197,9 @@ a {
 		&-0 {
 			margin-bottom: 0 !important;
 		}
+		&-2 {
+			margin-bottom: $spacing-2 !important;
+		}
 		&-3 {
 			margin-bottom: $spacing-3 !important;
 		}
@@ -236,6 +239,12 @@ a {
 	&b {
 		&-0 {
 			padding-bottom: 0 !important;
+		}
+	}
+	&x {
+		&-1 {
+			padding-left: $spacing-1 !important;
+			padding-right: $spacing-1 !important;
 		}
 	}
 	&l {
@@ -365,6 +374,18 @@ hr {
 		width: auto;
 	}
 }
-.overflow-hidden {
-	overflow: hidden;
+.overflow {
+	&-hidden {
+		overflow: hidden;
+	}
+	&-scroll {
+		overflow: scroll !important;
+	}
+}
+.sticky {
+	&-top {
+		position: sticky;
+		top: 0;
+		z-index: 9999999;
+	}
 }
