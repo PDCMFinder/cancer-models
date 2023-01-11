@@ -1,18 +1,18 @@
 import Button from "../components/Button/Button";
 import Form from "../components/Form/Form";
 import useWindowDimensions from "../hooks/useWindowDimensions";
-import ShowHide from "../components/ShowHide/ShowHide";
 import breakPoints from "../utils/breakpoints";
 import InputAndLabel from "../components/Input/InputAndLabel";
 import SearchResults from "../components/SearchResults/SearchResults";
 import Select from "../components/Input/Select";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./search.module.scss";
 import CloseIcon from "../components/CloseIcon/CloseIcon";
 import Card from "../components/Card/Card";
 import { createPortal } from "react-dom";
 import handleBodyClass from "../utils/handleBodyClass";
-import SearchFiltersMobile from "../components/SearchFilters/SearchFilters-mobile";
+import SearchFilters from "../components/SearchFilters/SearchFilters";
+import { useRouter } from "next/router";
 
 const perPageOptions = [
 		{ text: "9" },
@@ -23,14 +23,19 @@ const perPageOptions = [
 	ADD = "add",
 	REMOVE = "remove";
 
-const search = () => {
+const search = (props: any) => {
+	const router = useRouter();
 	const { windowWidth } = useWindowDimensions();
 	const [searchInputContent, setSearchInputContent] = useState<string>("");
 	const [resultsPerPage, setResultsPerPage] = useState<number>(9);
-	const [mobileFiltersAreOpen, setMobileFiltersAreOpen] =
-		useState<boolean>(false);
+	const [filtersAreOpen, setFiltersAreOpen] = useState<boolean>(false);
 
 	let bpLarge = breakPoints.large;
+
+	// useEffect(() => {
+	// 	let query = props.router?.query;
+	// 	console.log(query);
+	// }, []);
 
 	const handleSearchChange = (
 		e:
@@ -49,11 +54,22 @@ const search = () => {
 	};
 
 	const handleToggleMobileFilters = () => {
-		let addRemoveBodyClass: typeof ADD | typeof REMOVE = !mobileFiltersAreOpen
+		let addRemoveBodyClass: typeof ADD | typeof REMOVE = !filtersAreOpen
 			? ADD
 			: REMOVE;
 		handleBodyClass(["overflow-hidden"], addRemoveBodyClass);
-		setMobileFiltersAreOpen((prev) => !prev);
+		setFiltersAreOpen((prev) => !prev);
+	};
+
+	const handleAdvancedSearch = () => {
+		// handle filter api query here
+
+		// router.push({
+		// 	pathname: "/search",
+		// 	query: { searchValue: "some key" },
+		// });
+
+		handleToggleMobileFilters();
 	};
 
 	return (
@@ -99,57 +115,81 @@ const search = () => {
 							</div>
 						</div>
 						<div className="row">
-							<div className="col-12">
-								<ShowHide windowWidth={windowWidth || 0} hideOver={bpLarge}>
-									{/* Opens filter modal for mobile */}
-									<Button
-										priority="secondary"
-										color="white"
-										className="mt-2"
-										onClick={() => handleToggleMobileFilters()}
-									>
-										Filters
-									</Button>
-								</ShowHide>
+							<div className="col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-3">
+								{/* Opens filter modal */}
+								<Button
+									priority="secondary"
+									color="white"
+									className="mt-5 mb-0 mt-lg-3"
+									onClick={() => handleToggleMobileFilters()}
+								>
+									Advanced search
+								</Button>
 							</div>
 						</div>
 					</div>
 				</div>
-				{/* Mobile filters */}
-				<ShowHide windowWidth={windowWidth || 0} hideOver={bpLarge}>
-					{mobileFiltersAreOpen &&
-						createPortal(
-							<div className={styles.mobileFilters}>
-								<Card
-									headerClassName="sticky-top"
-									header={
-										<div className="d-flex justify-content-between">
-											<p className="mb-0">Filters</p>
-											<CloseIcon
-												color="dark"
-												onClick={() => handleToggleMobileFilters()}
-											/>
-										</div>
+				{/* Filters */}
+				{filtersAreOpen &&
+					createPortal(
+						<div className={styles.search_filters}>
+							<Card
+								headerClassName="sticky top-0"
+								header={
+									<div className="d-flex justify-content-between">
+										<p className="mb-0">Advanced search</p>
+										<CloseIcon
+											color="dark"
+											onClick={() => handleToggleMobileFilters()}
+										/>
+									</div>
+								}
+								footer={
+									<>
+										<Button
+											priority="secondary"
+											color="dark"
+											className="link-text m-0"
+										>
+											Clear
+										</Button>
+										<Button
+											color="dark"
+											priority="primary"
+											className="m-0"
+											onClick={() => handleAdvancedSearch()}
+										>
+											Search
+										</Button>
+									</>
+								}
+								footerClassName="sticky bottom-0 text-right"
+								className={`${styles.search_filters_card} h-100 bg-secondary-quaternary bc-primary-quaternary`}
+								contentClassName={`${styles.search_filters_card_content} h-100 overflow-scroll d-lg-flex`}
+							>
+								<SearchFilters
+									layout={
+										(windowWidth || 0) > bpLarge ? "horizontal" : "vertical"
 									}
-									className="h-100 bg-secondary-quaternary bc-primary-quaternary overflow-scroll"
-									contentClassName="mobileFilters_card_content"
-								>
-									<SearchFiltersMobile />
-								</Card>
-							</div>,
-							document.body
-						)}
-				</ShowHide>
+									topFiltersOpen={true}
+								/>
+							</Card>
+						</div>,
+						document.body
+					)}
 				{/* Desktop filters */}
-				<ShowHide windowWidth={windowWidth || 0} showOver={bpLarge}>
-					<div className="bg-white">
+				{/* <ShowHide windowWidth={windowWidth || 0} showOver={bpLarge}>
+					<div className="bg-secondary-quaternary sticky top-0">
 						<div className="container">
 							<div className="row">
-								<div className="col-12">desktop filters</div>
+								<span style={{ marginRight: "5%", width: "auto" }}>
+									Filters
+								</span>
+								<SearchFilters layout="horizontal" topFiltersOpen={false} />
 							</div>
 						</div>
 					</div>
-				</ShowHide>
+				</ShowHide> */}
 			</header>
 			<section>
 				<div className="container">

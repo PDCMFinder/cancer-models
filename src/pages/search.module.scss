@@ -1,6 +1,7 @@
+@import "../styles/mixins";
 @import "../styles/vars";
 
-.mobileFilters {
+.search_filters {
 	position: fixed;
 	top: 0;
 	width: 100%;
@@ -8,4 +9,15 @@
 	z-index: 999999999;
 	background-color: rgba(0, 0, 0, 0.75);
 	padding: 1.5rem;
+	&_card {
+		position: relative;
+		top: 50%;
+		transform: translateY(-50%);
+		@include mediaOver("lg") {
+			max-height: 60vh;
+		}
+		&_content {
+			padding-bottom: 20rem;
+		}
+	}
 }

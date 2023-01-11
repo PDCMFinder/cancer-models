@@ -2,6 +2,7 @@ import { useState } from "react";
 import Button from "../Button/Button";
 
 interface IAccordionProps {
+	style?: {};
 	buttonClassName?: string;
 	className?: string;
 	id: string;
@@ -14,7 +15,6 @@ const Accordion = (props: IAccordionProps) => {
 	const [isOpen, setIsOpen] = useState(props.open);
 
 	let ariaId = props.id.split(" ").join(""),
-		className = props.className ?? "",
 		contentClassName = props.contentClassName ?? "",
 		buttonClassName = props.buttonClassName ?? "";
 
@@ -23,7 +23,7 @@ const Accordion = (props: IAccordionProps) => {
 	};
 
 	return (
-		<div className={className}>
+		<div className={props.className} style={props.style}>
 			<Button
 				color="dark"
 				priority="secondary"

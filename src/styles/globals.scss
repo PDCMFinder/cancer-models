@@ -383,9 +383,12 @@ hr {
 	}
 }
 .sticky {
-	&-top {
-		position: sticky;
-		top: 0;
-		z-index: 9999999;
-	}
+	position: sticky;
+	z-index: 9999999;
+}
+.top-0 {
+	top: 0 !important;
+}
+.bottom-0 {
+	bottom: 0 !important;
 }
