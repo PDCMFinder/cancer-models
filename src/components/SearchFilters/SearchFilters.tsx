@@ -1,6 +1,8 @@
+import useWindowDimensions from "../../hooks/useWindowDimensions";
 import Accordion from "../Accordion/Accordion";
 import InputAndLabel from "../Input/InputAndLabel";
 import styles from "./SearchFilters.module.scss";
+import breakPoints from "../../utils/breakpoints";
 
 const filterData = [
 	{
@@ -54,40 +56,40 @@ const filterData = [
 			},
 		],
 	},
-	{
-		facet_section: "molecular_data",
-		facet_filters: [
-			{
-				facet_name: "Cytogenetics",
-				facet_column: "crytogenetics",
-				facet_options: [
-					"ERBB2",
-					"PGR",
-					"KRT19",
-					"ROS1",
-					"MKI67",
-					"IDH1",
-					"KRT18",
-					"PTPRC",
-					"ESR1",
-					"ALK",
-				],
-				facet_example: "ESR1",
-			},
-			{
-				facet_name: "Breast cancer biomarkers",
-				facet_column: "breast_cancer_biomarkers",
-				facet_options: [
-					"PR/PGR positive",
-					"PR/PGR negative",
-					"HER2/ERBB2 positive",
-					"ER/ESR1 negative",
-					"HER2/ERBB2 negative",
-					"ER/ESR1 positive",
-				],
-			},
-		],
-	},
+	// {
+	// 	facet_section: "molecular_data",
+	// 	facet_filters: [
+	// 		{
+	// 			facet_name: "Cytogenetics",
+	// 			facet_column: "crytogenetics",
+	// 			facet_options: [
+	// 				"ERBB2",
+	// 				"PGR",
+	// 				"KRT19",
+	// 				"ROS1",
+	// 				"MKI67",
+	// 				"IDH1",
+	// 				"KRT18",
+	// 				"PTPRC",
+	// 				"ESR1",
+	// 				"ALK",
+	// 			],
+	// 			facet_example: "ESR1",
+	// 		},
+	// 		{
+	// 			facet_name: "Breast cancer biomarkers",
+	// 			facet_column: "breast_cancer_biomarkers",
+	// 			facet_options: [
+	// 				"PR/PGR positive",
+	// 				"PR/PGR negative",
+	// 				"HER2/ERBB2 positive",
+	// 				"ER/ESR1 negative",
+	// 				"HER2/ERBB2 negative",
+	// 				"ER/ESR1 positive",
+	// 			],
+	// 		},
+	// 	],
+	// },
 ];
 
 interface ISearchFilters {
@@ -105,7 +107,8 @@ interface ISearchFilters {
 }
 
 const SearchFilters = (props: ISearchFilters) => {
-	let topFilterAmount = filterData.length;
+	const { windowWidth } = useWindowDimensions();
+	const bpLarge = breakPoints.large;
 
 	return (
 		<>
@@ -115,19 +118,15 @@ const SearchFilters = (props: ISearchFilters) => {
 				return (
 					<Accordion
 						className={styles.SearchFilters_topFilter}
-						style={{
-							width:
-								props.layout === "horizontal"
-									? `${100 / topFilterAmount}%`
-									: null,
-						}}
 						buttonClassName="text-bold"
 						key={facetSection}
 						id={facetSection}
 						open={props.topFiltersOpen ?? false}
+						contentClassName="d-lg-flex"
 						content={section.facet_filters.map((filter) => {
 							let filterContent = null,
-								facetName = filter.facet_name;
+								facetName = filter.facet_name,
+								subFilterAmount = section.facet_filters.length;
 
 							if (filter.hasOwnProperty("facet_example")) {
 								// create search input
@@ -136,7 +135,7 @@ const SearchFilters = (props: ISearchFilters) => {
 										name={facetName}
 										type="search"
 										label={facetName}
-										placeholder={filter.facet_example}
+										placeholder={"filter.facet_example"}
 										labelClassName="hideElement-accessible"
 									/>
 								);
@@ -160,9 +159,15 @@ const SearchFilters = (props: ISearchFilters) => {
 							return (
 								<Accordion
 									key={facetName}
+									style={{
+										width:
+											props.layout === "horizontal"
+												? `${100 / subFilterAmount}%`
+												: null,
+									}}
 									id={facetName}
 									contentClassName="mb-2"
-									open={true}
+									open={(windowWidth || 0) >= bpLarge ? true : false}
 									content={filterContent}
 								/>
 							);

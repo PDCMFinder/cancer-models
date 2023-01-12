@@ -1,3 +1,4 @@
+import type { NextPage } from "next";
 import Button from "../components/Button/Button";
 import Form from "../components/Form/Form";
 import useWindowDimensions from "../hooks/useWindowDimensions";
@@ -5,14 +6,14 @@ import breakPoints from "../utils/breakpoints";
 import InputAndLabel from "../components/Input/InputAndLabel";
 import SearchResults from "../components/SearchResults/SearchResults";
 import Select from "../components/Input/Select";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./search.module.scss";
 import CloseIcon from "../components/CloseIcon/CloseIcon";
 import Card from "../components/Card/Card";
 import { createPortal } from "react-dom";
 import handleBodyClass from "../utils/handleBodyClass";
 import SearchFilters from "../components/SearchFilters/SearchFilters";
-import { useRouter } from "next/router";
+import Modal from "../components/Modal/Modal";
 
 const perPageOptions = [
 		{ text: "9" },
@@ -21,21 +22,16 @@ const perPageOptions = [
 		{ text: "198" },
 	],
 	ADD = "add",
-	REMOVE = "remove";
+	REMOVE = "remove",
+	OVERFLOW_HIDDEN = "overflow-hidden";
 
-const search = (props: any) => {
-	const router = useRouter();
+const Search: NextPage = () => {
 	const { windowWidth } = useWindowDimensions();
 	const [searchInputContent, setSearchInputContent] = useState<string>("");
 	const [resultsPerPage, setResultsPerPage] = useState<number>(9);
 	const [filtersAreOpen, setFiltersAreOpen] = useState<boolean>(false);
 
 	let bpLarge = breakPoints.large;
-
-	// useEffect(() => {
-	// 	let query = props.router?.query;
-	// 	console.log(query);
-	// }, []);
 
 	const handleSearchChange = (
 		e:
@@ -53,12 +49,22 @@ const search = (props: any) => {
 		setResultsPerPage(numericAmount);
 	};
 
-	const handleToggleMobileFilters = () => {
-		let addRemoveBodyClass: typeof ADD | typeof REMOVE = !filtersAreOpen
-			? ADD
-			: REMOVE;
-		handleBodyClass(["overflow-hidden"], addRemoveBodyClass);
-		setFiltersAreOpen((prev) => !prev);
+	const handleToggleFilters = () => {
+		if (filtersAreOpen) {
+			handleCloseFilters();
+		} else {
+			handleOpenFilters();
+		}
+	};
+
+	const handleOpenFilters = () => {
+		handleBodyClass([OVERFLOW_HIDDEN], ADD);
+		setFiltersAreOpen(true);
+	};
+
+	const handleCloseFilters = () => {
+		handleBodyClass([OVERFLOW_HIDDEN], REMOVE);
+		setFiltersAreOpen(false);
 	};
 
 	const handleAdvancedSearch = () => {
@@ -69,7 +75,7 @@ const search = (props: any) => {
 		// 	query: { searchValue: "some key" },
 		// });
 
-		handleToggleMobileFilters();
+		handleCloseFilters();
 	};
 
 	return (
@@ -121,7 +127,7 @@ const search = (props: any) => {
 									priority="secondary"
 									color="white"
 									className="mt-5 mb-0 mt-lg-3"
-									onClick={() => handleToggleMobileFilters()}
+									onClick={() => handleToggleFilters()}
 								>
 									Advanced search
 								</Button>
@@ -132,16 +138,13 @@ const search = (props: any) => {
 				{/* Filters */}
 				{filtersAreOpen &&
 					createPortal(
-						<div className={styles.search_filters}>
+						<Modal handleClose={handleCloseFilters}>
 							<Card
 								headerClassName="sticky top-0"
 								header={
 									<div className="d-flex justify-content-between">
 										<p className="mb-0">Advanced search</p>
-										<CloseIcon
-											color="dark"
-											onClick={() => handleToggleMobileFilters()}
-										/>
+										<CloseIcon color="dark" onClick={handleCloseFilters} />
 									</div>
 								}
 								footer={
@@ -165,7 +168,7 @@ const search = (props: any) => {
 								}
 								footerClassName="sticky bottom-0 text-right"
 								className={`${styles.search_filters_card} h-100 bg-secondary-quaternary bc-primary-quaternary`}
-								contentClassName={`${styles.search_filters_card_content} h-100 overflow-scroll d-lg-flex`}
+								contentClassName={`${styles.search_filters_card_content} h-100 overflow-scroll`}
 							>
 								<SearchFilters
 									layout={
@@ -174,7 +177,7 @@ const search = (props: any) => {
 									topFiltersOpen={true}
 								/>
 							</Card>
-						</div>,
+						</Modal>,
 						document.body
 					)}
 				{/* Desktop filters */}
@@ -219,4 +222,4 @@ const search = (props: any) => {
 	);
 };
 
-export default search;
+export default Search;

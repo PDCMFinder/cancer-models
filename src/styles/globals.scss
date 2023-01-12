@@ -104,6 +104,9 @@ img {
 .h-100 {
 	height: 100%;
 }
+.w-100 {
+	width: 100%;
+}
 button {
 	background-color: transparent;
 	border: none;
@@ -252,6 +255,9 @@ a {
 			padding-left: 0 !important;
 		}
 	}
+	&-2 {
+		padding: $spacing-2;
+	}
 	@include mediaOver("xl") {
 		&y {
 			&-xl {
@@ -271,6 +277,9 @@ a {
 .position {
 	&-relative {
 		position: relative;
+	}
+	&-absolute {
+		position: absolute;
 	}
 }
 .dropdownParent {

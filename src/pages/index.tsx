@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "../components/Button/Button";
-import bannerImage from "../../public/national-cancer-institute-cT0SCB8pb04-unsplash.jpg";
+import bannerImage from "../../public/national-cancer-institute-cT0SCB8pb04.jpg";
 import ShowHide from "../components/ShowHide/ShowHide";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import breakPoints from "../utils/breakpoints";
@@ -23,7 +23,11 @@ const Home: NextPage = () => {
 				<div className={styles.header_container}>
 					<ShowHide windowWidth={windowWidth || 0} showOver={bpLarge}>
 						<div className={`${styles.header_image} position-relative`}>
-							<Image src={bannerImage} alt="alt" fill />
+							<Image
+								src={bannerImage}
+								alt="A scanning electron micrograph of the surface of human skin by National Cancer Institute"
+								fill
+							/>
 						</div>
 					</ShowHide>
 					<div className={`${styles.header_title} d-flex align-center`}>

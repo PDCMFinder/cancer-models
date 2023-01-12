@@ -1,0 +1,14 @@
+@import "../../styles/vars";
+
+.Modal {
+	&_backdrop {
+		position: fixed;
+		background-color: rgba(0, 0, 0, 0.75);
+	}
+	&_content {
+		width: calc(100% - 3rem);
+		left: 1.5rem;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+}
