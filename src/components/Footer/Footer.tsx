@@ -10,7 +10,7 @@ const Footer = () => {
 	return (
 		<footer className={`${styles.Footer} text-white`}>
 			<div className="container">
-				<div className={`row ${styles["Footer_row--main"]}`}>
+				<div className={`row ${styles["Footer_row-main"]}`}>
 					<div className="col-12 col-lg-2">
 						<Link href="/" className={styles.Footer_Logotype}>
 							<Logotype color="white" />
@@ -19,7 +19,7 @@ const Footer = () => {
 					<div className="col-12 col-md-4 col-xl-3">
 						<div className="row">
 							<div className="col-12 col-lg-6">
-								<ul className={`ul--noStyle ${styles.Footer_nav_firstRow}`}>
+								<ul className={`ul-noStyle ${styles.Footer_nav_firstRow}`}>
 									{routes.map((route: IRoute) => {
 										let path = route.path;
 										if (route.children) {
@@ -28,8 +28,8 @@ const Footer = () => {
 											return (
 												<li key={path}>
 													<ActiveLink
-														className="link--text--light"
-														activeClassName={styles["Footer_item--active"]}
+														className="link-text-light"
+														activeClassName={styles["Footer_item-active"]}
 														href={path}
 													>
 														{route.name}
@@ -41,7 +41,7 @@ const Footer = () => {
 								</ul>
 							</div>
 							<div className="col-12 col-lg-6">
-								<ul className="ul--noStyle m-0">
+								<ul className="ul-noStyle m-0">
 									{routes.map((route) => {
 										let children = route.children;
 
@@ -49,8 +49,8 @@ const Footer = () => {
 											return children.map((child) => (
 												<li key={child.path}>
 													<ActiveLink
-														className="link--text--light"
-														activeClassName={styles["Footer_item--active"]}
+														className="link-text-light"
+														activeClassName={styles["Footer_item-active"]}
 														href={child.path}
 													>
 														{child.name}
@@ -67,7 +67,7 @@ const Footer = () => {
 						{/* Replace with content from .md file? How to implement Link component? */}
 						<p>
 							<Link
-								className="link--text--light"
+								className="link-text-light"
 								href="https://google.com"
 								target="_blank"
 							>
@@ -75,7 +75,7 @@ const Footer = () => {
 							</Link>{" "}
 							and{" "}
 							<Link
-								className="link--text--light"
+								className="link-text-light"
 								href="https://www.jax.org/"
 								target="_blank"
 								rel="noopener noreferrer"

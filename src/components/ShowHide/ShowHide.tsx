@@ -1,9 +1,19 @@
-interface IShowHideProps {
+interface IShowHideBasics {
 	children: any;
 	windowWidth: number;
-	showOver?: number;
-	hideOver?: number;
 }
+
+interface IShowOver extends IShowHideBasics {
+	showOver: number;
+	hideOver?: never;
+}
+
+interface IHideOver extends IShowHideBasics {
+	hideOver: number;
+	showOver?: never;
+}
+
+type IShowHideProps = IShowOver | IHideOver;
 
 const ShowHide = (props: IShowHideProps) => {
 	let windowWidth = props.windowWidth,

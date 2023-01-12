@@ -7,6 +7,8 @@ const Input = (props: IInputProps) => {
 			id: name,
 			placeholder: props.placeholder,
 			className: props.className,
+			value: props.value,
+			onChange: props.onChange,
 		},
 		InputElement =
 			props.type === "textarea" ? (

@@ -6,7 +6,7 @@ import handleBodyClass from "../../../utils/handleBodyClass";
 import { INavProps, IRoute } from "../../../../globalTypes";
 import ActiveLink from "../../ActiveLink/ActiveLink";
 import Link from "next/link";
-import styles from "./Navbar--mobile.module.scss";
+import styles from "./Navbar-mobile.module.scss";
 
 const ADD = "add",
 	REMOVE = "remove";
@@ -18,7 +18,8 @@ const NavMobile = (props: INavProps) => {
 	// Close menu when changing page
 	useEffect(() => {
 		if (isMenuOpen) {
-			setIsMenuOpen((prev) => !prev);
+			setIsMenuOpen(false);
+			handleBodyClass(["overflow-hidden"], REMOVE);
 		}
 	}, [router.asPath]);
 
@@ -27,35 +28,37 @@ const NavMobile = (props: INavProps) => {
 		let addRemoveBodyClass: typeof ADD | typeof REMOVE = !isMenuOpen
 			? ADD
 			: REMOVE;
-		handleBodyClass(["Navbar--mobile--isOpen"], addRemoveBodyClass);
+		handleBodyClass(["overflow-hidden"], addRemoveBodyClass);
 		setIsMenuOpen((prev) => !prev);
 	};
 
 	return (
-		<nav className={styles["Navbar--mobile"]}>
-			<div
-				className={`container text-white ${styles["Navbar--mobile_topBar"]}`}
-			>
+		<nav className={styles["Navbar-mobile"]}>
+			<div className={`container text-white ${styles["Navbar-mobile_topBar"]}`}>
 				<div className="row align-center">
 					<div className="col-7">
 						<Link href="/">
 							<Logotype color="white" />
 						</Link>
 					</div>
-					<div className="col-5 text-right">
-						<button onClick={handleToggleMenu}>
-							{!isMenuOpen ? "Menu" : <CloseIcon />}
-						</button>
+					<div
+						className={`col-5 text-right ${styles["Navbar-mobile_toggleMenuContainer"]}`}
+					>
+						{!isMenuOpen ? (
+							<button onClick={handleToggleMenu}>Menu</button>
+						) : (
+							<CloseIcon onClick={handleToggleMenu} />
+						)}
 					</div>
 				</div>
 			</div>
 			{/* Container with menu items */}
 			{isMenuOpen && (
-				<div className={`text-white ${styles["Navbar--mobile_menu"]}`}>
+				<div className={`text-white ${styles["Navbar-mobile_menu"]}`}>
 					<div className="container d-flex flex-column justify-content-between h-100 text-center">
 						<div className="row">
 							<div className="col">
-								<ul className="ul--noStyle">
+								<ul className="ul-noStyle">
 									{props.routes.map((route: IRoute) => {
 										let children = route.children;
 
@@ -66,8 +69,8 @@ const NavMobile = (props: INavProps) => {
 												return (
 													<li key={path}>
 														<ActiveLink
-															className={`${styles.Navbar_item} link--text--light`}
-															activeClassName={styles["Navbar_item--active"]}
+															className={`${styles.Navbar_item} link-text-light`}
+															activeClassName={styles["Navbar_item-active"]}
 															href={path}
 														>
 															{child.name}
@@ -81,8 +84,8 @@ const NavMobile = (props: INavProps) => {
 											return (
 												<li key={path}>
 													<ActiveLink
-														className={`${styles.Navbar_item} link--text--light`}
-														activeClassName={styles["Navbar_item--active"]}
+														className={`${styles.Navbar_item} link-text-light`}
+														activeClassName={styles["Navbar_item-active"]}
 														href={path}
 													>
 														{route.name}

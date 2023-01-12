@@ -17,23 +17,23 @@
 	margin-bottom: 2.5rem;
 	display: inline-flex;
 	align-items: center;
-	&--primary {
+	&-primary {
 		&.Button {
-			&--dark {
+			&-dark {
 				background-color: $color-secondary-primary;
 				border-color: $color-secondary-secondary;
 				&:hover {
 					background-color: darken($color-secondary-primary, 4%);
 				}
 			}
-			&--light {
+			&-light {
 				background-color: $color-secondary-quaternary;
 				border-color: $color-secondary-primary;
 				&:hover {
 					background-color: $color-white;
 				}
 			}
-			&--white {
+			&-white {
 				background-color: $color-white;
 				border-color: $color-secondary-tertiary;
 				&:hover {
@@ -42,24 +42,24 @@
 			}
 		}
 	}
-	&--secondary {
+	&-secondary {
 		background-color: transparent;
 		&.Button {
-			&--dark {
+			&-dark {
 				border-color: currentColor;
 				color: $color-primary-primary;
 				&:hover {
 					color: $color-black;
 				}
 			}
-			&--light {
+			&-light {
 				border-color: currentColor;
 				color: $color-secondary-tertiary;
 				&:hover {
 					color: $color-white;
 				}
 			}
-			&--white {
+			&-white {
 				border-color: currentColor;
 				color: $color-white;
 				&:hover {

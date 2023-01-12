@@ -1,3 +1,5 @@
+import React from "react";
+
 const inputTypes = [
 	"button",
 	"checkbox",
@@ -46,6 +48,16 @@ export interface ILabelProps {
 export interface IInputProps {
 	name: string;
 	type: typeof inputTypes[number] | "textarea";
-	placeholder: string;
+	placeholder?: string;
 	className?: string;
+	value?: string;
+	onChange?: (
+		e:
+			| React.ChangeEvent<HTMLInputElement>
+			| React.ChangeEvent<HTMLTextAreaElement>
+	) => void;
+}
+
+export interface IArrowIconProps {
+	direction?: "up" | "right" | "down" | "left";
 }

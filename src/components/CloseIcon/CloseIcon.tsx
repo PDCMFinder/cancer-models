@@ -1,14 +1,27 @@
-import React from "react";
-
+import React, { FC } from "react";
 import styles from "./CloseIcon.module.scss";
 
-const CloseIcon = () => {
-  return (
-    <div className={styles.CloseIcon}>
-      <span></span>
-      <span></span>
-    </div>
-  );
+interface ICloseIconProps {
+	color?: "dark" | "white";
+	onClick?: () => void;
+}
+
+const defaultProps: ICloseIconProps = {
+	color: "white",
 };
+
+const CloseIcon = (props: ICloseIconProps) => {
+	return (
+		<button
+			className={`${styles.CloseIcon} ${styles[`CloseIcon-${props.color}`]}`}
+			onClick={props.onClick}
+		>
+			<span></span>
+			<span></span>
+		</button>
+	);
+};
+
+CloseIcon.defaultProps = defaultProps;
 
 export default CloseIcon;

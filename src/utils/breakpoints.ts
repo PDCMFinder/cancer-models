@@ -1,5 +1,5 @@
 // If these change, update in scss variables too
-export const breakPoints = {
+export default {
 	small: 576,
 	medium: 767,
 	large: 992,
