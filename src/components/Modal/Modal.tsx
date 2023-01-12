@@ -19,7 +19,7 @@ const Modal = (props: IModalProps) => {
 	};
 
 	return (
-		<div>
+		<div className={`${styles.Modal} h-100 position-absolute top-0 w-100`}>
 			<div
 				className={`${styles.Modal_backdrop} h-100 w-100 top-0`}
 				onClick={handleBackdropClick}

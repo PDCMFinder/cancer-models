@@ -6,7 +6,7 @@ import breakPoints from "../utils/breakpoints";
 import InputAndLabel from "../components/Input/InputAndLabel";
 import SearchResults from "../components/SearchResults/SearchResults";
 import Select from "../components/Input/Select";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./search.module.scss";
 import CloseIcon from "../components/CloseIcon/CloseIcon";
 import Card from "../components/Card/Card";
@@ -14,6 +14,7 @@ import { createPortal } from "react-dom";
 import handleBodyClass from "../utils/handleBodyClass";
 import SearchFilters from "../components/SearchFilters/SearchFilters";
 import Modal from "../components/Modal/Modal";
+import { useRouter } from "next/router";
 
 const perPageOptions = [
 		{ text: "9" },
@@ -26,12 +27,19 @@ const perPageOptions = [
 	OVERFLOW_HIDDEN = "overflow-hidden";
 
 const Search: NextPage = () => {
+	const router = useRouter();
 	const { windowWidth } = useWindowDimensions();
 	const [searchInputContent, setSearchInputContent] = useState<string>("");
 	const [resultsPerPage, setResultsPerPage] = useState<number>(9);
 	const [filtersAreOpen, setFiltersAreOpen] = useState<boolean>(false);
 
 	let bpLarge = breakPoints.large;
+
+	useEffect(() => {
+		if (router.query.hasOwnProperty("advancedSearch")) {
+			handleOpenFilters();
+		}
+	}, [router]);
 
 	const handleSearchChange = (
 		e:
@@ -143,7 +151,7 @@ const Search: NextPage = () => {
 								headerClassName="sticky top-0"
 								header={
 									<div className="d-flex justify-content-between">
-										<p className="mb-0">Advanced search</p>
+										<p className="mb-0 text-family-primary">Advanced search</p>
 										<CloseIcon color="dark" onClick={handleCloseFilters} />
 									</div>
 								}
@@ -174,7 +182,6 @@ const Search: NextPage = () => {
 									layout={
 										(windowWidth || 0) > bpLarge ? "horizontal" : "vertical"
 									}
-									topFiltersOpen={true}
 								/>
 							</Card>
 						</Modal>,

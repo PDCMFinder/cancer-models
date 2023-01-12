@@ -1,9 +1,0 @@
-@import "../../styles/mixins";
-
-.SearchFilters {
-	&_topFilter {
-		@media screen and (max-width: 992px) {
-			// width: 100% !important;
-		}
-	}
-}

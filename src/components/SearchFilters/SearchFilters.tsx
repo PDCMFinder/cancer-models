@@ -1,7 +1,6 @@
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import Accordion from "../Accordion/Accordion";
 import InputAndLabel from "../Input/InputAndLabel";
-import styles from "./SearchFilters.module.scss";
 import breakPoints from "../../utils/breakpoints";
 
 const filterData = [
@@ -56,40 +55,40 @@ const filterData = [
 			},
 		],
 	},
-	// {
-	// 	facet_section: "molecular_data",
-	// 	facet_filters: [
-	// 		{
-	// 			facet_name: "Cytogenetics",
-	// 			facet_column: "crytogenetics",
-	// 			facet_options: [
-	// 				"ERBB2",
-	// 				"PGR",
-	// 				"KRT19",
-	// 				"ROS1",
-	// 				"MKI67",
-	// 				"IDH1",
-	// 				"KRT18",
-	// 				"PTPRC",
-	// 				"ESR1",
-	// 				"ALK",
-	// 			],
-	// 			facet_example: "ESR1",
-	// 		},
-	// 		{
-	// 			facet_name: "Breast cancer biomarkers",
-	// 			facet_column: "breast_cancer_biomarkers",
-	// 			facet_options: [
-	// 				"PR/PGR positive",
-	// 				"PR/PGR negative",
-	// 				"HER2/ERBB2 positive",
-	// 				"ER/ESR1 negative",
-	// 				"HER2/ERBB2 negative",
-	// 				"ER/ESR1 positive",
-	// 			],
-	// 		},
-	// 	],
-	// },
+	{
+		facet_section: "molecular_data",
+		facet_filters: [
+			{
+				facet_name: "Cytogenetics",
+				facet_column: "crytogenetics",
+				facet_options: [
+					"ERBB2",
+					"PGR",
+					"KRT19",
+					"ROS1",
+					"MKI67",
+					"IDH1",
+					"KRT18",
+					"PTPRC",
+					"ESR1",
+					"ALK",
+				],
+				facet_example: "ESR1",
+			},
+			{
+				facet_name: "Breast cancer biomarkers",
+				facet_column: "breast_cancer_biomarkers",
+				facet_options: [
+					"PR/PGR positive",
+					"PR/PGR negative",
+					"HER2/ERBB2 positive",
+					"ER/ESR1 negative",
+					"HER2/ERBB2 negative",
+					"ER/ESR1 positive",
+				],
+			},
+		],
+	},
 ];
 
 interface ISearchFilters {
@@ -117,11 +116,10 @@ const SearchFilters = (props: ISearchFilters) => {
 
 				return (
 					<Accordion
-						className={styles.SearchFilters_topFilter}
 						buttonClassName="text-bold"
 						key={facetSection}
 						id={facetSection}
-						open={props.topFiltersOpen ?? false}
+						open={true}
 						contentClassName="d-lg-flex"
 						content={section.facet_filters.map((filter) => {
 							let filterContent = null,

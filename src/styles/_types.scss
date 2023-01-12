@@ -96,6 +96,11 @@ a,
 			}
 		}
 	}
+	&-family {
+		&-primary {
+			font-family: $type-primary;
+		}
+	}
 }
 p,
 ul,

@@ -26,7 +26,9 @@ const Home: NextPage = () => {
 							<Image
 								src={bannerImage}
 								alt="A scanning electron micrograph of the surface of human skin by National Cancer Institute"
+								priority
 								fill
+								sizes="50vw"
 							/>
 						</div>
 					</ShowHide>
@@ -63,7 +65,7 @@ const Home: NextPage = () => {
 							</div>
 						</form>
 						<div className="d-flex justify-content-end">
-							<Link href="/search" className="link-text-light">
+							<Link href="/search?advancedSearch" className="link-text-light">
 								Make an advanced search
 							</Link>
 						</div>
@@ -157,7 +159,7 @@ const Home: NextPage = () => {
 									priority="secondary"
 									className="mb-0"
 									htmlTag="a"
-									href="/search"
+									href="/search?advancedSearch"
 								>
 									Make an advanced search
 								</Button>
