@@ -1,7 +1,8 @@
 @import "_vars";
 @import "_mixins";
 
-body {
+body,
+.p {
 	font-size: 1.8rem;
 	font-family: $type-secondary;
 	color: $color-primary-primary;
@@ -89,6 +90,14 @@ a,
 	&-bold {
 		font-weight: $fw-bold !important;
 	}
+	&-family {
+		&-primary {
+			font-family: $type-primary !important;
+		}
+	}
+	&-capitalize {
+		text-transform: capitalize;
+	}
 	@include mediaOver("lg") {
 		&-lg {
 			&-left {
@@ -96,13 +105,9 @@ a,
 			}
 		}
 	}
-	&-family {
-		&-primary {
-			font-family: $type-primary;
-		}
-	}
 }
 p,
+.p,
 ul,
 a {
 	line-height: 2.4rem;

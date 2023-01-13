@@ -1,8 +1,6 @@
 import type { NextPage } from "next";
 import Button from "../components/Button/Button";
 import Form from "../components/Form/Form";
-import useWindowDimensions from "../hooks/useWindowDimensions";
-import breakPoints from "../utils/breakpoints";
 import InputAndLabel from "../components/Input/InputAndLabel";
 import SearchResults from "../components/SearchResults/SearchResults";
 import Select from "../components/Input/Select";
@@ -12,9 +10,126 @@ import CloseIcon from "../components/CloseIcon/CloseIcon";
 import Card from "../components/Card/Card";
 import { createPortal } from "react-dom";
 import handleBodyClass from "../utils/handleBodyClass";
-import SearchFilters from "../components/SearchFilters/SearchFilters";
 import Modal from "../components/Modal/Modal";
 import { useRouter } from "next/router";
+import SearchFilters from "../components/SearchFilters/SearchFilters";
+
+const filterData = [
+	{
+		facet_section: "model",
+		facet_filters: [
+			{
+				facet_name: "Dataset available",
+				facet_column: "dataset_available",
+				facet_options: [
+					"dosing studies",
+					"mutation",
+					"cytogenetics",
+					"publication",
+					"patient treatment",
+					"copy number alteration",
+					"expression",
+				],
+			},
+			{
+				facet_name: "Datasource",
+				facet_column: "datasource",
+				facet_options: [
+					"Curie-OC",
+					"CMP",
+					"VHIO-BC",
+					"Wistar-MDAnderson-Penn",
+					"VHIO-CRC",
+					"HCMI",
+					"UOM-BC",
+					"DFCI-CPDM",
+					"TRACE",
+					"IRCC-CRC",
+					"IRCC-GC",
+					"MDAnderson",
+					"JAX",
+					"NKI",
+					"PDMR",
+					"VHIO-PC",
+					"HCI-BCM",
+					"Curie-BC",
+					"WUSTL",
+					"LIH",
+					"UMCG",
+					"UOC-BC",
+					"SJCRH",
+					"CRL",
+					"PIVOT",
+					"Curie-LC",
+					"PMLB",
+				],
+			},
+		],
+	},
+	{
+		facet_section: "molecular_data",
+		facet_filters: [
+			{
+				facet_name: "Cytogenetics",
+				facet_column: "crytogenetics",
+				facet_options: [
+					"ERBB2",
+					"PGR",
+					"KRT19",
+					"ROS1",
+					"MKI67",
+					"IDH1",
+					"KRT18",
+					"PTPRC",
+					"ESR1",
+					"ALK",
+				],
+				facet_example: "ESR1",
+			},
+			{
+				facet_name: "Breast cancer biomarkers",
+				facet_column: "breast_cancer_biomarkers",
+				facet_options: [
+					"PR/PGR positive",
+					"PR/PGR negative",
+					"HER2/ERBB2 positive",
+					"ER/ESR1 negative",
+					"HER2/ERBB2 negative",
+					"ER/ESR1 positive",
+				],
+			},
+			{
+				facet_name: "Cytogenetics",
+				facet_column: "crytogenetics",
+				facet_options: [
+					"ERBB2",
+					"PGR",
+					"KRT19",
+					"ROS1",
+					"MKI67",
+					"IDH1",
+					"KRT18",
+					"PTPRC",
+					"ESR1",
+					"ALK",
+				],
+				facet_example: "ESR1",
+			},
+			{
+				facet_name: "Breast cancer biomarkers",
+				facet_column: "breast_cancer_biomarkers",
+				facet_options: [
+					"PR/PGR positive",
+					"PR/PGR negative",
+					"HER2/ERBB2 positive",
+					"ER/ESR1 negative",
+					"HER2/ERBB2 negative",
+					"ER/ESR1 positive",
+				],
+			},
+		],
+	},
+];
 
 const perPageOptions = [
 		{ text: "9" },
@@ -28,14 +143,12 @@ const perPageOptions = [
 
 const Search: NextPage = () => {
 	const router = useRouter();
-	const { windowWidth } = useWindowDimensions();
 	const [searchInputContent, setSearchInputContent] = useState<string>("");
 	const [resultsPerPage, setResultsPerPage] = useState<number>(9);
 	const [filtersAreOpen, setFiltersAreOpen] = useState<boolean>(false);
 
-	let bpLarge = breakPoints.large;
-
 	useEffect(() => {
+		// Load page with filter modal open if url includes ?advancedSearch
 		if (router.query.hasOwnProperty("advancedSearch")) {
 			handleOpenFilters();
 		}
@@ -77,12 +190,6 @@ const Search: NextPage = () => {
 
 	const handleAdvancedSearch = () => {
 		// handle filter api query here
-
-		// router.push({
-		// 	pathname: "/search",
-		// 	query: { searchValue: "some key" },
-		// });
-
 		handleCloseFilters();
 	};
 
@@ -178,11 +285,7 @@ const Search: NextPage = () => {
 								className={`${styles.search_filters_card} h-100 bg-secondary-quaternary bc-primary-quaternary`}
 								contentClassName={`${styles.search_filters_card_content} h-100 overflow-scroll`}
 							>
-								<SearchFilters
-									layout={
-										(windowWidth || 0) > bpLarge ? "horizontal" : "vertical"
-									}
-								/>
+								<SearchFilters filterData={filterData} />
 							</Card>
 						</Modal>,
 						document.body

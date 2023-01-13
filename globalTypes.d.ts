@@ -61,3 +61,22 @@ export interface IInputProps {
 export interface IArrowIconProps {
 	direction?: "up" | "right" | "down" | "left";
 }
+
+export interface ITabProps {
+	props: {
+		label: string;
+		content: any;
+	};
+}
+
+export interface ISearchFiltersProps {
+	filterData: {
+		facet_section: string;
+		facet_filters: {
+			facet_name: string;
+			facet_column: string;
+			facet_options: string[];
+			facet_example?: string;
+		}[];
+	}[];
+}

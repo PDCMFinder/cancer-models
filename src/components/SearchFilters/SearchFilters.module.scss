@@ -1,0 +1,10 @@
+.search {
+	&_filter {
+		&_column {
+			max-width: 25%;
+		}
+		&-search {
+			max-width: 75%;
+		}
+	}
+}
