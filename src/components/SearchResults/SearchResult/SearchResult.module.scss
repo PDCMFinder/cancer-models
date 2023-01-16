@@ -3,6 +3,10 @@
 .SearchResult {
 	&_titleCard {
 		margin-bottom: 2rem;
+		overflow-wrap: break-word;
+		h2 {
+			font-size: 3rem;
+		}
 		&_content {
 			padding: 0.5rem 1rem;
 		}

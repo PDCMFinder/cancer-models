@@ -3,9 +3,23 @@ import styles from "./SearchResult.module.scss";
 
 interface ISearchResultProps {
 	className?: string;
+	data: {
+		patient_age: string;
+		patient_sex: string;
+		external_model_id: string;
+		model_type: string;
+		data_source: string;
+		histology: string;
+		primary_site: string;
+		collection_site: string;
+		tumour_type: string;
+		dataset_available: string[];
+	};
 }
 
 const SearchResult = (props: ISearchResultProps) => {
+	let data = props.data;
+
 	return (
 		<Card
 			className={`bg-primary-tertiary ${props.className}`.trim()}
@@ -15,7 +29,7 @@ const SearchResult = (props: ISearchResultProps) => {
 				className={`bg-white bc-primary-quaternary ${styles.SearchResult_titleCard}`}
 				contentClassName={styles.SearchResult_titleCard_content}
 			>
-				<h2 className="m-0">Cutaneous Melanoma</h2>
+				<h2 className="m-0">{data.histology}</h2>
 				{/* Icon placeholder */}
 			</Card>
 			<div
@@ -23,37 +37,39 @@ const SearchResult = (props: ISearchResultProps) => {
 			>
 				<div className="row">
 					<div className="col-12">
-						<p className={`${styles.SearchResult_modelID}`}>CRL / CRL - 520</p>
-						<p className="mb-0">Metastatic Tumour</p>
+						<p className={`${styles.SearchResult_modelID}`}>
+							{data.data_source} / {data.external_model_id}
+						</p>
+						<p className="mb-0">{data.tumour_type}</p>
 					</div>
 				</div>
 				<div className={`row ${styles.SearchResult_metadata}`}>
 					<div className="col-6 col-lg-3">
-						<p>
+						<p className="text-capitalize">
 							<span>Primary site</span>
 							<br />
-							Skin
+							{data.primary_site}
 						</p>
 					</div>
 					<div className="col-6 col-lg-3">
-						<p>
+						<p className="text-capitalize">
 							<span>Patient age</span>
 							<br />
-							40-49
+							{data.patient_age}
 						</p>
 					</div>
 					<div className="col-6 col-lg-3">
-						<p>
+						<p className="text-capitalize">
 							<span>Patient sex</span>
 							<br />
-							Male
+							{data.patient_sex}
 						</p>
 					</div>
 					<div className="col-6 col-lg-3">
-						<p>
+						<p className="text-capitalize">
 							<span>Collection site</span>
 							<br />
-							NA
+							{data.collection_site}
 						</p>
 					</div>
 				</div>
@@ -64,13 +80,10 @@ const SearchResult = (props: ISearchResultProps) => {
 						>
 							Available data
 						</p>
-						<ul className="ul-noStyle ul-twoCols m-0">
-							<li>CNA</li>
-							<li>Expression</li>
-							<li>Cytogenetics</li>
-							<li>Gene Mutation</li>
-							<li>Dosing studies</li>
-							<li>Patient Treatment</li>
+						<ul className="ul-noStyle ul-twoCols m-0 text-capitalize">
+							{data.dataset_available.map((dataset) => (
+								<li key={dataset}>{dataset}</li>
+							))}
 						</ul>
 					</div>
 				</div>

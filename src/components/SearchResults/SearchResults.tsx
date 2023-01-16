@@ -6,6 +6,18 @@ const RESIZE = "resize";
 
 interface ISearchResultsProps {
 	resultsAmount: number;
+	resultsData: {
+		patient_age: string;
+		patient_sex: string;
+		external_model_id: string;
+		model_type: string;
+		data_source: string;
+		histology: string;
+		primary_site: string;
+		collection_site: string;
+		tumour_type: string;
+		dataset_available: string[];
+	}[];
 }
 
 const SearchResults = (props: ISearchResultsProps) => {
@@ -79,7 +91,13 @@ const SearchResults = (props: ISearchResultsProps) => {
 	return (
 		<div className={`${styles.SearchResults} masonry`}>
 			{/* TODO: Use resultsAmount to paginate */}
-			<SearchResult className="masonry_item" />
+			{props.resultsData.map((result) => (
+				<SearchResult
+					key={result.external_model_id}
+					data={result}
+					className="masonry_item mb-2 mb-md-0"
+				/>
+			))}
 		</div>
 	);
 };

@@ -13,123 +13,8 @@ import handleBodyClass from "../utils/handleBodyClass";
 import Modal from "../components/Modal/Modal";
 import { useRouter } from "next/router";
 import SearchFilters from "../components/SearchFilters/SearchFilters";
-
-const filterData = [
-	{
-		facet_section: "model",
-		facet_filters: [
-			{
-				facet_name: "Dataset available",
-				facet_column: "dataset_available",
-				facet_options: [
-					"dosing studies",
-					"mutation",
-					"cytogenetics",
-					"publication",
-					"patient treatment",
-					"copy number alteration",
-					"expression",
-				],
-			},
-			{
-				facet_name: "Datasource",
-				facet_column: "datasource",
-				facet_options: [
-					"Curie-OC",
-					"CMP",
-					"VHIO-BC",
-					"Wistar-MDAnderson-Penn",
-					"VHIO-CRC",
-					"HCMI",
-					"UOM-BC",
-					"DFCI-CPDM",
-					"TRACE",
-					"IRCC-CRC",
-					"IRCC-GC",
-					"MDAnderson",
-					"JAX",
-					"NKI",
-					"PDMR",
-					"VHIO-PC",
-					"HCI-BCM",
-					"Curie-BC",
-					"WUSTL",
-					"LIH",
-					"UMCG",
-					"UOC-BC",
-					"SJCRH",
-					"CRL",
-					"PIVOT",
-					"Curie-LC",
-					"PMLB",
-				],
-			},
-		],
-	},
-	{
-		facet_section: "molecular_data",
-		facet_filters: [
-			{
-				facet_name: "Cytogenetics",
-				facet_column: "crytogenetics",
-				facet_options: [
-					"ERBB2",
-					"PGR",
-					"KRT19",
-					"ROS1",
-					"MKI67",
-					"IDH1",
-					"KRT18",
-					"PTPRC",
-					"ESR1",
-					"ALK",
-				],
-				facet_example: "ESR1",
-			},
-			{
-				facet_name: "Breast cancer biomarkers",
-				facet_column: "breast_cancer_biomarkers",
-				facet_options: [
-					"PR/PGR positive",
-					"PR/PGR negative",
-					"HER2/ERBB2 positive",
-					"ER/ESR1 negative",
-					"HER2/ERBB2 negative",
-					"ER/ESR1 positive",
-				],
-			},
-			{
-				facet_name: "Cytogenetics",
-				facet_column: "crytogenetics",
-				facet_options: [
-					"ERBB2",
-					"PGR",
-					"KRT19",
-					"ROS1",
-					"MKI67",
-					"IDH1",
-					"KRT18",
-					"PTPRC",
-					"ESR1",
-					"ALK",
-				],
-				facet_example: "ESR1",
-			},
-			{
-				facet_name: "Breast cancer biomarkers",
-				facet_column: "breast_cancer_biomarkers",
-				facet_options: [
-					"PR/PGR positive",
-					"PR/PGR negative",
-					"HER2/ERBB2 positive",
-					"ER/ESR1 negative",
-					"HER2/ERBB2 negative",
-					"ER/ESR1 positive",
-				],
-			},
-		],
-	},
-];
+import filterMockData from "../components/SearchFilters/SearchFilterData-mock";
+import resultsMockData from "../components/SearchResults/SearchResultsData-mock";
 
 const perPageOptions = [
 		{ text: "9" },
@@ -285,24 +170,11 @@ const Search: NextPage = () => {
 								className={`${styles.search_filters_card} h-100 bg-secondary-quaternary bc-primary-quaternary`}
 								contentClassName={`${styles.search_filters_card_content} h-100 overflow-scroll`}
 							>
-								<SearchFilters filterData={filterData} />
+								<SearchFilters filterData={filterMockData} />
 							</Card>
 						</Modal>,
 						document.body
 					)}
-				{/* Desktop filters */}
-				{/* <ShowHide windowWidth={windowWidth || 0} showOver={bpLarge}>
-					<div className="bg-secondary-quaternary sticky top-0">
-						<div className="container">
-							<div className="row">
-								<span style={{ marginRight: "5%", width: "auto" }}>
-									Filters
-								</span>
-								<SearchFilters layout="horizontal" topFiltersOpen={false} />
-							</div>
-						</div>
-					</div>
-				</ShowHide> */}
 			</header>
 			<section>
 				<div className="container">
@@ -324,7 +196,10 @@ const Search: NextPage = () => {
 						</div>
 					</div>
 					<div className="row">
-						<SearchResults resultsAmount={resultsPerPage} />
+						<SearchResults
+							resultsData={resultsMockData}
+							resultsAmount={resultsPerPage}
+						/>
 					</div>
 				</div>
 			</section>

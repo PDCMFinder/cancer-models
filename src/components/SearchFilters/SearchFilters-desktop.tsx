@@ -7,10 +7,12 @@ const SearchFiltersDesktop = (props: ISearchFiltersProps) => {
 	return (
 		<Tabs packedLabels={true}>
 			{props.filterData.map((section) => {
+				let facetSection = section.facet_section;
+
 				return (
 					<Tab
-						key={section.facet_section}
-						label={section.facet_section.split("_").join(" ")}
+						key={facetSection}
+						label={facetSection.split("_").join(" ")}
 						content={
 							<SearchFilterContent filterContentData={section.facet_filters} />
 						}

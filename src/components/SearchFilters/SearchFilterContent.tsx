@@ -49,10 +49,13 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 				return (
 					<div
 						className={`w-100 flex-shrink-1 ${styles["search_filter_column"]}`}
+						key={facetName}
 					>
 						<h3 className="p text-bold">{facetName}</h3>
-						<hr className="col-lg-8 ml-0" />
-						{filterContent}
+						<hr className="mb-3 col-lg-8 ml-0" />
+						<div className="overflow-y-scroll" style={{ height: "78%" }}>
+							{filterContent}
+						</div>
 					</div>
 				);
 			})}

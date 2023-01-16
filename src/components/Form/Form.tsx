@@ -1,5 +1,6 @@
 interface IFormProps {
 	children: string | JSX.Element | JSX.Element[];
+	className?: string;
 }
 
 const Form = (props: IFormProps) => {
@@ -7,7 +8,11 @@ const Form = (props: IFormProps) => {
 		e.preventDefault();
 	};
 
-	return <form onSubmit={handleOnSubmit}>{props.children}</form>;
+	return (
+		<form className={props.className} onSubmit={handleOnSubmit}>
+			{props.children}
+		</form>
+	);
 };
 
 export default Form;

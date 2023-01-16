@@ -24,7 +24,7 @@ const Modal = (props: IModalProps) => {
 				className={`${styles.Modal_backdrop} h-100 w-100 top-0`}
 				onClick={handleBackdropClick}
 			></div>
-			<div className={`${styles.Modal_content} position-absolute`}>
+			<div className={`${styles.Modal_content} position-fixed`}>
 				{props.children}
 			</div>
 		</div>

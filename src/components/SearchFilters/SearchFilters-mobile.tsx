@@ -10,10 +10,10 @@ const SearchFiltersMobile = (props: ISearchFiltersProps) => {
 
 				return (
 					<Accordion
-						buttonClassName="text-bold"
+						buttonClassName="text-family-primary"
 						key={facetSection}
 						id={facetSection}
-						contentClassName="d-lg-flex"
+						contentClassName="d-lg-flex mb-3"
 						content={
 							<SearchFilterContent filterContentData={section.facet_filters} />
 						}
