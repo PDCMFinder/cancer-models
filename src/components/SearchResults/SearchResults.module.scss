@@ -11,4 +11,8 @@
 	@include mediaOver("xl") {
 		grid-template-columns: repeat(auto-fill, minmax(32%, 1fr));
 	}
+	> a {
+		color: inherit;
+		text-decoration: none;
+	}
 }
