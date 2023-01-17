@@ -5,7 +5,7 @@ export const routes = [
 	{ path: "/search", name: "Search" },
 	{ path: "/submit", name: "Submit Data" },
 	{ path: "/explore", name: "Explore" },
-	{ path: "/blog", name: "Blog" },
+	// { path: "/blog", name: "Blog" },
 	{ path: "/contact", name: "Contact", secondary: true },
 	{
 		name: "About",

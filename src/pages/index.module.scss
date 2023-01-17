@@ -76,6 +76,10 @@
 				top: 50%;
 				transform: translateY(-50%);
 			}
+			a {
+				color: $color-primary-primary;
+				text-decoration: none;
+			}
 		}
 		&_dataItem {
 			margin-top: $spacing-3;
