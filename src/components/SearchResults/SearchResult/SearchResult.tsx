@@ -1,5 +1,6 @@
 import Card from "../../Card/Card";
 import styles from "./SearchResult.module.scss";
+import Image from "next/image";
 
 interface ISearchResultProps {
 	className?: string;
@@ -19,6 +20,7 @@ interface ISearchResultProps {
 
 const SearchResult = (props: ISearchResultProps) => {
 	let data = props.data;
+	const organoid = "organoid";
 
 	return (
 		<Card
@@ -27,10 +29,17 @@ const SearchResult = (props: ISearchResultProps) => {
 		>
 			<Card
 				className={`bg-white bc-primary-quaternary ${styles.SearchResult_titleCard}`}
-				contentClassName={styles.SearchResult_titleCard_content}
+				contentClassName={`d-flex align-center justify-content-between ${styles.SearchResult_titleCard_content}`}
 			>
-				<h2 className="m-0">{data.histology}</h2>
-				{/* Icon placeholder */}
+				<>
+					<h2 className="m-0">{data.histology}</h2>
+					<Image
+						src={`/${data.model_type}_icon-small.svg`}
+						alt={`Icon for ${data.model_type} model type`}
+						width={28}
+						height={28}
+					/>
+				</>
 			</Card>
 			<div
 				className={`text-white d-flex flex-column ${styles.SearchResult_dataContent}`}
@@ -69,7 +78,7 @@ const SearchResult = (props: ISearchResultProps) => {
 						<p className="text-capitalize">
 							<span>Collection site</span>
 							<br />
-							{data.collection_site}
+							{data.collection_site.replaceAll("/", " / ")}
 						</p>
 					</div>
 				</div>

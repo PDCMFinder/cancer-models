@@ -6,6 +6,7 @@
 		overflow-wrap: break-word;
 		h2 {
 			font-size: 3rem;
+			width: calc(100% - 35px);
 		}
 		&_content {
 			padding: 0.5rem 1rem;
