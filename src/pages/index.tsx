@@ -108,22 +108,28 @@ const Home: NextPage = () => {
 					</div>
 				</div>
 			</section>
-			<section className="position-relative">
+			<section className="position-relative pb-0">
 				<div className={`col-lg-2 container ${styles.data_card_container}`}>
 					<Card className="bg-primary-quaternary">
 						<div className="row text-center justify-content-center">
 							{/* Change for API data */}
 							<div className={`${styles.data_card_dataItem} col-6 col-lg-12`}>
-								<p className="h2 mb-0">4,662</p>
-								<p>Xenograft models</p>
+								<Link href="/search?xenograft" className="p">
+									<p className="h2 mb-0">4,662</p>
+									<p>Xenograft models</p>
+								</Link>
 							</div>
 							<div className={`${styles.data_card_dataItem} col-6 col-lg-12`}>
-								<p className="h2 mb-0">1,547</p>
-								<p>Cell line models</p>
+								<Link href="/search?cell-line" className="p">
+									<p className="h2 mb-0">1,547</p>
+									<p>Cell line models</p>
+								</Link>
 							</div>
 							<div className={`${styles.data_card_dataItem} col-6 col-lg-12`}>
-								<p className="h2 mb-0">108</p>
-								<p>Organoid models</p>
+								<Link href="/search?organoid" className="p">
+									<p className="h2 mb-0">108</p>
+									<p>Organoid models</p>
+								</Link>
 							</div>
 						</div>
 					</Card>
@@ -153,7 +159,7 @@ const Home: NextPage = () => {
 					<div className="container">
 						<div className="row">
 							<div className="col-12 col-lg-6 offset-lg-1 text-center text-white">
-								<p>Already know what you're looking for?</p>
+								<p>Already know what you&#39;re looking for?</p>
 								<Button
 									color="white"
 									priority="secondary"
@@ -168,7 +174,7 @@ const Home: NextPage = () => {
 					</div>
 				</div>
 			</section>
-			<BlogPreview postAmount={3} />
+			{/* <BlogPreview postAmount={3} /> */}
 			<FeedbackSection backgroundColor="light" />
 		</>
 	);
