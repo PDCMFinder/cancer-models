@@ -35,7 +35,7 @@ const SearchResult = (props: ISearchResultProps) => {
 
 	return (
 		<Link
-			href={`${data_source}/${external_model_id}`}
+			href={`data/${data_source}/${external_model_id}`}
 			className={`${props.className}`.trim()}
 		>
 			<Card
