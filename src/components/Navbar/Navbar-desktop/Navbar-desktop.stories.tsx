@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import NavDesktop from "./Navbar--desktop";
+import NavDesktop from "./Navbar-desktop";
 import { routes } from "../../../utils/routes";
 
 export default {

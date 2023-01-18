@@ -3,7 +3,7 @@ import { INavProps, IRoute } from "../../../../globalTypes";
 import Link from "next/link";
 import ActiveLink from "../../ActiveLink/ActiveLink";
 
-import styles from "./Navbar--desktop.module.scss";
+import styles from "./Navbar-desktop.module.scss";
 import Button from "../../Button/Button";
 
 const NavDesktop = (props: INavProps) => {
@@ -11,25 +11,25 @@ const NavDesktop = (props: INavProps) => {
 	const firstSecondary = props.routes.find((el) => el.secondary);
 
 	return (
-		<nav className={styles["Navbar--desktop"]}>
+		<nav className={styles["Navbar-desktop"]}>
 			<div className="container">
 				<div className="row align-center">
 					<div className="col-3">
 						<Link
 							href="/"
-							className={`${styles["Navbar--desktop_logotype--link"]}`}
+							className={`${styles["Navbar-desktop_logotype-link"]}`}
 						>
 							<Logotype color="dark" />
 						</Link>
 					</div>
 					<div className="col-9 col-xl-8 offset-xl-1">
 						<ul
-							className={`ul--noStyle align-center justify-content-between m-0 ${styles["Navbar--desktop_item--primary"]}`}
+							className={`ul-noStyle align-center justify-content-between m-0 ${styles["Navbar-desktop_item-primary"]}`}
 						>
 							{props.routes.map((route: IRoute) => {
 								let link,
 									isFirstSecondary = firstSecondary === route,
-									firstSecondaryClass = "Navbar_item--firstSecondary",
+									firstSecondaryClass = "Navbar_item-firstSecondary",
 									children = route.children,
 									path = route.path,
 									name = route.name;
@@ -37,8 +37,8 @@ const NavDesktop = (props: INavProps) => {
 								if (path && path !== "#") {
 									link = (
 										<ActiveLink
-											className={`${styles.Navbar_item} link--text--light`}
-											activeClassName={styles["Navbar_item_link--active"]}
+											className={`${styles.Navbar_item} link-text-light`}
+											activeClassName={styles["Navbar_item_link-active"]}
 											href={path}
 										>
 											{name}
@@ -55,8 +55,8 @@ const NavDesktop = (props: INavProps) => {
 										return (
 											<li key={childPath}>
 												<ActiveLink
-													className={`${styles.Navbar_item} link--text--light`}
-													activeClassName={styles["Navbar_item--active"]}
+													className={`${styles.Navbar_item} link-text-light`}
+													activeClassName={styles["Navbar_item-active"]}
 													href={childPath}
 												>
 													{child.name}
@@ -71,7 +71,7 @@ const NavDesktop = (props: INavProps) => {
 											className={`${
 												isFirstSecondary
 													? `${styles[firstSecondaryClass]}`
-													: styles["Navbar_item--secondary"]
+													: styles["Navbar_item-secondary"]
 											} dropdownParent`}
 										>
 											<Button
@@ -79,10 +79,11 @@ const NavDesktop = (props: INavProps) => {
 												priority="secondary"
 												className="m-0 bg-primary-primary text-white"
 												arrow
+												arrowDirection="down"
 											>
 												{link}
 											</Button>
-											<ul className="ul--noStyle dropdownChildren dropdownChildren--flushRight">
+											<ul className="ul-noStyle dropdownChildren dropdownChildren-flushRight">
 												{childrenItems}
 											</ul>
 										</li>

@@ -1,0 +1,14 @@
+.Tabs {
+	&_tab {
+		&Button {
+			background-color: rgba(0, 0, 0, 0.04);
+			transition: 0.3s;
+			&-active {
+				background-color: rgba(255, 255, 255, 1);
+			}
+			&:hover {
+				background-color: transparent;
+			}
+		}
+	}
+}

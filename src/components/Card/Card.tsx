@@ -5,6 +5,7 @@ interface ICardProps {
 	header?: JSX.Element;
 	headerClassName?: string;
 	children: string | JSX.Element | JSX.Element[];
+	contentClassName?: string;
 	footer?: JSX.Element;
 	footerClassName?: string;
 }
@@ -12,30 +13,25 @@ interface ICardProps {
 const Card = (props: ICardProps) => {
 	let cardClassName = props.className,
 		header = props.header,
-		headerClassName = props.headerClassName,
+		headerClassName = props.headerClassName ? props.headerClassName : "",
+		contentClassName = props.contentClassName ? props.contentClassName : "",
 		footer = props.footer,
-		footerClassName = props.footerClassName;
+		footerClassName = props.footerClassName ? props.footerClassName : "";
 
 	return (
 		<div
 			className={`${styles.Card} ${cardClassName ? cardClassName : ""}`.trim()}
 		>
 			{header && (
-				<div
-					className={`${styles.Card_header} ${
-						headerClassName ? headerClassName : ""
-					}`.trim()}
-				>
+				<div className={`${styles.Card_header} ${headerClassName}`.trim()}>
 					{header}
 				</div>
 			)}
-			<div className={styles.Card_content}>{props.children}</div>
+			<div className={`${styles.Card_content} ${contentClassName}`.trim()}>
+				{props.children}
+			</div>
 			{footer && (
-				<div
-					className={`${styles.Card_footer} ${
-						footerClassName ? footerClassName : ""
-					}`.trim()}
-				>
+				<div className={`${styles.Card_footer} ${footerClassName}`.trim()}>
 					{footer}
 				</div>
 			)}

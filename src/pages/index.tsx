@@ -2,10 +2,10 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "../components/Button/Button";
-import bannerImage from "../../public/national-cancer-institute-cT0SCB8pb04-unsplash.jpg";
+import bannerImage from "../../public/national-cancer-institute-cT0SCB8pb04.jpg";
 import ShowHide from "../components/ShowHide/ShowHide";
 import useWindowDimensions from "../hooks/useWindowDimensions";
-import { breakPoints } from "../utils/breakpoints";
+import breakPoints from "../utils/breakpoints";
 import Card from "../components/Card/Card";
 import BlogPreview from "../components/Blog/BlogPreview";
 import styles from "./index.module.scss";
@@ -23,7 +23,13 @@ const Home: NextPage = () => {
 				<div className={styles.header_container}>
 					<ShowHide windowWidth={windowWidth || 0} showOver={bpLarge}>
 						<div className={`${styles.header_image} position-relative`}>
-							<Image src={bannerImage} alt="alt" fill />
+							<Image
+								src={bannerImage}
+								alt="A scanning electron micrograph of the surface of human skin by National Cancer Institute"
+								priority
+								fill
+								sizes="50vw"
+							/>
 						</div>
 					</ShowHide>
 					<div className={`${styles.header_title} d-flex align-center`}>
@@ -52,14 +58,14 @@ const Home: NextPage = () => {
 									color="white"
 									priority="primary"
 									type="submit"
-									className="m-md-0 align-self-end"
+									className="mt-2 m-md-0 align-self-end"
 								>
 									Search
 								</Button>
 							</div>
 						</form>
 						<div className="d-flex justify-content-end">
-							<Link href="/search" className="link--text--light">
+							<Link href="/search?advancedSearch" className="link-text-light">
 								Make an advanced search
 							</Link>
 						</div>
@@ -159,7 +165,7 @@ const Home: NextPage = () => {
 									priority="secondary"
 									className="mb-0"
 									htmlTag="a"
-									href="/search"
+									href="/search?advancedSearch"
 								>
 									Make an advanced search
 								</Button>

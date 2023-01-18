@@ -1,3 +1,5 @@
+import React from "react";
+
 const inputTypes = [
 	"button",
 	"checkbox",
@@ -46,6 +48,35 @@ export interface ILabelProps {
 export interface IInputProps {
 	name: string;
 	type: typeof inputTypes[number] | "textarea";
-	placeholder: string;
+	placeholder?: string;
 	className?: string;
+	value?: string;
+	onChange?: (
+		e:
+			| React.ChangeEvent<HTMLInputElement>
+			| React.ChangeEvent<HTMLTextAreaElement>
+	) => void;
+}
+
+export interface IArrowIconProps {
+	direction?: "up" | "right" | "down" | "left";
+}
+
+export interface ITabProps {
+	props: {
+		label: string;
+		content: any;
+	};
+}
+
+export interface ISearchFiltersProps {
+	filterData: {
+		facet_section: string;
+		facet_filters: {
+			facet_name: string;
+			facet_column: string;
+			facet_options: string[];
+			facet_example?: string;
+		}[];
+	}[];
 }

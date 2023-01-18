@@ -24,10 +24,7 @@ body {
 	@include mediaOver("lg") {
 		--main-margin-x: 3%;
 	}
-	&.Navbar--mobile--isOpen {
-		overflow: hidden;
-	}
-	&.userNavigation--keyboard *:focus {
+	&.userNavigation-keyboard *:focus {
 		box-shadow: $focusShadow;
 		border-radius: $br-common;
 		transition: boxShadow 0.3s;
@@ -68,6 +65,14 @@ img {
 	&-column {
 		flex-direction: column;
 	}
+	&-shrink {
+		&-1 {
+			flex-shrink: 1;
+		}
+	}
+	&-nowrap {
+		flex-wrap: nowrap;
+	}
 	@include mediaOver("md") {
 		&-md {
 			&-row {
@@ -86,6 +91,13 @@ img {
 	&-center {
 		justify-content: center;
 	}
+	@include mediaOver("md") {
+		&-md {
+			&-end {
+				justify-content: end;
+			}
+		}
+	}
 }
 .align {
 	&-center {
@@ -100,17 +112,30 @@ img {
 .h-100 {
 	height: 100%;
 }
+.w-100 {
+	width: 100%;
+}
 button {
 	background-color: transparent;
 	border: none;
 	color: inherit;
 	padding: 0;
 	cursor: pointer;
+	&.link-text {
+		text-decoration: underline !important;
+		border: none !important;
+	}
 }
 .ul {
-	&--noStyle {
+	&-noStyle {
 		list-style: none;
 		padding-left: 0;
+		ul {
+			padding-left: 1rem;
+		}
+	}
+	&-twoCols {
+		column-count: 2;
 	}
 }
 li:not(:last-of-type) {
@@ -130,6 +155,14 @@ a {
 		}
 	}
 	&y {
+		&-0 {
+			margin-top: 0 !important;
+			margin-bottom: 0 !important;
+		}
+		&-1 {
+			margin-top: $spacing-1 !important;
+			margin-bottom: $spacing-1 !important;
+		}
 		&-5 {
 			margin-top: $spacing-5 !important;
 			margin-bottom: $spacing-5 !important;
@@ -141,6 +174,9 @@ a {
 		}
 		&-1 {
 			margin-top: $spacing-1 !important;
+		}
+		&-2 {
+			margin-top: $spacing-2 !important;
 		}
 		&-5 {
 			margin-top: $spacing-5 !important;
@@ -157,6 +193,9 @@ a {
 		}
 	}
 	&r {
+		&-1 {
+			margin-right: $spacing-1;
+		}
 		&-3 {
 			margin-right: $spacing-3;
 		}
@@ -177,18 +216,37 @@ a {
 		&-0 {
 			margin-bottom: 0 !important;
 		}
+		&-1 {
+			margin-bottom: $spacing-1 !important;
+		}
+		&-2 {
+			margin-bottom: $spacing-2 !important;
+		}
+		&-3 {
+			margin-bottom: $spacing-3 !important;
+		}
 		&-5 {
 			margin-bottom: $spacing-5 !important;
 		}
 		@include mediaOver("md") {
 			&-md {
 				&-3 {
-					margin-bottom: $spacing-3;
+					margin-bottom: $spacing-3 !important;
+				}
+				&-0 {
+					margin-bottom: 0 !important;
 				}
 			}
 		}
 	}
 	@include mediaOver("md") {
+		&b {
+			&-md {
+				&-0 {
+					margin-bottom: 0 !important;
+				}
+			}
+		}
 		&-md {
 			&-0 {
 				margin: 0 !important;
@@ -212,6 +270,20 @@ a {
 			padding-bottom: 0 !important;
 		}
 	}
+	&x {
+		&-1 {
+			padding-left: $spacing-1 !important;
+			padding-right: $spacing-1 !important;
+		}
+	}
+	&l {
+		&-0 {
+			padding-left: 0 !important;
+		}
+	}
+	&-2 {
+		padding: $spacing-2;
+	}
 	@include mediaOver("xl") {
 		&y {
 			&-xl {
@@ -232,6 +304,12 @@ a {
 	&-relative {
 		position: relative;
 	}
+	&-absolute {
+		position: absolute;
+	}
+	&-fixed {
+		position: fixed;
+	}
 }
 .dropdownParent {
 	position: relative;
@@ -243,7 +321,7 @@ a {
 		padding: 1rem;
 		background-color: $color-white;
 		border-radius: $br-common;
-		&--flushRight {
+		&-flushRight {
 			left: unset;
 			right: 0;
 		}
@@ -262,7 +340,8 @@ label {
 	text-align: left;
 }
 input,
-textarea {
+textarea,
+select {
 	width: 100%;
 	border: 1px solid $color-primary-tertiary;
 	padding: 1rem;
@@ -293,13 +372,17 @@ textarea {
 	&-primary-quaternary {
 		background-color: $color-primary-quaternary !important;
 	}
+	&-secondary-quaternary {
+		background-color: $color-secondary-quaternary !important;
+	}
 	&-white {
 		background-color: $color-white !important;
 	}
 }
-.flexBreak {
-	flex-basis: 100%;
-	height: 0;
+.bc {
+	&-primary-quaternary {
+		border-color: $color-primary-quaternary !important;
+	}
 }
 section {
 	padding: $spacing-5 0;
@@ -308,4 +391,43 @@ hr {
 	background-color: $color-primary-primary;
 	border: none;
 	height: 1px;
+}
+.hideElement-accessible {
+	border: 0;
+	clip: rect(1px 1px 1px 1px);
+	clip: rect(1px, 1px, 1px, 1px);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+}
+.w {
+	&-auto {
+		width: auto;
+	}
+}
+.overflow {
+	&-hidden {
+		overflow: hidden;
+	}
+	&-scroll {
+		overflow: scroll !important;
+	}
+	&-y {
+		&-scroll {
+			overflow-y: scroll !important;
+		}
+	}
+}
+.sticky {
+	position: sticky;
+	z-index: 9999999;
+}
+.top-0 {
+	top: 0 !important;
+}
+.bottom-0 {
+	bottom: 0 !important;
 }

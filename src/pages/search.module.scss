@@ -1,0 +1,24 @@
+@import "../styles/mixins";
+@import "../styles/vars";
+
+.search {
+	&_filters {
+		&_card {
+			@include mediaOver("lg") {
+				height: 70vh;
+			}
+			&_content {
+				padding-top: $spacing-1;
+				padding-bottom: 20rem;
+			}
+		}
+	}
+	&_filter {
+		&_column {
+			max-width: 25%;
+		}
+		&-search {
+			max-width: 75%;
+		}
+	}
+}

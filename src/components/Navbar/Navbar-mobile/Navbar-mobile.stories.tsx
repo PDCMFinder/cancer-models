@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import NavMobile from "./Navbar--mobile";
+import NavMobile from "./Navbar-mobile";
 import { routes } from "../../../utils/routes";
 
 export default {

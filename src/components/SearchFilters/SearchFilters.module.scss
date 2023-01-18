@@ -1,0 +1,23 @@
+@import "../../styles/mixins";
+
+.search {
+	&_filter {
+		@include mediaOver("lg") {
+			&_column {
+				max-width: 25%;
+				::-webkit-scrollbar {
+					-webkit-appearance: none;
+					width: 0.5rem;
+				}
+				::-webkit-scrollbar-thumb {
+					border-radius: 5px;
+					background-color: rgba(0, 0, 0, 0.3);
+					-webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.3);
+				}
+			}
+			&-search {
+				max-width: 75%;
+			}
+		}
+	}
+}
