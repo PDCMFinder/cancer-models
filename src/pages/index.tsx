@@ -12,9 +12,15 @@ import styles from "./index.module.scss";
 import FeedbackSection from "../components/FeedbackSection/FeedbackSection";
 import Input from "../components/Input/Input";
 import Label from "../components/Input/Label";
+import CirclePacking from "../components/CirclePacking/CirclePacking";
+import { getCancerHierarchy } from "../apis/AggregatedData.api";
+import { useQuery } from "react-query";
 
 const Home: NextPage = () => {
 	const { windowWidth } = useWindowDimensions();
+	let cancerHierarchyQuery = useQuery("cancerHierarchy", () => {
+		return getCancerHierarchy();
+	});
 	let bpLarge = breakPoints.large;
 
 	return (
@@ -78,12 +84,25 @@ const Home: NextPage = () => {
 						<div className="col-12 col-md-10 col-lg-5 offset-md-1 offset-lg-0">
 							{/* Graph */}
 							<div
-								style={{
-									backgroundColor: "#C0EDE6",
-									aspectRatio: "1",
-									borderRadius: "500%",
-								}}
-							></div>
+								style={
+									cancerHierarchyQuery.isLoading
+										? {
+												backgroundColor: "#C0EDE6",
+												aspectRatio: "1",
+												borderRadius: "500%",
+										  }
+										: {}
+								}
+							>
+								<CirclePacking
+									data={
+										cancerHierarchyQuery.isLoading
+											? {}
+											: cancerHierarchyQuery.data
+									}
+									onCircleClick={() => null}
+								/>
+							</div>
 						</div>
 						<div className="col-12 col-lg-6 offset-lg-1">
 							<h2>
