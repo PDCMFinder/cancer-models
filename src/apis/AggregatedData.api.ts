@@ -61,9 +61,7 @@ export async function getModelsByType() {
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response
-		.json()
-		.then((d: Array<any>) => d.map((i: any) => camelCase(i)));
+	return response.json();
 }
 
 export async function getModelsByDatasetAvailability() {

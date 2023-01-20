@@ -13,7 +13,10 @@ import FeedbackSection from "../components/FeedbackSection/FeedbackSection";
 import Input from "../components/Input/Input";
 import Label from "../components/Input/Label";
 import CirclePacking from "../components/CirclePacking/CirclePacking";
-import { getCancerHierarchy } from "../apis/AggregatedData.api";
+import {
+	getCancerHierarchy,
+	getModelsByType,
+} from "../apis/AggregatedData.api";
 import { useQuery } from "react-query";
 
 const Home: NextPage = () => {
@@ -21,7 +24,10 @@ const Home: NextPage = () => {
 	let cancerHierarchyQuery = useQuery("cancerHierarchy", () => {
 		return getCancerHierarchy();
 	});
-	let bpLarge = breakPoints.large;
+	let modelsByTypeQuery = useQuery("modelsByType", () => {
+		return getModelsByType();
+	});
+	const bpLarge = breakPoints.large;
 
 	return (
 		<>
@@ -128,31 +134,39 @@ const Home: NextPage = () => {
 				</div>
 			</section>
 			<section className="position-relative pb-0">
-				<div className={`col-lg-2 container ${styles.data_card_container}`}>
-					<Card className="bg-primary-quaternary">
-						<div className="row text-center justify-content-center">
-							{/* Change for API data */}
-							<div className={`${styles.data_card_dataItem} col-6 col-lg-12`}>
-								<Link href="/search?xenograft" className="p">
-									<p className="h2 mb-0">4,662</p>
-									<p>Xenograft models</p>
-								</Link>
+				{modelsByTypeQuery.data ? (
+					<div className={`col-lg-2 container ${styles.data_card_container}`}>
+						<Card className="bg-primary-quaternary">
+							<div className="row text-center justify-content-center">
+								{modelsByTypeQuery.data
+									.filter(({ model_type }: any) => model_type !== "other")
+									.map(
+										({
+											model_type,
+											count,
+										}: {
+											model_type: string;
+											count: number;
+										}) => (
+											<div
+												className={`${styles.data_card_dataItem} col-6 col-lg-12`}
+											>
+												<Link
+													href={`/search/?facets=model.model_type:${model_type}`}
+													className="p"
+												>
+													<p className="h2 mb-0">
+														{count.toLocaleString("en-US")}
+													</p>
+													<p className="text-capitalize">{model_type}</p>
+												</Link>
+											</div>
+										)
+									)}
 							</div>
-							<div className={`${styles.data_card_dataItem} col-6 col-lg-12`}>
-								<Link href="/search?cell-line" className="p">
-									<p className="h2 mb-0">1,547</p>
-									<p>Cell line models</p>
-								</Link>
-							</div>
-							<div className={`${styles.data_card_dataItem} col-6 col-lg-12`}>
-								<Link href="/search?organoid" className="p">
-									<p className="h2 mb-0">108</p>
-									<p>Organoid models</p>
-								</Link>
-							</div>
-						</div>
-					</Card>
-				</div>
+						</Card>
+					</div>
+				) : null}
 				<div className={`${styles.data_topSection} bg-primary-tertiary py-5`}>
 					<div className="container">
 						<div className="row">
