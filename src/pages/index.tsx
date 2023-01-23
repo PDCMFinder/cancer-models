@@ -134,6 +134,7 @@ const Home: NextPage = () => {
 				</div>
 			</section>
 			<section className="position-relative pb-0">
+				{/* Model type count card */}
 				{modelsByTypeQuery.data ? (
 					<div className={`col-lg-2 container ${styles.data_card_container}`}>
 						<Card className="bg-primary-quaternary">
@@ -207,7 +208,6 @@ const Home: NextPage = () => {
 					</div>
 				</div>
 			</section>
-			{/* <BlogPreview postAmount={3} /> */}
 			<FeedbackSection backgroundColor="light" />
 		</>
 	);
