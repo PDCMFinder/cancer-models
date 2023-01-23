@@ -38,12 +38,9 @@ const SearchResult = (props: ISearchResultProps) => {
 			href={`data/${data_source}/${external_model_id}`}
 			className={`${props.className}`.trim()}
 		>
-			<Card
-				className={`bg-primary-tertiary`.trim()}
-				contentClassName="masonry_content"
-			>
+			<Card className={styles.SearchResult} contentClassName="masonry_content">
 				<Card
-					className={`bg-white bc-primary-quaternary ${styles.SearchResult_titleCard}`}
+					className={`bg-white ${styles.SearchResult_titleCard}`}
 					contentClassName={`d-flex align-center justify-content-between ${styles.SearchResult_titleCard_content}`}
 				>
 					<>
@@ -57,7 +54,7 @@ const SearchResult = (props: ISearchResultProps) => {
 					</>
 				</Card>
 				<div
-					className={`text-white d-flex flex-column ${styles.SearchResult_dataContent}`}
+					className={`d-flex flex-column ${styles.SearchResult_dataContent}`}
 				>
 					<div className="row">
 						<div className="col-12">
