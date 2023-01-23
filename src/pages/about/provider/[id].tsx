@@ -8,11 +8,17 @@ interface IProviderProps {
 		name: string;
 		id: string;
 		logo: string;
+		contentHtml: string;
 	};
 }
 
 const Provider = ({ providerData }: IProviderProps) => {
-	return <div>{providerData.name}</div>;
+	return (
+		<>
+			<h1>{providerData.name}</h1>
+			<div dangerouslySetInnerHTML={{ __html: providerData.contentHtml }} />
+		</>
+	);
 };
 
 export default Provider;

@@ -1,4 +1,3 @@
-import type { NextPage } from "next";
 import { getAllProvidersId } from "../../../lib/providers";
 import { GetStaticProps } from "next";
 import Link from "next/link";
