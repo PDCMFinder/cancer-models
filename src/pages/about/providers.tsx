@@ -1,19 +1,19 @@
-import { getAllProvidersId } from "../../../lib/providers";
+import { getAllProvidersBasics } from "../../../lib/providers";
 import { GetStaticProps } from "next";
 import Link from "next/link";
 
 interface IProvidersProps {
-	allProviderIds: {
-		params: {
-			id: string;
-		};
+	allProviderBasics: {
+		id: string;
+		logo: string;
 	}[];
 }
 
-const Providers = ({ allProviderIds }: IProvidersProps) => {
-	return allProviderIds.map((provider) => (
-		<Link href={`/about/provider/${provider.params.id}`}>
-			{provider.params.id}
+const Providers = ({ allProviderBasics }: IProvidersProps) => {
+	return allProviderBasics.map((provider) => (
+		<Link key={provider.id} href={`/about/provider/${provider.id}`}>
+			{provider.logo}
+			{provider.id}
 		</Link>
 	));
 };
@@ -21,11 +21,11 @@ const Providers = ({ allProviderIds }: IProvidersProps) => {
 export default Providers;
 
 export const getStaticProps: GetStaticProps = async () => {
-	const allProviderIds = getAllProvidersId();
+	const allProviderBasics = getAllProvidersBasics();
 
 	return {
 		props: {
-			allProviderIds,
+			allProviderBasics,
 		},
 	};
 };

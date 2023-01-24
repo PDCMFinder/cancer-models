@@ -6,6 +6,26 @@ import html from "remark-html";
 
 const providerDirectory = path.join(process.cwd(), "./public/static/providers");
 
+export const getAllProvidersBasics = () => {
+	const providersFiles = fs.readdirSync(providerDirectory);
+
+	return providersFiles.map((providerFile) => {
+		const fullPath = path.join(providerDirectory, `/${providerFile}`);
+		const fileContents = fs.readFileSync(fullPath, "utf8");
+
+		// Use gray-matter to parse the provider metadata section
+		const matterResult = matter(fileContents);
+
+		// Combine the data with the provider id
+		return {
+			id: providerFile.replace(/\.md$/, ""),
+			...(matterResult.data as {
+				logo: string;
+			}),
+		};
+	});
+};
+
 export const getAllProvidersId = () => {
 	const fileNames = fs.readdirSync(providerDirectory);
 
