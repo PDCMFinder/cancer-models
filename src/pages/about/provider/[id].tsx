@@ -1,5 +1,5 @@
 import styles from "./Provider.module.scss";
-import { getAllProvidersId, getProviderData } from "../../../../lib/providers";
+import { getAllProvidersId, getProviderData } from "../../../utils/providers";
 import { GetStaticProps, GetStaticPaths } from "next";
 
 interface IProviderProps {

@@ -9,18 +9,24 @@ const providerDirectory = path.join(process.cwd(), "./public/static/providers");
 export const getAllProvidersBasics = () => {
 	const providersFiles = fs.readdirSync(providerDirectory);
 
+	const getContent = () => {};
+
 	return providersFiles.map((providerFile) => {
 		const fullPath = path.join(providerDirectory, `/${providerFile}`);
 		const fileContents = fs.readFileSync(fullPath, "utf8");
 
 		// Use gray-matter to parse the provider metadata section
 		const matterResult = matter(fileContents);
+		const processedContent = remark().use(html).process(matterResult.content);
+		const contentHtml = processedContent.toString();
 
 		// Combine the data with the provider id
 		return {
 			id: providerFile.replace(/\.md$/, ""),
+			contentHtml,
 			...(matterResult.data as {
 				logo: string;
+				name: string;
 			}),
 		};
 	});

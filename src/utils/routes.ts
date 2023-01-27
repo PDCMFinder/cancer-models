@@ -16,7 +16,7 @@ export const routes = [
 				name: "PDCM Finder",
 			},
 			{
-				path: "/about/data-providers",
+				path: "/about/providers",
 				name: "Data Providers",
 			},
 			{
