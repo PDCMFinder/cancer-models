@@ -10,10 +10,21 @@ import styles from "./index.module.scss";
 import Input from "../components/Input/Input";
 import Label from "../components/Input/Label";
 import DataCountCard from "../components/DataCountCard/DataCountCard";
+import CirclePacking from "../components/CirclePacking/CirclePacking";
+import { useQuery } from "react-query";
+import { getCancerHierarchy, getModelCount } from "../apis/AggregatedData.api";
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
 	const { windowWidth } = useWindowDimensions();
 	let bpLarge = breakPoints.large;
+	let cancerHierarchyQuery = useQuery("cancerHierarchy", () => {
+		return getCancerHierarchy();
+	});
+	let modelCountQuery = useQuery("modelCountQuery", () => {
+		return getModelCount();
+	});
+	const router = useRouter();
 
 	return (
 		<>
@@ -45,7 +56,7 @@ const Home: NextPage = () => {
 							<Label
 								name="search"
 								className="h3 text-white"
-								label="Search over {sum of all models} cancer models "
+								label={`Search over ${modelCountQuery.data} cancer models`}
 							/>
 							<div className="d-flex flex-column flex-md-row mb-md-3">
 								<Input
@@ -78,17 +89,39 @@ const Home: NextPage = () => {
 			<section>
 				<div className="container">
 					<div className="row align-center">
-						<div className="col-12 col-md-10 col-lg-5 offset-md-1 offset-lg-0">
+						<div className="col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-0">
 							{/* Graph */}
 							<div
 								style={{
-									backgroundColor: "#C0EDE6",
+									backgroundColor: "#085154",
 									aspectRatio: "1",
 									borderRadius: "500%",
 								}}
-							></div>
+							>
+								{!cancerHierarchyQuery.isLoading &&
+								cancerHierarchyQuery.data ? (
+									<CirclePacking
+										data={cancerHierarchyQuery.data}
+										onCircleClick={(circleId, circleDepth) => {
+											const searchPrefix =
+												circleDepth === 1
+													? `?facets=patient_tumour.cancer_system:`
+													: `?q=`;
+											const termSuffix = circleDepth === 1 ? "Cancer" : "";
+											const search = `${searchPrefix}${encodeURIComponent(
+												circleId + termSuffix
+											)}`;
+
+											router.push({
+												pathname: "/search",
+												search: search,
+											});
+										}}
+									/>
+								) : null}
+							</div>
 						</div>
-						<div className="col-12 col-lg-6 offset-lg-1">
+						<div className="col-12 col-lg-6">
 							<h2>
 								We can collect and display your data making you more
 								discoverable and visible for end-users.
