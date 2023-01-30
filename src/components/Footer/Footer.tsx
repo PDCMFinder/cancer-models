@@ -2,7 +2,6 @@ import Logotype from "../Logotype/Logotype";
 import { routes } from "../../utils/routes";
 import { IRoute } from "../../../globalTypes";
 import ActiveLink from "../ActiveLink/ActiveLink";
-
 import styles from "./Footer.module.scss";
 import Link from "next/link";
 
@@ -59,12 +58,30 @@ const Footer = () => {
 											));
 										}
 									})}
+									<li>
+										<ActiveLink
+											className="link-text-light"
+											activeClassName={styles["Footer_item-active"]}
+											href="/terms-of-service"
+										>
+											Terms of Service
+										</ActiveLink>
+									</li>
+									<li>
+										<ActiveLink
+											className="link-text-light"
+											activeClassName={styles["Footer_item-active"]}
+											href="/privacy-policy"
+										>
+											Privacy Policy
+										</ActiveLink>
+									</li>
 								</ul>
 							</div>
 						</div>
 					</div>
-					<div className="col-12 col-md-7 col-lg-5 col-xl-4 offset-lg-1 offset-xl-3">
-						{/* Replace with content from .md file? How to implement Link component? */}
+					<div className="col-12 col-md-7 col-lg-5 col-xl-4 offset-lg-1 offset-xl-3 d-flex flex-column justify-content-between">
+						{/* Replace with content from .md file? How to implement Link component in .md? */}
 						<p>
 							<Link
 								className="link-text-light"
@@ -85,6 +102,14 @@ const Footer = () => {
 							are co-developers of PDCM Finder. This work is supported by the
 							National Institutes of Health/National Cancer Institute U24
 							CA204781 01 (ended 31.08.2020), U24 CA253539 01 and R01 CA089713.
+						</p>
+						<p className="mb-0">
+							<a
+								href="mailto:contact@cancermodels.org"
+								className="link-text-light mt-2"
+							>
+								contact@cancermodels.org
+							</a>
 						</p>
 					</div>
 				</div>

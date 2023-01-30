@@ -2,14 +2,11 @@ import Logotype from "../../Logotype/Logotype";
 import { INavProps, IRoute } from "../../../../globalTypes";
 import Link from "next/link";
 import ActiveLink from "../../ActiveLink/ActiveLink";
-
 import styles from "./Navbar-desktop.module.scss";
 import Button from "../../Button/Button";
+import Card from "../../Card/Card";
 
 const NavDesktop = (props: INavProps) => {
-	// Need to get first secondary item so we can separate them from primary items
-	const firstSecondary = props.routes.find((el) => el.secondary);
-
 	return (
 		<nav className={styles["Navbar-desktop"]}>
 			<div className="container">
@@ -22,14 +19,12 @@ const NavDesktop = (props: INavProps) => {
 							<Logotype color="dark" />
 						</Link>
 					</div>
-					<div className="col-9 col-xl-8 offset-xl-1">
+					<div className="col-9 col-xl-7 offset-xl-2">
 						<ul
 							className={`ul-noStyle align-center justify-content-between m-0 ${styles["Navbar-desktop_item-primary"]}`}
 						>
 							{props.routes.map((route: IRoute) => {
-								let link,
-									isFirstSecondary = firstSecondary === route,
-									firstSecondaryClass = "Navbar_item-firstSecondary",
+								let link = null,
 									children = route.children,
 									path = route.path,
 									name = route.name;
@@ -66,37 +61,29 @@ const NavDesktop = (props: INavProps) => {
 									});
 
 									return (
-										<li
-											key={path || name}
-											className={`${
-												isFirstSecondary
-													? `${styles[firstSecondaryClass]}`
-													: styles["Navbar_item-secondary"]
-											} dropdownParent`}
-										>
+										<li key={path || name} className="dropdownParent">
 											<Button
-												color="dark"
+												color="light"
 												priority="secondary"
-												className="m-0 bg-primary-primary text-white"
+												className="m-0 text-primary-primary"
 												arrow
 												arrowDirection="down"
 											>
 												{link}
 											</Button>
-											<ul className="ul-noStyle dropdownChildren dropdownChildren-flushRight">
-												{childrenItems}
-											</ul>
+											<Card
+												className="dropdownChildren dropdownChildren-flushRight"
+												contentClassName="p-0"
+											>
+												<ul className={`${styles.Navbar_dropdown} ul-noStyle`}>
+													{childrenItems}
+												</ul>
+											</Card>
 										</li>
 									);
 								} else {
 									return (
-										<li
-											key={path}
-											className={`
-                       mb-0
-												${isFirstSecondary ? `${styles[firstSecondaryClass]}` : ""}
-											`.trim()}
-										>
+										<li key={path} className="mb-0">
 											{link}
 										</li>
 									);

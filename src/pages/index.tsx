@@ -6,12 +6,10 @@ import bannerImage from "../../public/national-cancer-institute-cT0SCB8pb04.jpg"
 import ShowHide from "../components/ShowHide/ShowHide";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import breakPoints from "../utils/breakpoints";
-import Card from "../components/Card/Card";
-import BlogPreview from "../components/Blog/BlogPreview";
 import styles from "./index.module.scss";
-import FeedbackSection from "../components/FeedbackSection/FeedbackSection";
 import Input from "../components/Input/Input";
 import Label from "../components/Input/Label";
+import DataCountCard from "../components/DataCountCard/DataCountCard";
 
 const Home: NextPage = () => {
 	const { windowWidth } = useWindowDimensions();
@@ -32,8 +30,10 @@ const Home: NextPage = () => {
 							/>
 						</div>
 					</ShowHide>
-					<div className={`${styles.header_title} d-flex align-center`}>
-						<h1 className="my-5 mt-lg-1 m-lg-0">
+					<div
+						className={`${styles.header_title} d-flex align-center py-5 py-lg-0`}
+					>
+						<h1 className="h2 mt-lg-1">
 							Largest open catalog of harmonised Patient-Derived Cancer Models
 						</h1>
 					</div>
@@ -45,7 +45,7 @@ const Home: NextPage = () => {
 							<Label
 								name="search"
 								className="h3 text-white"
-								label="Cancer Model Finder"
+								label="Search over {sum of all models} cancer models "
 							/>
 							<div className="d-flex flex-column flex-md-row mb-md-3">
 								<Input
@@ -55,7 +55,7 @@ const Home: NextPage = () => {
 									className="mr-3 mb-0"
 								/>
 								<Button
-									color="white"
+									color="dark"
 									priority="primary"
 									type="submit"
 									className="mt-2 m-md-0 align-self-end"
@@ -65,8 +65,11 @@ const Home: NextPage = () => {
 							</div>
 						</form>
 						<div className="d-flex justify-content-end">
-							<Link href="/search?advancedSearch" className="link-text-light">
-								Make an advanced search
+							<Link
+								href="/search?advancedSearch"
+								className={`link-text-light ${styles.header_search_advancedSearch}`}
+							>
+								Advanced search
 							</Link>
 						</div>
 					</div>
@@ -101,42 +104,26 @@ const Home: NextPage = () => {
 									href="/submit"
 									htmlTag="a"
 								>
-									Submit model data
+									Submit data
 								</Button>
 							</div>
 						</div>
 					</div>
 				</div>
 			</section>
-			<section className="position-relative pb-0">
-				<div className={`col-lg-2 container ${styles.data_card_container}`}>
-					<Card className="bg-primary-quaternary">
-						<div className="row text-center justify-content-center">
-							{/* Change for API data */}
-							<div className={`${styles.data_card_dataItem} col-6 col-lg-12`}>
-								<Link href="/search?xenograft" className="p">
-									<p className="h2 mb-0">4,662</p>
-									<p>Xenograft models</p>
-								</Link>
-							</div>
-							<div className={`${styles.data_card_dataItem} col-6 col-lg-12`}>
-								<Link href="/search?cell-line" className="p">
-									<p className="h2 mb-0">1,547</p>
-									<p>Cell line models</p>
-								</Link>
-							</div>
-							<div className={`${styles.data_card_dataItem} col-6 col-lg-12`}>
-								<Link href="/search?organoid" className="p">
-									<p className="h2 mb-0">108</p>
-									<p>Organoid models</p>
-								</Link>
+			<section className="pb-0">
+				<ShowHide hideOver={bpLarge} windowWidth={windowWidth || 0}>
+					<section className="pt-0">
+						<div className="container">
+							<div className="row">
+								<DataCountCard />
 							</div>
 						</div>
-					</Card>
-				</div>
-				<div className={`${styles.data_topSection} bg-primary-tertiary py-5`}>
+					</section>
+				</ShowHide>
+				<section className="bg-primary-tertiary">
 					<div className="container">
-						<div className="row">
+						<div className="row align-center">
 							<div className="col-12 col-lg-6 offset-lg-1 text-center text-white">
 								<h2>Find the perfect model for your next project.</h2>
 								<h2>Explore and analyse the data.</h2>
@@ -145,37 +132,19 @@ const Home: NextPage = () => {
 									color="white"
 									priority="primary"
 									htmlTag="a"
-									href="/explore"
+									href="/overview"
+									className="mt-5"
 								>
-									Explore model data overview
+									Explore data overview
 								</Button>
 							</div>
+							<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
+								<DataCountCard />
+							</ShowHide>
 						</div>
 					</div>
-				</div>
-				<div
-					className={`${styles.data_bottomSection} bg-primary-secondary py-5`}
-				>
-					<div className="container">
-						<div className="row">
-							<div className="col-12 col-lg-6 offset-lg-1 text-center text-white">
-								<p>Already know what you&#39;re looking for?</p>
-								<Button
-									color="white"
-									priority="secondary"
-									className="mb-0"
-									htmlTag="a"
-									href="/search?advancedSearch"
-								>
-									Make an advanced search
-								</Button>
-							</div>
-						</div>
-					</div>
-				</div>
+				</section>
 			</section>
-			{/* <BlogPreview postAmount={3} /> */}
-			<FeedbackSection backgroundColor="light" />
 		</>
 	);
 };

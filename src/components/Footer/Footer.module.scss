@@ -4,6 +4,10 @@
 .Footer {
 	background-color: $color-primary-primary;
 	padding: 10rem 0 3.5rem;
+	font-size: 1.3rem;
+	* {
+		line-height: 1.8rem;
+	}
 	&_Logotype {
 		svg {
 			max-height: 4rem;

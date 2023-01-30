@@ -77,6 +77,9 @@ a,
 	&-white {
 		color: $color-white !important;
 	}
+	&-primary-primary {
+		color: $color-primary-primary !important;
+	}
 	&-right {
 		text-align: right !important;
 	}
@@ -97,6 +100,12 @@ a,
 	}
 	&-capitalize {
 		text-transform: capitalize;
+	}
+	&-noDecoration {
+		text-decoration: none !important;
+	}
+	&-underline {
+		text-decoration: underline !important;
 	}
 	@include mediaOver("lg") {
 		&-lg {
