@@ -282,6 +282,9 @@ a {
 	}
 }
 .p {
+	&-0 {
+		padding: 0 !important;
+	}
 	&y {
 		&-5 {
 			padding-top: $spacing-5 !important;
@@ -311,8 +314,19 @@ a {
 	&-2 {
 		padding: $spacing-2;
 	}
+	&t {
+		&-0 {
+			padding-top: 0 !important;
+		}
+	}
 	@include mediaOver("xl") {
 		&y {
+			&-lg {
+				&-0 {
+					padding-top: 0 !important;
+					padding-bottom: 0 !important;
+				}
+			}
 			&-xl {
 				&-4 {
 					padding-top: 4rem !important;
@@ -340,6 +354,7 @@ a {
 }
 .dropdownParent {
 	position: relative;
+	padding: 0.6rem 0;
 	.dropdownChildren {
 		display: none;
 		position: absolute;
@@ -348,6 +363,7 @@ a {
 		padding: 1rem;
 		background-color: $color-white;
 		border-radius: $br-common;
+		margin-top: 0.5rem;
 		&-flushRight {
 			left: unset;
 			right: 0;

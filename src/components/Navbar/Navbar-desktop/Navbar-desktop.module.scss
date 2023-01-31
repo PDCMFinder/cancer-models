@@ -37,4 +37,10 @@
 		display: flex;
 		flex-direction: row;
 	}
+	.Navbar_dropdown {
+		flex-direction: column;
+		li:not(:last-of-type) {
+			margin-bottom: $spacing-2;
+		}
+	}
 }

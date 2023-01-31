@@ -35,13 +35,16 @@
 				height: 100%;
 				border: 3px solid $color-primary-primary;
 			}
-			grid-area: 1 / 2 / 3 / 7;
+			grid-area: 1 / 2 / 3 / 5;
 		}
 		&_title {
 			grid-area: 1 / 7 / 2 / 14;
 		}
 		&_search {
 			grid-area: 2 / 7 / 3 / 13;
+			&_advancedSearch {
+				margin-right: calc(calc(100% / 7) + 2.5rem);
+			}
 		}
 		&_searchBackground {
 			grid-area: 2 / 1 / 4 / 15;
@@ -50,7 +53,7 @@
 	@include mediaOver("xl") {
 		&_title,
 		&_search {
-			grid-column-start: 8;
+			grid-column-start: 6;
 		}
 	}
 	@include mediaOver("xxl") {
@@ -60,30 +63,17 @@
 	}
 	@include mediaOver("xxx") {
 		&_image {
-			grid-area: 1 / 3 / 3 / 7;
+			grid-area: 1 / 2 / 3 / 5;
+		}
+		&_title,
+		&_search {
+			grid-column-start: 6;
+			grid-column-end: 12;
 		}
 	}
 }
-.data {
-	&_card {
-		&_container {
-			margin-bottom: $spacing-5;
-			@include mediaOver("lg") {
-				margin-bottom: 0;
-				position: absolute;
-				padding: 0;
-				right: 11.333%;
-				top: 50%;
-				transform: translateY(-50%);
-			}
-			a {
-				color: $color-primary-primary;
-				text-decoration: none;
-			}
-		}
-		&_dataItem {
-			margin-top: $spacing-3;
-			margin-bottom: $spacing-3;
-		}
+.circlePacking_col {
+	* {
+		overflow: visible;
 	}
 }
