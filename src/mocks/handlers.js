@@ -18,63 +18,67 @@ import patientTreatmentFacet from "./data/patient_treatment_facet.json";
 import searchIndex from "./data/search_index.json";
 
 export const handlers = [
-  rest.get("/api/models_by_cancer", (req, res, ctx) => {
-    try {
-      const results = modelsByCancer;
-      return res(ctx.status(200), ctx.json(results));
-    } catch (e) {
-      return res(ctx.status(404));
-    }
-  }),
-  rest.get("/api/models_by_type", (req, res, ctx) => {
-    try {
-      const results = modelsByType;
-      return res(ctx.status(200), ctx.json(results));
-    } catch (e) {
-      return res(ctx.status(404));
-    }
-  }),
-  rest.get("/api/search_facet_options", (req, res, ctx) => {
-    try {
-      let results = searchTerms;
+	rest.get("/api/models_by_cancer", (req, res, ctx) => {
+		try {
+			const results = modelsByCancer;
+			return res(ctx.status(200), ctx.json(results));
+		} catch (e) {
+			return res(ctx.status(404));
+		}
+	}),
+	rest.get("/api/models_by_type", (req, res, ctx) => {
+		try {
+			const results = modelsByType;
+			return res(ctx.status(200), ctx.json(results));
+		} catch (e) {
+			return res(ctx.status(404));
+		}
+	}),
+	rest.get("/api/search_facet_options", (req, res, ctx) => {
+		try {
+			let results = searchTerms;
 
-      if (req.url.search.includes("neq.search")) results = facetSections;
+			if (req.url.search.includes("neq.search")) results = facetSections;
 
-      return res(ctx.status(200), ctx.json(results));
-    } catch (e) {
-      return res(ctx.status(404));
-    }
-  }),
-  rest.get("/api/search_facet", (req, res, ctx) => {
-    try {
-      let results = [];
-      if (req.url.search.includes("eq.dataset_available"))
-        results = datasetAvailableFacet;
-      if (req.url.search.includes("eq.data_source")) results = dataSourceFacet;
-      if (req.url.search.includes("eq.model_type")) results = modelTypeFacet;
-      if (req.url.search.includes("eq.project_name"))
-        results = projectNameFacet;
-      if (req.url.search.includes("eq.breast_cancer_biomarkers"))
-        results = breastCancerBiomarkersFacet;
-      if (req.url.search.includes("eq.patient_age")) results = patientAgeFacet;
-      if (req.url.search.includes("eq.cancer_system"))
-        results = cancerSystemFacet;
-      if (req.url.search.includes("eq.tumour_type")) results = tumourTypeFacet;
-      if (req.url.search.includes("eq.patient_sex")) results = patientSexFacet;
-      if (req.url.search.includes("eq.patient_treatment"))
-        results = patientTreatmentFacet;
+			return res(ctx.status(200), ctx.json(results));
+		} catch (e) {
+			return res(ctx.status(404));
+		}
+	}),
+	rest.get("/api/search_facet", (req, res, ctx) => {
+		try {
+			let results = [];
+			if (req.url.search.includes("eq.dataset_available"))
+				results = datasetAvailableFacet;
+			if (req.url.search.includes("eq.data_source")) results = dataSourceFacet;
+			if (req.url.search.includes("eq.model_type")) results = modelTypeFacet;
+			if (req.url.search.includes("eq.project_name"))
+				results = projectNameFacet;
+			if (req.url.search.includes("eq.breast_cancer_biomarkers"))
+				results = breastCancerBiomarkersFacet;
+			if (req.url.search.includes("eq.patient_age")) results = patientAgeFacet;
+			if (req.url.search.includes("eq.cancer_system"))
+				results = cancerSystemFacet;
+			if (req.url.search.includes("eq.tumour_type")) results = tumourTypeFacet;
+			if (req.url.search.includes("eq.patient_sex")) results = patientSexFacet;
+			if (req.url.search.includes("eq.patient_treatment"))
+				results = patientTreatmentFacet;
 
-      return res(ctx.status(200), ctx.json(results));
-    } catch (e) {
-      return res(ctx.status(404));
-    }
-  }),
-  rest.get("/api/search_index", (req, res, ctx) => {
-    try {
-      const results = searchIndex;
-      return res(ctx.status(200), ctx.json(results));
-    } catch (e) {
-      return res(ctx.status(404));
-    }
-  }),
+			return res(ctx.status(200), ctx.json(results));
+		} catch (e) {
+			return res(ctx.status(404));
+		}
+	}),
+	rest.get("/api/search_index", (req, res, ctx) => {
+		try {
+			const results = searchIndex;
+			return res(
+				ctx.status(200),
+				ctx.json(results),
+				ctx.set("Content-range", "0-9/6998")
+			);
+		} catch (e) {
+			return res(ctx.status(404));
+		}
+	}),
 ];
