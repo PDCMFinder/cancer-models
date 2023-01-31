@@ -14,6 +14,7 @@ import CirclePacking from "../components/CirclePacking/CirclePacking";
 import { useQuery } from "react-query";
 import { getCancerHierarchy, getModelCount } from "../apis/AggregatedData.api";
 import { useRouter } from "next/router";
+import Loader from "../components/Loader/Loader";
 
 const Home: NextPage = () => {
 	const { windowWidth } = useWindowDimensions();
@@ -89,7 +90,9 @@ const Home: NextPage = () => {
 			<section>
 				<div className="container">
 					<div className="row align-center">
-						<div className="col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-0">
+						<div
+							className={`col-12 col-md-10 col-lg-5 offset-md-1 offset-lg-0 ${styles.circlePacking_col}`}
+						>
 							{/* Graph */}
 							<div
 								style={{
@@ -118,10 +121,12 @@ const Home: NextPage = () => {
 											});
 										}}
 									/>
-								) : null}
+								) : (
+									<Loader />
+								)}
 							</div>
 						</div>
-						<div className="col-12 col-lg-6">
+						<div className="col-12 col-lg-6 offset-lg-1">
 							<h2>
 								We can collect and display your data making you more
 								discoverable and visible for end-users.
