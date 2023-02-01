@@ -6,25 +6,19 @@ import html from "remark-html";
 
 const providerDirectory = path.join(process.cwd(), "./public/static/providers");
 
-export const getAllProvidersBasics = () => {
+export const getAllProvidersBasics = async () => {
 	const providersFiles = fs.readdirSync(providerDirectory);
 
-	const getContent = () => {};
-
-	return providersFiles.map((providerFile) => {
+	return providersFiles.map((providerFile: string) => {
 		const fullPath = path.join(providerDirectory, `/${providerFile}`);
 		const fileContents = fs.readFileSync(fullPath, "utf8");
-
-		// Use gray-matter to parse the provider metadata section
 		const matterResult = matter(fileContents);
-		const processedContent = remark().use(html).process(matterResult.content);
-		const contentHtml = processedContent.toString();
 
-		// Combine the data with the provider id
 		return {
-			id: providerFile.replace(/\.md$/, ""),
-			contentHtml,
+			id: providerFile.replace(/\.md$/, "") as string,
+			content: matterResult.content as string,
 			...(matterResult.data as {
+				abbreviation: string;
 				logo: string;
 				name: string;
 			}),
@@ -35,10 +29,10 @@ export const getAllProvidersBasics = () => {
 export const getAllProvidersId = () => {
 	const fileNames = fs.readdirSync(providerDirectory);
 
-	return fileNames.map((fileName) => {
+	return fileNames.map((fileName: string) => {
 		return {
 			params: {
-				id: fileName.replace(/\.md$/, ""),
+				id: fileName.replace(/\.md$/, "") as string,
 			},
 		};
 	});
@@ -58,8 +52,7 @@ export const getProviderData = async (id: string) => {
 
 	// Combine the data with the provider id
 	return {
-		id,
-		contentHtml,
+		contentHtml: contentHtml as string,
 		...(matterResult.data as {
 			abbreviation: string;
 			name: string;

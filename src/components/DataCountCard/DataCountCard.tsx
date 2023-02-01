@@ -29,7 +29,9 @@ const DataCountCard = (props: IDataCountCardProps) => {
 										href={`/search?facets=model.model_type:${d.modelType}`}
 										className="p text-noDecoration"
 									>
-										<p className="h2 mb-0">{d.count}</p>
+										<p className="h2 mb-0">
+											{parseFloat(d.count).toLocaleString()}
+										</p>
 										<p className="text-underline">
 											{capitalizeFirstLetter(d.modelType)} models
 										</p>

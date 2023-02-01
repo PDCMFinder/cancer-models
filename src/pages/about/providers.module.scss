@@ -1,6 +1,12 @@
 .Providers {
 	&_logo {
 		max-width: 100%;
-		max-height: 70px;
+		max-height: 150px;
+	}
+	&_content {
+		display: inline;
+		p:last-of-type::after {
+			content: "...";
+		}
 	}
 }

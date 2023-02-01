@@ -57,7 +57,11 @@ const Home: NextPage = () => {
 							<Label
 								name="search"
 								className="h3 text-white"
-								label={`Search over ${modelCountQuery.data} cancer models`}
+								label={`Search over ${
+									modelCountQuery.data
+										? parseFloat(modelCountQuery.data).toLocaleString()
+										: "6,998"
+								} cancer models`}
 							/>
 							<div className="d-flex flex-column flex-md-row mb-md-3">
 								<Input
