@@ -94,42 +94,44 @@ const Home: NextPage = () => {
 			<section>
 				<div className="container">
 					<div className="row align-center">
-						<div
-							className={`col-12 col-md-10 col-lg-5 offset-md-1 offset-lg-0 ${styles.circlePacking_col}`}
-						>
-							{/* Graph */}
+						<ShowHide windowWidth={windowWidth || 0} showOver={bpLarge}>
 							<div
-								style={{
-									backgroundColor: "#085154",
-									aspectRatio: "1",
-									borderRadius: "500%",
-								}}
+								className={`col-12 col-md-10 col-lg-5 offset-md-1 offset-lg-0 ${styles.circlePacking_col}`}
 							>
-								{!cancerHierarchyQuery.isLoading &&
-								cancerHierarchyQuery.data ? (
-									<CirclePacking
-										data={cancerHierarchyQuery.data}
-										onCircleClick={(circleId, circleDepth) => {
-											const searchPrefix =
-												circleDepth === 1
-													? `?facets=patient_tumour.cancer_system:`
-													: `?q=`;
-											const termSuffix = circleDepth === 1 ? "Cancer" : "";
-											const search = `${searchPrefix}${encodeURIComponent(
-												circleId + termSuffix
-											)}`;
+								{/* Graph */}
+								<div
+									style={{
+										backgroundColor: "#085154",
+										aspectRatio: "1",
+										borderRadius: "500%",
+									}}
+								>
+									{!cancerHierarchyQuery.isLoading &&
+									cancerHierarchyQuery.data ? (
+										<CirclePacking
+											data={cancerHierarchyQuery.data}
+											onCircleClick={(circleId, circleDepth) => {
+												const searchPrefix =
+													circleDepth === 1
+														? `?facets=patient_tumour.cancer_system:`
+														: `?q=`;
+												const termSuffix = circleDepth === 1 ? "Cancer" : "";
+												const search = `${searchPrefix}${encodeURIComponent(
+													circleId + termSuffix
+												)}`;
 
-											router.push({
-												pathname: "/search",
-												search: search,
-											});
-										}}
-									/>
-								) : (
-									<Loader />
-								)}
+												router.push({
+													pathname: "/search",
+													search: search,
+												});
+											}}
+										/>
+									) : (
+										<Loader />
+									)}
+								</div>
 							</div>
-						</div>
+						</ShowHide>
 						<div className="col-12 col-lg-6 offset-lg-1">
 							<h2>
 								We can collect and display your data making you more
