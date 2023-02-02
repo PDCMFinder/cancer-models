@@ -7,7 +7,7 @@ import { ISearchFiltersProps } from "../../../globalTypes";
 import Form from "../Form/Form";
 
 // controls responsive change of component
-const Navbar = (props: ISearchFiltersProps) => {
+const SearchFilters = (props: ISearchFiltersProps) => {
 	const { windowWidth } = useWindowDimensions();
 	const bpLarge = breakPoints.large;
 
@@ -25,4 +25,4 @@ const Navbar = (props: ISearchFiltersProps) => {
 	);
 };
 
-export default Navbar;
+export default SearchFilters;

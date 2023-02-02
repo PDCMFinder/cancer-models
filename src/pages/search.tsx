@@ -15,12 +15,14 @@ import { useRouter } from "next/router";
 import SearchFilters from "../components/SearchFilters/SearchFilters";
 import filterMockData from "../components/SearchFilters/SearchFilterData-mock";
 import resultsMockData from "../components/SearchResults/SearchResultsData-mock";
+import Label from "../components/Input/Label";
+import SearchFiltersMobile from "../components/SearchFilters/SearchFilters-mobile";
 
-const perPageOptions = [
-		{ text: "9" },
-		{ text: "54" },
-		{ text: "99" },
-		{ text: "198" },
+const sortByOptions = [
+		{ text: "Relevance" },
+		{ text: "A > Z" },
+		{ text: "Z > A" },
+		{ text: "Amount of data available" },
 	],
 	ADD = "add",
 	REMOVE = "remove",
@@ -29,7 +31,7 @@ const perPageOptions = [
 const Search: NextPage = () => {
 	const router = useRouter();
 	const [searchInputContent, setSearchInputContent] = useState<string>("");
-	const [resultsPerPage, setResultsPerPage] = useState<number>(9);
+	const [sortBy, setSortBy] = useState(sortByOptions[0].text);
 	const [filtersAreOpen, setFiltersAreOpen] = useState<boolean>(false);
 
 	useEffect(() => {
@@ -48,11 +50,10 @@ const Search: NextPage = () => {
 		setSearchInputContent(value);
 	};
 
-	const handlePerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+	const handleSortBy = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const { value } = e.target;
-		let numericAmount = parseInt(value);
 
-		setResultsPerPage(numericAmount);
+		setSortBy(value);
 	};
 
 	const handleToggleFilters = () => {
@@ -85,7 +86,9 @@ const Search: NextPage = () => {
 					<div className="container">
 						<div className="row">
 							<div className="col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-3">
-								<h1 className="text-white text-center">Cancer Model Finder</h1>
+								<h1 className="text-white text-center mt-0">
+									Cancer Model Finder
+								</h1>
 								<Form>
 									<InputAndLabel
 										label="Cancer Model Finder"
@@ -108,29 +111,8 @@ const Search: NextPage = () => {
 												Clear
 											</Button>
 										)}
-										<Button
-											priority="primary"
-											color="dark"
-											type="submit"
-											className="mt-2 mb-0"
-										>
-											Search
-										</Button>
 									</div>
 								</Form>
-							</div>
-						</div>
-						<div className="row">
-							<div className="col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-3">
-								{/* Opens filter modal */}
-								<Button
-									priority="secondary"
-									color="white"
-									className="mt-5 mb-0 mt-lg-3"
-									onClick={() => handleToggleFilters()}
-								>
-									Advanced search
-								</Button>
 							</div>
 						</div>
 					</div>
@@ -178,28 +160,38 @@ const Search: NextPage = () => {
 			</header>
 			<section>
 				<div className="container">
-					<div className="row mb-3 align-center">
-						<div className="col-12 col-md-6">
-							<p className="mb-md-0">Showing 1 to 12 of 510 results</p>
-						</div>
-						<div className="col-12 col-md-6">
-							<div className="d-flex align-center justify-content-md-end">
-								<p className="mb-0 mr-1">Models per page:</p>
-								{/* TODO: Show this amount of results per page */}
-								<Select
-									id="perPage"
-									options={perPageOptions}
-									className="w-auto mb-0"
-									onChange={handlePerPageChange}
-								/>
+					<div className="row">
+						<div className="col-12 col-lg-3">
+							<div className="row">
+								<div className="col-12">
+									<h3 className="mt-0">Filters</h3>
+								</div>
+							</div>
+							<div className="row">
+								<div className="col-12">
+									<SearchFiltersMobile filterData={filterMockData} />
+								</div>
 							</div>
 						</div>
-					</div>
-					<div className="row">
-						<SearchResults
-							resultsData={resultsMockData}
-							resultsAmount={resultsPerPage}
-						/>
+						<div className="col-12 col-lg-9">
+							<div className="row mb-3 align-center">
+								<div className="col-12 col-md-6">
+									<p className="mb-md-0">Showing 1 to 12 of 510 results</p>
+								</div>
+								<div className="col-12 col-md-6">
+									<div className="d-flex align-center justify-content-md-end">
+										<Label label="Sort by:" name="sortBy" />
+										<Select
+											id="sortBy"
+											options={sortByOptions}
+											className="w-auto mb-0"
+											onChange={handleSortBy}
+										/>
+									</div>
+								</div>
+							</div>
+							<SearchResults resultsData={resultsMockData} sortedBy={sortBy} />
+						</div>
 					</div>
 				</div>
 			</section>

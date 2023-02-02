@@ -93,6 +93,9 @@ a,
 		font-size: 1.4rem !important;
 		line-height: 2rem !important;
 	}
+	&-muted {
+		color: #595959;
+	}
 	&-bold {
 		font-weight: $fw-bold !important;
 	}
@@ -123,4 +126,7 @@ p,
 ul,
 a {
 	line-height: 2.4rem;
+}
+a {
+	text-decoration: underline;
 }

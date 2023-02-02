@@ -1,7 +1,33 @@
 import Card from "../../Card/Card";
 import styles from "./SearchResult.module.scss";
-import Image from "next/image";
 import Link from "next/link";
+
+const dataTypes = [
+	{
+		key: "copy number alteration",
+		name: "CNA",
+	},
+	{
+		key: "expression",
+		name: "Expression",
+	},
+	{
+		key: "cytogenetics",
+		name: "Cytogenetics",
+	},
+	{
+		key: "mutation",
+		name: "Gene Mutation",
+	},
+	{
+		key: "dosing studies",
+		name: "Dosing Studies",
+	},
+	{
+		key: "patient treatment",
+		name: "Patient Treatment",
+	},
+];
 
 interface ISearchResultProps {
 	className?: string;
@@ -34,83 +60,105 @@ const SearchResult = (props: ISearchResultProps) => {
 	} = props.data;
 
 	return (
-		<Link
-			href={`data/${data_source}/${external_model_id}`}
-			className={`${props.className}`.trim()}
-		>
-			<Card className={styles.SearchResult} contentClassName="masonry_content">
-				<Card
-					className={`bg-white ${styles.SearchResult_titleCard}`}
-					contentClassName={`d-flex align-center justify-content-between ${styles.SearchResult_titleCard_content}`}
-				>
-					<>
-						<h2 className="m-0">{histology}</h2>
-						<Image
-							src={`/${model_type}_icon-small.svg`}
-							alt={`Icon for ${model_type} model type`}
-							width={28}
-							height={28}
-						/>
-					</>
-				</Card>
-				<div
-					className={`d-flex flex-column ${styles.SearchResult_dataContent}`}
-				>
-					<div className="row">
-						<div className="col-12">
-							<p className={`${styles.SearchResult_modelID}`}>
-								{data_source} / {external_model_id}
+		<Card className={`${styles.SearchResult} mb-2`}>
+			<div className="container w-100">
+				<div className="row">
+					<div className="col-12 col-md-4 d-flex flex-column justify-content-between">
+						<div>
+							<h2 className="h3 m-0">
+								<Link href={`/data/models/${data_source}/${external_model_id}`}>
+									{external_model_id}
+								</Link>
+							</h2>
+							<p>
+								<Link href={`/about/provider/${data_source}`}>
+									full provider_name
+								</Link>
 							</p>
-							<p className="mb-0">{tumour_type}</p>
+						</div>
+						<p>{histology}</p>
+					</div>
+					<div className="col-12 col-md-4">
+						<div className={`row ${styles.SearchResult_metadata}`}>
+							<div className="col-6">
+								<p className="text-capitalize">
+									<span>Model type</span>
+									<br />
+									{model_type}
+								</p>
+							</div>
+							<div className="col-6">
+								<p className="text-capitalize">
+									<span>Tumor type</span>
+									<br />
+									{tumour_type}
+								</p>
+							</div>
+							<div className="col-6">
+								<p className="text-capitalize">
+									<span>Primary site</span>
+									<br />
+									{primary_site}
+								</p>
+							</div>
+							<div className="col-6">
+								<p className="text-capitalize">
+									<span>Collection site</span>
+									<br />
+									{collection_site.replaceAll("/", " / ")}
+								</p>
+							</div>
+							<div className="col-6">
+								<p className="text-capitalize">
+									<span>Patient sex</span>
+									<br />
+									{patient_sex}
+								</p>
+							</div>
+							<div className="col-6">
+								<p className="text-capitalize">
+									<span>Patient age</span>
+									<br />
+									{patient_age}
+								</p>
+							</div>
 						</div>
 					</div>
-					<div className={`row ${styles.SearchResult_metadata}`}>
-						<div className="col-6 col-lg-3">
-							<p className="text-capitalize">
-								<span>Primary site</span>
-								<br />
-								{primary_site}
-							</p>
-						</div>
-						<div className="col-6 col-lg-3">
-							<p className="text-capitalize">
-								<span>Patient age</span>
-								<br />
-								{patient_age}
-							</p>
-						</div>
-						<div className="col-6 col-lg-3">
-							<p className="text-capitalize">
-								<span>Patient sex</span>
-								<br />
-								{patient_sex}
-							</p>
-						</div>
-						<div className="col-6 col-lg-3">
-							<p className="text-capitalize">
-								<span>Collection site</span>
-								<br />
-								{collection_site.replaceAll("/", " / ")}
-							</p>
-						</div>
-					</div>
-					<div className="row">
-						<div className="col-12">
-							<p
-								className={`text-center ${styles.SearchResult_availableData_title}`}
-							>
-								Available data
-							</p>
-							<ul className="ul-noStyle ul-twoCols m-0 text-capitalize">
-								{dataset_available.map((dataset) => (
-									<li key={dataset}>{dataset}</li>
-								))}
-							</ul>
+					<div className="col-12 col-md-4">
+						<p
+							className={`text-center ${styles.SearchResult_availableData_title}`}
+						>
+							Available data
+						</p>
+						<div className={`row ${styles.testGrid}`}>
+							{dataTypes.map((dt) => {
+								const hasData = dataset_available?.includes(dt.key),
+									name = dt.name;
+
+								return (
+									<div
+										key={dt.key}
+										className={`col-6 ${!hasData ? "text-muted" : ""}`.trim()}
+									>
+										<p className="mb-0">
+											{hasData ? (
+												<Link
+													href={`/data/models/${data_source}/${external_model_id}#${dt}`}
+												>
+													{name}
+												</Link>
+											) : (
+												name
+											)}
+										</p>
+									</div>
+								);
+							})}
 						</div>
 					</div>
 				</div>
-			</Card>
-		</Link>
+			</div>
+		</Card>
 	);
 };
 
