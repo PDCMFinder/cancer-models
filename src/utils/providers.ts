@@ -17,6 +17,7 @@ export const getAllProvidersBasics = async () => {
 		return {
 			id: providerFile.replace(/\.md$/, "") as string,
 			content: matterResult.content as string,
+			parsedContent: "",
 			...(matterResult.data as {
 				abbreviation: string;
 				logo: string;
