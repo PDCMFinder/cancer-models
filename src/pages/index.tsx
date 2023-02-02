@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "../components/Button/Button";
-import bannerImage from "../../public/national-cancer-institute-cT0SCB8pb04.jpg";
+import bannerImage from "../../public/national-cancer-institute-wUg8xhJ3aBs.jpg";
 import ShowHide from "../components/ShowHide/ShowHide";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import breakPoints from "../utils/breakpoints";
@@ -60,7 +60,7 @@ const Home: NextPage = () => {
 								label={`Search over ${
 									modelCountQuery.data
 										? parseFloat(modelCountQuery.data).toLocaleString()
-										: "6,998"
+										: "6,998" //placeholder while we fetch api data
 								} cancer models`}
 							/>
 							<div className="d-flex flex-column flex-md-row mb-md-3">
@@ -68,16 +68,8 @@ const Home: NextPage = () => {
 									type="text"
 									name="search"
 									placeholder="Cancer diagnosis eg. Melanoma"
-									className="mr-3 mb-0"
+									className="mb-0"
 								/>
-								<Button
-									color="dark"
-									priority="primary"
-									type="submit"
-									className="mt-2 m-md-0 align-self-end"
-								>
-									Search
-								</Button>
 							</div>
 						</form>
 						<div className="d-flex justify-content-end">

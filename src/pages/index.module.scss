@@ -42,9 +42,6 @@
 		}
 		&_search {
 			grid-area: 2 / 7 / 3 / 13;
-			&_advancedSearch {
-				margin-right: calc(calc(100% / 7) + 2.5rem);
-			}
 		}
 		&_searchBackground {
 			grid-area: 2 / 1 / 4 / 15;
