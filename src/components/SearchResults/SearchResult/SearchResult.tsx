@@ -1,23 +1,28 @@
 import Card from "../../Card/Card";
 import styles from "./SearchResult.module.scss";
 import Link from "next/link";
+import { ISearchResult } from "../../../../globalTypes";
 
 const dataTypes = [
 	{
 		key: "copy number alteration",
 		name: "CNA",
+		sectionLink: "molecular-data",
 	},
 	{
 		key: "expression",
 		name: "Expression",
+		sectionLink: "molecular-data",
 	},
 	{
 		key: "cytogenetics",
 		name: "Cytogenetics",
+		sectionLink: "molecular-data",
 	},
 	{
 		key: "mutation",
 		name: "Gene Mutation",
+		sectionLink: "molecular-data",
 	},
 	{
 		key: "dosing studies",
@@ -31,18 +36,7 @@ const dataTypes = [
 
 interface ISearchResultProps {
 	className?: string;
-	data: {
-		patient_age: string;
-		patient_sex: string;
-		external_model_id: string;
-		model_type: string;
-		data_source: string;
-		histology: string;
-		primary_site: string;
-		collection_site: string;
-		tumour_type: string;
-		dataset_available: string[];
-	};
+	data: ISearchResult;
 }
 
 const SearchResult = (props: ISearchResultProps) => {
@@ -60,10 +54,10 @@ const SearchResult = (props: ISearchResultProps) => {
 	} = props.data;
 
 	return (
-		<Card className={`${styles.SearchResult} mb-2`}>
+		<Card className={styles.SearchResult}>
 			<div className="container w-100">
 				<div className="row">
-					<div className="col-12 col-md-4 d-flex flex-column justify-content-between">
+					<div className="col-12 col-md-6 col-lg-4 d-lg-flex flex-column justify-content-between">
 						<div>
 							<h2 className="h3 m-0">
 								<Link href={`/data/models/${data_source}/${external_model_id}`}>
@@ -71,14 +65,14 @@ const SearchResult = (props: ISearchResultProps) => {
 								</Link>
 							</h2>
 							<p>
-								<Link href={`/about/provider/${data_source}`}>
+								<Link href={`/about/provider/${data_source.toLowerCase()}`}>
 									full provider_name
 								</Link>
 							</p>
 						</div>
 						<p>{histology}</p>
 					</div>
-					<div className="col-12 col-md-4">
+					<div className="col-12 col-md-6 col-lg-4 mt-3 mt-md-0">
 						<div className={`row ${styles.SearchResult_metadata}`}>
 							<div className="col-6">
 								<p className="text-capitalize">
@@ -124,7 +118,7 @@ const SearchResult = (props: ISearchResultProps) => {
 							</div>
 						</div>
 					</div>
-					<div className="col-12 col-md-4">
+					<div className="col-12 col-md-12 col-lg-4 mt-3 mt-lg-0">
 						<p
 							className={`text-center ${styles.SearchResult_availableData_title}`}
 						>
@@ -136,14 +130,15 @@ const SearchResult = (props: ISearchResultProps) => {
 									name = dt.name;
 
 								return (
-									<div
-										key={dt.key}
-										className={`col-6 ${!hasData ? "text-muted" : ""}`.trim()}
-									>
+									<div key={dt.key} className={!hasData ? "text-muted" : ""}>
 										<p className="mb-0">
 											{hasData ? (
 												<Link
-													href={`/data/models/${data_source}/${external_model_id}#${dt}`}
+													href={`/data/models/${data_source}/${external_model_id}#${
+														dt.sectionLink
+															? dt.sectionLink
+															: dt.key.replace(" ", "-")
+													}`}
 												>
 													{name}
 												</Link>

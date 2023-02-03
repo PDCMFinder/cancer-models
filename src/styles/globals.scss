@@ -195,11 +195,24 @@ a {
 		&-2 {
 			margin-top: $spacing-2 !important;
 		}
+		&-3 {
+			margin-top: $spacing-3 !important;
+		}
 		&-5 {
 			margin-top: $spacing-5 !important;
 		}
+		@include mediaOver("md") {
+			&-md {
+				&-0 {
+					margin-top: 0 !important;
+				}
+			}
+		}
 		@include mediaOver("lg") {
 			&-lg {
+				&-0 {
+					margin-top: 0 !important;
+				}
 				&-1 {
 					margin-top: $spacing-1 !important;
 				}
@@ -271,6 +284,9 @@ a {
 			&-md {
 				&-0 {
 					margin-bottom: 0 !important;
+				}
+				&-2 {
+					margin-bottom: $spacing-2 !important;
 				}
 			}
 		}

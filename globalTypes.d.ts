@@ -80,3 +80,16 @@ export interface ISearchFiltersProps {
 		}[];
 	}[];
 }
+
+export interface ISearchResult {
+	patient_age: string;
+	patient_sex: string;
+	external_model_id: string;
+	model_type: string;
+	data_source: string;
+	histology: string;
+	primary_site: string;
+	collection_site: string;
+	tumour_type: string;
+	dataset_available: string[];
+}
