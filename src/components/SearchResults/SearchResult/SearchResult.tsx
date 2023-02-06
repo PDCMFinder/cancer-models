@@ -43,7 +43,7 @@ const SearchResult = (props: ISearchResultProps) => {
 	let {
 		pdcmId,
 		sourceId,
-		datasource,
+		providerName,
 		histology,
 		primarySite,
 		collectionSite,
@@ -65,9 +65,9 @@ const SearchResult = (props: ISearchResultProps) => {
 									{pdcmId}
 								</Link>
 							</h2>
-							<p>
+							<p className="text-capitalize">
 								<Link href={`/about/provider/${sourceId?.toLowerCase()}`}>
-									full provider_name
+									{providerName}
 								</Link>
 							</p>
 						</div>

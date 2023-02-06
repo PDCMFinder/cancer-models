@@ -146,7 +146,7 @@ export async function getSearchResults(
 	let response = await fetch(
 		`${API_URL}/search_index?${query}&limit=${pageSize}&offset=${
 			(page - 1) * pageSize
-		}&select=patient_age,patient_sex,external_model_id,model_type,data_source,histology,primary_site,collection_site,tumour_type,dataset_available&order=model_dataset_type_count.desc.nullslast`,
+		}&select=provider_name,patient_age,patient_sex,external_model_id,model_type,data_source,histology,primary_site,collection_site,tumour_type,dataset_available&order=model_dataset_type_count.desc.nullslast`,
 		{ headers: { Prefer: "count=exact" } }
 	);
 	if (!response.ok) {
@@ -160,6 +160,7 @@ export async function getSearchResults(
 					pdcmId: result.external_model_id,
 					sourceId: result.data_source,
 					datasource: "",
+					providerName: result.provider_name,
 					histology: result.histology,
 					primarySite: result.primary_site,
 					collectionSite: result.collection_site,
