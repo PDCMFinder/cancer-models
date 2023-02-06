@@ -29,8 +29,8 @@ import SearchResultsLoader from "../components/SearchResults/SearchResultsLoader
 
 const sortByOptions = [
 		{ value: "relevance", text: "Relevance" },
-		{ value: "external_model_id.desc", text: "Model Id: A to Z" },
-		{ value: "external_model_id.asc", text: "Model Id: Z to A" },
+		{ value: "external_model_id.asc", text: "Model Id: A to Z" },
+		{ value: "external_model_id.desc", text: "Model Id: Z to A" },
 		{ value: "amount", text: "Amount of data available" },
 	],
 	resultsPerPage = 10;
