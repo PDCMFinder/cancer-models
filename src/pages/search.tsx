@@ -4,9 +4,8 @@ import Form from "../components/Form/Form";
 import InputAndLabel from "../components/Input/InputAndLabel";
 import SearchResults from "../components/SearchResults/SearchResults";
 import Select from "../components/Input/Select";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./search.module.scss";
-import { useRouter } from "next/router";
 import filterMockData from "../components/SearchFilters/SearchFilterData-mock";
 import Label from "../components/Input/Label";
 import SearchFilters from "../components/SearchFilters/SearchFilters-mobile";
@@ -25,18 +24,18 @@ import {
 	getFacetOptions,
 } from "../apis/Search.api";
 import { useQuery } from "react-query";
+import Loader from "../components/Loader/Loader";
 
 const sortByOptions = [
-		{ text: "Relevance" },
-		{ text: "A > Z" },
-		{ text: "Z > A" },
-		{ text: "Amount of data available" },
-	],
-	pageSize = 10;
+	{ value: "relevance", text: "Relevance" },
+	{ value: "external_model_id.desc", text: "Model Id: A to Z" },
+	{ value: "external_model_id.asc", text: "Model Id: Z to A" },
+	{ value: "amount", text: "Amount of data available" },
+];
 
 const Search: NextPage = () => {
 	const [searchInputContent, setSearchInputContent] = useState<string>("");
-	const [sortBy, setSortBy] = useState(sortByOptions[0].text);
+	const [sortBy, setSortBy] = useState(sortByOptions[0].value);
 
 	let [searchValues, facetsByKey, operatorsByKey] = useQueryParams();
 	let [facetSelection, setFacetSelection] = useState<IFacetSidebarSelection>(
@@ -50,7 +49,14 @@ const Search: NextPage = () => {
 	const searchResultsQuery = useQuery(
 		[
 			"search-results",
-			{ searchValues, facetSelection, facetOperators, pageSize, activePage },
+			{
+				searchValues,
+				facetSelection,
+				facetOperators,
+				undefined,
+				activePage,
+				sortBy,
+			},
 		],
 		async () =>
 			getSearchResults(
@@ -58,7 +64,8 @@ const Search: NextPage = () => {
 				facetSelection,
 				facetOperators,
 				activePage,
-				pageSize
+				undefined,
+				sortBy
 			)
 	);
 	let modelCountQuery = useQuery("modelCountQuery", () => {
@@ -155,12 +162,11 @@ const Search: NextPage = () => {
 							<SearchFilters filterData={filterMockData} />
 						</div>
 						<div className="col-12 col-lg-9">
-							<SearchResults
-								resultsData={
-									searchResultsQuery.data ? searchResultsQuery.data[1] : []
-								}
-								sortedBy={sortBy}
-							/>
+							{searchResultsQuery.data ? (
+								<SearchResults resultsData={searchResultsQuery.data[1]} />
+							) : (
+								<Loader />
+							)}
 						</div>
 					</div>
 				</div>

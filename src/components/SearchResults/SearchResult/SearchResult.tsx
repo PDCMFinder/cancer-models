@@ -54,6 +54,8 @@ const SearchResult = (props: ISearchResultProps) => {
 		patientSex,
 	} = props.data;
 
+	const modelLink = `/data/models/${sourceId}/${pdcmId}`;
+
 	return (
 		<Card className={styles.SearchResult}>
 			<div className="container w-100">
@@ -61,13 +63,13 @@ const SearchResult = (props: ISearchResultProps) => {
 					<div className="col-12 col-md-6 col-lg-4 d-lg-flex flex-column justify-content-between">
 						<div>
 							<h2 className="h3 m-0">
-								<Link href={`/data/models/${sourceId}/${pdcmId}`}>
-									{pdcmId}
-								</Link>
+								<Link href={modelLink}>{pdcmId}</Link>
 							</h2>
 							<p className="text-capitalize">
 								<Link href={`/about/provider/${sourceId?.toLowerCase()}`}>
-									{providerName}
+									{`${providerName.substring(0, 50)}${
+										providerName.length > 50 ? "..." : ""
+									}`}
 								</Link>
 							</p>
 						</div>
@@ -100,7 +102,7 @@ const SearchResult = (props: ISearchResultProps) => {
 								<p className="text-capitalize">
 									<span>Collection site</span>
 									<br />
-									{collectionSite?.replaceAll("/", " / ")}
+									{collectionSite.replaceAll("/", " / ")}
 								</p>
 							</div>
 							<div className="col-6">
@@ -125,7 +127,7 @@ const SearchResult = (props: ISearchResultProps) => {
 						>
 							Available data
 						</p>
-						<div className={`row ${styles.testGrid}`}>
+						<div className={`row ${styles.dataAvailable_grid}`}>
 							{dataTypes.map((dt) => {
 								const hasData = dataAvailable?.includes(dt.key),
 									name = dt.name;
@@ -135,7 +137,7 @@ const SearchResult = (props: ISearchResultProps) => {
 										<p className="mb-0">
 											{hasData ? (
 												<Link
-													href={`/data/models/${sourceId}/${pdcmId}#${
+													href={`${modelLink}#${
 														dt.sectionLink
 															? dt.sectionLink
 															: dt.key.replace(" ", "-")

@@ -5,15 +5,15 @@
 	transition: color 0.05s, background-color 0.4s;
 	a {
 		color: #426a8e;
+		&:hover {
+			color: $color-primary-primary;
+		}
 	}
 	> div {
 		padding: $spacing-2;
 	}
 	&:hover {
 		background-color: lighten($color-primary-quaternary, 12%);
-		a {
-			color: $color-primary-primary;
-		}
 	}
 	&_metadata span,
 	&_availableData_title {
@@ -26,7 +26,7 @@
 		width: 80%;
 	}
 }
-.testGrid {
+.dataAvailable_grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	grid-template-rows: auto auto auto;

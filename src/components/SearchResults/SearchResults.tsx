@@ -2,7 +2,6 @@ import SearchResult from "./SearchResult/SearchResult";
 import { SearchResult as SearchResultType } from "../../types/Search.model";
 
 interface ISearchResultsProps {
-	sortedBy: string;
 	resultsData: Array<SearchResultType>;
 }
 

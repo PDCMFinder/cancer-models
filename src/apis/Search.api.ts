@@ -98,7 +98,8 @@ export async function getSearchResults(
 	facetSelections: any,
 	facetOperators: any,
 	page: number,
-	pageSize: number = 10
+	pageSize: number = 10,
+	sortBy: string
 ): Promise<[number, Array<SearchResult>]> {
 	let query =
 		searchValues.length > 0
@@ -144,9 +145,13 @@ export async function getSearchResults(
 		}
 	}
 	let response = await fetch(
-		`${API_URL}/search_index?${query}&limit=${pageSize}&offset=${
+		`${API_URL}/search_index?${
+			query ? `$${query}` : ""
+		}limit=${pageSize}&offset=${
 			(page - 1) * pageSize
-		}&select=provider_name,patient_age,patient_sex,external_model_id,model_type,data_source,histology,primary_site,collection_site,tumour_type,dataset_available&order=model_dataset_type_count.desc.nullslast`,
+		}&select=provider_name,patient_age,patient_sex,external_model_id,model_type,data_source,histology,primary_site,collection_site,tumour_type,dataset_available${
+			sortBy !== "relevance" ? `&order=${sortBy}.nullslast` : ""
+		}`,
 		{ headers: { Prefer: "count=exact" } }
 	);
 	if (!response.ok) {
