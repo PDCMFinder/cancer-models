@@ -1,7 +1,7 @@
 import Card from "../../Card/Card";
 import styles from "./SearchResult.module.scss";
 import Link from "next/link";
-import { ISearchResult } from "../../../../globalTypes";
+import { SearchResult } from "../../../types/Search.model";
 
 const dataTypes = [
 	{
@@ -36,21 +36,22 @@ const dataTypes = [
 
 interface ISearchResultProps {
 	className?: string;
-	data: ISearchResult;
+	data: SearchResult;
 }
 
 const SearchResult = (props: ISearchResultProps) => {
 	let {
-		patient_age,
-		patient_sex,
-		external_model_id,
-		model_type,
-		data_source,
+		pdcmId,
+		sourceId,
+		datasource,
 		histology,
-		primary_site,
-		collection_site,
-		tumour_type,
-		dataset_available,
+		primarySite,
+		collectionSite,
+		tumourType,
+		dataAvailable,
+		modelType,
+		patientAge,
+		patientSex,
 	} = props.data;
 
 	return (
@@ -60,12 +61,12 @@ const SearchResult = (props: ISearchResultProps) => {
 					<div className="col-12 col-md-6 col-lg-4 d-lg-flex flex-column justify-content-between">
 						<div>
 							<h2 className="h3 m-0">
-								<Link href={`/data/models/${data_source}/${external_model_id}`}>
-									{external_model_id}
+								<Link href={`/data/models/${sourceId}/${pdcmId}`}>
+									{pdcmId}
 								</Link>
 							</h2>
 							<p>
-								<Link href={`/about/provider/${data_source.toLowerCase()}`}>
+								<Link href={`/about/provider/${sourceId?.toLowerCase()}`}>
 									full provider_name
 								</Link>
 							</p>
@@ -78,42 +79,42 @@ const SearchResult = (props: ISearchResultProps) => {
 								<p className="text-capitalize">
 									<span>Model type</span>
 									<br />
-									{model_type}
+									{modelType}
 								</p>
 							</div>
 							<div className="col-6">
 								<p className="text-capitalize">
 									<span>Tumor type</span>
 									<br />
-									{tumour_type}
+									{tumourType}
 								</p>
 							</div>
 							<div className="col-6">
 								<p className="text-capitalize">
 									<span>Primary site</span>
 									<br />
-									{primary_site}
+									{primarySite}
 								</p>
 							</div>
 							<div className="col-6">
 								<p className="text-capitalize">
 									<span>Collection site</span>
 									<br />
-									{collection_site.replaceAll("/", " / ")}
+									{collectionSite?.replaceAll("/", " / ")}
 								</p>
 							</div>
 							<div className="col-6">
 								<p className="text-capitalize">
 									<span>Patient sex</span>
 									<br />
-									{patient_sex}
+									{patientSex}
 								</p>
 							</div>
 							<div className="col-6">
 								<p className="text-capitalize">
 									<span>Patient age</span>
 									<br />
-									{patient_age}
+									{patientAge}
 								</p>
 							</div>
 						</div>
@@ -126,7 +127,7 @@ const SearchResult = (props: ISearchResultProps) => {
 						</p>
 						<div className={`row ${styles.testGrid}`}>
 							{dataTypes.map((dt) => {
-								const hasData = dataset_available?.includes(dt.key),
+								const hasData = dataAvailable?.includes(dt.key),
 									name = dt.name;
 
 								return (
@@ -134,7 +135,7 @@ const SearchResult = (props: ISearchResultProps) => {
 										<p className="mb-0">
 											{hasData ? (
 												<Link
-													href={`/data/models/${data_source}/${external_model_id}#${
+													href={`/data/models/${sourceId}/${pdcmId}#${
 														dt.sectionLink
 															? dt.sectionLink
 															: dt.key.replace(" ", "-")

@@ -1,6 +1,5 @@
 import { ISearchFiltersProps } from "../../../globalTypes";
 import InputAndLabel from "../Input/InputAndLabel";
-import styles from "./SearchFilters.module.scss";
 
 const FACET_EXAMPLE = "facet_example";
 
@@ -30,7 +29,6 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 							label={facetName}
 							placeholder={`E.g. ${filter[FACET_EXAMPLE]}`}
 							labelClassName="hideElement-accessible"
-							className={styles["search_filter-search"]}
 						/>
 					);
 				} else {
@@ -47,10 +45,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 				}
 
 				return (
-					<div
-						className={`w-100 flex-shrink-1 ${styles["search_filter_column"]}`}
-						key={facetName}
-					>
+					<div className="w-100" key={facetName}>
 						<h3 className="p text-bold">{facetName}</h3>
 						<hr className="mb-3 col-lg-8 ml-0" />
 						<div className="overflow-y-scroll" style={{ height: "78%" }}>

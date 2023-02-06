@@ -13,7 +13,7 @@ const SearchFiltersMobile = (props: ISearchFiltersProps) => {
 						buttonClassName="text-family-primary"
 						key={facetSection}
 						id={facetSection}
-						contentClassName="d-lg-flex mb-3"
+						contentClassName="mb-3"
 						content={
 							<SearchFilterContent filterContentData={section.facet_filters} />
 						}

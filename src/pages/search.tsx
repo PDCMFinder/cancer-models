@@ -6,13 +6,24 @@ import SearchResults from "../components/SearchResults/SearchResults";
 import Select from "../components/Input/Select";
 import React, { useState, useEffect } from "react";
 import styles from "./search.module.scss";
-import handleBodyClass from "../utils/handleBodyClass";
 import { useRouter } from "next/router";
 import filterMockData from "../components/SearchFilters/SearchFilterData-mock";
-import resultsMockData from "../components/SearchResults/SearchResultsData-mock";
 import Label from "../components/Input/Label";
 import SearchFilters from "../components/SearchFilters/SearchFilters-mobile";
 import { getModelCount } from "../apis/AggregatedData.api";
+import {
+	IFacetSidebarOperators,
+	IFacetSidebarSelection,
+} from "../types/Facet.model";
+import {
+	getSearchFacets,
+	getSearchParams,
+	getSearchResults,
+	parseSelectedFacetFromUrl,
+	parseOperatorsFromUrl,
+	useQueryParams,
+	getFacetOptions,
+} from "../apis/Search.api";
 import { useQuery } from "react-query";
 
 const sortByOptions = [
@@ -21,23 +32,35 @@ const sortByOptions = [
 		{ text: "Z > A" },
 		{ text: "Amount of data available" },
 	],
-	ADD = "add",
-	REMOVE = "remove",
-	OVERFLOW_HIDDEN = "overflow-hidden";
+	pageSize = 10;
 
 const Search: NextPage = () => {
-	const router = useRouter();
 	const [searchInputContent, setSearchInputContent] = useState<string>("");
 	const [sortBy, setSortBy] = useState(sortByOptions[0].text);
-	const [filtersAreOpen, setFiltersAreOpen] = useState<boolean>(false);
 
-	useEffect(() => {
-		// Load page with filter modal open if url includes ?advancedSearch
-		if (router.query.hasOwnProperty("advancedSearch")) {
-			handleOpenFilters();
-		}
-	}, [router]);
+	let [searchValues, facetsByKey, operatorsByKey] = useQueryParams();
+	let [facetSelection, setFacetSelection] = useState<IFacetSidebarSelection>(
+		{}
+	);
+	let [facetOperators, setFacetOperators] = useState<IFacetSidebarOperators>(
+		{}
+	);
+	let [activePage, setActivePage] = useState<number>(1);
 
+	const searchResultsQuery = useQuery(
+		[
+			"search-results",
+			{ searchValues, facetSelection, facetOperators, pageSize, activePage },
+		],
+		async () =>
+			getSearchResults(
+				searchValues,
+				facetSelection,
+				facetOperators,
+				activePage,
+				pageSize
+			)
+	);
 	let modelCountQuery = useQuery("modelCountQuery", () => {
 		return getModelCount();
 	});
@@ -55,29 +78,6 @@ const Search: NextPage = () => {
 		const { value } = e.target;
 
 		setSortBy(value);
-	};
-
-	const handleToggleFilters = () => {
-		if (filtersAreOpen) {
-			handleCloseFilters();
-		} else {
-			handleOpenFilters();
-		}
-	};
-
-	const handleOpenFilters = () => {
-		handleBodyClass([OVERFLOW_HIDDEN], ADD);
-		setFiltersAreOpen(true);
-	};
-
-	const handleCloseFilters = () => {
-		handleBodyClass([OVERFLOW_HIDDEN], REMOVE);
-		setFiltersAreOpen(false);
-	};
-
-	const handleAdvancedSearch = () => {
-		// handle filter api query here
-		handleCloseFilters();
 	};
 
 	return (
@@ -155,7 +155,12 @@ const Search: NextPage = () => {
 							<SearchFilters filterData={filterMockData} />
 						</div>
 						<div className="col-12 col-lg-9">
-							<SearchResults resultsData={resultsMockData} sortedBy={sortBy} />
+							<SearchResults
+								resultsData={
+									searchResultsQuery.data ? searchResultsQuery.data[1] : []
+								}
+								sortedBy={sortBy}
+							/>
 						</div>
 					</div>
 				</div>
