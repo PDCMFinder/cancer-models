@@ -11,7 +11,7 @@ const SearchResults = (props: ISearchResultsProps) => {
 			{props.resultsData.map((result) => (
 				<div className="row mb-3 mb-md-2" key={result.pdcmId}>
 					<div className="col-12">
-						<SearchResult data={result} className="mb-2 mb-md-0" />
+						<SearchResult data={result} />
 					</div>
 				</div>
 			))}

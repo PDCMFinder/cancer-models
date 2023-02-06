@@ -25,13 +25,15 @@ import {
 } from "../apis/Search.api";
 import { useQuery } from "react-query";
 import Loader from "../components/Loader/Loader";
+import SearchResultsLoader from "../components/SearchResults/SearchResultsLoader";
 
 const sortByOptions = [
-	{ value: "relevance", text: "Relevance" },
-	{ value: "external_model_id.desc", text: "Model Id: A to Z" },
-	{ value: "external_model_id.asc", text: "Model Id: Z to A" },
-	{ value: "amount", text: "Amount of data available" },
-];
+		{ value: "relevance", text: "Relevance" },
+		{ value: "external_model_id.desc", text: "Model Id: A to Z" },
+		{ value: "external_model_id.asc", text: "Model Id: Z to A" },
+		{ value: "amount", text: "Amount of data available" },
+	],
+	resultsPerPage = 10;
 
 const Search: NextPage = () => {
 	const [searchInputContent, setSearchInputContent] = useState<string>("");
@@ -53,7 +55,7 @@ const Search: NextPage = () => {
 				searchValues,
 				facetSelection,
 				facetOperators,
-				undefined,
+				resultsPerPage,
 				activePage,
 				sortBy,
 			},
@@ -64,7 +66,7 @@ const Search: NextPage = () => {
 				facetSelection,
 				facetOperators,
 				activePage,
-				undefined,
+				resultsPerPage,
 				sortBy
 			)
 	);
@@ -144,7 +146,7 @@ const Search: NextPage = () => {
 								</div>
 								<div className="col-12 col-md-6">
 									<div className="d-flex align-center justify-content-md-end">
-										<Label label="Sort by:" name="sortBy" />
+										<Label label="Sort by:" name="sortBy" className="mr-1" />
 										<Select
 											id="sortBy"
 											options={sortByOptions}
@@ -165,7 +167,7 @@ const Search: NextPage = () => {
 							{searchResultsQuery.data ? (
 								<SearchResults resultsData={searchResultsQuery.data[1]} />
 							) : (
-								<Loader />
+								<SearchResultsLoader amount={resultsPerPage} />
 							)}
 						</div>
 					</div>
