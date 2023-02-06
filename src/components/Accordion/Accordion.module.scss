@@ -1,7 +1,7 @@
 button.Accordion_label {
-	background-color: rgba(0, 0, 0, 0.04);
-	transition: 0.3s;
+	border-color: transparent !important;
 	&-active {
-		background-color: rgba(255, 255, 255, 1);
+		background-color: rgba(255, 255, 255, 1) !important;
+		border-color: currentColor !important;
 	}
 }

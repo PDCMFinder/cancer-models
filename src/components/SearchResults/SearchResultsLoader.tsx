@@ -12,7 +12,11 @@ const SearchResultsLoader = (props: ISearchResultsLoaderProps) => {
 	let i = 0;
 	while (i <= props.amount) {
 		results.push(
-			<Card key={i} className={`mb-3 mb-md-2 ${styles.SearchResultSkeleton}`}>
+			<Card
+				key={i}
+				contentClassName="h-100"
+				className={`mb-3 mb-md-2 ${styles.SearchResultSkeleton}`}
+			>
 				<Loader />
 			</Card>
 		);

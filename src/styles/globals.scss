@@ -302,13 +302,17 @@ a {
 		padding: 0 !important;
 	}
 	&y {
-		&-5 {
-			padding-top: $spacing-5 !important;
-			padding-bottom: $spacing-5 !important;
-		}
 		&-0 {
 			padding-top: 0 !important;
 			padding-bottom: 0 !important;
+		}
+		&-3 {
+			padding-top: $spacing-3 !important;
+			padding-bottom: $spacing-3 !important;
+		}
+		&-5 {
+			padding-top: $spacing-5 !important;
+			padding-bottom: $spacing-5 !important;
 		}
 	}
 	&b {
@@ -320,6 +324,10 @@ a {
 		&-1 {
 			padding-left: $spacing-1 !important;
 			padding-right: $spacing-1 !important;
+		}
+		&-2 {
+			padding-left: $spacing-2 !important;
+			padding-right: $spacing-2 !important;
 		}
 	}
 	&l {
@@ -436,6 +444,12 @@ textarea {
 	}
 	&-white {
 		background-color: $color-white !important;
+	}
+	&-lightGray {
+		background-color: $color-lightGray !important;
+	}
+	&-gray {
+		background-color: $color-gray !important;
 	}
 }
 .bc {

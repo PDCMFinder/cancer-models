@@ -94,7 +94,7 @@ const Search: NextPage = () => {
 			<header className={`py-5 ${styles.Search_header}`}>
 				<div className="container">
 					<div className="row">
-						<div className="col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-3">
+						<div className="col-12">
 							<h1 className="h2 text-white text-center mt-0">
 								Search over{" "}
 								{
@@ -104,6 +104,10 @@ const Search: NextPage = () => {
 								}{" "}
 								cancer models
 							</h1>
+						</div>
+					</div>
+					<div className="row">
+						<div className="col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-3">
 							<Form>
 								<InputAndLabel
 									label={`Search over ${

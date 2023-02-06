@@ -5,12 +5,6 @@ const FACET_EXAMPLE = "facet_example";
 
 interface ISearchFilterContentProps {
 	filterContentData: ISearchFiltersProps["filterData"][0]["facet_filters"];
-	// filterContent: {
-	// 	facet_name: string;
-	// 	facet_column: string;
-	// 	facet_options: string[];
-	// 	facet_example?: string;
-	// }[];
 }
 
 const SearchFilterContent = (props: ISearchFilterContentProps) => {
@@ -46,11 +40,9 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 
 				return (
 					<div className="w-100" key={facetName}>
-						<h3 className="p text-bold">{facetName}</h3>
-						<hr className="mb-3 col-lg-8 ml-0" />
-						<div className="overflow-y-scroll" style={{ height: "78%" }}>
-							{filterContent}
-						</div>
+						<h3 className="mb-1 p text-bold">{facetName}</h3>
+						<hr />
+						{filterContent}
 					</div>
 				);
 			})}
