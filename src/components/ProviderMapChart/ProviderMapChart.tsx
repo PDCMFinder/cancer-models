@@ -3,19 +3,19 @@ import { memo } from "react";
 import GeoMapWithMarkers from "./GeoMapWithMarkers";
 import { BasicTooltip } from "@nivo/tooltip";
 
-const MapTooltip = memo(({ datum }: { datum: any }) => {
-	if (datum === undefined || datum.data === undefined) return null;
-	console.log(datum);
+// const MapTooltip = memo(({ datum }: { datum: any }) => {
+// 	if (datum === undefined || datum.data === undefined) return null;
+// 	console.log(datum);
 
-	return (
-		<BasicTooltip
-			id={datum.label}
-			color={datum.color}
-			enableChip={true}
-			value={datum.formattedValue}
-		/>
-	);
-});
+// 	return (
+// 		<BasicTooltip
+// 			id={datum.label}
+// 			color={datum.color}
+// 			enableChip={true}
+// 			value={datum.formattedValue}
+// 		/>
+// 	);
+// });
 
 const ProviderMapChart = (props: any) => {
 	return (
@@ -31,7 +31,6 @@ const ProviderMapChart = (props: any) => {
 					width={width}
 					height={height}
 					{...props}
-					tooltip={MapTooltip}
 				/>
 			)}
 		</ResponsiveWrapper>
