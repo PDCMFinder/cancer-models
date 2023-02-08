@@ -74,9 +74,11 @@ build_dev_image:
   artifacts:
     paths:
       - "$MOUNT_POINT/"
-  only:
-    refs:
-      - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: manual
 
 deploy-HX-WP-WEBADMIN-dev:
   stage: deploy-dev
@@ -98,6 +100,8 @@ deploy-HX-WP-WEBADMIN-dev:
       fi
     - kubectl rollout status -f k8s-deploy/dev/deployment.yml
     - kubectl get pods,service,deploy,replicaset,ing
-  only:
-    refs:
-      - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: manual
