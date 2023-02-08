@@ -456,6 +456,9 @@ textarea {
 	&-primary-quaternary {
 		border-color: $color-primary-quaternary !important;
 	}
+	&-transparent {
+		border-color: transparent !important;
+	}
 }
 section {
 	padding: $spacing-5 0;

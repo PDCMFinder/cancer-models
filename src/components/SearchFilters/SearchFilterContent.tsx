@@ -1,35 +1,39 @@
-import { ISearchFiltersProps } from "../../../globalTypes";
 import InputAndLabel from "../Input/InputAndLabel";
-
-const FACET_EXAMPLE = "facet_example";
+import { IFacetProps } from "../../types/Facet.model";
+import { sortObjArrBy } from "../../utils/sortArrBy";
 
 interface ISearchFilterContentProps {
-	filterContentData: ISearchFiltersProps["filterData"][0]["facet_filters"];
+	data: IFacetProps[];
 }
 
 const SearchFilterContent = (props: ISearchFilterContentProps) => {
 	return (
 		<>
-			{props.filterContentData.map((filter) => {
-				let filterContent = null,
-					facetName = filter.facet_name;
+			{props.data.map((facet: IFacetProps) => {
+				let facetContent = null,
+					facetName = facet.name,
+					facetType = facet.type;
 
-				if (filter.hasOwnProperty(FACET_EXAMPLE)) {
+				const facetOptionsOrder = ["not specified", "not collected", "other"];
+				sortObjArrBy(facet.options, facetOptionsOrder, undefined, false, true);
+
+				// TODO: Create component for multivalued
+				if (facetType === "autocomplete" || facetType === "multivalued") {
 					// Create search input
-					filterContent = (
+					facetContent = (
 						<InputAndLabel
 							name={facetName}
 							type="search"
 							label={facetName}
-							placeholder={`E.g. ${filter[FACET_EXAMPLE]}`}
+							placeholder={`E.g. ${facet.placeholder}`}
 							labelClassName="hideElement-accessible"
 						/>
 					);
 				} else {
 					// Create checkbox per option
-					filterContent = (
+					facetContent = (
 						<ul className="ul-noStyle m-0">
-							{filter.facet_options.map((option) => (
+							{facet.options.map((option) => (
 								<li key={option}>
 									<InputAndLabel name={option} type="checkbox" label={option} />
 								</li>
@@ -39,10 +43,10 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 				}
 
 				return (
-					<div className="w-100" key={facetName}>
+					<div className="w-100 text-capitalize" key={facetName}>
 						<h3 className="mb-1 p text-bold">{facetName}</h3>
 						<hr />
-						{filterContent}
+						{facetContent}
 					</div>
 				);
 			})}

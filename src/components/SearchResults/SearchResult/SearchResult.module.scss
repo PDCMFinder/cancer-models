@@ -1,4 +1,5 @@
 @import "../../../styles/vars";
+@import "../../../styles/mixins";
 
 .SearchResult {
 	background-color: $color-white;
@@ -23,7 +24,9 @@
 		line-height: 1.2;
 	}
 	&_availableData_title {
-		width: 80%;
+		@include mediaOver("md") {
+			width: 80%;
+		}
 	}
 }
 .dataAvailable_grid {

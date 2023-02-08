@@ -1,25 +1,44 @@
 import Accordion from "../Accordion/Accordion";
-import { ISearchFiltersProps } from "../../../globalTypes";
 import SearchFilterContent from "./SearchFilterContent";
 import Card from "../Card/Card";
+import { IFacetSectionProps } from "../../types/Facet.model";
+import { sortObjArrBy } from "../../utils/sortArrBy";
+import { useEffect, useState } from "react";
 
-const SearchFiltersMobile = (props: ISearchFiltersProps) => {
+interface ISearchFilters {
+	data: IFacetSectionProps[];
+}
+
+const SearchFiltersMobile = (props: ISearchFilters) => {
+	const [filterData, setFilterData] = useState<any>(props.data);
+
+	useEffect(() => {
+		setFilterData(
+			sortObjArrBy(filterData, ["model", "patient_tumour"], "key", true)
+		);
+	}, [props.data]);
+
 	return (
-		<Card className="bg-lightGray" contentClassName="py-3 px-2">
-			{props.filterData.map((section) => {
-				let facetSection = section.facet_section;
-				let open = facetSection === "model" ? true : false;
+		<Card className="bg-lightGray bc-transparent" contentClassName="py-3 px-2">
+			{filterData.map((facet: IFacetSectionProps) => {
+				let facetKey = facet.key,
+					facets = facet.facets,
+					isModelFacet = facetKey === "model";
+
+				// Order facets
+				if (isModelFacet) {
+					const modelFacetOrder = ["model_type"];
+					sortObjArrBy(facets, modelFacetOrder, "facetId");
+				}
 
 				return (
 					<Accordion
 						buttonClassName="bg-gray"
-						key={facetSection}
-						id={facetSection}
+						key={facetKey}
+						id={facet.name}
 						contentClassName="mb-3"
-						open={open}
-						content={
-							<SearchFilterContent filterContentData={section.facet_filters} />
-						}
+						open={isModelFacet}
+						content={<SearchFilterContent data={facets} />}
 					/>
 				);
 			})}

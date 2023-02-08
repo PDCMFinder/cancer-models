@@ -23,15 +23,17 @@ import {
 	useQueryParams,
 	getFacetOptions,
 } from "../apis/Search.api";
-import { useQuery } from "react-query";
+import { useQueries, useQuery } from "react-query";
 import Loader from "../components/Loader/Loader";
 import SearchResultsLoader from "../components/SearchResults/SearchResultsLoader";
 
 const sortByOptions = [
-		{ value: "relevance", text: "Relevance" },
+		{
+			value: "model_dataset_type_count.desc",
+			text: "Amount of data available",
+		},
 		{ value: "external_model_id.asc", text: "Model Id: A to Z" },
 		{ value: "external_model_id.desc", text: "Model Id: Z to A" },
-		{ value: "amount", text: "Amount of data available" },
 	],
 	resultsPerPage = 10;
 
@@ -70,6 +72,59 @@ const Search: NextPage = () => {
 				sortBy
 			)
 	);
+	const searchFacetSectionsQuery = useQuery("search-facet-sections", () =>
+		getSearchFacets()
+	);
+	const searchFacetSections = searchFacetSectionsQuery.data;
+	const searchFacetQueries = useQueries(
+		searchFacetSections
+			? searchFacetSections
+					.flatMap((facetSection) => facetSection.facets)
+					.map((facet) => {
+						const fn = () => getFacetOptions(facet?.facetId || "");
+						return {
+							queryKey: ["facet", facet?.facetId],
+							queryFn: ["multivalued", "autocomplete"].includes(
+								facet?.type || ""
+							)
+								? () => []
+								: fn,
+						};
+					})
+			: []
+	);
+	searchFacetSections
+		?.flatMap((facetSection) => facetSection.facets)
+		.forEach((facet, index) => {
+			if (
+				facet &&
+				!searchFacetQueries[index].isLoading &&
+				!searchFacetQueries[index].isError &&
+				searchFacetQueries[index].data
+			) {
+				facet.options = searchFacetQueries[index].data || [];
+			} else if (facet && searchFacetQueries[index].isLoading) {
+				facet.loading = true;
+			}
+		});
+	if (
+		!searchFacetSectionsQuery.isLoading &&
+		Object.keys(facetsByKey).length > 0 &&
+		Object.keys(facetSelection).length === 0 &&
+		searchFacetQueries.every((query) => !query.isLoading)
+	) {
+		setFacetSelection(parseSelectedFacetFromUrl(facetsByKey));
+	}
+
+	if (
+		!searchFacetSectionsQuery.isLoading &&
+		Object.keys(operatorsByKey).length > 0 &&
+		Object.keys(facetOperators).length === 0 &&
+		searchFacetQueries.every((query) => !query.isLoading)
+	) {
+		setFacetOperators(parseOperatorsFromUrl(operatorsByKey));
+	}
+
 	let modelCountQuery = useQuery("modelCountQuery", () => {
 		return getModelCount();
 	});
@@ -83,7 +138,7 @@ const Search: NextPage = () => {
 		setSearchInputContent(value);
 	};
 
-	const handleSortBy = (e: React.ChangeEvent<HTMLSelectElement>) => {
+	const onSortByChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const { value } = e.target;
 
 		setSortBy(value);
@@ -155,7 +210,7 @@ const Search: NextPage = () => {
 											id="sortBy"
 											options={sortByOptions}
 											className="w-auto mb-0"
-											onChange={handleSortBy}
+											onChange={onSortByChange}
 										/>
 									</div>
 								</div>
@@ -165,11 +220,15 @@ const Search: NextPage = () => {
 					<div className="row">
 						<div className="col-12 col-lg-3">
 							<h3 className="mt-0">Filters</h3>
-							<SearchFilters filterData={filterMockData} />
+							{searchFacetSectionsQuery.data ? (
+								<SearchFilters data={searchFacetSectionsQuery.data} />
+							) : (
+								<Loader style={{ height: "auto !important" }} />
+							)}
 						</div>
 						<div className="col-12 col-lg-9">
 							{searchResultsQuery.data ? (
-								<SearchResults resultsData={searchResultsQuery.data[1]} />
+								<SearchResults data={searchResultsQuery.data[1]} />
 							) : (
 								<SearchResultsLoader amount={resultsPerPage} />
 							)}

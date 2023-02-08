@@ -24,7 +24,7 @@ interface IButtonProps {
 const Button = (props: IButtonProps) => {
 	const [arrowDirection, setArrowDirection] = useState<
 		IArrowIconProps["direction"]
-	>(props.arrowDirection ?? RIGHT);
+	>(props.arrowDirection ?? DOWN);
 
 	let href = props.href,
 		children = props.children,
@@ -43,7 +43,9 @@ const Button = (props: IButtonProps) => {
 		if (props.onClick) props.onClick();
 		if (showArrow) {
 			if (arrowDirection === DOWN) {
-				setArrowDirection(props.arrowDirection ?? RIGHT);
+				setArrowDirection(RIGHT);
+			} else if (arrowDirection === RIGHT) {
+				setArrowDirection(DOWN);
 			} else {
 				setArrowDirection(DOWN);
 			}

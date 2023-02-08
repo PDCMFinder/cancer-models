@@ -33,11 +33,15 @@ export async function getSearchFacets(
 	noOptions = false
 ): Promise<Array<IFacetSectionProps>> {
 	let response = await fetch(
-		`${API_URL}/search_facet?facet_section=neq.search&${"&select=facet_section,facet_column,facet_name,facet_example"}`
+		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example`
 	);
 
 	const sections: any = {
-		model: { key: "model", name: "Model", facets: [] },
+		model: {
+			key: "model",
+			name: "Model",
+			facets: [],
+		},
 		molecular_data: {
 			key: "molecular_data",
 			name: "Molecular Data",

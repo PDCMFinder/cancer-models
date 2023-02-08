@@ -54,6 +54,15 @@ const SearchResult = (props: ISearchResultProps) => {
 		patientSex,
 	} = props.data;
 
+	const metadata = [
+		{ name: "Model Type", data: modelType },
+		{ name: "Tumor Type", data: tumourType },
+		{ name: "Primary Site", data: primarySite },
+		{ name: "Collection Site", data: collectionSite },
+		{ name: "Patient Sex", data: patientSex },
+		{ name: "Patient Age", data: patientAge },
+	];
+
 	const modelLink = `/data/models/${sourceId}/${pdcmId}`;
 
 	return (
@@ -77,48 +86,22 @@ const SearchResult = (props: ISearchResultProps) => {
 					</div>
 					<div className="col-12 col-md-6 col-lg-4 mt-3 mt-md-0">
 						<div className={`row ${styles.SearchResult_metadata}`}>
-							<div className="col-6">
-								<p className="text-capitalize">
-									<span>Model type</span>
-									<br />
-									{modelType}
-								</p>
-							</div>
-							<div className="col-6">
-								<p className="text-capitalize">
-									<span>Tumor type</span>
-									<br />
-									{tumourType}
-								</p>
-							</div>
-							<div className="col-6">
-								<p className="text-capitalize">
-									<span>Primary site</span>
-									<br />
-									{primarySite}
-								</p>
-							</div>
-							<div className="col-6">
-								<p className="text-capitalize">
-									<span>Collection site</span>
-									<br />
-									{collectionSite.replaceAll("/", " / ")}
-								</p>
-							</div>
-							<div className="col-6">
-								<p className="text-capitalize">
-									<span>Patient sex</span>
-									<br />
-									{patientSex}
-								</p>
-							</div>
-							<div className="col-6">
-								<p className="text-capitalize">
-									<span>Patient age</span>
-									<br />
-									{patientAge}
-								</p>
-							</div>
+							{metadata.map((data) => {
+								data.data =
+									typeof data.data === "string"
+										? data.data.replace("/", " / ")
+										: data.data ?? "NA";
+
+								return (
+									<div className="col-6" key={data.name}>
+										<p className="text-capitalize">
+											<span>{data.name}</span>
+											<br />
+											{data.data}
+										</p>
+									</div>
+								);
+							})}
 						</div>
 					</div>
 					<div className="col-12 col-md-12 col-lg-4 mt-3 mt-lg-0">
