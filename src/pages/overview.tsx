@@ -193,7 +193,7 @@ const Overview: NextPage = () => {
 					<div className="row">
 						<div className="col-12 col-md-6">
 							<div className="text-center">
-								<h3>Models by anatomical system / diagnosis</h3>
+								<h3>Models by anatomical system & diagnosis</h3>
 							</div>
 							<div style={{ height: "600px" }}>
 								<SunBurstChart
