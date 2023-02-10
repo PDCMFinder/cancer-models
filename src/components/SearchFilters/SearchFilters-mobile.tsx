@@ -1,14 +1,27 @@
 import Accordion from "../Accordion/Accordion";
 import SearchFilterContent from "./SearchFilterContent";
 import Card from "../Card/Card";
-import { IFacetSectionProps } from "../../types/Facet.model";
+import {
+	IFacetSidebarOperators,
+	IFacetSidebarSelection,
+	IFacetSectionProps,
+} from "../../types/Facet.model";
 import { sortObjArrBy } from "../../utils/sortArrBy";
 import { useEffect, useState } from "react";
 
 interface ISearchFilters {
 	data: IFacetSectionProps[];
+	facetSelection: IFacetSidebarSelection;
+	facetOperators: IFacetSidebarOperators;
+	onFilterChange: (
+		section: string,
+		facet: any,
+		options: any,
+		operator: any
+	) => void;
 }
 
+// AKA <FacetSection/>
 const SearchFiltersMobile = (props: ISearchFilters) => {
 	const [filterData, setFilterData] = useState<any>(props.data);
 
@@ -38,7 +51,14 @@ const SearchFiltersMobile = (props: ISearchFilters) => {
 						id={facet.name}
 						contentClassName="mb-3"
 						open={isModelFacet}
-						content={<SearchFilterContent data={facets} />}
+						content={
+							<SearchFilterContent
+								onFilterChange={props.onFilterChange}
+								data={facets}
+								facet={facet}
+								facetSelection={props.facetSelection}
+							/>
+						}
 					/>
 				);
 			})}

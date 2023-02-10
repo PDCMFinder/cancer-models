@@ -76,8 +76,8 @@ const SearchResult = (props: ISearchResultProps) => {
 							</h2>
 							<p className="text-capitalize">
 								<Link href={`/about/provider/${sourceId?.toLowerCase()}`}>
-									{`${providerName.substring(0, 50)}${
-										providerName.length > 50 ? "..." : ""
+									{`${providerName?.substring(0, 50)}${
+										providerName?.length > 50 ? "..." : ""
 									}`}
 								</Link>
 							</p>

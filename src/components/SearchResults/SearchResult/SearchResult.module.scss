@@ -4,6 +4,11 @@
 .SearchResult {
 	background-color: $color-white;
 	transition: color 0.05s, background-color 0.4s;
+	h2 {
+		a {
+			color: $color-primary-primary;
+		}
+	}
 	a {
 		color: #426a8e;
 		&:hover {

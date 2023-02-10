@@ -49,11 +49,7 @@ export interface IInputProps {
 	placeholder?: string;
 	className?: string;
 	value?: string;
-	onChange?: (
-		e:
-			| React.ChangeEvent<HTMLInputElement>
-			| React.ChangeEvent<HTMLTextAreaElement>
-	) => void;
+	onChange?: function;
 }
 
 export interface IArrowIconProps {

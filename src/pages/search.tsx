@@ -6,18 +6,18 @@ import SearchResults from "../components/SearchResults/SearchResults";
 import Select from "../components/Input/Select";
 import React, { useState } from "react";
 import styles from "./search.module.scss";
-import filterMockData from "../components/SearchFilters/SearchFilterData-mock";
 import Label from "../components/Input/Label";
 import SearchFilters from "../components/SearchFilters/SearchFilters-mobile";
 import { getModelCount } from "../apis/AggregatedData.api";
 import {
+	IFacetSectionSelection,
 	IFacetSidebarOperators,
 	IFacetSidebarSelection,
 } from "../types/Facet.model";
 import {
 	getSearchFacets,
-	getSearchParams,
 	getSearchResults,
+	getSearchParams,
 	parseSelectedFacetFromUrl,
 	parseOperatorsFromUrl,
 	useQueryParams,
@@ -26,6 +26,8 @@ import {
 import { useQueries, useQuery } from "react-query";
 import Loader from "../components/Loader/Loader";
 import SearchResultsLoader from "../components/SearchResults/SearchResultsLoader";
+import Pagination from "../components/Pagination/Pagination";
+import { useRouter } from "next/router";
 
 const sortByOptions = [
 		{
@@ -38,6 +40,7 @@ const sortByOptions = [
 	resultsPerPage = 10;
 
 const Search: NextPage = () => {
+	const router = useRouter();
 	const [searchInputContent, setSearchInputContent] = useState<string>("");
 	const [sortBy, setSortBy] = useState(sortByOptions[0].value);
 
@@ -48,7 +51,7 @@ const Search: NextPage = () => {
 	let [facetOperators, setFacetOperators] = useState<IFacetSidebarOperators>(
 		{}
 	);
-	let [activePage, setActivePage] = useState<number>(1);
+	let [currentPage, setCurrentPage] = useState<number>(1);
 
 	const searchResultsQuery = useQuery(
 		[
@@ -58,7 +61,7 @@ const Search: NextPage = () => {
 				facetSelection,
 				facetOperators,
 				resultsPerPage,
-				activePage,
+				currentPage,
 				sortBy,
 			},
 		],
@@ -67,7 +70,7 @@ const Search: NextPage = () => {
 				searchValues,
 				facetSelection,
 				facetOperators,
-				activePage,
+				currentPage,
 				resultsPerPage,
 				sortBy
 			)
@@ -128,6 +131,7 @@ const Search: NextPage = () => {
 	let modelCountQuery = useQuery("modelCountQuery", () => {
 		return getModelCount();
 	});
+	let totalResults = searchResultsQuery.data ? searchResultsQuery.data[0] : 1;
 
 	const handleSearchChange = (
 		e:
@@ -138,10 +142,27 @@ const Search: NextPage = () => {
 		setSearchInputContent(value);
 	};
 
+	const updateSearchParams = (
+		searchValues: string[],
+		facetSelection: any,
+		facetOperators: any
+	) => {
+		setCurrentPage(1);
+		router.push({
+			pathname: "",
+			search: getSearchParams(searchValues, facetSelection, facetOperators),
+		});
+	};
+
 	const onSortByChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const { value } = e.target;
 
 		setSortBy(value);
+	};
+
+	const handlePageChange = (page: number) => {
+		setCurrentPage(page);
+		window.scrollTo(0, 350);
 	};
 
 	return (
@@ -201,7 +222,18 @@ const Search: NextPage = () => {
 						<div className="col-12 col-lg-9 offset-lg-3">
 							<div className="row mb-3 align-center">
 								<div className="col-12 col-md-6">
-									<p className="mb-md-0">Showing 1 to 12 of 510 results</p>
+									<p className="mb-md-0">
+										{searchResultsQuery.data
+											? `Showing ${(currentPage - 1) * resultsPerPage + 1} to 
+										${
+											totalResults <
+											(currentPage - 1) * resultsPerPage + resultsPerPage
+												? totalResults
+												: (currentPage - 1) * resultsPerPage + resultsPerPage
+										} 
+										of ${totalResults} results`
+											: null}
+									</p>
 								</div>
 								<div className="col-12 col-md-6">
 									<div className="d-flex align-center justify-content-md-end">
@@ -221,17 +253,88 @@ const Search: NextPage = () => {
 						<div className="col-12 col-lg-3">
 							<h3 className="mt-0">Filters</h3>
 							{searchFacetSectionsQuery.data ? (
-								<SearchFilters data={searchFacetSectionsQuery.data} />
+								<SearchFilters
+									data={searchFacetSectionsQuery.data}
+									facetSelection={facetSelection}
+									facetOperators={facetOperators}
+									onFilterChange={(
+										section: string,
+										facet: any,
+										options: any,
+										operator: any
+									) => {
+										// onSelectionChange
+										let newSelection = {
+											...facetSelection,
+											[section]: {
+												...facetSelection[section],
+												[facet]: options,
+											},
+										};
+										const newOperators = {
+											...facetOperators,
+											[section]: {
+												...facetOperators[section],
+												[facet]: operator,
+											},
+										};
+										newSelection = deleteEmptyFacetSelection(newSelection);
+
+										function deleteEmptyFacetSelection(
+											facetSelection: any
+										): any {
+											const newFacetSelection: IFacetSectionSelection = {};
+											Object.keys(facetSelection).forEach((sectionKey) => {
+												const section = facetSelection[sectionKey];
+												const newSection: any = {};
+												Object.keys(section).forEach((facetKey) => {
+													const facet = section[facetKey];
+													if (facet.length > 0) {
+														newSection[facetKey] = facet;
+													}
+												});
+												if (Object.keys(newSection).length > 0) {
+													newFacetSelection[sectionKey] = newSection;
+												}
+											});
+											return newFacetSelection;
+										}
+
+										// onFacetSidebarChange
+										setFacetSelection(newSelection);
+										setFacetOperators(newOperators);
+										updateSearchParams(
+											searchValues,
+											facetSelection,
+											facetOperators
+										);
+									}}
+								/>
 							) : (
 								<Loader style={{ height: "auto !important" }} />
 							)}
 						</div>
 						<div className="col-12 col-lg-9">
-							{searchResultsQuery.data ? (
-								<SearchResults data={searchResultsQuery.data[1]} />
-							) : (
-								<SearchResultsLoader amount={resultsPerPage} />
-							)}
+							<div className="row">
+								<div className="col-12">
+									{searchResultsQuery.data ? (
+										<SearchResults data={searchResultsQuery.data[1]} />
+									) : (
+										<SearchResultsLoader amount={resultsPerPage} />
+									)}
+								</div>
+								<div className="col-12">
+									<Pagination
+										totalPages={
+											totalResults !== 0
+												? Math.ceil(totalResults / resultsPerPage)
+												: 1
+										}
+										currentPage={currentPage}
+										onPageChange={handlePageChange}
+									/>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

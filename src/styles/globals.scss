@@ -411,10 +411,11 @@ textarea,
 select {
 	width: 100%;
 	border: 1px solid $color-primary-tertiary;
-	padding: 1rem;
+	padding: 0.8rem;
 	margin-bottom: $spacing-2;
 	max-width: 100%;
 	transition: 0.3s;
+	line-height: 1;
 	&:hover {
 		background-color: $color-focused-light;
 	}
