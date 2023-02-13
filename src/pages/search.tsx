@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import Button from "../components/Button/Button";
 import Form from "../components/Form/Form";
 import InputAndLabel from "../components/Input/InputAndLabel";
 import SearchResults from "../components/SearchResults/SearchResults";
@@ -142,26 +141,12 @@ const Search: NextPage = () => {
 		setSearchInputContent(value);
 	};
 
-	const updateSearchParams = (
-		searchValues: string[],
-		facetSelection: any,
-		facetOperators: any
-	) => {
+	const updateSearchParams = (facetSelection: any, facetOperators: any) => {
 		setCurrentPage(1);
 		router.push({
 			pathname: "",
 			search: getSearchParams(searchValues, facetSelection, facetOperators),
 		});
-	};
-
-	const onSortByChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		const { value } = e.target;
-
-		setSortBy(value);
-	};
-
-	const handlePageChange = (page: number) => {
-		setCurrentPage(page);
 		window.scrollTo(0, 350);
 	};
 
@@ -199,7 +184,7 @@ const Search: NextPage = () => {
 									onChange={handleSearchChange}
 									value={searchInputContent}
 								/>
-								<div className="text-right">
+								{/* <div className="text-right">
 									{searchInputContent && (
 										<Button
 											priority="secondary"
@@ -210,7 +195,7 @@ const Search: NextPage = () => {
 											Clear
 										</Button>
 									)}
-								</div>
+								</div> */}
 							</Form>
 						</div>
 					</div>
@@ -242,7 +227,9 @@ const Search: NextPage = () => {
 											id="sortBy"
 											options={sortByOptions}
 											className="w-auto mb-0"
-											onChange={onSortByChange}
+											onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+												setSortBy(e.target.value)
+											}
 										/>
 									</div>
 								</div>
@@ -260,7 +247,7 @@ const Search: NextPage = () => {
 									onFilterChange={(
 										section: string,
 										facet: any,
-										options: any,
+										options: string[],
 										operator: any
 									) => {
 										// onSelectionChange
@@ -299,15 +286,10 @@ const Search: NextPage = () => {
 											});
 											return newFacetSelection;
 										}
-
 										// onFacetSidebarChange
 										setFacetSelection(newSelection);
 										setFacetOperators(newOperators);
-										updateSearchParams(
-											searchValues,
-											facetSelection,
-											facetOperators
-										);
+										updateSearchParams(newSelection, newOperators);
 									}}
 								/>
 							) : (
@@ -331,7 +313,10 @@ const Search: NextPage = () => {
 												: 1
 										}
 										currentPage={currentPage}
-										onPageChange={handlePageChange}
+										onPageChange={(page: number) => {
+											setCurrentPage(page);
+											window.scrollTo(0, 350);
+										}}
 									/>
 								</div>
 							</div>

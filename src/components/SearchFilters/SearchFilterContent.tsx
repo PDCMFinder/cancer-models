@@ -1,11 +1,8 @@
 import InputAndLabel from "../Input/InputAndLabel";
-import { IFacetProps, IFacetSectionSelection } from "../../types/Facet.model";
+import { IFacetProps } from "../../types/Facet.model";
 import { sortObjArrBy } from "../../utils/sortArrBy";
 import Select from "../Input/Select";
-import {
-	IFacetSidebarOperators,
-	IFacetSidebarSelection,
-} from "../../types/Facet.model";
+import { IFacetSidebarSelection } from "../../types/Facet.model";
 
 interface ISearchFilterContentProps {
 	data: IFacetProps[];
@@ -14,7 +11,7 @@ interface ISearchFilterContentProps {
 	onFilterChange: (
 		section: string,
 		facet: any,
-		options: any,
+		options: string[],
 		operator: any
 	) => void;
 }
@@ -26,9 +23,11 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 				let facetContent = null,
 					facetName = facet.name,
 					facetType = facet.type,
+					selectedFacetObj =
+						props.facetSelection && props.facetSelection[props.facet.key],
 					selection =
-						props.facetSelection && props.facetSelection[facet.facetId]
-							? props.facetSelection[facet.facetId]
+						selectedFacetObj && selectedFacetObj[facet.facetId]
+							? selectedFacetObj[facet.facetId]
 							: ([] as string[]);
 
 				const facetOptionsOrder = ["not specified", "not collected", "other"];
@@ -44,18 +43,6 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 							label={facetName}
 							placeholder={`E.g. ${facet.placeholder}`}
 							labelClassName="hideElement-accessible"
-							onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-								// let newSelection = [...selection];
-								// if (e.target.checked) {
-								// 	newSelection.push(facetName);
-								// } else {
-								// 	newSelection = newSelection.filter(
-								// 		(selectedKey: string) => selectedKey !== facetName
-								// 	);
-								// }
-								console.log(facet);
-								// props.onFilterChange(newSelection, newSelection);
-							}}
 						/>
 					);
 				} else {
@@ -84,28 +71,21 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 											onChange={(
 												e: React.ChangeEvent<HTMLInputElement>
 											): void => {
-												// let newSelection = [...selection];
-												// if (e.target.checked) {
-												// 	newSelection.push(facetName);
-												// } else {
-												// 	newSelection = newSelection.filter(
-												// 		(selectedKey: string) => selectedKey !== facetName
-												// 	);
-												// }
-												console.log({ facet });
-												console.log({ propsFacet: props.facet });
-												console.log({ option });
+												let newSelection = [...selection];
+												if (e.target.checked) {
+													newSelection.push(option);
+												} else {
+													newSelection = newSelection.filter(
+														(selectedKey) => selectedKey !== option
+													);
+												}
+
 												props.onFilterChange(
 													props.facet.key,
 													facet.facetId,
-													[option],
+													newSelection,
 													undefined
 												);
-
-												// facet: "dataset_available";
-												// operator: undefined;
-												// options: ["copy number alteration"];
-												// section: "model";
 											}}
 										/>
 									</li>
