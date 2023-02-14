@@ -43,14 +43,14 @@ const Search: NextPage = () => {
 	const [searchInputContent, setSearchInputContent] = useState<string>("");
 	const [sortBy, setSortBy] = useState(sortByOptions[0].value);
 
-	let [searchValues, facetsByKey, operatorsByKey] = useQueryParams();
-	let [facetSelection, setFacetSelection] = useState<IFacetSidebarSelection>(
+	const [searchValues, facetsByKey, operatorsByKey] = useQueryParams();
+	const [facetSelection, setFacetSelection] = useState<IFacetSidebarSelection>(
 		{}
 	);
-	let [facetOperators, setFacetOperators] = useState<IFacetSidebarOperators>(
+	const [facetOperators, setFacetOperators] = useState<IFacetSidebarOperators>(
 		{}
 	);
-	let [currentPage, setCurrentPage] = useState<number>(1);
+	const [currentPage, setCurrentPage] = useState<number>(1);
 
 	const searchResultsQuery = useQuery(
 		[
@@ -141,13 +141,16 @@ const Search: NextPage = () => {
 		setSearchInputContent(value);
 	};
 
-	const updateSearchParams = (facetSelection: any, facetOperators: any) => {
+	const updateSearchParams = (
+		searchValues: string[],
+		facetSelection: any,
+		facetOperators: any
+	) => {
 		setCurrentPage(1);
 		router.push({
 			pathname: "",
 			search: getSearchParams(searchValues, facetSelection, facetOperators),
 		});
-		window.scrollTo(0, 350);
 	};
 
 	return (
@@ -246,9 +249,9 @@ const Search: NextPage = () => {
 									facetOperators={facetOperators}
 									onFilterChange={(
 										section: string,
-										facet: any,
+										facet: string,
 										options: string[],
-										operator: any
+										operator: string
 									) => {
 										// onSelectionChange
 										let newSelection = {
@@ -268,11 +271,11 @@ const Search: NextPage = () => {
 										newSelection = deleteEmptyFacetSelection(newSelection);
 
 										function deleteEmptyFacetSelection(
-											facetSelection: any
+											propFacetSelection: any
 										): any {
 											const newFacetSelection: IFacetSectionSelection = {};
-											Object.keys(facetSelection).forEach((sectionKey) => {
-												const section = facetSelection[sectionKey];
+											Object.keys(propFacetSelection).forEach((sectionKey) => {
+												const section = propFacetSelection[sectionKey];
 												const newSection: any = {};
 												Object.keys(section).forEach((facetKey) => {
 													const facet = section[facetKey];
@@ -286,10 +289,15 @@ const Search: NextPage = () => {
 											});
 											return newFacetSelection;
 										}
+
 										// onFacetSidebarChange
 										setFacetSelection(newSelection);
 										setFacetOperators(newOperators);
-										updateSearchParams(newSelection, newOperators);
+										updateSearchParams(
+											searchValues,
+											newSelection,
+											newOperators
+										);
 									}}
 								/>
 							) : (
