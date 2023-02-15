@@ -6,27 +6,6 @@ import html from "remark-html";
 
 const providerDirectory = path.join(process.cwd(), "./public/static/providers");
 
-export const getAllProvidersBasics = async () => {
-	const providersFiles = fs.readdirSync(providerDirectory);
-
-	return providersFiles.map((providerFile: string) => {
-		const fullPath = path.join(providerDirectory, `/${providerFile}`);
-		const fileContents = fs.readFileSync(fullPath, "utf8");
-		const matterResult = matter(fileContents);
-
-		return {
-			id: providerFile.replace(/\.md$/, "") as string,
-			content: matterResult.content as string,
-			parsedContent: "",
-			...(matterResult.data as {
-				abbreviation: string;
-				logo: string;
-				name: string;
-			}),
-		};
-	});
-};
-
 export const getAllProvidersId = () => {
 	const fileNames = fs.readdirSync(providerDirectory);
 
