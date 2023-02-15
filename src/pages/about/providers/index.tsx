@@ -4,7 +4,7 @@ import Image from "next/image";
 import styles from "./providers.module.scss";
 import { remark } from "remark";
 import html from "remark-html";
-import Button from "../../components/Button/Button";
+import Button from "../../../components/Button/Button";
 import { promises as fs } from "fs";
 import path from "path";
 import matter from "gray-matter";
