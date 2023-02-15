@@ -66,7 +66,7 @@ const Providers = ({ allProvidersBasics }: IProvidersProps) => {
 										<div className="row mb-3">
 											<div className="col-12">
 												<Link
-													href={`/about/provider/${provider.id}`}
+													href={`/about/providers/${provider.id}`}
 													className="mr-3"
 												>
 													Continue reading...
