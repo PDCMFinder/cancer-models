@@ -216,6 +216,13 @@ a {
 		&-3 {
 			margin-right: $spacing-3;
 		}
+		@include mediaOver("lg") {
+			&-lg {
+				&-3 {
+					margin: $spacing-3 !important;
+				}
+			}
+		}
 	}
 	&l {
 		&-0 {
@@ -317,6 +324,9 @@ a {
 	&t {
 		&-0 {
 			padding-top: 0 !important;
+		}
+		&-5 {
+			padding-top: $spacing-5 !important;
 		}
 	}
 	@include mediaOver("xl") {

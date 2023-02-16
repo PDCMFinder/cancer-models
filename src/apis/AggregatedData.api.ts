@@ -97,7 +97,6 @@ export async function getModelCount() {
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	console.log(response.headers);
 
 	return response.headers.get("Content-range")?.split("/")[1];
 }
