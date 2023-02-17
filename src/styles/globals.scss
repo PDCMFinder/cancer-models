@@ -24,6 +24,12 @@ body {
 	@include mediaOver("lg") {
 		--main-margin-x: 3%;
 	}
+	@include mediaOver("xxl") {
+		--main-margin-x: 7%;
+	}
+	@include mediaOver("xxx") {
+		--main-margin-x: 13%;
+	}
 	&.userNavigation-keyboard *:focus {
 		box-shadow: $focusShadow;
 		border-radius: $br-common;
@@ -227,6 +233,9 @@ a {
 	&l {
 		&-0 {
 			margin-left: 0 !important;
+		}
+		&-3 {
+			margin-left: $spacing-3;
 		}
 		&-auto {
 			margin-left: auto !important;
@@ -483,4 +492,20 @@ hr {
 }
 .bottom-0 {
 	bottom: 0 !important;
+}
+table {
+	line-height: initial;
+	border-collapse: collapse;
+	border: 1px solid rgb(200, 200, 200);
+	td,
+	th {
+		border: 1px solid rgb(190, 190, 190);
+		padding: 10px 20px;
+	}
+	td {
+		text-align: center;
+	}
+	caption {
+		@extend .hideElement-accessible;
+	}
 }

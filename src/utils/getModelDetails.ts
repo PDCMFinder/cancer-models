@@ -28,9 +28,6 @@ const getModelDetails = async (modelId: string, providerId: string) => {
 	let allPublications = await Promise.all(
 		pubmedIds.map(async (p: string) => await getPublicationData(p))
 	);
-	// const publications = allPublications
-	// 	.map((q) => q.data)
-	// 	.filter((d) => d !== undefined);
 
 	return {
 		// deconstruct metadata object so we dont pass more props than we need/should
@@ -42,12 +39,18 @@ const getModelDetails = async (modelId: string, providerId: string) => {
 			patientSex: metadata.patientSex,
 			patientAge: metadata.patientAge,
 			patientEthnicity: metadata.patientEthnicity,
+			tumourType: metadata.tumourType,
+			cancerGrade: metadata.cancerGrade,
+			cancerStage: metadata.cancerStage,
+			primarySite: metadata.primarySite,
+			collectionSite: metadata.collectionSite,
 			modelId,
 			providerId,
 		},
 		extLinks,
 		molecularData,
 		molecularDataRestrictions,
+		engraftments,
 		drugDosing,
 		patientTreatment,
 		qualityData,

@@ -2,7 +2,10 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import getModelDetails from "../../../../utils/getModelDetails";
 import Button from "../../../../components/Button/Button";
 import Link from "next/link";
-// import styles from "./Model.module.scss";
+import ShowHide from "../../../../components/ShowHide/ShowHide";
+import breakPoints from "../../../../utils/breakpoints";
+import useWindowDimensions from "../../../../hooks/useWindowDimensions";
+import styles from "./Model.module.scss";
 
 interface IModelDetailsProps {
 	metadata: Metadata;
@@ -16,12 +19,6 @@ interface IModelDetailsProps {
 	className: string;
 	modelId: string;
 	providerId: string;
-	params: Params;
-}
-
-interface Params {
-	modelId: string;
-	providerId: string;
 }
 
 interface Metadata {
@@ -32,6 +29,14 @@ interface Metadata {
 	patientSex: string;
 	patientAge: string;
 	patientEthnicity: string;
+	modelId: string;
+	providerId: string;
+	engraftments: any;
+	tumourType: string;
+	cancerGrade: string;
+	cancerStage: string;
+	primarySite: string;
+	collectionSite: string;
 }
 
 interface ExtLinks {
@@ -89,41 +94,112 @@ const ModelDetails = ({
 	patientTreatment,
 	qualityData,
 	allPublications,
-	params,
 }: IModelDetailsProps) => {
+	const metadataDataArr = [
+		{ label: "Patient Sex", value: metadata.patientSex },
+		{ label: "Patient Age", value: metadata.patientAge },
+		{ label: "Patient Ethnicity", value: metadata.patientEthnicity },
+		{ label: "Tumour Type", value: metadata.tumourType },
+		{ label: "Cancer Grade", value: metadata.cancerGrade },
+		{ label: "Cancer Stage", value: metadata.cancerStage },
+		{ label: "Cancer Stage", value: metadata.cancerStage },
+		{ label: "Primary Site", value: metadata.primarySite },
+		{ label: "Collection Site", value: metadata.collectionSite },
+	];
+
+	const { windowWidth } = useWindowDimensions();
+
+	const bpLarge = breakPoints.large;
+
 	return (
 		<>
-			<header className="bg-primary-primary text-white mb-5 py-5">
+			<header className="bg-primary-primary text-white py-5">
 				<div className="container">
-					<div className="row align-center pt-5 text-capitalize">
-						<div className="col-12 col-lg-8 offset-lg-2 col-xxx-6 offset-xxx-0">
+					<div className="row align-center py-5 pb-lg-0 text-capitalize">
+						<div className="col-12 col-lg-8 offset-lg-2 col-xxx-6 mb-5">
 							<h2 className="h3 m-0 text-family-secondary">
 								{metadata.histology} - {metadata.modelType}
 							</h2>
-							<h1 className="m-0">{params.modelId}</h1>
+							<h1 className="m-0">{metadata.modelId}</h1>
 						</div>
-						<div className="text-right col-12 col-lg-5 offset-lg-5 col-xxx-6 offset-xxx-0">
+						<div className="text-right col-12 col-lg-8 offset-lg-2 col-xxx-5 offset-xxx-1">
 							<p className="mb-1">Provided by</p>
-							<h3 className="my-0">{metadata.providerName}</h3>
-							<Link
-								className="text-white mr-lg-3"
-								href={extLinks.sourceDatabaseUrl}
-							>
-								View data at {params.providerId}
-							</Link>
-							<Button
-								priority="secondary"
-								color="white"
-								htmlTag="a"
-								href={extLinks.contactLink}
-								className="mb-0"
-							>
-								Contact provider
-							</Button>
+							<h3 className="my-0 mb-3">{metadata.providerName}</h3>
+							<div className="d-flex flex-column d-lg-block">
+								<Link className="text-white" href={extLinks.sourceDatabaseUrl}>
+									View data at {metadata.providerId ?? "provider"}
+								</Link>
+								<Button
+									priority="secondary"
+									color="white"
+									htmlTag="a"
+									href={extLinks.contactLink}
+									className="mb-0 ml-lg-3 align-self-end"
+								>
+									<>Contact {metadata.providerId ?? "provider"}</>
+								</Button>
+							</div>
 						</div>
 					</div>
 				</div>
 			</header>
+			<section>
+				<div className="container">
+					<div className="row">
+						<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
+							<aside className="col-12 col-lg-3">
+								<p> Data available</p>
+							</aside>
+						</ShowHide>
+						<div className="col-12 col-lg-9">
+							<div className="row mb-5">
+								<div className="col-12">
+									<h2 className="mt-0">Patient / Tumor Metadata</h2>
+									<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
+										<hr className="mb-3 col-md-8 ml-0" />
+									</ShowHide>
+									<ul className="row ul-noStyle">
+										{metadataDataArr.map((data) => {
+											data.value =
+												typeof data.value === "string"
+													? data.value.replace("/", " / ")
+													: data.value ?? "N/A";
+											return (
+												<li
+													key={data.label}
+													className={`mb-2 text-capitalize col-6 col-lg-3 ${styles.ModelDetails_metadata}`}
+												>
+													<span>{data.label}</span>
+													<br />
+													{data.value}
+												</li>
+											);
+										})}
+									</ul>
+								</div>
+							</div>
+							<div className="row mb-5">
+								<div className="col-12">
+									<h2 className="mt-0">PDX model engraftment</h2>
+									<table>
+										<caption>PDX model engraftment</caption>
+										<thead>
+											<tr>
+												<th>asfd</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>asdf</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
 		</>
 	);
 };
@@ -150,6 +226,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		extLinks,
 		molecularData,
 		molecularDataRestrictions,
+		engraftments,
 		drugDosing,
 		patientTreatment,
 		qualityData,
@@ -165,11 +242,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			extLinks,
 			molecularData,
 			molecularDataRestrictions,
+			engraftments: JSON.parse(JSON.stringify(engraftments)),
 			drugDosing,
 			patientTreatment,
 			qualityData,
 			allPublications,
-			params,
 		},
 	};
 };

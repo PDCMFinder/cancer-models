@@ -1,0 +1,10 @@
+@import "../../../../styles/vars";
+
+.ModelDetails {
+	&_metadata span {
+		font-size: 1.3rem;
+		color: $color-primary-secondary;
+		font-family: $type-primary;
+		line-height: 1.2;
+	}
+}
