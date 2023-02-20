@@ -60,7 +60,15 @@ export async function getPublicationData(pubmedId: string) {
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json().then((d) => d.result);
+	return response
+		.json()
+		.then((d) =>
+			Object.fromEntries(
+				["title", "pubYear", "authorString", "journalTitle", "pmid", "doi"]
+					.filter((key) => key in d.result)
+					.map((key) => [key, d.result[key]])
+			)
+		);
 }
 
 export async function getModelExtLinks(

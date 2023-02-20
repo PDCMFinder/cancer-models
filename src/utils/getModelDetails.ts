@@ -25,7 +25,7 @@ const getModelDetails = async (modelId: string, providerId: string) => {
 	const patientTreatment = await getPatientTreatment(pdcmModelId);
 	const qualityData = await getModelQualityData(pdcmModelId);
 	const pubmedIds = await getModelPubmedIds(pdcmModelId);
-	let allPublications = await Promise.all(
+	const publications = await Promise.all(
 		pubmedIds.map(async (p: string) => await getPublicationData(p))
 	);
 
@@ -54,7 +54,7 @@ const getModelDetails = async (modelId: string, providerId: string) => {
 		drugDosing,
 		patientTreatment,
 		qualityData,
-		allPublications,
+		publications,
 	};
 };
 

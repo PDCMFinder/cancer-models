@@ -6,19 +6,46 @@ import ShowHide from "../../../../components/ShowHide/ShowHide";
 import breakPoints from "../../../../utils/breakpoints";
 import useWindowDimensions from "../../../../hooks/useWindowDimensions";
 import styles from "./Model.module.scss";
+import Card from "../../../../components/Card/Card";
 
 interface IModelDetailsProps {
 	metadata: Metadata;
 	extLinks: ExtLinks;
-	molecularData: string[];
+	molecularData: MolecularData[];
 	molecularDataRestrictions: any[];
 	drugDosing: any[];
 	patientTreatment: string[];
-	qualityData: string[];
-	allPublications: Publication[];
+	qualityData: QualityData[];
+	publications: Publication[];
 	className: string;
 	modelId: string;
 	providerId: string;
+	engraftments?: Engraftment[];
+}
+
+export interface MolecularData {
+	id: number;
+	patientSampleId: string;
+	patientModelId: string;
+	xenograftSampleId: string;
+	cellSampleId: string;
+	xenograftModelId: string;
+	xenograftPassage: string;
+	rawDataUrl: string;
+	dataType: string;
+	platformId: string;
+	platformName: string;
+	dataAvailability: boolean;
+	dataSource: string;
+}
+
+export interface QualityData {
+	id: number;
+	description: string;
+	passagesTested: string;
+	validationTechnique: string;
+	validationHostStrainNomenclature: string;
+	modelId: number;
 }
 
 interface Metadata {
@@ -31,7 +58,6 @@ interface Metadata {
 	patientEthnicity: string;
 	modelId: string;
 	providerId: string;
-	engraftments: any;
 	tumourType: string;
 	cancerGrade: string;
 	cancerStage: string;
@@ -45,36 +71,12 @@ interface ExtLinks {
 }
 
 interface Publication {
-	id: string;
-	source: string;
 	pmid: string;
-	pmcid: string;
-	fullTextIdList: FullTextIdList;
 	doi: string;
+	pubYear: string;
 	title: string;
 	authorString: string;
 	journalTitle: string;
-	issue: string;
-	journalVolume: string;
-	pubYear: string;
-	journalIssn: string;
-	pageInfo: string;
-	pubType: string;
-	isOpenAccess: string;
-	inEPMC: string;
-	inPMC: string;
-	hasPDF: string;
-	hasBook: string;
-	hasSuppl: string;
-	citedByCount: number;
-	hasReferences: string;
-	hasTextMinedTerms: string;
-	hasDbCrossReferences: string;
-	hasLabsLinks: string;
-	hasTMAccessionNumbers: string;
-	tmAccessionTypeList: TmAccessionTypeList;
-	firstIndexDate: string;
-	firstPublicationDate: string;
 }
 
 interface FullTextIdList {
@@ -85,6 +87,16 @@ interface TmAccessionTypeList {
 	accessionType: string;
 }
 
+interface Engraftment {
+	passageNumber: string;
+	hostStrain: string;
+	engraftmentSite: string;
+	engraftmentType: string;
+	engraftmentSampleType: string;
+	engraftmentSampleState: string;
+	hostStrainNomenclature: string;
+}
+
 const ModelDetails = ({
 	metadata,
 	extLinks,
@@ -93,7 +105,8 @@ const ModelDetails = ({
 	drugDosing,
 	patientTreatment,
 	qualityData,
-	allPublications,
+	publications,
+	engraftments,
 }: IModelDetailsProps) => {
 	const metadataDataArr = [
 		{ label: "Patient Sex", value: metadata.patientSex },
@@ -101,7 +114,6 @@ const ModelDetails = ({
 		{ label: "Patient Ethnicity", value: metadata.patientEthnicity },
 		{ label: "Tumour Type", value: metadata.tumourType },
 		{ label: "Cancer Grade", value: metadata.cancerGrade },
-		{ label: "Cancer Stage", value: metadata.cancerStage },
 		{ label: "Cancer Stage", value: metadata.cancerStage },
 		{ label: "Primary Site", value: metadata.primarySite },
 		{ label: "Collection Site", value: metadata.collectionSite },
@@ -147,17 +159,59 @@ const ModelDetails = ({
 				<div className="container">
 					<div className="row">
 						<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
-							<aside className="col-12 col-lg-3">
-								<p> Data available</p>
+							<aside className="col-12 col-lg-2 col-xxx-3">
+								<p className="h4">Data available</p>
+								<ul className="ul-noStyle">
+									<li className="mb-2">
+										{metadata.modelType === "xenograft" &&
+										engraftments?.length ? (
+											<Link href="#engraftments">PDX model engraftment</Link>
+										) : (
+											"PDX model engraftment"
+										)}
+									</li>
+									<li className="mb-2">
+										{qualityData.length ? (
+											<Link href="#quality-control">Quality control</Link>
+										) : (
+											"Quality control"
+										)}
+									</li>
+									<li className="mb-2">
+										{molecularData.length ? (
+											<Link href="#molecular-data">Molecular data</Link>
+										) : (
+											"Molecular data"
+										)}
+									</li>
+									<li className="mb-2">
+										{drugDosing.length ? (
+											<Link href="#dosing-studies">Dosing studies</Link>
+										) : (
+											"Dosing studies"
+										)}
+									</li>
+									<li className="mb-2">
+										{patientTreatment.length ? (
+											<Link href="#patient-treatment">Patient treatment</Link>
+										) : (
+											"Patient treatment"
+										)}
+									</li>
+									<li className="mb-2">
+										{publications.length ? (
+											<Link href="#publications">Publications</Link>
+										) : (
+											"Publications"
+										)}
+									</li>
+								</ul>
 							</aside>
 						</ShowHide>
-						<div className="col-12 col-lg-9">
-							<div className="row mb-5">
+						<div className="col-12 col-lg-10 col-xxx-9">
+							<div className="row mb-3">
 								<div className="col-12">
 									<h2 className="mt-0">Patient / Tumor Metadata</h2>
-									<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
-										<hr className="mb-3 col-md-8 ml-0" />
-									</ShowHide>
 									<ul className="row ul-noStyle">
 										{metadataDataArr.map((data) => {
 											data.value =
@@ -178,24 +232,277 @@ const ModelDetails = ({
 									</ul>
 								</div>
 							</div>
-							<div className="row mb-5">
-								<div className="col-12">
-									<h2 className="mt-0">PDX model engraftment</h2>
-									<table>
-										<caption>PDX model engraftment</caption>
-										<thead>
-											<tr>
-												<th>asfd</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>asdf</td>
-											</tr>
-										</tbody>
-									</table>
+							{engraftments?.length && (
+								<div className="row mb-5">
+									<div className="col-12 mb-1">
+										<h2 className="mt-0">PDX model engraftment</h2>
+										<div
+											className={`overflow-scroll ${styles.ModelDetails_tableContainer}`}
+										>
+											<table>
+												<caption>PDX model engraftment</caption>
+												<thead>
+													<tr>
+														<th>HOST STRAIN NAME</th>
+														<th>SITE</th>
+														<th>TYPE</th>
+														<th>MATERIAL</th>
+														<th>MATERIAL STATUS</th>
+														<th>PASSAGE</th>
+													</tr>
+												</thead>
+												<tbody>
+													{engraftments?.map((engraftment) => {
+														const hostStrainNomenclatures =
+															engraftment.hostStrainNomenclature
+																.split(" ")
+																.map((h) => {
+																	const regExp = /(.*)<sup>(.*)<\/sup>(.*)/gm;
+																	const matches = regExp.exec(h) || [];
+																	const strainPrefix = matches[1] || "";
+																	const strainSup = matches[2] || "";
+																	const strainSuffix = matches[3] || "";
+																	return {
+																		strainPrefix,
+																		strainSup,
+																		strainSuffix,
+																	};
+																});
+
+														return (
+															<tr key={engraftment.hostStrainNomenclature}>
+																<td className="text-uppercase white-space-nowrap">
+																	{/* {hostStrainNomenclatures.map((h) => (
+																<span
+																	key={
+																		h.strainPrefix +
+																		h.strainSup +
+																		h.strainSuffix
+																	}
+																>
+																	{h.strainPrefix}
+																	<sup>{h.strainSup}</sup>
+																	{h.strainSuffix}{" "}
+																</span>
+															))} */}
+																	{engraftment.hostStrain}
+																</td>
+																<td>{engraftment.engraftmentSite ?? "N/A"}</td>
+																<td>{engraftment.engraftmentType ?? "N/A"}</td>
+																<td>
+																	{engraftment.engraftmentSampleType ?? "N/A"}
+																</td>
+																<td>
+																	{engraftment.engraftmentSampleState ?? "N/A"}
+																</td>
+																<td>{engraftment.passageNumber ?? "N/A"}</td>
+															</tr>
+														);
+													})}
+												</tbody>
+											</table>
+										</div>
+									</div>
 								</div>
-							</div>
+							)}
+							{qualityData.length && (
+								<div className="row mb-5">
+									<div className="col-12 mb-1">
+										<h2 className="mt-0">Model quality control</h2>
+										<div
+											className={`overflow-scroll ${styles.ModelDetails_tableContainer}`}
+										>
+											<table>
+												<caption>Model quality control</caption>
+												<thead>
+													<tr>
+														<th>TECHNIQUE</th>
+														<th>DESCRIPTION</th>
+														<th>PASSAGE</th>
+													</tr>
+												</thead>
+												<tbody>
+													{qualityData.map((qualityCheck) => (
+														<tr key={qualityCheck.validationTechnique}>
+															<td>{qualityCheck.validationTechnique}</td>
+															<td>{qualityCheck.description}</td>
+															<td>{qualityCheck.passagesTested}</td>
+														</tr>
+													))}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							)}
+							{molecularData.length && (
+								<div className="row mb-5">
+									<div className="col-12 mb-1">
+										<h2 className="mt-0">Molecular data</h2>
+										<div
+											className={`overflow-scroll ${styles.ModelDetails_tableContainer}`}
+										>
+											<table>
+												<caption>Molecular data</caption>
+												<thead>
+													<tr>
+														<th>SAMPLE ID</th>
+														<th>SAMPLE TYPE</th>
+														<th>ENGRAFTED TUMOUR PASSAGE</th>
+														<th>DATA TYPE</th>
+														<th>DATA AVAILABLE</th>
+														<th>PLATFORM USED</th>
+														<th>RAW DATA</th>
+													</tr>
+												</thead>
+												<tbody>
+													{molecularData &&
+														molecularData.map((data) => {
+															const sampleId =
+																data.xenograftSampleId ||
+																data.patientSampleId ||
+																data.cellSampleId;
+															const sampleType = data.xenograftSampleId
+																? "Engrafted Tumour"
+																: "Patient Tumour";
+
+															return (
+																<tr key={data.id}>
+																	<td>{sampleId}</td>
+																	<td>{sampleType}</td>
+																	<td>{data.xenograftPassage || "N/A"}</td>
+																	<td className="text-capitalize">
+																		{data.dataType}
+																	</td>
+																	<td>
+																		{/* {!restrictedTypes.includes(
+																			data.dataType
+																		) ? (
+																			<Button
+																				onClick={() => onSelectdata(data)}
+																				variant="link"
+																			>
+																				VIEW DATA
+																			</Button>
+																		) : (
+																			<a
+																				href={contactLink || ""}
+																				target="_blank"
+																			>
+																				REQUEST DATA
+																			</a>
+																		)} */}
+																	</td>
+																	<td>{data.platformName}</td>
+																	<td>
+																		{data.rawDataUrl ? (
+																			<a
+																				href={data.rawDataUrl.split(",")[1]}
+																				target="_blank"
+																			>
+																				{data.rawDataUrl.split(",")[0]}
+																			</a>
+																		) : (
+																			"Not available"
+																		)}
+																	</td>
+																</tr>
+															);
+														})}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							)}
+							{patientTreatment.length && (
+								<div className="row mb-5">
+									<div className="col-12 mb-1">
+										<h2 className="mt-0">Patient treatment</h2>
+										<div
+											className={`overflow-scroll ${styles.ModelDetails_tableContainer}`}
+										>
+											<table>
+												<caption>Patient treatment</caption>
+												<thead>
+													<tr>
+														<th>TREATMENT</th>
+														<th>DOSE</th>
+														<th>RESPONSE</th>
+													</tr>
+												</thead>
+												<tbody>
+													{patientTreatment.map((treatment) => (
+														<tr key={treatment.treatmentName}>
+															<td className="white-space-unset">
+																{treatment.treatmentName}
+															</td>
+															<td>{treatment.treatmentDose}</td>
+															<td>{treatment.treatmentResponse}</td>
+														</tr>
+													))}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							)}
+							{publications.length && (
+								<div className="row mb-5">
+									<div className="col-12">
+										<h2 className="mt-0">Publications</h2>
+										{publications.map((publication, idx) => {
+											const needsSeparator =
+												publications.length > 1 &&
+												idx !== publications.length - 1;
+
+											return (
+												<div key={publication.pmid}>
+													<h3>{publication.title}</h3>
+													<p className="text-muted text-small">
+														{publication.authorString}
+													</p>
+													<p className="mb-3 text-small">
+														{publication.journalTitle} - {publication.pubYear}
+													</p>
+													<ul className="ul-noStyle text-small d-md-flex">
+														{publication.pmid && (
+															<li className="mr-md-3">
+																<Link
+																	href={`https://europepmc.org/article/MED/${publication.pmid}`}
+																>
+																	View at EuropePMC
+																</Link>
+															</li>
+														)}
+														{publication.doi && (
+															<li className="mr-md-3">
+																<Link
+																	href={`https://doi.org/${publication.doi}`}
+																>
+																	DOI:{publication.doi}
+																</Link>
+															</li>
+														)}
+														{publication.pmid && (
+															<li>
+																<Link
+																	href={`https://pubmed.ncbi.nlm.nih.gov/${publication.pmid}`}
+																>
+																	PubMed
+																</Link>
+															</li>
+														)}
+													</ul>
+													{needsSeparator && (
+														<hr style={{ backgroundColor: "#d2d2d2" }} />
+													)}
+												</div>
+											);
+										})}
+									</div>
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
@@ -230,7 +537,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		drugDosing,
 		patientTreatment,
 		qualityData,
-		allPublications,
+		publications,
 	} = await getModelDetails(
 		params!.modelId as string,
 		params!.providerId as string
@@ -246,7 +553,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			drugDosing,
 			patientTreatment,
 			qualityData,
-			allPublications,
+			publications,
 		},
 	};
 };

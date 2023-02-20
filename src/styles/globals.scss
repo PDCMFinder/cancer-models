@@ -24,12 +24,6 @@ body {
 	@include mediaOver("lg") {
 		--main-margin-x: 3%;
 	}
-	@include mediaOver("xxl") {
-		--main-margin-x: 7%;
-	}
-	@include mediaOver("xxx") {
-		--main-margin-x: 13%;
-	}
 	&.userNavigation-keyboard *:focus {
 		box-shadow: $focusShadow;
 		border-radius: $br-common;
@@ -55,6 +49,13 @@ img {
 	}
 	&-flex {
 		display: flex;
+	}
+	@include mediaOver("md") {
+		&-md {
+			&-flex {
+				display: flex;
+			}
+		}
 	}
 	@include mediaOver("lg") {
 		&-lg {
@@ -222,10 +223,17 @@ a {
 		&-3 {
 			margin-right: $spacing-3;
 		}
+		@include mediaOver("md") {
+			&-md {
+				&-3 {
+					margin-right: $spacing-3 !important;
+				}
+			}
+		}
 		@include mediaOver("lg") {
 			&-lg {
 				&-3 {
-					margin: $spacing-3 !important;
+					margin-right: $spacing-3 !important;
 				}
 			}
 		}
@@ -445,6 +453,9 @@ textarea {
 	&-primary-quaternary {
 		border-color: $color-primary-quaternary !important;
 	}
+	&-gray {
+		border-color: $color-gray !important;
+	}
 }
 section {
 	padding: $spacing-5 0;
@@ -496,16 +507,34 @@ hr {
 table {
 	line-height: initial;
 	border-collapse: collapse;
-	border: 1px solid rgb(200, 200, 200);
+	width: 100%;
+	font-size: 1.6rem;
+	thead {
+		border-bottom: 1px solid $color-primary-primary;
+	}
 	td,
 	th {
-		border: 1px solid rgb(190, 190, 190);
-		padding: 10px 20px;
+		padding: 1rem 3rem;
+		padding-left: 0;
+		text-align: left;
+		white-space: nowrap;
+		@include mediaOver("md") {
+			padding: 1rem 2rem;
+			padding-left: 0;
+		}
 	}
-	td {
-		text-align: center;
+	tr:not(:last-of-type) {
+		border-bottom: 1px solid darken($color-gray, 10%);
 	}
 	caption {
 		@extend .hideElement-accessible;
+	}
+}
+.white-space {
+	&-nowrap {
+		white-space: nowrap;
+	}
+	&-unset {
+		white-space: unset;
 	}
 }

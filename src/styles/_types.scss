@@ -93,6 +93,9 @@ a,
 		font-size: 1.4rem !important;
 		line-height: 2rem !important;
 	}
+	&-muted {
+		color: #595959;
+	}
 	&-bold {
 		font-weight: $fw-bold !important;
 	}
@@ -106,6 +109,9 @@ a,
 	}
 	&-capitalize {
 		text-transform: capitalize;
+	}
+	&-uppercase {
+		text-transform: uppercase;
 	}
 	&-noDecoration {
 		text-decoration: none !important;

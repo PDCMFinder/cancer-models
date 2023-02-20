@@ -7,4 +7,18 @@
 		font-family: $type-primary;
 		line-height: 1.2;
 	}
+	&_tableContainer {
+		&::-webkit-scrollbar {
+			-webkit-appearance: none;
+			width: 0px;
+			height: 3px;
+		}
+		&::-webkit-scrollbar-thumb {
+			background-color: rgba(0, 0, 0, 0.15);
+			border-radius: 500px;
+		}
+	}
+	&_publicationContainer {
+		border-color: darken($color-gray, 10%);
+	}
 }
