@@ -128,18 +128,23 @@ const ModelDetails = ({
 			<header className="bg-primary-primary text-white py-5">
 				<div className="container">
 					<div className="row align-center py-5 pb-lg-0 text-capitalize">
-						<div className="col-12 col-lg-8 offset-lg-2 col-xxx-6 mb-5">
-							<h2 className="h3 m-0 text-family-secondary">
+						<div className="col-12 col-md-6 col-lg-6 col-xl-8 offset-xl-2 col-xxx-4 offset-xxx-2 mb-5 mb-md-0">
+							<h2
+								className={`m-0 text-family-secondary ${styles.ModelDetails_histology}`}
+							>
 								{metadata.histology} - {metadata.modelType}
 							</h2>
 							<h1 className="m-0">{metadata.modelId}</h1>
 						</div>
-						<div className="text-right col-12 col-lg-8 offset-lg-2 col-xxx-5 offset-xxx-1">
+						<div className="col-12 col-md-6 col-lg-5 offset-lg-1 col-xl-5 offset-xl-5 col-xxx-3 offset-xxx-1 text-right">
 							<p className="mb-1">Provided by</p>
 							<h3 className="my-0 mb-3">{metadata.providerName}</h3>
 							<div className="d-flex flex-column d-lg-block">
-								<Link className="text-white" href={extLinks.sourceDatabaseUrl}>
-									View data at {metadata.providerId ?? "provider"}
+								<Link
+									className="text-white mr-lg-3 mr-xl-0"
+									href={extLinks.sourceDatabaseUrl}
+								>
+									View data at {metadata.providerId || "provider"}
 								</Link>
 								<Button
 									priority="secondary"
@@ -159,65 +164,103 @@ const ModelDetails = ({
 				<div className="container">
 					<div className="row">
 						<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
-							<aside className="col-12 col-lg-2 col-xxx-3">
-								<p className="h4">Data available</p>
-								<ul className="ul-noStyle">
-									<li className="mb-2">
-										{metadata.modelType === "xenograft" &&
-										engraftments?.length ? (
-											<Link href="#engraftments">PDX model engraftment</Link>
-										) : (
-											"PDX model engraftment"
-										)}
-									</li>
-									<li className="mb-2">
-										{qualityData.length ? (
-											<Link href="#quality-control">Quality control</Link>
-										) : (
-											"Quality control"
-										)}
-									</li>
-									<li className="mb-2">
-										{molecularData.length ? (
-											<Link href="#molecular-data">Molecular data</Link>
-										) : (
-											"Molecular data"
-										)}
-									</li>
-									<li className="mb-2">
-										{drugDosing.length ? (
-											<Link href="#dosing-studies">Dosing studies</Link>
-										) : (
-											"Dosing studies"
-										)}
-									</li>
-									<li className="mb-2">
-										{patientTreatment.length ? (
-											<Link href="#patient-treatment">Patient treatment</Link>
-										) : (
-											"Patient treatment"
-										)}
-									</li>
-									<li className="mb-2">
-										{publications.length ? (
-											<Link href="#publications">Publications</Link>
-										) : (
-											"Publications"
-										)}
-									</li>
-								</ul>
+							<aside className="col-12 col-lg-2">
+								<div className="pt-5 sticky top-0">
+									<p className="h4">Data available</p>
+									<ul className="ul-noStyle">
+										<li className="mb-2">
+											<Link href="#metadata" className="text-primary-primary">
+												Patient/Tumour Metadata
+											</Link>
+										</li>
+										<li className="mb-2">
+											{metadata.modelType === "xenograft" &&
+											engraftments?.length ? (
+												<Link
+													href="#engraftments"
+													className="text-primary-primary"
+												>
+													PDX model engraftment
+												</Link>
+											) : (
+												"PDX model engraftment"
+											)}
+										</li>
+										<li className="mb-2">
+											{qualityData.length ? (
+												<Link
+													href="#quality-control"
+													className="text-primary-primary"
+												>
+													Quality control
+												</Link>
+											) : (
+												"Quality control"
+											)}
+										</li>
+										<li className="mb-2">
+											{molecularData.length ? (
+												<Link
+													href="#molecular-data"
+													className="text-primary-primary"
+												>
+													Molecular data
+												</Link>
+											) : (
+												"Molecular data"
+											)}
+										</li>
+										<li className="mb-2">
+											{drugDosing.length ? (
+												<Link
+													href="#dosing-studies"
+													className="text-primary-primary"
+												>
+													Dosing studies
+												</Link>
+											) : (
+												"Dosing studies"
+											)}
+										</li>
+										<li className="mb-2">
+											{patientTreatment.length ? (
+												<Link
+													href="#patient-treatment"
+													className="text-primary-primary"
+												>
+													Patient treatment
+												</Link>
+											) : (
+												"Patient treatment"
+											)}
+										</li>
+										<li className="mb-2">
+											{publications.length ? (
+												<Link
+													href="#publications"
+													className="text-primary-primary"
+												>
+													Publications
+												</Link>
+											) : (
+												"Publications"
+											)}
+										</li>
+									</ul>
+								</div>
 							</aside>
 						</ShowHide>
-						<div className="col-12 col-lg-10 col-xxx-9">
-							<div className="row mb-3">
+						<div className="col-12 col-lg-10">
+							<div id="metadata" className="row mb-3 pt-3">
 								<div className="col-12">
-									<h2 className="mt-0">Patient / Tumor Metadata</h2>
+									<h2 className="mt-0">Patient / Tumour Metadata</h2>
 									<ul className="row ul-noStyle">
 										{metadataDataArr.map((data) => {
 											data.value =
 												typeof data.value === "string"
 													? data.value.replace("/", " / ")
 													: data.value ?? "N/A";
+
 											return (
 												<li
 													key={data.label}
@@ -232,8 +275,8 @@ const ModelDetails = ({
 									</ul>
 								</div>
 							</div>
-							{engraftments?.length && (
-								<div className="row mb-5">
+							{engraftments?.length && engraftments?.length > 0 && (
+								<div id="engraftments" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">PDX model engraftment</h2>
 										<div
@@ -305,8 +348,8 @@ const ModelDetails = ({
 									</div>
 								</div>
 							)}
-							{qualityData.length && (
-								<div className="row mb-5">
+							{qualityData.length > 0 && (
+								<div id="quality-control" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Model quality control</h2>
 										<div
@@ -335,8 +378,8 @@ const ModelDetails = ({
 									</div>
 								</div>
 							)}
-							{molecularData.length && (
-								<div className="row mb-5">
+							{molecularData.length > 0 && (
+								<div id="molecular-data" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Molecular data</h2>
 										<div
@@ -415,8 +458,38 @@ const ModelDetails = ({
 									</div>
 								</div>
 							)}
-							{patientTreatment.length && (
-								<div className="row mb-5">
+							{drugDosing.length > 0 && (
+								<div id="dosing-studies" className="row mb-5 pt-3">
+									<div className="col-12 mb-1">
+										<h2 className="mt-0">Dosing studies</h2>
+										<div
+											className={`overflow-scroll ${styles.ModelDetails_tableContainer}`}
+										>
+											<table>
+												<caption>Dosing studies</caption>
+												<thead>
+													<tr>
+														<th>DRUG</th>
+														<th>DOSE</th>
+														<th>RESPONSE</th>
+													</tr>
+												</thead>
+												<tbody>
+													{drugDosing.map((treatment) => (
+														<tr>
+															<td>{treatment.treatmentName}</td>
+															<td>{treatment.treatmentDose}</td>
+															<td>{treatment.treatmentResponse}</td>
+														</tr>
+													))}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							)}
+							{patientTreatment.length > 0 && (
+								<div id="patient-treatment" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Patient treatment</h2>
 										<div
@@ -447,8 +520,8 @@ const ModelDetails = ({
 									</div>
 								</div>
 							)}
-							{publications.length && (
-								<div className="row mb-5">
+							{publications.length > 0 && (
+								<div id="publications" className="row mb-5 pt-3">
 									<div className="col-12">
 										<h2 className="mt-0">Publications</h2>
 										{publications.map((publication, idx) => {
@@ -458,7 +531,7 @@ const ModelDetails = ({
 
 											return (
 												<div key={publication.pmid}>
-													<h3>{publication.title}</h3>
+													<h3>{publication.title.replace(/<[^>]+>/g, " ")}</h3>
 													<p className="text-muted text-small">
 														{publication.authorString}
 													</p>
@@ -518,8 +591,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 		paths: [
 			{
 				params: {
-					providerId: "PIVOT",
-					modelId: "EW-8",
+					providerId: "Curie-LC",
+					modelId: "LCF15",
 				},
 			},
 		],

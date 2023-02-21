@@ -1,4 +1,5 @@
 @import "../../../../styles/vars";
+@import "../../../../styles/mixins";
 
 .ModelDetails {
 	&_metadata span {
@@ -17,8 +18,19 @@
 			background-color: rgba(0, 0, 0, 0.15);
 			border-radius: 500px;
 		}
+		@include mediaOver("md") {
+			&::-webkit-scrollbar {
+				height: 5px;
+			}
+		}
 	}
 	&_publicationContainer {
 		border-color: darken($color-gray, 10%);
+	}
+	&_histology {
+		font-size: 2.7rem;
+		@include mediaOver("sm") {
+			font-size: 3.2rem;
+		}
 	}
 }
