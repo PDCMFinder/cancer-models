@@ -255,6 +255,7 @@ export async function getMolecularDataDownload(
 		return d.map((item: any) => {
 			delete item.molecular_characterization_id;
 			delete item.text;
+			delete item.external_db_links;
 			item["sampleID"] =
 				molecularCharacterization.patientSampleId ||
 				molecularCharacterization.xenograftSampleId;

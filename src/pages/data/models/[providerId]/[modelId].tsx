@@ -6,7 +6,12 @@ import ShowHide from "../../../../components/ShowHide/ShowHide";
 import breakPoints from "../../../../utils/breakpoints";
 import useWindowDimensions from "../../../../hooks/useWindowDimensions";
 import styles from "./Model.module.scss";
+import { useState, useRef } from "react";
+import Modal from "../../../../components/Modal/Modal";
 import Card from "../../../../components/Card/Card";
+import MolecularDataTable from "../../../../components/MolecularDataTable/MolecularDataTable";
+import { getMolecularDataDownload } from "../../../../apis/ModelDetails.api";
+import { CSVDownload } from "react-csv";
 
 interface IModelDetailsProps {
 	metadata: Metadata;
@@ -130,6 +135,23 @@ const ModelDetails = ({
 		(d) => typesMap[d.molecularDataTable]
 	);
 
+	const [selectedMolecularData, setSelectedMolecularData] =
+		useState<MolecularData>();
+	const [dataDownload, setDataDownload] = useState<any[]>([]);
+	const csvLink = useRef(null);
+
+	const getDataDownload = async (data: MolecularData, dataType: string) => {
+		getMolecularDataDownload(data, dataType)
+			.then((d) => {
+				setDataDownload(d);
+				if (csvLink.current) {
+					// @ts-ignore
+					csvLink.current.link.click();
+				}
+			})
+			.catch((error) => {});
+	};
+
 	return (
 		<>
 			<header className="bg-primary-primary text-white py-5">
@@ -160,7 +182,7 @@ const ModelDetails = ({
 									href={extLinks.contactLink}
 									className="mb-0 ml-lg-3 align-self-end"
 								>
-									<>Contact {metadata.providerId ?? "provider"}</>
+									<>Contact {metadata.providerId || "provider"}</>
 								</Button>
 							</div>
 						</div>
@@ -428,11 +450,28 @@ const ModelDetails = ({
 																		{!restrictedTypes.includes(data.dataType) &&
 																		data.dataAvailability === "TRUE" ? (
 																			<>
-																				<button className="text-left link-text mr-3 mr-md-0 mb-md-1">
+																				<button
+																					className="text-left link-text mr-3 mr-md-0 mb-md-1"
+																					onClick={() =>
+																						setSelectedMolecularData(data)
+																					}
+																				>
 																					VIEW DATA
 																				</button>
-																				<button className="text-left link-text">
+																				<button
+																					className="text-left link-text"
+																					onClick={() =>
+																						getMolecularDataDownload(
+																							data,
+																							data.dataType
+																						)
+																					}
+																				>
 																					DOWNLOAD DATA
+																					<CSVDownload
+																						data={dataDownload}
+																						target="_blank"
+																					/>
 																				</button>
 																			</>
 																		) : (
@@ -589,6 +628,16 @@ const ModelDetails = ({
 					</div>
 				</div>
 			</section>
+			{selectedMolecularData && (
+				<Modal handleClose={() => setSelectedMolecularData(undefined)}>
+					<Card
+						className="bg-white"
+						header={<>{selectedMolecularData.platformName} data</>}
+					>
+						<MolecularDataTable data={selectedMolecularData} />
+					</Card>
+				</Modal>
+			)}
 		</>
 	);
 };
@@ -624,7 +673,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-	// try {
 	const {
 		metadata,
 		extLinks,
@@ -653,35 +701,4 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			publications,
 		},
 	};
-	// if (
-	// 	!{
-	// 		metadata,
-	// 		extLinks,
-	// 		molecularData,
-	// 		molecularDataRestrictions,
-	// 		engraftments,
-	// 		drugDosing,
-	// 		patientTreatment,
-	// 		qualityData,
-	// 		publications,
-	// 	}
-	// ) {
-	// 	return { notFound: true };
-	// }
-	// return {
-	// 	props: {
-	// 		metadata,
-	// 		extLinks,
-	// 		molecularData,
-	// 		molecularDataRestrictions,
-	// 		engraftments,
-	// 		drugDosing,
-	// 		patientTreatment,
-	// 		qualityData,
-	// 		publications,
-	// 	},
-	// };
-	// } catch {
-	// 	return { notFound: true };
-	// }
 };
