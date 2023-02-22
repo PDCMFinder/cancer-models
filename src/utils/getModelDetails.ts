@@ -24,9 +24,13 @@ const getModelDetails = async (modelId: string, providerId: string) => {
 	const drugDosing = await getModelDrugDosing(pdcmModelId, modelType);
 	const patientTreatment = await getPatientTreatment(pdcmModelId);
 	const qualityData = await getModelQualityData(pdcmModelId);
+	let hasPubmedIds = false;
+	let publications = [];
 	const pubmedIds = await getModelPubmedIds(pdcmModelId);
-	let publications;
-	if (pubmedIds.forEach((id: string) => id)) {
+	pubmedIds.forEach((id: string) => {
+		if (id) hasPubmedIds = true;
+	});
+	if (hasPubmedIds) {
 		publications = await Promise.all(
 			pubmedIds.map(async (p: string) => await getPublicationData(p))
 		);
@@ -57,7 +61,7 @@ const getModelDetails = async (modelId: string, providerId: string) => {
 		drugDosing,
 		patientTreatment,
 		qualityData,
-		publications: publications ?? [],
+		publications,
 	};
 };
 
