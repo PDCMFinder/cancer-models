@@ -225,6 +225,9 @@ a {
 		}
 		@include mediaOver("md") {
 			&-md {
+				&-0 {
+					margin-right: 0 !important;
+				}
 				&-3 {
 					margin-right: $spacing-3 !important;
 				}
@@ -281,9 +284,19 @@ a {
 		}
 		@include mediaOver("md") {
 			&-md {
+				&-0 {
+					margin-bottom: 0 !important;
+				}
+				&-1 {
+					margin-bottom: $spacing-1 !important;
+				}
 				&-3 {
 					margin-bottom: $spacing-3 !important;
 				}
+			}
+		}
+		@include mediaOver("lg") {
+			&-lg {
 				&-0 {
 					margin-bottom: 0 !important;
 				}
@@ -511,7 +524,6 @@ table {
 	line-height: initial;
 	border-collapse: collapse;
 	width: 100%;
-	// font-size: 1.6rem;
 	thead {
 		border-bottom: 1px solid $color-primary-primary;
 	}
@@ -522,8 +534,10 @@ table {
 		text-align: left;
 		white-space: nowrap;
 		@include mediaOver("md") {
-			padding: 1rem 2rem;
-			padding-left: 0;
+			white-space: unset;
+		}
+		&:last-of-type {
+			padding-right: 0;
 		}
 	}
 	tr:not(:last-of-type) {

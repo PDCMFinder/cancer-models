@@ -1,16 +1,3 @@
-// export async function getModelDetailsMetadata(
-// 	modelId: string,
-// 	providerId: string
-// ): Promise<any> {
-// 	let response = await fetch(
-// 		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&data_source=eq.${providerId}`
-// 	);
-// 	if (!response.ok) {
-// 		throw new Error("Network response was not ok");
-// 	}
-// 	return response.json().then((d) => d[0]);
-// }
-
 import { camelCase } from "../utils/dataUtils";
 
 export interface IModelExtLinks {
@@ -51,24 +38,26 @@ export async function getModelPubmedIds(pdcmModelId: number): Promise<any> {
 }
 
 export async function getPublicationData(pubmedId: string) {
-	let response = await fetch(
-		`https://www.ebi.ac.uk/europepmc/webservices/rest/article/MED/${pubmedId.replace(
-			"PMID:",
-			""
-		)}?resultType=lite&format=json`
-	);
-	if (!response.ok) {
-		throw new Error("Network response was not ok");
-	}
-	return response
-		.json()
-		.then((d) =>
-			Object.fromEntries(
-				["title", "pubYear", "authorString", "journalTitle", "pmid", "doi"]
-					.filter((key) => key in d.result)
-					.map((key) => [key, d.result[key]])
-			)
+	if (pubmedId !== "") {
+		let response = await fetch(
+			`https://www.ebi.ac.uk/europepmc/webservices/rest/article/MED/${pubmedId.replace(
+				"PMID:",
+				""
+			)}?resultType=lite&format=json`
 		);
+		if (!response.ok) {
+			throw new Error("Network response was not ok");
+		}
+		return response
+			.json()
+			.then((d) =>
+				Object.fromEntries(
+					["title", "pubYear", "authorString", "journalTitle", "pmid", "doi"]
+						.filter((key) => key in d.result)
+						.map((key) => [key, d.result[key]])
+				)
+			);
+	}
 }
 
 export async function getModelExtLinks(

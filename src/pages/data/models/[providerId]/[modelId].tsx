@@ -35,7 +35,7 @@ export interface MolecularData {
 	dataType: string;
 	platformId: string;
 	platformName: string;
-	dataAvailability: boolean;
+	dataAvailability: "TRUE" | "FALSE";
 	dataSource: string;
 }
 
@@ -108,6 +108,8 @@ const ModelDetails = ({
 	publications,
 	engraftments,
 }: IModelDetailsProps) => {
+	const { windowWidth } = useWindowDimensions();
+	const bpLarge = breakPoints.large;
 	const metadataDataArr = [
 		{ label: "Patient Sex", value: metadata.patientSex },
 		{ label: "Patient Age", value: metadata.patientAge },
@@ -118,17 +120,22 @@ const ModelDetails = ({
 		{ label: "Primary Site", value: metadata.primarySite },
 		{ label: "Collection Site", value: metadata.collectionSite },
 	];
-
-	const { windowWidth } = useWindowDimensions();
-
-	const bpLarge = breakPoints.large;
+	const typesMap = {
+		expression_molecular_data: "expression",
+		cna_molecular_data: "copy number alteration",
+		mutation_measurement_data: "mutation",
+		cytogenetics_molecular_data: "cytogenetics",
+	};
+	const restrictedTypes = molecularDataRestrictions.map(
+		(d) => typesMap[d.molecularDataTable]
+	);
 
 	return (
 		<>
 			<header className="bg-primary-primary text-white py-5">
 				<div className="container">
 					<div className="row align-center py-5 pb-lg-0 text-capitalize">
-						<div className="col-12 col-md-6 col-lg-6 col-xl-8 offset-xl-2 col-xxx-4 offset-xxx-2 mb-5 mb-md-0">
+						<div className="col-12 col-md-6 col-lg-6 col-xl-6 offset-xl-2 col-xxx-4 offset-xxx-2 mb-5 mb-md-0">
 							<h2
 								className={`m-0 text-family-secondary ${styles.ModelDetails_histology}`}
 							>
@@ -138,7 +145,7 @@ const ModelDetails = ({
 						</div>
 						<div className="col-12 col-md-6 col-lg-5 offset-lg-1 col-xl-5 offset-xl-5 col-xxx-3 offset-xxx-1 text-right">
 							<p className="mb-1">Provided by</p>
-							<h3 className="my-0 mb-3">{metadata.providerName}</h3>
+							<h3 className="my-0 mb-3 mb-lg-0">{metadata.providerName}</h3>
 							<div className="d-flex flex-column d-lg-block">
 								<Link
 									className="text-white mr-lg-3 mr-xl-0"
@@ -418,23 +425,25 @@ const ModelDetails = ({
 																		{data.dataType}
 																	</td>
 																	<td>
-																		{/* {!restrictedTypes.includes(
-																			data.dataType
-																		) ? (
-																			<Button
-																				onClick={() => onSelectdata(data)}
-																				variant="link"
-																			>
-																				VIEW DATA
-																			</Button>
+																		{!restrictedTypes.includes(data.dataType) &&
+																		data.dataAvailability === "TRUE" ? (
+																			<>
+																				<button className="text-left link-text mr-3 mr-md-0 mb-md-1">
+																					VIEW DATA
+																				</button>
+																				<button className="text-left link-text">
+																					DOWNLOAD DATA
+																				</button>
+																			</>
 																		) : (
-																			<a
-																				href={contactLink || ""}
+																			<Link
+																				href={extLinks.contactLink || ""}
 																				target="_blank"
+																				rel="noreferrer noopener"
 																			>
 																				REQUEST DATA
-																			</a>
-																		)} */}
+																			</Link>
+																		)}
 																	</td>
 																	<td>{data.platformName}</td>
 																	<td>
@@ -476,7 +485,7 @@ const ModelDetails = ({
 												</thead>
 												<tbody>
 													{drugDosing.map((treatment) => (
-														<tr>
+														<tr key={treatment.treatmentName}>
 															<td>{treatment.treatmentName}</td>
 															<td>{treatment.treatmentDose}</td>
 															<td>{treatment.treatmentResponse}</td>
@@ -524,7 +533,7 @@ const ModelDetails = ({
 								<div id="publications" className="row mb-5 pt-3">
 									<div className="col-12">
 										<h2 className="mt-0">Publications</h2>
-										{publications.map((publication, idx) => {
+										{publications?.map((publication, idx) => {
 											const needsSeparator =
 												publications.length > 1 &&
 												idx !== publications.length - 1;
@@ -587,20 +596,35 @@ const ModelDetails = ({
 export default ModelDetails;
 
 export const getStaticPaths: GetStaticPaths = async () => {
+	const getAllParamOptions = async () => {
+		let response = await fetch(
+			`${process.env.NEXT_PUBLIC_API_URL}/search_index?select=external_model_id,data_source`
+		);
+		if (!response.ok) {
+			throw new Error("Network response was not ok");
+		}
+
+		// new object with common key names and param structure
+		return response.json().then((d) =>
+			d.map((pair: { data_source: string; external_model_id: string }) => {
+				return {
+					params: {
+						providerId: pair["data_source"],
+						modelId: pair["external_model_id"],
+					},
+				};
+			})
+		);
+	};
+
 	return {
-		paths: [
-			{
-				params: {
-					providerId: "Curie-LC",
-					modelId: "LCF15",
-				},
-			},
-		],
+		paths: await getAllParamOptions(),
 		fallback: false,
 	};
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+	// try {
 	const {
 		metadata,
 		extLinks,
@@ -629,4 +653,35 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			publications,
 		},
 	};
+	// if (
+	// 	!{
+	// 		metadata,
+	// 		extLinks,
+	// 		molecularData,
+	// 		molecularDataRestrictions,
+	// 		engraftments,
+	// 		drugDosing,
+	// 		patientTreatment,
+	// 		qualityData,
+	// 		publications,
+	// 	}
+	// ) {
+	// 	return { notFound: true };
+	// }
+	// return {
+	// 	props: {
+	// 		metadata,
+	// 		extLinks,
+	// 		molecularData,
+	// 		molecularDataRestrictions,
+	// 		engraftments,
+	// 		drugDosing,
+	// 		patientTreatment,
+	// 		qualityData,
+	// 		publications,
+	// 	},
+	// };
+	// } catch {
+	// 	return { notFound: true };
+	// }
 };

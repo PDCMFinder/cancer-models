@@ -25,9 +25,12 @@ const getModelDetails = async (modelId: string, providerId: string) => {
 	const patientTreatment = await getPatientTreatment(pdcmModelId);
 	const qualityData = await getModelQualityData(pdcmModelId);
 	const pubmedIds = await getModelPubmedIds(pdcmModelId);
-	const publications = await Promise.all(
-		pubmedIds.map(async (p: string) => await getPublicationData(p))
-	);
+	let publications;
+	if (pubmedIds.forEach((id: string) => id)) {
+		publications = await Promise.all(
+			pubmedIds.map(async (p: string) => await getPublicationData(p))
+		);
+	}
 
 	return {
 		// deconstruct metadata object so we dont pass more props than we need/should
@@ -54,7 +57,7 @@ const getModelDetails = async (modelId: string, providerId: string) => {
 		drugDosing,
 		patientTreatment,
 		qualityData,
-		publications,
+		publications: publications ?? [],
 	};
 };
 
