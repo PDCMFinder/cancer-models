@@ -5,6 +5,7 @@ import { useState, useRef } from "react";
 
 interface IMolecularDataTableProps {
 	data: MolecularData;
+	handleDownload: (data: MolecularData, clickLink: boolean) => void;
 }
 
 const MolecularDataTable = (props: IMolecularDataTableProps) => {
@@ -12,7 +13,11 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 
 	return (
 		<div>
-			<Button priority="primary" color="dark">
+			<Button
+				priority="primary"
+				color="dark"
+				onClick={() => props.handleDownload(data, true)}
+			>
 				Download Data
 			</Button>
 			{data.xenograftModelId}

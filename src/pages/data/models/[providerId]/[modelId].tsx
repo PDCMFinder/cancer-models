@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import getModelDetails from "../../../../utils/getModelDetails";
 import Button from "../../../../components/Button/Button";
@@ -11,7 +12,7 @@ import Modal from "../../../../components/Modal/Modal";
 import Card from "../../../../components/Card/Card";
 import MolecularDataTable from "../../../../components/MolecularDataTable/MolecularDataTable";
 import { getMolecularDataDownload } from "../../../../apis/ModelDetails.api";
-import { CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 
 interface IModelDetailsProps {
 	metadata: Metadata;
@@ -135,19 +136,35 @@ const ModelDetails = ({
 		(d) => typesMap[d.molecularDataTable]
 	);
 
+	const [downloadData, setDownloadData] = useState<{
+		data: MolecularData[];
+		filename: string;
+	}>({
+		data: [],
+		filename: "",
+	});
+	const downloadBtnRef = useRef(null);
 	const [selectedMolecularData, setSelectedMolecularData] =
-		useState<MolecularData>();
-	const [dataDownload, setDataDownload] = useState<any[]>([]);
-	const csvLink = useRef(null);
+		useState<MolecularData[]>();
 
-	const getDataDownload = async (data: MolecularData, dataType: string) => {
-		getMolecularDataDownload(data, dataType)
+	const [isInitialLoad, setIsInitialLoad] = useState(true);
+	useEffect(() => {
+		if (!isInitialLoad && downloadBtnRef.current) {
+			// @ts-ignore
+			downloadBtnRef.current.link.click();
+		}
+		if (isInitialLoad) setIsInitialLoad(false);
+	}, [downloadData]);
+
+	const getDownloadData = (data: MolecularData) => {
+		getMolecularDataDownload(data, data.dataType)
 			.then((d) => {
-				setDataDownload(d);
-				if (csvLink.current) {
-					// @ts-ignore
-					csvLink.current.link.click();
-				}
+				setDownloadData({
+					data: d,
+					filename: `PDCM_${data.dataType}_${
+						data.patientSampleId || data.xenograftModelId
+					}_${data.platformName}.csv`,
+				});
 			})
 			.catch((error) => {});
 	};
@@ -459,19 +476,10 @@ const ModelDetails = ({
 																					VIEW DATA
 																				</button>
 																				<button
-																					className="text-left link-text"
-																					onClick={() =>
-																						getMolecularDataDownload(
-																							data,
-																							data.dataType
-																						)
-																					}
+																					className="text-left link-text mr-3 mr-md-0 mb-md-1"
+																					onClick={() => getDownloadData(data)}
 																				>
 																					DOWNLOAD DATA
-																					<CSVDownload
-																						data={dataDownload}
-																						target="_blank"
-																					/>
 																				</button>
 																			</>
 																		) : (
@@ -504,6 +512,12 @@ const ModelDetails = ({
 											</table>
 										</div>
 									</div>
+									<CSVLink
+										data={downloadData.data}
+										filename={downloadData.filename}
+										className="hideElement-accessible"
+										ref={downloadBtnRef}
+									/>
 								</div>
 							)}
 							{drugDosing.length > 0 && (
@@ -634,7 +648,10 @@ const ModelDetails = ({
 						className="bg-white"
 						header={<>{selectedMolecularData.platformName} data</>}
 					>
-						<MolecularDataTable data={selectedMolecularData} />
+						<MolecularDataTable
+							data={selectedMolecularData}
+							handleDownload={getDownloadData}
+						/>
 					</Card>
 				</Modal>
 			)}
