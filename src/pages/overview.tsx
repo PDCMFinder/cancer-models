@@ -2333,18 +2333,214 @@ const Overview: NextPage = () => {
 									features={Features as any}
 									data={[
 										{
-											id: "ARG",
-											label: "Cambridge",
+											id: "Amsterdam - Netherlands",
+											long: "52.377956",
+											lat: "4.897070",
+											color: "#000",
+											providers: [
+												{
+													id: "NKI",
+													name: "Netherlands Cancer Institute",
+													count: 7,
+												},
+											],
+										},
+										{
+											id: "Bar Harbour - USA",
+											long: "44.387699",
+											lat: "-68.212219",
+											color: "#000",
+											providers: [
+												{
+													id: "JAX",
+													name: "Jackson Laboratory",
+													count: 431,
+												},
+											],
+										},
+										{
+											id: "Barcelona - Spain",
+											long: "41.390205",
+											lat: "2.154007",
+											color: "#000",
+											providers: [
+												{
+													id: "VHIO-BC",
+													name: "Vall d’Hebron Institute of Oncology - Breast cancer",
+													count: 7,
+												},
+												{
+													id: "VHIO-CRC",
+													name: "Val d’Hebron Cancer Institute - Colorectal cancer",
+													count: 38,
+												},
+												{
+													id: "VHIO-PC",
+													name: "Vall d'Hebron Institute of Oncology - Pancreatic Cancer",
+													count: 28,
+												},
+											],
+										},
+										{
+											id: "Bethesda - USA",
+											long: "38.984653",
+											lat: "-77.094711",
+											color: "#000",
+											providers: [
+												{
+													id: "PDMR",
+													name: "NCI Patient-Derived Models Repository",
+													count: 1055,
+												},
+											],
+										},
+										{
+											id: "Cambridge - UK",
 											long: "52.205276",
 											lat: "0.119167",
-											formattedValue: 5,
 											color: "#000",
+											providers: [
+												{ id: "CMP", name: "Sanger Institute", count: 1561 },
+												//{ id: "SANG", name: "Sanger Institute", count: 0 },
+												{
+													id: "UOC-BC",
+													name: "Cancer Research UK Cambridge Institute",
+													count: 59,
+												},
+											],
+										},
+										{
+											id: "Cambridge - USA",
+											long: "42.365250",
+											lat: "-71.105011",
+											color: "#000",
+											providers: [
+												{
+													id: "DFCI-CPDM",
+													name: "The Center for Patient Derived Models at Dana Farber Cancer Institute",
+													count: 717,
+												},
+												// {
+												// 	id: "BROD",
+												// 	name: "Broad Institute",
+												// 	count: 0,
+												// },
+											],
+										},
+										// {
+										// 	id: "Chicago - USA",
+										// 	long: "41.881832",
+										// 	lat: "-87.623177",
+										// 	color: "#000",
+										// 	providers: [
+										// 		{
+										// 			id: "LurieChindrens",
+										// 			name: "Ann & Robert H Lurie Children's Hospital of Chicago",
+										// 			count: 0,
+										// 		},
+										// 	],
+										// },
+										// {
+										// 	id: "Cold Spring Harbor - USA",
+										// 	long: "40.861140",
+										// 	lat: "-73.451610",
+										// 	color: "#000",
+										// 	providers: [
+										// 		{
+										// 			id: "CSHL",
+										// 			name: "Cold Spring Harbor Laboratory",
+										// 			count: 0,
+										// 		},
+										// 	],
+										// },
+										{
+											id: "Groningen - Netherlands",
+											long: "53.219383",
+											lat: "6.566502",
+											color: "#000",
+											providers: [
+												{
+													id: "UMCG",
+													name: "University Medical Center Groningen",
+													count: 8,
+												},
+											],
+										},
+										{
+											id: "Houston, USA",
+											long: "29.749907",
+											lat: "-95.358421",
+											color: "#000",
+											providers: [
+												{
+													id: "MDAnderson",
+													name: "University of Texas MD Anderson Cancer Center",
+													count: 315,
+												},
+												// {
+												// 	id: "MD Anderson-CCH",
+												// 	name: "MD Anderson Children's Cancer Hospital",
+												// 	count: 0,
+												// },
+											],
+										},
+										{
+											id: "Leuven - Belgium",
+											long: "50.879844",
+											lat: "4.700518",
+											color: "#000",
+											providers: [
+												{
+													id: "TRACE",
+													name: "TRACE-PDTX",
+													count: 31,
+												},
+											],
+										},
+										// {
+										// 	id: "Lubbock - USA",
+										// 	long: "33.576698",
+										// 	lat: "-101.855072",
+										// 	color: "#000",
+										// 	providers: [
+										// 		{
+										// 			id: "TTUHSC",
+										// 			name: "Texas Tech University Health Sciences Center",
+										// 			count: 0,
+										// 		},
+										// 	],
+										// },
+										{
+											id: "Luxembourg",
+											long: "49.611622",
+											lat: "6.131935",
+											color: "#000",
+											providers: [
+												{
+													id: "LIH",
+													name: "Luxembourg Institute of Health - Gliomas",
+													count: 40,
+												},
+											],
+										},
+										{
+											id: "Manchester - UK",
+											long: "53.483959",
+											lat: "-2.244644",
+											color: "#000",
+											providers: [
+												{
+													id: "UOM-BC",
+													name: "University of Manchester Breast Centre",
+													count: 40,
+												},
+											],
 										},
 									]}
 									margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-									projectionTranslation={[0.5, 0.6]}
+									projectionTranslation={[0.7, 0.9]}
 									projectionRotation={[0, 0, 0]}
-									projectionScale={200}
+									projectionScale={400}
 									enableGraticule={false}
 									borderWidth={0.5}
 									borderColor="#152538"
