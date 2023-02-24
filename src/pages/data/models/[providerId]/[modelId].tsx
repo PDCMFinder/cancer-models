@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { RefObject, useEffect } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import getModelDetails from "../../../../utils/getModelDetails";
 import Button from "../../../../components/Button/Button";
@@ -103,6 +103,13 @@ interface Engraftment {
 	hostStrainNomenclature: string;
 }
 
+const typesMap = {
+	expression_molecular_data: "expression",
+	cna_molecular_data: "copy number alteration",
+	mutation_measurement_data: "mutation",
+	cytogenetics_molecular_data: "cytogenetics",
+};
+
 const ModelDetails = ({
 	metadata,
 	extLinks,
@@ -114,6 +121,23 @@ const ModelDetails = ({
 	publications,
 	engraftments,
 }: IModelDetailsProps) => {
+	const [downloadData, setDownloadData] = useState<{
+		data: MolecularData[];
+		filename: string;
+	}>({
+		data: [],
+		filename: "",
+	});
+	const downloadBtnRef = useRef<{ link: HTMLAnchorElement }>(null);
+	const [selectedMolecularData, setSelectedMolecularData] =
+		useState<MolecularData>();
+	const [page, setPage] = useState<number>(1);
+	const [filter, setFilter] = useState<string>("");
+	const [sortColumn, setSortSortColumn] = useState<string>("");
+	const [sortDirection, setSortDirection] = useState<string>("");
+	const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+	const pageSize = 10;
 	const { windowWidth } = useWindowDimensions();
 	const bpLarge = breakPoints.large;
 	const metadataDataArr = [
@@ -126,31 +150,12 @@ const ModelDetails = ({
 		{ label: "Primary Site", value: metadata.primarySite },
 		{ label: "Collection Site", value: metadata.collectionSite },
 	];
-	const typesMap = {
-		expression_molecular_data: "expression",
-		cna_molecular_data: "copy number alteration",
-		mutation_measurement_data: "mutation",
-		cytogenetics_molecular_data: "cytogenetics",
-	};
 	const restrictedTypes = molecularDataRestrictions.map(
 		(d) => typesMap[d.molecularDataTable]
 	);
 
-	const [downloadData, setDownloadData] = useState<{
-		data: MolecularData[];
-		filename: string;
-	}>({
-		data: [],
-		filename: "",
-	});
-	const downloadBtnRef = useRef(null);
-	const [selectedMolecularData, setSelectedMolecularData] =
-		useState<MolecularData[]>();
-
-	const [isInitialLoad, setIsInitialLoad] = useState(true);
 	useEffect(() => {
 		if (!isInitialLoad && downloadBtnRef.current) {
-			// @ts-ignore
 			downloadBtnRef.current.link.click();
 		}
 		if (isInitialLoad) setIsInitialLoad(false);
@@ -161,9 +166,9 @@ const ModelDetails = ({
 			.then((d) => {
 				setDownloadData({
 					data: d,
-					filename: `PDCM_${data.dataType}_${
-						data.patientSampleId || data.xenograftModelId
-					}_${data.platformName}.csv`,
+					filename: `CancerModelsOrg_${data.dataType ?? ""}_${
+						data.patientSampleId ?? data.xenograftModelId ?? ""
+					}_${data.platformName ?? ""}.csv`,
 				});
 			})
 			.catch((error) => {});
@@ -189,6 +194,8 @@ const ModelDetails = ({
 								<Link
 									className="text-white mr-lg-3 mr-xl-0"
 									href={extLinks.sourceDatabaseUrl}
+									target="_blank"
+									rel="noopener noreferrer"
 								>
 									View data at {metadata.providerId || "provider"}
 								</Link>
@@ -321,7 +328,7 @@ const ModelDetails = ({
 									</ul>
 								</div>
 							</div>
-							{engraftments?.length && engraftments?.length > 0 && (
+							{engraftments && engraftments?.length > 0 && (
 								<div id="engraftments" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">PDX model engraftment</h2>
@@ -457,7 +464,9 @@ const ModelDetails = ({
 
 															return (
 																<tr key={data.id}>
-																	<td>{sampleId}</td>
+																	<td className="white-space-nowrap">
+																		{sampleId}
+																	</td>
 																	<td>{sampleType}</td>
 																	<td>{data.xenograftPassage || "N/A"}</td>
 																	<td className="text-capitalize">
@@ -646,11 +655,30 @@ const ModelDetails = ({
 				<Modal handleClose={() => setSelectedMolecularData(undefined)}>
 					<Card
 						className="bg-white"
-						header={<>{selectedMolecularData.platformName} data</>}
+						header={
+							<h4 className="m-0">{selectedMolecularData.platformName} data</h4>
+						}
+						footer={
+							<div className="text-right">
+								<Button
+									priority="secondary"
+									color="dark"
+									className="m-0"
+									onClick={() => setSelectedMolecularData(undefined)}
+								>
+									Close
+								</Button>
+							</div>
+						}
 					>
 						<MolecularDataTable
 							data={selectedMolecularData}
 							handleDownload={getDownloadData}
+							filter={filter}
+							page={page}
+							sortColumn={sortColumn}
+							sortDirection={sortDirection}
+							pageSize={pageSize}
 						/>
 					</Card>
 				</Modal>

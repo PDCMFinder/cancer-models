@@ -540,6 +540,19 @@ table {
 			padding-right: 0;
 		}
 	}
+	&.table-verticalBorder {
+		td,
+		th {
+			padding: 1rem 2rem 1rem 1rem;
+			border-right: 1px solid darken($color-gray, 10%);
+			&:first-of-type {
+				padding-left: 0;
+			}
+			&:last-of-type {
+				border-right: none;
+			}
+		}
+	}
 	tr:not(:last-of-type) {
 		border-bottom: 1px solid darken($color-gray, 10%);
 	}

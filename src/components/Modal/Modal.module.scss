@@ -3,7 +3,6 @@
 .Modal {
 	z-index: 9999999999;
 	&_backdrop {
-		position: fixed;
 		background-color: rgba(0, 0, 0, 0.75);
 	}
 	&_content {
@@ -13,8 +12,5 @@
 		left: $spacing-2;
 		top: 50%;
 		transform: translateY(-50%);
-		@media screen and (min-width: $bp-lg) {
-			height: auto;
-		}
 	}
 }
