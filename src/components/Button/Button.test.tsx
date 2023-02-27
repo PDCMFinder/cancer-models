@@ -6,7 +6,7 @@ import Button from "./Button";
 describe("Button UI component", () => {
 	it("should render a button with text", () => {
 		render(
-			<Button color="dark" priority="primary" htmlTag="button">
+			<Button color="dark" priority="aa" htmlTag="button">
 				Button text
 			</Button>
 		);
@@ -19,7 +19,7 @@ describe("Button UI component", () => {
 
 	it("should render the component with anchor tag", () => {
 		render(
-			<Button color="dark" priority="primary" htmlTag="a" href="/">
+			<Button color="dark" priority="aa" htmlTag="a" href="/">
 				Button text
 			</Button>
 		);
@@ -31,7 +31,7 @@ describe("Button UI component", () => {
 		render(
 			<Button
 				color="dark"
-				priority="primary"
+				priority="aa"
 				htmlTag="a"
 				href="https://cancermodels.org"
 			>

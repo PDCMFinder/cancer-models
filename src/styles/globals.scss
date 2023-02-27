@@ -323,13 +323,17 @@ a {
 		padding: 0 !important;
 	}
 	&y {
+		&-0 {
+			padding-top: 0 !important;
+			padding-bottom: 0 !important;
+		}
 		&-5 {
 			padding-top: $spacing-5 !important;
 			padding-bottom: $spacing-5 !important;
 		}
-		&-0 {
-			padding-top: 0 !important;
-			padding-bottom: 0 !important;
+		&-3 {
+			padding-top: $spacing-3 !important;
+			padding-bottom: $spacing-3 !important;
 		}
 	}
 	&b {
@@ -566,5 +570,23 @@ table {
 	}
 	&-unset {
 		white-space: unset;
+	}
+}
+.showScrollbar {
+	&-vertical {
+		&::-webkit-scrollbar {
+			-webkit-appearance: none;
+			width: 0px;
+			height: 3px;
+		}
+		&::-webkit-scrollbar-thumb {
+			background-color: rgba(0, 0, 0, 0.15);
+			border-radius: 500px;
+		}
+		@include mediaOver("md") {
+			&::-webkit-scrollbar {
+				height: 5px;
+			}
+		}
 	}
 }

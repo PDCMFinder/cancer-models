@@ -43,7 +43,7 @@ const Provider = ({ providerData }: IProviderProps) => {
 						<div className="col-12 text-center">
 							<Button
 								color="dark"
-								priority="primary"
+								priority="aa"
 								href={`/search?facets=model.data_source:${providerData.abbreviation}`}
 								htmlTag="a"
 							>

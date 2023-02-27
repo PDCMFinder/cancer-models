@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect } from "react";
+import React, { useEffect } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import getModelDetails from "../../../../utils/getModelDetails";
 import Button from "../../../../components/Button/Button";
@@ -13,6 +13,7 @@ import Card from "../../../../components/Card/Card";
 import MolecularDataTable from "../../../../components/MolecularDataTable/MolecularDataTable";
 import { getMolecularDataDownload } from "../../../../apis/ModelDetails.api";
 import { CSVLink } from "react-csv";
+import CloseIcon from "../../../../components/CloseIcon/CloseIcon";
 
 interface IModelDetailsProps {
 	metadata: Metadata;
@@ -20,13 +21,19 @@ interface IModelDetailsProps {
 	molecularData: MolecularData[];
 	molecularDataRestrictions: any[];
 	drugDosing: any[];
-	patientTreatment: string[];
+	patientTreatment: PatientTreatment[];
 	qualityData: QualityData[];
 	publications: Publication[];
 	className: string;
 	modelId: string;
 	providerId: string;
 	engraftments?: Engraftment[];
+}
+
+interface PatientTreatment {
+	treatmentDose: string;
+	treatmentName: string;
+	treatmentResponse: string;
 }
 
 export interface MolecularData {
@@ -131,7 +138,6 @@ const ModelDetails = ({
 	const downloadBtnRef = useRef<{ link: HTMLAnchorElement }>(null);
 	const [selectedMolecularData, setSelectedMolecularData] =
 		useState<MolecularData>();
-	const [page, setPage] = useState<number>(1);
 	const [filter, setFilter] = useState<string>("");
 	const [sortColumn, setSortSortColumn] = useState<string>("");
 	const [sortDirection, setSortDirection] = useState<string>("");
@@ -332,9 +338,7 @@ const ModelDetails = ({
 								<div id="engraftments" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">PDX model engraftment</h2>
-										<div
-											className={`overflow-scroll ${styles.ModelDetails_tableContainer}`}
-										>
+										<div className="overflow-scroll showScrollbar-vertical">
 											<table>
 												<caption>PDX model engraftment</caption>
 												<thead>
@@ -405,9 +409,7 @@ const ModelDetails = ({
 								<div id="quality-control" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Model quality control</h2>
-										<div
-											className={`overflow-scroll ${styles.ModelDetails_tableContainer}`}
-										>
+										<div className="overflow-scroll showScrollbar-vertical">
 											<table>
 												<caption>Model quality control</caption>
 												<thead>
@@ -435,9 +437,7 @@ const ModelDetails = ({
 								<div id="molecular-data" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Molecular data</h2>
-										<div
-											className={`overflow-scroll ${styles.ModelDetails_tableContainer}`}
-										>
+										<div className="overflow-scroll showScrollbar-vertical">
 											<table>
 												<caption>Molecular data</caption>
 												<thead>
@@ -533,9 +533,7 @@ const ModelDetails = ({
 								<div id="dosing-studies" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Dosing studies</h2>
-										<div
-											className={`overflow-scroll ${styles.ModelDetails_tableContainer}`}
-										>
+										<div className="overflow-scroll showScrollbar-vertical">
 											<table>
 												<caption>Dosing studies</caption>
 												<thead>
@@ -546,13 +544,19 @@ const ModelDetails = ({
 													</tr>
 												</thead>
 												<tbody>
-													{drugDosing.map((treatment) => (
-														<tr key={treatment.treatmentName}>
-															<td>{treatment.treatmentName}</td>
-															<td>{treatment.treatmentDose}</td>
-															<td>{treatment.treatmentResponse}</td>
-														</tr>
-													))}
+													{drugDosing.map(
+														({
+															treatmentName: name,
+															treatmentDose: dose,
+															treatmentResponse: response,
+														}) => (
+															<tr key={name}>
+																<td>{name}</td>
+																<td>{dose}</td>
+																<td>{response}</td>
+															</tr>
+														)
+													)}
 												</tbody>
 											</table>
 										</div>
@@ -563,9 +567,7 @@ const ModelDetails = ({
 								<div id="patient-treatment" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Patient treatment</h2>
-										<div
-											className={`overflow-scroll ${styles.ModelDetails_tableContainer}`}
-										>
+										<div className="overflow-scroll showScrollbar-vertical">
 											<table>
 												<caption>Patient treatment</caption>
 												<thead>
@@ -576,15 +578,19 @@ const ModelDetails = ({
 													</tr>
 												</thead>
 												<tbody>
-													{patientTreatment.map((treatment) => (
-														<tr key={treatment.treatmentName}>
-															<td className="white-space-unset">
-																{treatment.treatmentName}
-															</td>
-															<td>{treatment.treatmentDose}</td>
-															<td>{treatment.treatmentResponse}</td>
-														</tr>
-													))}
+													{patientTreatment.map(
+														({
+															treatmentName: name,
+															treatmentDose: dose,
+															treatmentResponse: response,
+														}) => (
+															<tr key={name}>
+																<td className="white-space-unset">{name}</td>
+																<td className="text-capitalize">{dose}</td>
+																<td>{response}</td>
+															</tr>
+														)
+													)}
 												</tbody>
 											</table>
 										</div>
@@ -652,30 +658,29 @@ const ModelDetails = ({
 				</div>
 			</section>
 			{selectedMolecularData && (
-				<Modal handleClose={() => setSelectedMolecularData(undefined)}>
+				<Modal
+					verticalAlign="top"
+					handleClose={() => setSelectedMolecularData(undefined)}
+				>
 					<Card
 						className="bg-white"
+						contentClassName="py-3"
 						header={
-							<h4 className="m-0">{selectedMolecularData.platformName} data</h4>
-						}
-						footer={
-							<div className="text-right">
-								<Button
-									priority="secondary"
+							<header className="d-flex justify-content-between">
+								<h3 className="m-0">
+									{selectedMolecularData.platformName} data
+								</h3>
+								<CloseIcon
 									color="dark"
-									className="m-0"
 									onClick={() => setSelectedMolecularData(undefined)}
-								>
-									Close
-								</Button>
-							</div>
+								/>
+							</header>
 						}
 					>
 						<MolecularDataTable
 							data={selectedMolecularData}
 							handleDownload={getDownloadData}
 							filter={filter}
-							page={page}
 							sortColumn={sortColumn}
 							sortDirection={sortDirection}
 							pageSize={pageSize}

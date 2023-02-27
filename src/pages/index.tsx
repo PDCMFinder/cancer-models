@@ -134,12 +134,7 @@ const Home: NextPage = () => {
 								easy for researchers to search and compare models of interest.
 							</p>
 							<div className="text-center text-lg-left">
-								<Button
-									priority="primary"
-									color="dark"
-									href="/submit"
-									htmlTag="a"
-								>
+								<Button priority="aa" color="dark" href="/submit" htmlTag="a">
 									Submit data
 								</Button>
 							</div>
@@ -166,7 +161,7 @@ const Home: NextPage = () => {
 								<h2>Connect with model providers.</h2>
 								<Button
 									color="white"
-									priority="primary"
+									priority="aa"
 									htmlTag="a"
 									href="/overview"
 									className="mt-5"

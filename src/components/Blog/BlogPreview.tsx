@@ -16,7 +16,7 @@ const BlogPreview = (props: IBlogPreviewProps) => {
 							Scelerisque morbi eu arcu quis. Nibh at diam nam etiam congue. Non
 							sodales orci amet, elit dolor volutpat.
 						</p>
-						<Button color="light" priority="primary" className="mb-5">
+						<Button color="light" priority="aa" className="mb-5">
 							Read more
 						</Button>
 						<hr className="col-lg-8 ml-0" />
@@ -27,7 +27,7 @@ const BlogPreview = (props: IBlogPreviewProps) => {
 							Scelerisque morbi eu arcu quis. Nibh at diam nam etiam congue. Non
 							sodales orci amet, elit dolor volutpat.
 						</p>
-						<Button color="light" priority="primary" className="mb-5">
+						<Button color="light" priority="aa" className="mb-5">
 							Read more
 						</Button>
 						<hr className="col-lg-8 ml-0" />
@@ -38,7 +38,7 @@ const BlogPreview = (props: IBlogPreviewProps) => {
 							Scelerisque morbi eu arcu quis. Nibh at diam nam etiam congue. Non
 							sodales orci amet, elit dolor volutpat.
 						</p>
-						<Button color="light" priority="primary" className="mb-5">
+						<Button color="light" priority="aa" className="mb-5">
 							Read more
 						</Button>
 						<hr className="col-lg-8 ml-0" />
@@ -46,7 +46,7 @@ const BlogPreview = (props: IBlogPreviewProps) => {
 				</div>
 				<div className="row">
 					<div className="col-12 text-center mt-5">
-						<Button color="dark" priority="primary">
+						<Button color="dark" priority="aa">
 							View all entries
 						</Button>
 					</div>

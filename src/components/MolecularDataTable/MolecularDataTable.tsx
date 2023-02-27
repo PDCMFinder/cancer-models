@@ -1,4 +1,3 @@
-import styles from "./MolecularDataTable.module.scss";
 import { MolecularData } from "../../pages/data/models/[providerId]/[modelId]";
 import Button from "../Button/Button";
 import { useQuery } from "react-query";
@@ -7,19 +6,34 @@ import {
 	getModelMolecularDataDetails,
 } from "../../apis/ModelDetails.api";
 import Loader from "../Loader/Loader";
+import Pagination from "../Pagination/Pagination";
 import { useState } from "react";
 
 interface IMolecularDataTableProps {
 	data: MolecularData;
 	filter: string;
-	page: number;
 	sortColumn: string;
 	sortDirection: string;
 	pageSize: number;
 	handleDownload: (data: MolecularData) => void;
 }
 
+interface DataDetailsRow {
+	hgnc_symbol: string | null;
+	rnaseq_coverage: string | null;
+	rnaseq_fpkm: string | null;
+	rnaseq_tpm: string | null;
+	rnaseq_count: string | null;
+	affy_hgea_probe_id: string | null;
+	affy_hgea_expression_value: string | null;
+	illumina_hgea_probe_id: string | null;
+	illumina_hgea_expression_value: string | null;
+	z_score: string | null;
+	non_harmonised_symbol: string | null;
+}
+
 const MolecularDataTable = (props: IMolecularDataTableProps) => {
+	const [currentPage, setCurrentPage] = useState<number>(1);
 	const data = props.data ?? {};
 
 	const { data: columns } = useQuery(
@@ -33,7 +47,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 			data.id,
 			data.dataType,
 			props.filter,
-			props.page,
+			currentPage,
 			props.pageSize,
 			props.sortColumn,
 			props.sortDirection,
@@ -43,7 +57,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 				data.id,
 				data.dataType,
 				props.filter,
-				props.page,
+				currentPage,
 				props.pageSize,
 				props.sortColumn,
 				props.sortDirection
@@ -112,75 +126,103 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 		}
 	}
 
+	const asdf = () => {
+		console.log("asf");
+	};
+
 	return (
-		<div>
+		<>
 			<div className="text-right">
 				<Button
 					priority="primary"
 					color="dark"
-					className="m-0"
+					className="mt-0"
 					onClick={() => props.handleDownload(data)}
 				>
 					Download Data
 				</Button>
 			</div>
-			<table className="table-verticalBorder">
-				<thead>
-					<tr>
-						{columnsToDisplay?.map(
-							({ key, name }: { key: string; name: string }) => (
-								<th key={key}>
-									<button
-										className="text-underline text-left"
-										// onClick={() =>
-										// 	onSortChange(
-										// 		key,
-										// 		getSortDirection(key, sortColumn, sortDirection)
-										// 	)
-										// }
-									>
-										{name}
-										{/* {sortColumn === key &&
-											(sortDirection === "asc" ? "faArrowUp" : "faArrowDown")} */}
-									</button>
-								</th>
-							)
-						)}
-					</tr>
-				</thead>
-				<tbody>
-					{isLoading ? (
+			<div className="overflow-scroll showScrollbar-vertical">
+				<table className="table-verticalBorder">
+					<thead>
 						<tr>
-							<td>
-								<Loader />
-							</td>
+							{columnsToDisplay?.map(
+								({ key, name }: { key: string; name: string }) => (
+									<th key={key}>
+										<button
+											className="text-underline text-left"
+											// onClick={() =>
+											// 	onSortChange(
+											// 		key,
+											// 		getSortDirection(key, sortColumn, sortDirection)
+											// 	)
+											// }
+										>
+											{name}
+											{/* {sortColumn === key &&
+                        (sortDirection === "asc" ? "faArrowUp" : "faArrowDown")} */}
+										</button>
+									</th>
+								)
+							)}
 						</tr>
-					) : (
-						dataDetails[1]?.map((row) => {
-							return (
-								<tr key={row.hgnc_symbol}>
+					</thead>
+					<tbody>
+						{isLoading ? (
+							<tr>
+								<td>
+									<Loader />
+								</td>
+							</tr>
+						) : (
+							dataDetails &&
+							dataDetails[1]?.map((row: DataDetailsRow, index: number) => (
+								<tr key={`${row.hgnc_symbol} ${row.rnaseq_count} ${index}`}>
 									{Object.keys(row)
 										.filter((k) =>
 											columnsToDisplay.map((i) => i.key).includes(k)
 										)
-										.map((key, index) => {
+										.map((key) => {
 											if (key === "hgnc_symbol") {
 												return row[key] ? (
-													<td key={index}>{row[key]}</td>
+													<td
+														key={`${row.hgnc_symbol} ${row.rnaseq_count} ${index}`}
+													>
+														{row[key]}
+													</td>
 												) : (
-													<td key={index}>{row["non_harmonised_symbol"]}</td>
+													<td
+														key={`${row.hgnc_symbol} ${row.rnaseq_count} ${index}`}
+													>
+														{row["non_harmonised_symbol"]}
+													</td>
 												);
 											} else {
-												return <td key={index}>{row[key]}</td>;
+												return (
+													<td
+														key={`${row.hgnc_symbol} ${row.rnaseq_count} ${index}`}
+													>
+														{row[key as keyof DataDetailsRow]}
+													</td>
+												);
 											}
 										})}
 								</tr>
-							);
-						})
-					)}
-				</tbody>
-			</table>
-		</div>
+							))
+						)}
+					</tbody>
+				</table>
+			</div>
+			<Pagination
+				totalPages={
+					dataDetails && dataDetails[0] >= 1
+						? Math.ceil(dataDetails[0] / props.pageSize)
+						: 1
+				}
+				currentPage={currentPage}
+				onPageChange={(page: number) => setCurrentPage(page)}
+			/>
+		</>
 	);
 };
 

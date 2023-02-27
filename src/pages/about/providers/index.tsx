@@ -73,7 +73,7 @@ const Providers = ({ allProvidersBasics }: IProvidersProps) => {
 												</Link>
 												<Button
 													color="dark"
-													priority="primary"
+													priority="aa"
 													href={`/search?facets=model.data_source:${provider.abbreviation}`}
 													htmlTag="a"
 												>
