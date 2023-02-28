@@ -14,17 +14,16 @@
 		background-color: $--content-bgColor;
 		line-height: 1;
 	}
-	.arrow-left {
+	&_arrow {
 		--arrow-width: 0.7rem;
 		border-right: var(--arrow-width) solid $--content-bgColor;
-		width: 0;
-		height: 0;
 		border-top: var(--arrow-width) solid transparent;
 		border-bottom: var(--arrow-width) solid transparent;
 		position: absolute;
 		left: calc(calc(var(--content-separation) - var(--arrow-width)) + 1px);
 		top: 50%;
 		transform: translateY(-50%);
+		margin: 0;
 	}
 	&_children {
 		text-decoration-line: underline;

@@ -58,10 +58,6 @@ export interface IInputProps {
 	) => void;
 }
 
-export interface IArrowIconProps {
-	direction?: "up" | "right" | "down" | "left";
-}
-
 export interface ITabProps {
 	props: {
 		label: string;

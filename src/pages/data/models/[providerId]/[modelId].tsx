@@ -149,11 +149,8 @@ const ModelDetails = ({
 	const [selectedMolecularData, setSelectedMolecularData] =
 		useState<MolecularData>();
 	const [filter, setFilter] = useState<string>("");
-	const [sortColumn, setSortSortColumn] = useState<string>("");
-	const [sortDirection, setSortDirection] = useState<string>("");
 	const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
 
-	const pageSize = 10;
 	const { windowWidth } = useWindowDimensions();
 	const bpLarge = breakPoints.large;
 	const metadataDataArr = [
@@ -177,7 +174,7 @@ const ModelDetails = ({
 		if (isInitialLoad) setIsInitialLoad(false);
 	}, [downloadData]);
 
-	const getDownloadData = (data: MolecularData) => {
+	const getDownloadData = (data: MolecularData): void => {
 		getMolecularDataDownload(data, data.dataType)
 			.then((d) => {
 				setDownloadData({
@@ -379,6 +376,7 @@ const ModelDetails = ({
 																	const strainPrefix = matches[1] || "";
 																	const strainSup = matches[2] || "";
 																	const strainSuffix = matches[3] || "";
+
 																	return {
 																		strainPrefix,
 																		strainSup,
@@ -410,7 +408,7 @@ const ModelDetails = ({
 																				>
 																					{strainPrefix}
 																					<sup>{strainSup}</sup>
-																					{strainSuffix}
+																					{strainSuffix}{" "}
 																				</span>
 																			)
 																		)}
@@ -461,13 +459,23 @@ const ModelDetails = ({
 													</tr>
 												</thead>
 												<tbody>
-													{qualityData.map((qualityCheck) => (
-														<tr key={qualityCheck.validationTechnique}>
-															<td>{qualityCheck.validationTechnique}</td>
-															<td>{qualityCheck.description}</td>
-															<td>{qualityCheck.passagesTested}</td>
-														</tr>
-													))}
+													{qualityData.map(
+														({
+															validationTechnique,
+															description,
+															passagesTested,
+														}: {
+															validationTechnique: string;
+															description: string;
+															passagesTested: string;
+														}) => (
+															<tr key={validationTechnique}>
+																<td>{validationTechnique}</td>
+																<td>{description}</td>
+																<td>{passagesTested}</td>
+															</tr>
+														)
+													)}
 												</tbody>
 											</table>
 										</div>
@@ -722,9 +730,6 @@ const ModelDetails = ({
 							data={selectedMolecularData}
 							handleDownload={getDownloadData}
 							filter={filter}
-							sortColumn={sortColumn}
-							sortDirection={sortDirection}
-							pageSize={pageSize}
 						/>
 					</Card>
 				</Modal>

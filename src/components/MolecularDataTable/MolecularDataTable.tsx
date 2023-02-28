@@ -12,9 +12,6 @@ import { useState } from "react";
 interface IMolecularDataTableProps {
 	data: MolecularData;
 	filter: string;
-	sortColumn: string;
-	sortDirection: string;
-	pageSize: number;
 	handleDownload: (data: MolecularData) => void;
 }
 
@@ -32,15 +29,30 @@ interface DataDetailsRow {
 	non_harmonised_symbol: string | null;
 }
 
+function getSortDirection(
+	newColumn: string,
+	sortColumn: string,
+	sortDirection: string = "asc"
+) {
+	if (newColumn === sortColumn && sortDirection === "asc") {
+		return "desc";
+	} else {
+		return "asc";
+	}
+}
+
 const MolecularDataTable = (props: IMolecularDataTableProps) => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
-	const data = props.data ?? {};
+	let columnsToDisplay: { key: string; name: string }[] = [];
+	const data = props.data ?? {},
+		pageSize = 10;
 
+	const [sortColumn, setSortSortColumn] = useState<string>("");
+	const [sortDirection, setSortDirection] = useState<string>("");
 	const { data: columns } = useQuery(
 		["get-molecular-data-detail-cols", data.dataSource, data.dataType],
 		() => getAvailableDataColumns(data.dataSource, data.dataType)
 	);
-
 	const { data: dataDetails, isLoading } = useQuery(
 		[
 			"get-molecular-data-detail",
@@ -48,9 +60,9 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 			data.dataType,
 			props.filter,
 			currentPage,
-			props.pageSize,
-			props.sortColumn,
-			props.sortDirection,
+			pageSize,
+			sortColumn,
+			sortDirection,
 		],
 		() =>
 			getModelMolecularDataDetails(
@@ -58,13 +70,12 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 				data.dataType,
 				props.filter,
 				currentPage,
-				props.pageSize,
-				props.sortColumn,
-				props.sortDirection
+				pageSize,
+				sortColumn,
+				sortDirection
 			)
 	);
 
-	let columnsToDisplay: any[] = [];
 	if (columns) {
 		switch (data.dataType) {
 			case "mutation":
@@ -126,8 +137,15 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 		}
 	}
 
-	const asdf = () => {
-		console.log("asf");
+	const handleSortChange = (key: string, sortDirection: string): void => {
+		if (key === sortColumn && sortDirection === "asc") {
+			sortDirection = "desc";
+		} else {
+			sortDirection = "asc";
+		}
+
+		setSortSortColumn(key);
+		setSortDirection(sortDirection);
 	};
 
 	return (
@@ -149,19 +167,17 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 							{columnsToDisplay?.map(
 								({ key, name }: { key: string; name: string }) => (
 									<th key={key}>
-										<button
-											className="text-underline text-left"
-											// onClick={() =>
-											// 	onSortChange(
-											// 		key,
-											// 		getSortDirection(key, sortColumn, sortDirection)
-											// 	)
-											// }
+										<Button
+											priority="secondary"
+											color="dark"
+											className="text-underline text-left m-0 p-0 link-text"
+											aria-label={`Sort by ${name} column`}
+											onClick={() => handleSortChange(key, sortDirection)}
+											arrow={sortColumn === key}
+											arrowDirection={sortDirection === "asc" ? "down" : "up"}
 										>
 											{name}
-											{/* {sortColumn === key &&
-                        (sortDirection === "asc" ? "faArrowUp" : "faArrowDown")} */}
-										</button>
+										</Button>
 									</th>
 								)
 							)}
@@ -176,8 +192,8 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 							</tr>
 						) : (
 							dataDetails &&
-							dataDetails[1]?.map((row: DataDetailsRow, index: number) => (
-								<tr key={`${row.hgnc_symbol} ${row.rnaseq_count} ${index}`}>
+							dataDetails[1]?.map((row: DataDetailsRow) => (
+								<tr key={Math.random()}>
 									{Object.keys(row)
 										.filter((k) =>
 											columnsToDisplay.map((i) => i.key).includes(k)
@@ -185,23 +201,15 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 										.map((key) => {
 											if (key === "hgnc_symbol") {
 												return row[key] ? (
-													<td
-														key={`${row.hgnc_symbol} ${row.rnaseq_count} ${index}`}
-													>
-														{row[key]}
-													</td>
+													<td key={Math.random()}>{row[key]}</td>
 												) : (
-													<td
-														key={`${row.hgnc_symbol} ${row.rnaseq_count} ${index}`}
-													>
+													<td key={Math.random()}>
 														{row["non_harmonised_symbol"]}
 													</td>
 												);
 											} else {
 												return (
-													<td
-														key={`${row.hgnc_symbol} ${row.rnaseq_count} ${index}`}
-													>
+													<td key={Math.random()}>
 														{row[key as keyof DataDetailsRow]}
 													</td>
 												);
@@ -216,7 +224,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 			<Pagination
 				totalPages={
 					dataDetails && dataDetails[0] >= 1
-						? Math.ceil(dataDetails[0] / props.pageSize)
+						? Math.ceil(dataDetails[0] / pageSize)
 						: 1
 				}
 				currentPage={currentPage}

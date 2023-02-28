@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ArrowIcon from "../ArrowIcon/ArrowIcon";
 import styles from "./Tooltip.module.scss";
 
 interface ITooltipProps {
@@ -19,7 +20,7 @@ const Tooltip = (props: ITooltipProps) => {
 				{isHovering && (
 					<>
 						<div className={styles.Tooltip_content}>{props.content}</div>
-						<div className={styles["arrow-left"]}></div>
+						<ArrowIcon className={styles.Tooltip_arrow} direction="left" />
 					</>
 				)}
 				<span className={styles.Tooltip_children}>{props.children}</span>
