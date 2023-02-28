@@ -50,6 +50,9 @@ img {
 	&-flex {
 		display: flex;
 	}
+	&-inline {
+		display: inline;
+	}
 	@include mediaOver("md") {
 		&-md {
 			&-flex {
@@ -555,6 +558,9 @@ table {
 			&:last-of-type {
 				border-right: none;
 			}
+		}
+		tr:last-of-type {
+			border-bottom: 1px solid darken($color-gray, 10%);
 		}
 	}
 	tr:not(:last-of-type) {

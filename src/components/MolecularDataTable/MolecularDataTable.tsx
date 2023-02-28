@@ -142,7 +142,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 					Download Data
 				</Button>
 			</div>
-			<div className="overflow-scroll showScrollbar-vertical">
+			<div className="overflow-scroll showScrollbar-vertical mb-3">
 				<table className="table-verticalBorder">
 					<thead>
 						<tr>
@@ -170,7 +170,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 					<tbody>
 						{isLoading ? (
 							<tr>
-								<td>
+								<td colSpan={100}>
 									<Loader />
 								</td>
 							</tr>

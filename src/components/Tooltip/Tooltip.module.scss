@@ -1,0 +1,33 @@
+@import "../../styles/vars";
+
+.Tooltip {
+	$--content-bgColor: $color-primary-secondary;
+	--content-separation: calc(100% + 10px);
+	&_content {
+		color: $color-white;
+		position: absolute;
+		left: var(--content-separation);
+		border-radius: 4px;
+		padding: 0.5rem 1rem;
+		top: 50%;
+		transform: translateY(-50%);
+		background-color: $--content-bgColor;
+		line-height: 1;
+	}
+	.arrow-left {
+		--arrow-width: 0.7rem;
+		border-right: var(--arrow-width) solid $--content-bgColor;
+		width: 0;
+		height: 0;
+		border-top: var(--arrow-width) solid transparent;
+		border-bottom: var(--arrow-width) solid transparent;
+		position: absolute;
+		left: calc(calc(var(--content-separation) - var(--arrow-width)) + 1px);
+		top: 50%;
+		transform: translateY(-50%);
+	}
+	&_children {
+		text-decoration-line: underline;
+		text-decoration-style: dotted;
+	}
+}

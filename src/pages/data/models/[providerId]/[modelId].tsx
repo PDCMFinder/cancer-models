@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { MutableRefObject, useEffect } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import getModelDetails from "../../../../utils/getModelDetails";
 import Button from "../../../../components/Button/Button";
@@ -14,6 +14,7 @@ import MolecularDataTable from "../../../../components/MolecularDataTable/Molecu
 import { getMolecularDataDownload } from "../../../../apis/ModelDetails.api";
 import { CSVLink } from "react-csv";
 import CloseIcon from "../../../../components/CloseIcon/CloseIcon";
+import Tooltip from "../../../../components/Tooltip/Tooltip";
 
 interface IModelDetailsProps {
 	metadata: Metadata;
@@ -110,7 +111,14 @@ interface Engraftment {
 	hostStrainNomenclature: string;
 }
 
-const typesMap = {
+interface TypesMap {
+	expression_molecular_data: string;
+	cna_molecular_data: string;
+	mutation_measurement_data: string;
+	cytogenetics_molecular_data: string;
+}
+
+const typesMap: TypesMap = {
 	expression_molecular_data: "expression",
 	cna_molecular_data: "copy number alteration",
 	mutation_measurement_data: "mutation",
@@ -128,6 +136,7 @@ const ModelDetails = ({
 	publications,
 	engraftments,
 }: IModelDetailsProps) => {
+	const NA_STRING = "N/A";
 	const [downloadData, setDownloadData] = useState<{
 		data: MolecularData[];
 		filename: string;
@@ -135,13 +144,14 @@ const ModelDetails = ({
 		data: [],
 		filename: "",
 	});
-	const downloadBtnRef = useRef<{ link: HTMLAnchorElement }>(null);
+	const downloadBtnRef =
+		useRef<CSVLink & HTMLAnchorElement & { link: HTMLAnchorElement }>(null);
 	const [selectedMolecularData, setSelectedMolecularData] =
 		useState<MolecularData>();
 	const [filter, setFilter] = useState<string>("");
 	const [sortColumn, setSortSortColumn] = useState<string>("");
 	const [sortDirection, setSortDirection] = useState<string>("");
-	const [isInitialLoad, setIsInitialLoad] = useState(true);
+	const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
 
 	const pageSize = 10;
 	const { windowWidth } = useWindowDimensions();
@@ -157,7 +167,7 @@ const ModelDetails = ({
 		{ label: "Collection Site", value: metadata.collectionSite },
 	];
 	const restrictedTypes = molecularDataRestrictions.map(
-		(d) => typesMap[d.molecularDataTable]
+		(d) => typesMap[d.molecularDataTable as keyof TypesMap]
 	);
 
 	useEffect(() => {
@@ -195,7 +205,14 @@ const ModelDetails = ({
 						</div>
 						<div className="col-12 col-md-6 col-lg-5 offset-lg-1 col-xl-5 offset-xl-5 col-xxx-3 offset-xxx-1 text-right">
 							<p className="mb-1">Provided by</p>
-							<h3 className="my-0 mb-3 mb-lg-0">{metadata.providerName}</h3>
+							<h3 className="my-0 mb-3 mb-lg-0">
+								<Link
+									className="text-white text-noDecoration"
+									href={`/data/providers/${metadata.providerId}`}
+								>
+									{metadata.providerName}
+								</Link>
+							</h3>
 							<div className="d-flex flex-column d-lg-block">
 								<Link
 									className="text-white mr-lg-3 mr-xl-0"
@@ -318,7 +335,7 @@ const ModelDetails = ({
 											data.value =
 												typeof data.value === "string"
 													? data.value.replace("/", " / ")
-													: data.value ?? "N/A";
+													: data.value ?? NA_STRING;
 
 											return (
 												<li
@@ -371,31 +388,55 @@ const ModelDetails = ({
 
 														return (
 															<tr key={engraftment.hostStrainNomenclature}>
-																<td className="text-uppercase white-space-nowrap">
-																	{/* {hostStrainNomenclatures.map((h) => (
-																<span
-																	key={
-																		h.strainPrefix +
-																		h.strainSup +
-																		h.strainSuffix
-																	}
-																>
-																	{h.strainPrefix}
-																	<sup>{h.strainSup}</sup>
-																	{h.strainSuffix}{" "}
-																</span>
-															))} */}
-																	{engraftment.hostStrain}
+																<td className="white-space-nowrap">
+																	<Tooltip
+																		content={hostStrainNomenclatures.map(
+																			({
+																				strainPrefix,
+																				strainSup,
+																				strainSuffix,
+																			}: {
+																				strainPrefix: string;
+																				strainSup: string;
+																				strainSuffix: string;
+																			}) => (
+																				<span
+																					className="text-small"
+																					key={
+																						strainPrefix +
+																						strainSup +
+																						strainSuffix
+																					}
+																				>
+																					{strainPrefix}
+																					<sup>{strainSup}</sup>
+																					{strainSuffix}
+																				</span>
+																			)
+																		)}
+																	>
+																		<span className="text-uppercase">
+																			{engraftment.hostStrain}
+																		</span>
+																	</Tooltip>
 																</td>
-																<td>{engraftment.engraftmentSite ?? "N/A"}</td>
-																<td>{engraftment.engraftmentType ?? "N/A"}</td>
 																<td>
-																	{engraftment.engraftmentSampleType ?? "N/A"}
+																	{engraftment.engraftmentSite ?? NA_STRING}
 																</td>
 																<td>
-																	{engraftment.engraftmentSampleState ?? "N/A"}
+																	{engraftment.engraftmentType ?? NA_STRING}
 																</td>
-																<td>{engraftment.passageNumber ?? "N/A"}</td>
+																<td>
+																	{engraftment.engraftmentSampleType ??
+																		NA_STRING}
+																</td>
+																<td>
+																	{engraftment.engraftmentSampleState ??
+																		NA_STRING}
+																</td>
+																<td>
+																	{engraftment.passageNumber ?? NA_STRING}
+																</td>
 															</tr>
 														);
 													})}
@@ -468,7 +509,7 @@ const ModelDetails = ({
 																		{sampleId}
 																	</td>
 																	<td>{sampleType}</td>
-																	<td>{data.xenograftPassage || "N/A"}</td>
+																	<td>{data.xenograftPassage || NA_STRING}</td>
 																	<td className="text-capitalize">
 																		{data.dataType}
 																	</td>
