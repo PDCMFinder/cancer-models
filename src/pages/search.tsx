@@ -109,7 +109,7 @@ const Search: NextPage = () => {
 											</Button>
 										)}
 										<Button
-											priority="aa"
+											priority="primary"
 											color="dark"
 											type="submit"
 											className="mt-2 mb-0"
@@ -158,7 +158,7 @@ const Search: NextPage = () => {
 										</Button>
 										<Button
 											color="dark"
-											priority="aa"
+											priority="primary"
 											className="m-0"
 											onClick={() => handleAdvancedSearch()}
 										>

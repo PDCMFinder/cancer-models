@@ -60,7 +60,7 @@ const FeedbackSection = (props: IFeedbackSectionProps) => {
 									<div className="text-right">
 										<Button
 											color="dark"
-											priority="aa"
+											priority="primary"
 											className="m-0 mt-1"
 											type="submit"
 										>

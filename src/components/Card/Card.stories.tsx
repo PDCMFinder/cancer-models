@@ -16,7 +16,7 @@ const Template: ComponentStory<typeof Card> = (args) => (
 				culpa, ea animi ipsa cumque dignissimos. Ducimus, quibusdam assumenda.
 				Inventore, eaque!
 			</p>
-			<Button color="dark" priority="aa">
+			<Button color="dark" priority="primary">
 				Button
 			</Button>
 		</>
