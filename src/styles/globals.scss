@@ -75,6 +75,9 @@ img {
 	&-column {
 		flex-direction: column;
 	}
+	&-column-reverse {
+		flex-direction: column-reverse;
+	}
 	&-shrink {
 		&-1 {
 			flex-shrink: 1;

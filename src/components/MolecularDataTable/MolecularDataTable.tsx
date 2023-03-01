@@ -8,10 +8,10 @@ import {
 import Loader from "../Loader/Loader";
 import Pagination from "../Pagination/Pagination";
 import { useState } from "react";
+import InputAndLabel from "../Input/InputAndLabel";
 
 interface IMolecularDataTableProps {
 	data: MolecularData;
-	filter: string;
 	handleDownload: (data: MolecularData) => void;
 }
 
@@ -47,6 +47,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 	const data = props.data ?? {},
 		pageSize = 10;
 
+	const [filter, setFilter] = useState<string>("");
 	const [sortColumn, setSortSortColumn] = useState<string>("");
 	const [sortDirection, setSortDirection] = useState<string>("");
 	const { data: columns } = useQuery(
@@ -58,7 +59,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 			"get-molecular-data-detail",
 			data.id,
 			data.dataType,
-			props.filter,
+			filter,
 			currentPage,
 			pageSize,
 			sortColumn,
@@ -68,7 +69,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 			getModelMolecularDataDetails(
 				data.id,
 				data.dataType,
-				props.filter,
+				filter,
 				currentPage,
 				pageSize,
 				sortColumn,
@@ -150,11 +151,20 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 
 	return (
 		<>
-			<div className="text-right">
+			<div className="d-flex flex-column-reverse flex-md-row justify-content-between mb-3 align-center">
+				<InputAndLabel
+					name="filterData"
+					type="text"
+					label="Filter"
+					labelClassName="mb-0 mr-1"
+					className="d-flex mt-1 mb-md-0 align-center"
+					inputClassName="mb-0"
+					onChange={(e) => setFilter(e.target.value)}
+				/>
 				<Button
 					priority="primary"
 					color="dark"
-					className="mt-0"
+					className="m-0"
 					onClick={() => props.handleDownload(data)}
 				>
 					Download Data

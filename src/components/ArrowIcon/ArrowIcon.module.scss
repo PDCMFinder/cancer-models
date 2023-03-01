@@ -3,6 +3,7 @@
 	margin-left: 1rem;
 	transition: 0.3s;
 	transform: rotate(360deg);
+	flex-shrink: 0;
 	path {
 		color: inherit;
 		fill: currentColor;

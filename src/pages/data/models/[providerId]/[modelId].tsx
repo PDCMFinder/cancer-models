@@ -148,7 +148,6 @@ const ModelDetails = ({
 		useRef<CSVLink & HTMLAnchorElement & { link: HTMLAnchorElement }>(null);
 	const [selectedMolecularData, setSelectedMolecularData] =
 		useState<MolecularData>();
-	const [filter, setFilter] = useState<string>("");
 	const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
 
 	const { windowWidth } = useWindowDimensions();
@@ -729,7 +728,6 @@ const ModelDetails = ({
 						<MolecularDataTable
 							data={selectedMolecularData}
 							handleDownload={getDownloadData}
-							filter={filter}
 						/>
 					</Card>
 				</Modal>
