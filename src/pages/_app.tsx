@@ -7,6 +7,7 @@ import Layout from "../components/Layout/Layout";
 import Head from "next/head";
 import handleBodyClass from "../utils/handleBodyClass";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const USERNAVIGATION_MOUSE = "userNavigation-mouse",
 	USERNAVIGATION_KEYBOARD = "userNavigation-keyboard",
@@ -104,7 +105,10 @@ function CancerModels({ Component, pageProps }: AppProps) {
 					}
 				`}</style>
 				<Layout>
-					<Component {...pageProps} />
+					<>
+						<ReactQueryDevtools initialIsOpen={false} />
+						<Component {...pageProps} />
+					</>
 				</Layout>
 			</QueryClientProvider>
 		</>

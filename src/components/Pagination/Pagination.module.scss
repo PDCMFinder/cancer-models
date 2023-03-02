@@ -1,0 +1,37 @@
+@import "../../styles/vars";
+
+.Pagination {
+	--border-width: 1px;
+	button {
+		color: $color-primary-secondary;
+		border: var(--border-width) solid $color-primary-tertiary;
+		border-left-width: calc(var(--border-width) / 2);
+		border-right-width: calc(var(--border-width) / 2);
+		padding: 1.2rem;
+		&:disabled {
+			background-color: $color-lightGray;
+			color: darken($color-gray, 25%);
+			border-color: currentColor;
+			border-left-width: var(--border-width);
+			border-right-width: var(--border-width);
+			cursor: default;
+		}
+		&:first-of-type {
+			border-left-width: var(--border-width);
+			border-bottom-left-radius: $br-common;
+			border-top-left-radius: $br-common;
+			padding: 1.2rem 1.6rem;
+		}
+		&:last-of-type {
+			border-top-right-radius: $br-common;
+			border-bottom-right-radius: $br-common;
+			border-right-width: var(--border-width);
+			padding: 1.2rem 1.6rem;
+		}
+	}
+	&_button-active {
+		color: $color-white !important;
+		background-color: $color-primary-secondary;
+		cursor: default;
+	}
+}

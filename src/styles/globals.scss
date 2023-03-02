@@ -50,6 +50,16 @@ img {
 	&-flex {
 		display: flex;
 	}
+	&-inline {
+		display: inline;
+	}
+	@include mediaOver("md") {
+		&-md {
+			&-flex {
+				display: flex;
+			}
+		}
+	}
 	@include mediaOver("lg") {
 		&-lg {
 			&-block {
@@ -64,6 +74,9 @@ img {
 .flex {
 	&-column {
 		flex-direction: column;
+	}
+	&-column-reverse {
+		flex-direction: column-reverse;
 	}
 	&-shrink {
 		&-1 {
@@ -216,10 +229,30 @@ a {
 		&-3 {
 			margin-right: $spacing-3;
 		}
+		@include mediaOver("md") {
+			&-md {
+				&-0 {
+					margin-right: 0 !important;
+				}
+				&-3 {
+					margin-right: $spacing-3 !important;
+				}
+			}
+		}
+		@include mediaOver("lg") {
+			&-lg {
+				&-3 {
+					margin-right: $spacing-3 !important;
+				}
+			}
+		}
 	}
 	&l {
 		&-0 {
 			margin-left: 0 !important;
+		}
+		&-3 {
+			margin-left: $spacing-3;
 		}
 		&-auto {
 			margin-left: auto !important;
@@ -257,9 +290,19 @@ a {
 		}
 		@include mediaOver("md") {
 			&-md {
+				&-0 {
+					margin-bottom: 0 !important;
+				}
+				&-1 {
+					margin-bottom: $spacing-1 !important;
+				}
 				&-3 {
 					margin-bottom: $spacing-3 !important;
 				}
+			}
+		}
+		@include mediaOver("lg") {
+			&-lg {
 				&-0 {
 					margin-bottom: 0 !important;
 				}
@@ -286,13 +329,17 @@ a {
 		padding: 0 !important;
 	}
 	&y {
+		&-0 {
+			padding-top: 0 !important;
+			padding-bottom: 0 !important;
+		}
 		&-5 {
 			padding-top: $spacing-5 !important;
 			padding-bottom: $spacing-5 !important;
 		}
-		&-0 {
-			padding-top: 0 !important;
-			padding-bottom: 0 !important;
+		&-3 {
+			padding-top: $spacing-3 !important;
+			padding-bottom: $spacing-3 !important;
 		}
 	}
 	&b {
@@ -317,6 +364,12 @@ a {
 	&t {
 		&-0 {
 			padding-top: 0 !important;
+		}
+		&-3 {
+			padding-top: $spacing-3 !important;
+		}
+		&-5 {
+			padding-top: $spacing-5 !important;
 		}
 	}
 	@include mediaOver("xl") {
@@ -426,6 +479,9 @@ textarea {
 	&-primary-quaternary {
 		border-color: $color-primary-quaternary !important;
 	}
+	&-gray {
+		border-color: $color-gray !important;
+	}
 }
 section {
 	padding: $spacing-5 0;
@@ -473,4 +529,73 @@ hr {
 }
 .bottom-0 {
 	bottom: 0 !important;
+}
+table {
+	line-height: initial;
+	border-collapse: collapse;
+	width: 100%;
+	thead {
+		border-bottom: 1px solid $color-primary-primary;
+	}
+	td,
+	th {
+		padding: 1rem 3rem;
+		padding-left: 0;
+		text-align: left;
+		white-space: nowrap;
+		@include mediaOver("md") {
+			white-space: unset;
+		}
+		&:last-of-type {
+			padding-right: 0;
+		}
+	}
+	&.table-verticalBorder {
+		td,
+		th {
+			padding: 1rem 2rem 1rem 1rem;
+			border-right: 1px solid darken($color-gray, 10%);
+			&:first-of-type {
+				padding-left: 0;
+			}
+			&:last-of-type {
+				border-right: none;
+			}
+		}
+		tr:last-of-type {
+			border-bottom: 1px solid darken($color-gray, 10%);
+		}
+	}
+	tr:not(:last-of-type) {
+		border-bottom: 1px solid darken($color-gray, 10%);
+	}
+	caption {
+		@extend .hideElement-accessible;
+	}
+}
+.white-space {
+	&-nowrap {
+		white-space: nowrap;
+	}
+	&-unset {
+		white-space: unset;
+	}
+}
+.showScrollbar {
+	&-vertical {
+		&::-webkit-scrollbar {
+			-webkit-appearance: none;
+			width: 0px;
+			height: 3px;
+		}
+		&::-webkit-scrollbar-thumb {
+			background-color: rgba(0, 0, 0, 0.15);
+			border-radius: 500px;
+		}
+		@include mediaOver("md") {
+			&::-webkit-scrollbar {
+				height: 5px;
+			}
+		}
+	}
 }
