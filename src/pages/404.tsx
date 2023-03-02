@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import Button from "../components/Button/Button";
 
 const NotFound: NextPage = () => {
 	return (
