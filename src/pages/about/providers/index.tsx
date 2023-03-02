@@ -1,3 +1,4 @@
+import type { NextPage } from "next";
 import { GetStaticProps } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -19,7 +20,9 @@ interface IProvidersProps {
 	}[];
 }
 
-const Providers = ({ allProvidersBasics }: IProvidersProps) => {
+const Providers: NextPage<IProvidersProps> = ({
+	allProvidersBasics,
+}: IProvidersProps) => {
 	return (
 		<>
 			<header className="bg-primary-primary text-white mb-5 py-5">

@@ -1,3 +1,4 @@
+import type { NextPage } from "next";
 import styles from "./Provider.module.scss";
 import { getAllProvidersId, getProviderData } from "../../../utils/providers";
 import { GetStaticProps, GetStaticPaths } from "next";
@@ -13,7 +14,9 @@ interface IProviderProps {
 	};
 }
 
-const Provider = ({ providerData }: IProviderProps) => {
+const Provider: NextPage<IProviderProps> = ({
+	providerData,
+}: IProviderProps) => {
 	return (
 		<>
 			<section>
