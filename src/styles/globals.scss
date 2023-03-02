@@ -183,6 +183,10 @@ a {
 			margin-left: 0 !important;
 			margin-right: 0 !important;
 		}
+		&-4 {
+			margin-left: $spacing-4 !important;
+			margin-right: $spacing-4 !important;
+		}
 	}
 	&y {
 		&-0 {
@@ -382,8 +386,8 @@ a {
 			}
 			&-xl {
 				&-4 {
-					padding-top: 4rem !important;
-					padding-bottom: 4rem !important;
+					padding-top: $spacing-4 !important;
+					padding-bottom: $spacing-4 !important;
 				}
 			}
 		}
