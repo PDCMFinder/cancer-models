@@ -6,10 +6,11 @@ const NotFound: NextPage = () => {
 		<section>
 			<div className="container">
 				<div className="row">
-					<div className="col-12 col-md-8 offset-md-2">
-						<h1 className="mb-5 text-center">
-							404 - The page you're looking for can't be found
-						</h1>
+					<div className="col-12 col-md-8 offset-md-2 text-center">
+						<h1>404</h1>
+						<h2 className="mt-1 mb-5">
+							The page you're looking for can't be found
+						</h2>
 					</div>
 				</div>
 				<div className="row">
