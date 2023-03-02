@@ -51,7 +51,7 @@ const NavDesktop = (props: INavProps) => {
 											<li key={childPath}>
 												<ActiveLink
 													className={`${styles.Navbar_item} link-text-light`}
-													activeClassName={styles["Navbar_item-active"]}
+													activeClassName={styles["Navbar_item_link-active"]}
 													href={childPath}
 												>
 													{child.name}

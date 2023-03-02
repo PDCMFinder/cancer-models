@@ -62,9 +62,9 @@ const Footer = () => {
 										<ActiveLink
 											className="link-text-light"
 											activeClassName={styles["Footer_item-active"]}
-											href="/terms-of-service"
+											href="/terms-of-use"
 										>
-											Terms of Service
+											Terms of Use
 										</ActiveLink>
 									</li>
 									<li>

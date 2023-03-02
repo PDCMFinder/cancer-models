@@ -1,20 +1,19 @@
 import type { NextPage } from "next";
 import { GetStaticProps } from "next";
-import Button from "../../components/Button/Button";
-import { getProcessedContent } from "../../utils/getProcessedContent";
+import { getProcessedContent } from "../utils/getProcessedContent";
 
-interface IAboutProps {
+interface ITermsProps {
 	content: any;
 }
 
-const About: NextPage<IAboutProps> = ({ content }: IAboutProps) => {
+const About: NextPage<ITermsProps> = ({ content }: ITermsProps) => {
 	return (
 		<>
 			<header className="bg-primary-primary text-white mb-5 py-5">
 				<div className="container">
 					<div className="row py-5">
 						<div className="col-12">
-							<h1 className="m-0">About</h1>
+							<h1 className="m-0">Terms of Use</h1>
 						</div>
 					</div>
 				</div>
@@ -30,22 +29,6 @@ const About: NextPage<IAboutProps> = ({ content }: IAboutProps) => {
 							/>
 						</div>
 					</div>
-					<div className="row">
-						<div className="col-12 col-md-8 offset-md-2">
-							<h2>Our data providers</h2>
-						</div>
-						<div className="col-12 col-md-8 offset-md-2">
-							<Button
-								color="dark"
-								priority="primary"
-								htmlTag="a"
-								href="/about/providers"
-								className="mt-0"
-							>
-								View all our data providers
-							</Button>
-						</div>
-					</div>
 				</div>
 			</section>
 		</>
@@ -55,7 +38,7 @@ const About: NextPage<IAboutProps> = ({ content }: IAboutProps) => {
 export default About;
 
 export const getStaticProps: GetStaticProps = async () => {
-	const content = await getProcessedContent("about");
+	const content = await getProcessedContent("terms-of-use");
 
 	return {
 		props: {
