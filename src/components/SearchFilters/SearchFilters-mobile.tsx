@@ -11,13 +11,12 @@ import { useEffect, useState } from "react";
 
 interface ISearchFilters {
 	data: IFacetSectionProps[];
-	facetSelection: IFacetSidebarSelection;
-	facetOperators: IFacetSidebarOperators;
+	selection: IFacetSidebarSelection;
 	onFilterChange: (
-		section: string,
-		facet: any,
-		options: any,
-		operator: any
+		facetId: string,
+		selection: string,
+		operator: string,
+		type: "add" | "remove" | "clear" | "toggleOperator"
 	) => void;
 }
 
@@ -56,7 +55,7 @@ const SearchFiltersMobile = (props: ISearchFilters) => {
 								onFilterChange={props.onFilterChange}
 								data={facets}
 								facet={facet}
-								facetSelection={props.facetSelection}
+								facetSelection={props.selection}
 							/>
 						}
 					/>

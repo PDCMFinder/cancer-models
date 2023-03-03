@@ -17,11 +17,12 @@ export interface IFacetSidebarOperators {
 }
 
 export interface IFacetSidebarSelection {
-	[sectionKey: string]: IFacetSectionSelection;
+	[facetKey: string]: IFacetSectionSelection;
 }
 
 export interface IFacetSectionSelection {
-	[facetKey: string]: string[];
+	selection: string[];
+	operator: "ANY" | "ALL";
 }
 
 export interface IFacetSectionProps {
