@@ -85,7 +85,6 @@ const Search: NextPage = () => {
 		},
 		null
 	);
-	console.log(searchFilterState);
 
 	const searchFacetSectionsQuery = useQuery(
 		"search-facet-sections",
@@ -145,6 +144,27 @@ const Search: NextPage = () => {
 				facet.loading = true;
 			}
 		});
+
+	const searchResultsQuery = useQuery(
+		[
+			"search-results",
+			{
+				searchValues: [],
+				searchFilterState,
+				resultsPerPage,
+				currentPage,
+				sortBy,
+			},
+		],
+		async () =>
+			getSearchResults(
+				[],
+				searchFilterState,
+				currentPage,
+				resultsPerPage,
+				sortBy
+			)
+	);
 
 	let modelCountQuery = useQuery("modelCountQuery", () => {
 		return getModelCount();
@@ -245,10 +265,6 @@ const Search: NextPage = () => {
 									data={searchFacetSectionsQuery.data}
 									selection={searchFilterState}
 									onFilterChange={(filterId, selection, operator, type) => {
-										console.log(
-											JSON.stringify({ filterId, selection, operator, type })
-										);
-
 										searchFilterDispatch({
 											filterId,
 											selection,
@@ -264,8 +280,8 @@ const Search: NextPage = () => {
 						<div className="col-12 col-lg-9">
 							<div className="row">
 								<div className="col-12">
-									{null ? (
-										<SearchResults data={[]} />
+									{searchResultsQuery.data ? (
+										<SearchResults data={searchResultsQuery.data[1]} />
 									) : (
 										<SearchResultsLoader amount={resultsPerPage} />
 									)}

@@ -104,12 +104,34 @@ export async function getSearchResults(
 	pageSize: number = 10,
 	sortBy: string
 ): Promise<[number, Array<SearchResult>]> {
+	if (!searchFilterSelection && !searchValues.length) {
+		return Promise.resolve([0, []]);
+	}
 	let query =
 		searchValues.length > 0
 			? `search_terms=ov.{${searchValues.join(",")}}`
 			: "";
 
-	console.log(searchFilterSelection);
+	for (const filterId in searchFilterSelection) {
+		if (searchFilterSelection[filterId].selection?.length) {
+			const options = searchFilterSelection[filterId].selection.map(
+				(d: string) => '"' + d + '"'
+			);
+			let apiOperator = "in";
+			if (
+				["dataset_available", "breast_cancer_biomarkers"].includes(filterId) &&
+				searchFilterSelection[filterId].operator === "ANY"
+			)
+				apiOperator = "ov";
+			if (searchFilterSelection[filterId].operator === "ALL")
+				apiOperator = "cs";
+			let optionsQuery =
+				apiOperator === "in"
+					? `(${options.join(",")})`
+					: `{${options.join(",")}}`;
+			query += `&${filterId}=${apiOperator}.${optionsQuery}`;
+		}
+	}
 
 	let response = await fetch(
 		`${API_URL}/search_index?${query}&limit=${pageSize}&offset=${

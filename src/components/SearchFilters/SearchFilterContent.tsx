@@ -12,7 +12,7 @@ interface ISearchFilterContentProps {
 		facetId: string,
 		selection: string,
 		operator: string,
-		type: "add" | "remove" | "clear" | "toggleOperator"
+		type: "add" | "remove" | "clear" | "toggleOperator" | "init"
 	) => void;
 }
 
