@@ -99,55 +99,40 @@ export async function autoCompleteFacetOptions(
 
 export async function getSearchResults(
 	searchValues: Array<string> = [],
-	facetSelections: any,
-	facetOperators: any,
+	searchFilterSelection: any,
 	page: number,
 	pageSize: number = 10,
 	sortBy: string
 ): Promise<[number, Array<SearchResult>]> {
+	if (!searchFilterSelection && !searchValues.length) {
+		return Promise.resolve([0, []]);
+	}
 	let query =
 		searchValues.length > 0
 			? `search_terms=ov.{${searchValues.join(",")}}`
 			: "";
 
-	if (facetSelections) {
-		for (let key in facetSelections) {
-			let facet = facetSelections[key] || {};
-
-			for (let facetColumn in facet) {
-				const options = facetSelections[key][facetColumn]
-					? facetSelections[key][facetColumn].map((d: string) => '"' + d + '"')
-					: [];
-				let apiOperator = "in";
-				const hasOperator =
-					facetOperators &&
-					facetOperators[key] &&
-					facetOperators[key][facetColumn];
-
-				if (
-					(hasOperator &&
-						facetOperators[key][facetColumn] &&
-						facetOperators[key][facetColumn] === "any") ||
-					["dataset_available", "breast_cancer_biomarkers"].includes(
-						facetColumn
-					)
-				)
-					apiOperator = "ov";
-				if (
-					hasOperator &&
-					facetOperators[key][facetColumn] &&
-					facetOperators[key][facetColumn] === "all"
-				)
-					apiOperator = "cs";
-
-				let optionsQuery =
-					apiOperator === "in"
-						? `(${options.join(",")})`
-						: `{${options.join(",")}}`;
-				query += `&${facetColumn}=${apiOperator}.${optionsQuery}`;
-			}
+	for (const filterId in searchFilterSelection) {
+		if (searchFilterSelection[filterId].selection?.length) {
+			const options = searchFilterSelection[filterId].selection.map(
+				(d: string) => '"' + d + '"'
+			);
+			let apiOperator = "in";
+			if (
+				["dataset_available", "breast_cancer_biomarkers"].includes(filterId) &&
+				searchFilterSelection[filterId].operator === "ANY"
+			)
+				apiOperator = "ov";
+			if (searchFilterSelection[filterId].operator === "ALL")
+				apiOperator = "cs";
+			let optionsQuery =
+				apiOperator === "in"
+					? `(${options.join(",")})`
+					: `{${options.join(",")}}`;
+			query += `&${filterId}=${apiOperator}.${optionsQuery}`;
 		}
 	}
+
 	let response = await fetch(
 		`${API_URL}/search_index?${query}&limit=${pageSize}&offset=${
 			(page - 1) * pageSize
@@ -305,14 +290,14 @@ export function parseSelectedFacetFromUrl(
 	facetsByKey: any
 ): IFacetSidebarSelection {
 	const facetSidebarSelection: IFacetSidebarSelection = {};
-	Object.keys(facetsByKey).forEach((compoundKey: string) => {
-		const [sectionKey, facetKey] = compoundKey.split(".");
-		const urlFacetSelection = facetsByKey[compoundKey];
-		if (!facetSidebarSelection[sectionKey]) {
-			facetSidebarSelection[sectionKey] = {};
-		}
-		facetSidebarSelection[sectionKey][facetKey] = urlFacetSelection || [];
-	});
+	// Object.keys(facetsByKey).forEach((compoundKey: string) => {
+	// 	const [sectionKey, facetKey] = compoundKey.split(".");
+	// 	const urlFacetSelection = facetsByKey[compoundKey];
+	// 	if (!facetSidebarSelection[sectionKey]) {
+	// 		facetSidebarSelection[sectionKey] = {};
+	// 	}
+	// 	facetSidebarSelection[sectionKey][facetKey] = urlFacetSelection || [];
+	// });
 	return facetSidebarSelection;
 }
 

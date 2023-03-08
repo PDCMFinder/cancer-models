@@ -3,7 +3,7 @@ import Form from "../components/Form/Form";
 import InputAndLabel from "../components/Input/InputAndLabel";
 import SearchResults from "../components/SearchResults/SearchResults";
 import Select from "../components/Input/Select";
-import React, { useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import styles from "./search.module.scss";
 import Label from "../components/Input/Label";
 import SearchFilters from "../components/SearchFilters/SearchFilters-mobile";
@@ -40,44 +40,97 @@ const sortByOptions = [
 
 const Search: NextPage = () => {
 	const router = useRouter();
-	const [searchInputContent, setSearchInputContent] = useState<string>("");
 	const [sortBy, setSortBy] = useState(sortByOptions[0].value);
 
-	const [searchValues, facetsByKey, operatorsByKey] = useQueryParams();
-	const [facetSelection, setFacetSelection] = useState<IFacetSidebarSelection>(
-		{}
-	);
-	const [facetOperators, setFacetOperators] = useState<IFacetSidebarOperators>(
-		{}
-	);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 
-	const searchResultsQuery = useQuery(
-		[
-			"search-results",
-			{
-				searchValues,
-				facetSelection,
-				facetOperators,
-				resultsPerPage,
-				currentPage,
-				sortBy,
-			},
-		],
-		async () =>
-			getSearchResults(
-				searchValues,
-				facetSelection,
-				facetOperators,
-				currentPage,
-				resultsPerPage,
-				sortBy
-			)
+	const [searchFilterState, searchFilterDispatch] = useReducer(
+		(
+			state: any,
+			action: {
+				type: "add" | "remove" | "clear" | "toggleOperator" | "init";
+				operator: string;
+				filterId: string;
+				selection: string;
+				initialState?: any;
+			}
+		) => {
+			const newState = { ...state };
+			const { type, filterId, selection, initialState } = action;
+			setCurrentPage(1);
+			if (type === "init") {
+				return initialState;
+			}
+			if (type === "add") {
+				newState[filterId].selection = [
+					...new Set(state[filterId].selection.concat([selection])),
+				];
+			}
+			if (type === "remove") {
+				newState[filterId].selection = state[filterId].selection.filter(
+					(item: string) => item !== selection
+				);
+			}
+
+			if (type === "clear") {
+				newState[filterId].selection = [];
+				newState[filterId].operator = "ANY";
+			}
+
+			if (type === "toggleOperator") {
+				newState[filterId].operator =
+					state[filterId].operator === "ANY" ? "ALL" : "ANY";
+			}
+
+			return newState;
+		},
+		null
 	);
-	const searchFacetSectionsQuery = useQuery("search-facet-sections", () =>
-		getSearchFacets()
+
+	const searchFacetSectionsQuery = useQuery(
+		"search-facet-sections",
+		() => getSearchFacets(),
+		{
+			onSuccess(data) {
+				const initialSearchFilterState: any = {};
+				const stateFromUrl: any = {};
+				const filters = router.query["filters"]
+					? (router.query["filters"] as string).split(" AND ")
+					: [];
+				filters.forEach((filterStr) => {
+					const filterOperatorStr = filterStr.split(":")[0];
+					const filterId = filterOperatorStr.split(".")[0];
+					const operator =
+						filterOperatorStr.split(".").length > 1 ? "ALL" : "ANY";
+					const selection = filterStr.split(":")[1].split(",");
+					stateFromUrl[filterId] = { operator, selection };
+				});
+
+				data?.forEach((section) =>
+					section.facets.forEach(
+						(facet) =>
+							(initialSearchFilterState[facet.facetId] = stateFromUrl[
+								facet.facetId
+							]
+								? stateFromUrl[facet.facetId]
+								: {
+										operator: "ANY",
+										selection: [],
+								  })
+					)
+				);
+				searchFilterDispatch({
+					type: "init",
+					initialState: initialSearchFilterState,
+					selection: "",
+					filterId: "",
+					operator: "",
+				});
+			},
+		}
 	);
 	const searchFacetSections = searchFacetSectionsQuery.data;
+
 	const searchFacetQueries = useQueries(
 		searchFacetSections
 			? searchFacetSections
@@ -109,49 +162,57 @@ const Search: NextPage = () => {
 				facet.loading = true;
 			}
 		});
-	if (
-		!searchFacetSectionsQuery.isLoading &&
-		Object.keys(facetsByKey).length > 0 &&
-		Object.keys(facetSelection).length === 0 &&
-		searchFacetQueries.every((query) => !query.isLoading)
-	) {
-		setFacetSelection(parseSelectedFacetFromUrl(facetsByKey));
-	}
 
-	if (
-		!searchFacetSectionsQuery.isLoading &&
-		Object.keys(operatorsByKey).length > 0 &&
-		Object.keys(facetOperators).length === 0 &&
-		searchFacetQueries.every((query) => !query.isLoading)
-	) {
-		setFacetOperators(parseOperatorsFromUrl(operatorsByKey));
-	}
+	const searchResultsQuery = useQuery(
+		[
+			"search-results",
+			{
+				searchValues: [],
+				searchFilterState,
+				resultsPerPage,
+				currentPage,
+				sortBy,
+			},
+		],
+		async () =>
+			getSearchResults(
+				[],
+				searchFilterState,
+				currentPage,
+				resultsPerPage,
+				sortBy
+			)
+	);
+
+	useEffect(() => {
+		if (searchFilterState === null) return;
+		let filterValues = [];
+		for (const filterId in searchFilterState) {
+			if (searchFilterState[filterId].selection.length) {
+				const operator =
+					searchFilterState[filterId].operator !== "ANY"
+						? `.${searchFilterState[filterId].operator}`
+						: "";
+				filterValues.push(
+					`${filterId}${operator}:${searchFilterState[filterId].selection.join(
+						","
+					)}`
+				);
+			}
+		}
+		if (filterValues.length) {
+			router.replace({
+				query: { ...router.query, filters: filterValues.join(" AND ") },
+			});
+		} else {
+			router.replace("/search", undefined, { shallow: true });
+		}
+	}, [searchFilterState]);
 
 	let modelCountQuery = useQuery("modelCountQuery", () => {
 		return getModelCount();
 	});
 	let totalResults = searchResultsQuery.data ? searchResultsQuery.data[0] : 1;
-
-	const handleSearchChange = (
-		e:
-			| React.ChangeEvent<HTMLInputElement>
-			| React.ChangeEvent<HTMLTextAreaElement>
-	) => {
-		const { value } = e.target;
-		setSearchInputContent(value);
-	};
-
-	const updateSearchParams = (
-		searchValues: string[],
-		facetSelection: any,
-		facetOperators: any
-	) => {
-		setCurrentPage(1);
-		router.push({
-			pathname: "",
-			search: getSearchParams(searchValues, facetSelection, facetOperators),
-		});
-	};
 
 	return (
 		<>
@@ -184,8 +245,8 @@ const Search: NextPage = () => {
 									placeholder="Cancer diagnosis eg. Melanoma"
 									labelClassName="hideElement-accessible"
 									className="mb-0"
-									onChange={handleSearchChange}
-									value={searchInputContent}
+									onChange={() => {}}
+									value={""}
 								/>
 								{/* <div className="text-right">
 									{searchInputContent && (
@@ -211,7 +272,7 @@ const Search: NextPage = () => {
 							<div className="row mb-3 align-center">
 								<div className="col-12 col-md-6">
 									<p className="mb-md-0">
-										{searchResultsQuery.data
+										{null
 											? `Showing ${(currentPage - 1) * resultsPerPage + 1} to 
 										${
 											totalResults <
@@ -245,59 +306,14 @@ const Search: NextPage = () => {
 							{searchFacetSectionsQuery.data ? (
 								<SearchFilters
 									data={searchFacetSectionsQuery.data}
-									facetSelection={facetSelection}
-									facetOperators={facetOperators}
-									onFilterChange={(
-										section: string,
-										facet: string,
-										options: string[],
-										operator: string
-									) => {
-										// onSelectionChange
-										let newSelection = {
-											...facetSelection,
-											[section]: {
-												...facetSelection[section],
-												[facet]: options,
-											},
-										};
-										const newOperators = {
-											...facetOperators,
-											[section]: {
-												...facetOperators[section],
-												[facet]: operator,
-											},
-										};
-										newSelection = deleteEmptyFacetSelection(newSelection);
-
-										function deleteEmptyFacetSelection(
-											propFacetSelection: any
-										): any {
-											const newFacetSelection: IFacetSectionSelection = {};
-											Object.keys(propFacetSelection).forEach((sectionKey) => {
-												const section = propFacetSelection[sectionKey];
-												const newSection: any = {};
-												Object.keys(section).forEach((facetKey) => {
-													const facet = section[facetKey];
-													if (facet.length > 0) {
-														newSection[facetKey] = facet;
-													}
-												});
-												if (Object.keys(newSection).length > 0) {
-													newFacetSelection[sectionKey] = newSection;
-												}
-											});
-											return newFacetSelection;
-										}
-
-										// onFacetSidebarChange
-										setFacetSelection(newSelection);
-										setFacetOperators(newOperators);
-										updateSearchParams(
-											searchValues,
-											newSelection,
-											newOperators
-										);
+									selection={searchFilterState}
+									onFilterChange={(filterId, selection, operator, type) => {
+										searchFilterDispatch({
+											filterId,
+											selection,
+											operator,
+											type,
+										});
 									}}
 								/>
 							) : (

@@ -9,10 +9,10 @@ interface ISearchFilterContentProps {
 	facetSelection: IFacetSidebarSelection;
 	facet: any;
 	onFilterChange: (
-		section: string,
-		facet: any,
-		options: string[],
-		operator: any
+		facetId: string,
+		selection: string,
+		operator: string,
+		type: "add" | "remove" | "clear" | "toggleOperator" | "init"
 	) => void;
 }
 
@@ -24,11 +24,10 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 					facetName = facet.name,
 					facetType = facet.type,
 					selectedFacetObj =
-						props.facetSelection && props.facetSelection[props.facet.key],
-					selection =
-						selectedFacetObj && selectedFacetObj[facet.facetId]
-							? selectedFacetObj[facet.facetId]
-							: ([] as string[]);
+						props.facetSelection && props.facetSelection[facet.facetId],
+					selection = selectedFacetObj?.selection,
+					operator = selectedFacetObj?.operator;
+				console.log(props.facet, selectedFacetObj);
 
 				const facetOptionsOrder = ["not specified", "not collected", "other"];
 				sortObjArrBy(facet.options, facetOptionsOrder, undefined, false, true);
@@ -68,23 +67,16 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 											name={option}
 											type="checkbox"
 											label={option}
+											checked={selection?.includes(option)}
 											onChange={(
 												e: React.ChangeEvent<HTMLInputElement>
 											): void => {
-												let newSelection = [...selection];
-												if (e.target.checked) {
-													newSelection.push(option);
-												} else {
-													newSelection = newSelection.filter(
-														(selectedKey) => selectedKey !== option
-													);
-												}
-
+												const actionType = e.target.checked ? "add" : "remove";
 												props.onFilterChange(
-													props.facet.key,
 													facet.facetId,
-													newSelection,
-													undefined
+													option,
+													operator,
+													actionType
 												);
 											}}
 										/>
