@@ -56,6 +56,8 @@ export interface IInputProps {
 			| React.ChangeEvent<HTMLInputElement>
 			| React.ChangeEvent<HTMLTextAreaElement>
 	) => void;
+	inputRef?: MutableRefObject<undefined>;
+	required?: boolean;
 }
 
 export interface ITabProps {

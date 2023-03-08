@@ -3,6 +3,7 @@ import Label from "./Label";
 import { IInputProps, ILabelProps } from "../../../globalTypes";
 import styles from "./InputAndLabel.module.scss";
 import Button from "../Button/Button";
+import { MutableRefObject } from "react";
 
 interface IInputAndLabel extends IInputProps, ILabelProps {
 	className?: string;
@@ -10,6 +11,7 @@ interface IInputAndLabel extends IInputProps, ILabelProps {
 	inputClassName?: string;
 	value?: string;
 	onChange?: IInputProps["onChange"];
+	inputRef?: MutableRefObject<undefined>;
 }
 
 const InputAndLabel = (props: IInputAndLabel) => {
@@ -34,6 +36,8 @@ const InputAndLabel = (props: IInputAndLabel) => {
 				className={props.inputClassName}
 				onChange={props.onChange}
 				value={props.value}
+				inputRef={props.inputRef && props.inputRef}
+				required={props.required}
 			/>
 			{type === "search" ? (
 				<>
