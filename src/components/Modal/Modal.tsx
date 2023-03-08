@@ -1,6 +1,5 @@
 import styles from "./Modal.module.scss";
-import { useEffect, useRef, useState } from "react";
-import useWindowDimensions from "../../hooks/useWindowDimensions";
+import { useEffect } from "react";
 
 interface IModalProps {
 	children: string | JSX.Element;
