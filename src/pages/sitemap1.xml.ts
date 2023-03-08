@@ -1,6 +1,3 @@
-import { routes } from "../utils/routes";
-import path from "path";
-import { promises as fs } from "fs";
 import { GetServerSideProps } from "next";
 
 // Alternative to host, host is more dynamic and adaptable than hardcoding the url
