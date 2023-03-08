@@ -50,6 +50,7 @@ export interface IInputProps {
 	className?: string;
 	value?: string;
 	onChange?: function;
+	checked?: boolean;
 }
 
 export interface IArrowIconProps {

@@ -33,6 +33,7 @@ const InputAndLabel = (props: IInputAndLabel) => {
 				className={props.inputClassName}
 				onChange={props.onChange}
 				value={props.value}
+				checked={props.checked}
 			/>
 			{type === "search" ? (
 				<>

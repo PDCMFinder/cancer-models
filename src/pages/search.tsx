@@ -3,7 +3,7 @@ import Form from "../components/Form/Form";
 import InputAndLabel from "../components/Input/InputAndLabel";
 import SearchResults from "../components/SearchResults/SearchResults";
 import Select from "../components/Input/Select";
-import React, { useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import styles from "./search.module.scss";
 import Label from "../components/Input/Label";
 import SearchFilters from "../components/SearchFilters/SearchFilters-mobile";
@@ -57,6 +57,7 @@ const Search: NextPage = () => {
 		) => {
 			const newState = { ...state };
 			const { type, filterId, selection, initialState } = action;
+			setCurrentPage(1);
 			if (type === "init") {
 				return initialState;
 			}
@@ -78,7 +79,7 @@ const Search: NextPage = () => {
 
 			if (type === "toggleOperator") {
 				newState[filterId].operator =
-					newState[filterId].operator === "ANY" ? "ALL" : "ANY";
+					state[filterId].operator === "ANY" ? "ALL" : "ANY";
 			}
 
 			return newState;
@@ -92,13 +93,30 @@ const Search: NextPage = () => {
 		{
 			onSuccess(data) {
 				const initialSearchFilterState: any = {};
+				const stateFromUrl: any = {};
+				const filters = router.query["filters"]
+					? (router.query["filters"] as string).split(" AND ")
+					: [];
+				filters.forEach((filterStr) => {
+					const filterOperatorStr = filterStr.split(":")[0];
+					const filterId = filterOperatorStr.split(".")[0];
+					const operator =
+						filterOperatorStr.split(".").length > 1 ? "ALL" : "ANY";
+					const selection = filterStr.split(":")[1].split(",");
+					stateFromUrl[filterId] = { operator, selection };
+				});
+
 				data?.forEach((section) =>
 					section.facets.forEach(
 						(facet) =>
-							(initialSearchFilterState[facet.facetId] = {
-								operator: "ANY",
-								selection: [],
-							})
+							(initialSearchFilterState[facet.facetId] = stateFromUrl[
+								facet.facetId
+							]
+								? stateFromUrl[facet.facetId]
+								: {
+										operator: "ANY",
+										selection: [],
+								  })
 					)
 				);
 				searchFilterDispatch({
@@ -166,10 +184,35 @@ const Search: NextPage = () => {
 			)
 	);
 
+	useEffect(() => {
+		if (searchFilterState === null) return;
+		let filterValues = [];
+		for (const filterId in searchFilterState) {
+			if (searchFilterState[filterId].selection.length) {
+				const operator =
+					searchFilterState[filterId].operator !== "ANY"
+						? `.${searchFilterState[filterId].operator}`
+						: "";
+				filterValues.push(
+					`${filterId}${operator}:${searchFilterState[filterId].selection.join(
+						","
+					)}`
+				);
+			}
+		}
+		if (filterValues.length) {
+			router.replace({
+				query: { ...router.query, filters: filterValues.join(" AND ") },
+			});
+		} else {
+			router.replace("/search", undefined, { shallow: true });
+		}
+	}, [searchFilterState]);
+
 	let modelCountQuery = useQuery("modelCountQuery", () => {
 		return getModelCount();
 	});
-	let totalResults = 0;
+	let totalResults = searchResultsQuery.data ? searchResultsQuery.data[0] : 1;
 
 	return (
 		<>

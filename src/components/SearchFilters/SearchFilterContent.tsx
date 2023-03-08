@@ -24,9 +24,10 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 					facetName = facet.name,
 					facetType = facet.type,
 					selectedFacetObj =
-						props.facetSelection && props.facetSelection[props.facet.key],
+						props.facetSelection && props.facetSelection[facet.facetId],
 					selection = selectedFacetObj?.selection,
 					operator = selectedFacetObj?.operator;
+				console.log(props.facet, selectedFacetObj);
 
 				const facetOptionsOrder = ["not specified", "not collected", "other"];
 				sortObjArrBy(facet.options, facetOptionsOrder, undefined, false, true);
@@ -66,6 +67,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 											name={option}
 											type="checkbox"
 											label={option}
+											checked={selection?.includes(option)}
 											onChange={(
 												e: React.ChangeEvent<HTMLInputElement>
 											): void => {
