@@ -10,6 +10,7 @@ import handleBodyClass from "../utils/handleBodyClass";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Cookies, CookiesProvider } from "react-cookie";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 const USERNAVIGATION_MOUSE = "userNavigation-mouse",
 	USERNAVIGATION_KEYBOARD = "userNavigation-keyboard",
@@ -109,14 +110,18 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 						--type-secondary: ${spaceMono.style.fontFamily}, monospace;
 					}
 				`}</style>
-				<CookiesProvider cookies={isBrowser ? undefined : new Cookies(cookies)}>
-					<Layout>
-						<>
-							<ReactQueryDevtools initialIsOpen={false} />
-							<Component {...pageProps} />
-						</>
-					</Layout>
-				</CookiesProvider>
+				<GoogleReCaptchaProvider reCaptchaKey="6LepEiwjAAAAAN9QFU8RpeY0QXCFoRRVVis2B-iF">
+					<CookiesProvider
+						cookies={isBrowser ? undefined : new Cookies(cookies)}
+					>
+						<Layout>
+							<>
+								<ReactQueryDevtools initialIsOpen={false} />
+								<Component {...pageProps} />
+							</>
+						</Layout>
+					</CookiesProvider>
+				</GoogleReCaptchaProvider>
 			</QueryClientProvider>
 		</>
 	);

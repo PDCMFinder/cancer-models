@@ -1,11 +1,16 @@
+import React from "react";
+import { FormEvent } from "react";
+
 interface IFormProps {
 	children: string | JSX.Element | JSX.Element[];
 	className?: string;
+	onSubmit: Function;
 }
 
 const Form = (props: IFormProps) => {
-	const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		props.onSubmit(e);
 	};
 
 	return (

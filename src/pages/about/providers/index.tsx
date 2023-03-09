@@ -5,8 +5,6 @@ import Image from "next/image";
 import styles from "./providers.module.scss";
 import { remark } from "remark";
 import remarkHtml from "remark-html";
-import remarkGfm from "remark-gfm";
-import remarkUnwrapImages from "remark-unwrap-images";
 import Button from "../../../components/Button/Button";
 import { promises as fs } from "fs";
 import path from "path";
@@ -113,8 +111,6 @@ export const getStaticProps: GetStaticProps = async () => {
 			const matterResult = await matter(fileContents);
 			const processedContent = await remark()
 				.use(remarkHtml, { sanitize: true })
-				.use(remarkGfm)
-				.use(remarkUnwrapImages)
 				.process(matterResult.content);
 
 			return {

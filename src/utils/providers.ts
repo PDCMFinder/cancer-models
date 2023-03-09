@@ -4,7 +4,6 @@ import matter from "gray-matter";
 import { remark } from "remark";
 import remarkHtml from "remark-html";
 import remarkGfm from "remark-gfm";
-import remarkUnwrapImages from "remark-unwrap-images";
 
 const providerDirectory = path.join(process.cwd(), "./public/static/providers");
 
@@ -30,7 +29,6 @@ export const getProviderData = async (id: string) => {
 	const processedContent = await remark()
 		.use(remarkHtml, { sanitize: true })
 		.use(remarkGfm)
-		.use(remarkUnwrapImages)
 		.process(matterResult.content);
 	const contentHtml = processedContent.toString();
 

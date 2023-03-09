@@ -64,6 +64,12 @@ img {
 			&-flex {
 				display: flex;
 			}
+			&-none {
+				display: none;
+			}
+			&-block {
+				display: block;
+			}
 		}
 	}
 	@include mediaOver("lg") {
@@ -628,4 +634,7 @@ table {
 			}
 		}
 	}
+}
+.grecaptcha-badge {
+	display: none !important;
 }
