@@ -63,6 +63,12 @@ img {
 			&-flex {
 				display: flex;
 			}
+			&-none {
+				display: none;
+			}
+			&-block {
+				display: block;
+			}
 		}
 	}
 	@include mediaOver("lg") {
