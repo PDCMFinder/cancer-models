@@ -34,7 +34,7 @@ const FeedbackSection = (props: IFeedbackSectionProps) => {
 									Lorem ipsum dolor sit amet, consectetur adipisicing elit.
 									Explicabo temporibus nihil unde.
 								</p>
-								<Form>
+								<Form onSubmit={() => console.log("Feedback submit")}>
 									<div className="row">
 										<InputAndLabel
 											label="Name"
