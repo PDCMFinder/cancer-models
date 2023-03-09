@@ -7,7 +7,7 @@ export async function createTicket(
 	recaptchaToken: string
 ): Promise<any> {
 	let response = await fetch(
-		`${process.env.REACT_APP_API_URL}/create-ticket/`,
+		`${process.env.NEXT_PUBLIC_API_URL}/create-ticket/`,
 		{
 			method: "POST",
 			headers: { "Content-Type": "application/json" },

@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { FormEvent, useRef, useCallback, useEffect } from "react";
+import { FormEvent, useRef } from "react";
 import Button from "../components/Button/Button";
 import Form from "../components/Form/Form";
 import InputAndLabel from "../components/Input/InputAndLabel";
@@ -8,16 +8,11 @@ import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const Contact: NextPage = () => {
 	const { executeRecaptcha } = useGoogleReCaptcha();
-	const nameRef = useRef();
-	const emailRef = useRef();
-	const messageRef = useRef();
+	const nameRef = useRef<HTMLInputElement>(null);
+	const emailRef = useRef<HTMLInputElement>(null);
+	const messageRef = useRef<HTMLInputElement>(null);
 
 	const handleFormOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
-		// const form = e.currentTarget;
-
-		// if (form.checkValidity() === false) {
-		// 	e.stopPropagation();
-		// } else {
 		if (!executeRecaptcha) {
 			return;
 		}
@@ -26,17 +21,18 @@ const Contact: NextPage = () => {
 		let { value: emailValue } = emailRef.current!;
 		let { value: messageValue } = messageRef.current!;
 		const token = await executeRecaptcha("feedback");
-		// const response = await createTicket(
-		// 	nameValue,
-		// 	emailValue,
-		// 	messageValue,
-		// 	token
-		// );
+		const response = await createTicket(
+			nameValue,
+			emailValue,
+			messageValue,
+			token
+		);
 
-		nameRef.current.value = "";
-		emailRef.current.value = "";
-		messageRef.current.value = "";
-		// }
+		if (!response.error) {
+			if (nameRef.current) nameRef.current.value = "";
+			if (emailRef.current) emailRef.current.value = "";
+			if (messageRef.current) messageRef.current.value = "";
+		}
 	};
 
 	return (
@@ -68,17 +64,15 @@ const Contact: NextPage = () => {
 								<InputAndLabel
 									name="name"
 									type="text"
-									label="Your name *"
+									label="Your name"
 									inputRef={nameRef}
-									required={true}
 								/>
 								<InputAndLabel
 									name="email"
 									type="email"
-									label="Email address *"
+									label="Email address"
 									inputClassName="mb-0"
 									inputRef={emailRef}
-									required={true}
 								/>
 								<p className="text-small text-muted">
 									We'll never share your email with anyone else.
