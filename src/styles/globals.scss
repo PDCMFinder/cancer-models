@@ -40,6 +40,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
+	position: relative;
 }
 p {
 	margin: 0 0 2rem;
@@ -226,8 +227,18 @@ a {
 		&-5 {
 			margin-top: $spacing-5 !important;
 		}
+		@include mediaOver("md") {
+			&-md {
+				&-0 {
+					margin-top: 0 !important;
+				}
+			}
+		}
 		@include mediaOver("lg") {
 			&-lg {
+				&-0 {
+					margin-top: 0 !important;
+				}
 				&-1 {
 					margin-top: $spacing-1 !important;
 				}
@@ -276,6 +287,16 @@ a {
 			&-md {
 				&-auto {
 					margin-left: auto !important;
+				}
+				&-0 {
+					margin-left: 0 !important;
+				}
+			}
+		}
+		@include mediaOver("lg") {
+			&-lg {
+				&-2 {
+					margin-left: $spacing-2 !important;
 				}
 			}
 		}

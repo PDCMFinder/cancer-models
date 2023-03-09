@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import "../styles/globals.scss";
 import type { AppProps } from "next/app";
+import App, { AppContext } from "next/app";
 import { Merriweather } from "@next/font/google";
 import { Space_Mono } from "@next/font/google";
 import Layout from "../components/Layout/Layout";
@@ -8,6 +9,7 @@ import Head from "next/head";
 import handleBodyClass from "../utils/handleBodyClass";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { Cookies, CookiesProvider } from "react-cookie";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 const USERNAVIGATION_MOUSE = "userNavigation-mouse",
@@ -29,7 +31,10 @@ if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
 	require("../mocks");
 }
 
-function CancerModels({ Component, pageProps }: AppProps) {
+/* @ts-ignore */
+function CancerModels({ Component, pageProps, cookies }: AppProps) {
+	const isBrowser = typeof window !== "undefined";
+
 	useEffect(() => {
 		handleBodyClass([USERNAVIGATION_MOUSE], ADD);
 
@@ -65,53 +70,57 @@ function CancerModels({ Component, pageProps }: AppProps) {
 	return (
 		<>
 			<QueryClientProvider client={queryClient}>
+				<Head>
+					<title>Cancer Models Finder</title>
+					<meta name="description" content="Patient Derived Cancer Models" />
+					<meta
+						name="viewport"
+						content="width=device-width, initial-scale=1.0"
+					/>
+					<meta property="og:image" content="/ogimage.png" />
+
+					{/* Generics */}
+					<link rel="icon" href="/favicon-32.png" sizes="32x32" />
+					<link rel="icon" href="/favicon-128.png" sizes="128x128" />
+					<link rel="icon" href="/favicon-192.png" sizes="192x192" />
+
+					{/* Android */}
+					<link rel="shortcut icon" href="/favicon-196.png" sizes="196x196" />
+
+					{/* iOS */}
+					<link
+						rel="apple-touch-icon"
+						href="/favicon-152.png"
+						sizes="152x152"
+					/>
+					<link
+						rel="apple-touch-icon"
+						href="/favicon-152.png"
+						sizes="167x167"
+					/>
+					<link
+						rel="apple-touch-icon"
+						href="/favicon-180.png"
+						sizes="180x180"
+					/>
+				</Head>
+				<style jsx global>{`
+					:root {
+						--type-primary: ${merriweather.style.fontFamily}, serif;
+						--type-secondary: ${spaceMono.style.fontFamily}, monospace;
+					}
+				`}</style>
 				<GoogleReCaptchaProvider reCaptchaKey="6LepEiwjAAAAAN9QFU8RpeY0QXCFoRRVVis2B-iF">
-					<Head>
-						<title>Cancer Models Finder</title>
-						<meta name="description" content="Patient Derived Cancer Models" />
-						<meta
-							name="viewport"
-							content="width=device-width, initial-scale=1.0"
-						/>
-						<meta property="og:image" content="/ogimage.png" />
-
-						{/* Generics */}
-						<link rel="icon" href="/favicon-32.png" sizes="32x32" />
-						<link rel="icon" href="/favicon-128.png" sizes="128x128" />
-						<link rel="icon" href="/favicon-192.png" sizes="192x192" />
-
-						{/* Android */}
-						<link rel="shortcut icon" href="/favicon-196.png" sizes="196x196" />
-
-						{/* iOS */}
-						<link
-							rel="apple-touch-icon"
-							href="/favicon-152.png"
-							sizes="152x152"
-						/>
-						<link
-							rel="apple-touch-icon"
-							href="/favicon-152.png"
-							sizes="167x167"
-						/>
-						<link
-							rel="apple-touch-icon"
-							href="/favicon-180.png"
-							sizes="180x180"
-						/>
-					</Head>
-					<style jsx global>{`
-						:root {
-							--type-primary: ${merriweather.style.fontFamily}, serif;
-							--type-secondary: ${spaceMono.style.fontFamily}, monospace;
-						}
-					`}</style>
-					<Layout>
-						<>
-							<ReactQueryDevtools initialIsOpen={false} />
-							<Component {...pageProps} />
-						</>
-					</Layout>
+					<CookiesProvider
+						cookies={isBrowser ? undefined : new Cookies(cookies)}
+					>
+						<Layout>
+							<>
+								<ReactQueryDevtools initialIsOpen={false} />
+								<Component {...pageProps} />
+							</>
+						</Layout>
+					</CookiesProvider>
 				</GoogleReCaptchaProvider>
 			</QueryClientProvider>
 		</>
@@ -119,3 +128,9 @@ function CancerModels({ Component, pageProps }: AppProps) {
 }
 
 export default CancerModels;
+
+CancerModels.getInitialProps = async (appContext: AppContext) => {
+	const appProps = await App.getInitialProps(appContext);
+
+	return { ...appProps, cookies: appContext.ctx.req?.headers?.cookie };
+};
