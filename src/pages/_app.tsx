@@ -8,6 +8,7 @@ import Head from "next/head";
 import handleBodyClass from "../utils/handleBodyClass";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 const USERNAVIGATION_MOUSE = "userNavigation-mouse",
 	USERNAVIGATION_KEYBOARD = "userNavigation-keyboard",
@@ -64,52 +65,54 @@ function CancerModels({ Component, pageProps }: AppProps) {
 	return (
 		<>
 			<QueryClientProvider client={queryClient}>
-				<Head>
-					<title>Cancer Models Finder</title>
-					<meta name="description" content="Patient Derived Cancer Models" />
-					<meta
-						name="viewport"
-						content="width=device-width, initial-scale=1.0"
-					/>
-					<meta property="og:image" content="/ogimage.png" />
+				<GoogleReCaptchaProvider reCaptchaKey="6LepEiwjAAAAAN9QFU8RpeY0QXCFoRRVVis2B-iF">
+					<Head>
+						<title>Cancer Models Finder</title>
+						<meta name="description" content="Patient Derived Cancer Models" />
+						<meta
+							name="viewport"
+							content="width=device-width, initial-scale=1.0"
+						/>
+						<meta property="og:image" content="/ogimage.png" />
 
-					{/* Generics */}
-					<link rel="icon" href="/favicon-32.png" sizes="32x32" />
-					<link rel="icon" href="/favicon-128.png" sizes="128x128" />
-					<link rel="icon" href="/favicon-192.png" sizes="192x192" />
+						{/* Generics */}
+						<link rel="icon" href="/favicon-32.png" sizes="32x32" />
+						<link rel="icon" href="/favicon-128.png" sizes="128x128" />
+						<link rel="icon" href="/favicon-192.png" sizes="192x192" />
 
-					{/* Android */}
-					<link rel="shortcut icon" href="/favicon-196.png" sizes="196x196" />
+						{/* Android */}
+						<link rel="shortcut icon" href="/favicon-196.png" sizes="196x196" />
 
-					{/* iOS */}
-					<link
-						rel="apple-touch-icon"
-						href="/favicon-152.png"
-						sizes="152x152"
-					/>
-					<link
-						rel="apple-touch-icon"
-						href="/favicon-152.png"
-						sizes="167x167"
-					/>
-					<link
-						rel="apple-touch-icon"
-						href="/favicon-180.png"
-						sizes="180x180"
-					/>
-				</Head>
-				<style jsx global>{`
-					:root {
-						--type-primary: ${merriweather.style.fontFamily}, serif;
-						--type-secondary: ${spaceMono.style.fontFamily}, monospace;
-					}
-				`}</style>
-				<Layout>
-					<>
-						<ReactQueryDevtools initialIsOpen={false} />
-						<Component {...pageProps} />
-					</>
-				</Layout>
+						{/* iOS */}
+						<link
+							rel="apple-touch-icon"
+							href="/favicon-152.png"
+							sizes="152x152"
+						/>
+						<link
+							rel="apple-touch-icon"
+							href="/favicon-152.png"
+							sizes="167x167"
+						/>
+						<link
+							rel="apple-touch-icon"
+							href="/favicon-180.png"
+							sizes="180x180"
+						/>
+					</Head>
+					<style jsx global>{`
+						:root {
+							--type-primary: ${merriweather.style.fontFamily}, serif;
+							--type-secondary: ${spaceMono.style.fontFamily}, monospace;
+						}
+					`}</style>
+					<Layout>
+						<>
+							<ReactQueryDevtools initialIsOpen={false} />
+							<Component {...pageProps} />
+						</>
+					</Layout>
+				</GoogleReCaptchaProvider>
 			</QueryClientProvider>
 		</>
 	);

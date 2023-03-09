@@ -9,6 +9,8 @@ const Input = (props: IInputProps) => {
 			className: props.className,
 			value: props.value,
 			onChange: props.onChange,
+			ref: props.inputRef && props.inputRef,
+			required: props.required,
 		},
 		InputElement =
 			props.type === "textarea" ? (
