@@ -171,7 +171,7 @@ const ModelDetails = ({
 			downloadBtnRef.current.link.click();
 		}
 		if (isInitialLoad) setIsInitialLoad(false);
-	}, [downloadData]);
+	}, [downloadData, isInitialLoad]);
 
 	const getDownloadData = (data: MolecularData): void => {
 		getMolecularDataDownload(data, data.dataType)
@@ -555,6 +555,7 @@ const ModelDetails = ({
 																			<a
 																				href={data.rawDataUrl.split(",")[1]}
 																				target="_blank"
+																				rel="noopener noreferrer"
 																			>
 																				{data.rawDataUrl.split(",")[0]}
 																			</a>

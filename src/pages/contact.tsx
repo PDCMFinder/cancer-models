@@ -52,9 +52,9 @@ const Contact: NextPage = () => {
 						<div className="col-12 col-md-8 offset-md-2">
 							<h2>PDCM Finder Feedback</h2>
 							<p>
-								PDCM Finder is continuously developed in response to community's
-								needs. We need your feedback to improve and refine the PDCM
-								Finder.
+								PDCM Finder is continuously developed in response to
+								community&apos;s needs. We need your feedback to improve and
+								refine the PDCM Finder.
 							</p>
 						</div>
 					</div>
@@ -75,7 +75,7 @@ const Contact: NextPage = () => {
 									inputRef={emailRef}
 								/>
 								<p className="text-small text-muted">
-									We'll never share your email with anyone else.
+									We&apos;ll never share your email with anyone else.
 								</p>
 								<InputAndLabel
 									name="message"
