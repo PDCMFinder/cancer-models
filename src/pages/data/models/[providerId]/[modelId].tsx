@@ -657,7 +657,11 @@ const ModelDetails = ({
 
 											return (
 												<div key={publication.pmid}>
-													<h3>{publication.title.replace(/<[^>]+>/g, " ")}</h3>
+													{publication.title && (
+														<h3>
+															{publication.title.replace(/<[^>]+>/g, " ")}
+														</h3>
+													)}
 													<p className="text-muted text-small">
 														{publication.authorString}
 													</p>

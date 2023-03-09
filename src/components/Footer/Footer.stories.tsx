@@ -6,6 +6,8 @@ export default {
 	component: Footer,
 } as ComponentMeta<typeof Footer>;
 
-const Template: ComponentStory<typeof Footer> = () => <Footer />;
+const Template: ComponentStory<typeof Footer> = () => (
+	<Footer cookieConsentHeight={0} />
+);
 
 export const main = Template.bind({});
