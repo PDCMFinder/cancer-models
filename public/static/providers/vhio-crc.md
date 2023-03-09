@@ -1,5 +1,5 @@
 ---
-name: Val D’Hebron Cancer Institute - Colorectal cancer
+name: Vall d’Hebron Institute of Oncology - Colorectal cancer
 abbreviation: VHIO-CRC
 logo: img/providers/VHIO-CRC.png
 ---
