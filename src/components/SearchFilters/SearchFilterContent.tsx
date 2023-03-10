@@ -3,6 +3,7 @@ import { IFacetProps } from "../../types/Facet.model";
 import { sortObjArrBy } from "../../utils/sortArrBy";
 import { IFacetSidebarSelection } from "../../types/Facet.model";
 import AsyncSelect from "react-select/async";
+import Select from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
 import { useQuery } from "react-query";
 import { useState } from "react";
@@ -31,7 +32,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 	const onSelectChange = (facetId: string, query: string) => {
 		setQuery(query);
 		setfacetId(facetId);
-
+		console.log(selectOptionsQuery.data);
 		return selectOptionsQuery.data;
 	};
 
@@ -49,34 +50,56 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 				const facetOptionsOrder = ["not specified", "not collected", "other"];
 				sortObjArrBy(facet.options, facetOptionsOrder, undefined, false, true);
 
-				if (
-					facet.options.length > 10 ||
-					facetType === "autocomplete" ||
-					facetType === "multivalued"
-				) {
+				if (facetType === "autocomplete" || facetType === "multivalued") {
 					// Create select typeahead from options
 					const optionSelectObj = Object.assign(
-						facet.options.map((value) => ({ ["label"]: value }))
+						facet.options.map((value) => ({
+							["label"]: value,
+							["value"]: value,
+						}))
 					);
 					const placeholder = facet.placeholder
 						? `Eg. ${facet.placeholder}`
 						: "Select...";
 
 					facetContent = (
-						// <Select
-						// 	id={facet.facetId}
-						// 	options={[{ text: "All", value: "" }, ...optionSelectObj]}
-						// />
 						<AsyncSelect
+							closeMenuOnSelect={false}
 							isMulti
 							placeholder={placeholder}
-							cacheOptions={[{ label: "All", value: "" }, ...optionSelectObj]}
 							defaultOptions={[{ label: "All", value: "" }, ...optionSelectObj]}
 							loadOptions={(inputValue) =>
 								new Promise((resolve) => {
 									resolve(onSelectChange(facet.facetId, inputValue));
 								})
 							}
+							onChange={(option, actionMeta) => {
+								console.log({ option, actionMeta });
+								setQuery("");
+								setfacetId(facet.facetId);
+							}}
+							styles={typeaheadStyles}
+						/>
+					);
+				} else if (facet.options.length > 10) {
+					// Create select typeahead from options
+					const optionSelectObj = Object.assign(
+						facet.options.map((value) => ({
+							["label"]: value,
+							["value"]: value,
+						}))
+					);
+
+					facetContent = (
+						<Select
+							closeMenuOnSelect={false}
+							isMulti
+							options={[{ label: "All", value: "" }, ...optionSelectObj]}
+							onChange={(option, actionMeta) => {
+								console.log({ option, actionMeta });
+								setQuery("");
+								setfacetId(facet.facetId);
+							}}
 							styles={typeaheadStyles}
 						/>
 					);
