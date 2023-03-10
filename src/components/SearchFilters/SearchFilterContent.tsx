@@ -1,8 +1,12 @@
 import InputAndLabel from "../Input/InputAndLabel";
 import { IFacetProps } from "../../types/Facet.model";
 import { sortObjArrBy } from "../../utils/sortArrBy";
-import Select from "../Input/Select";
 import { IFacetSidebarSelection } from "../../types/Facet.model";
+import AsyncSelect from "react-select/async";
+import { autoCompleteFacetOptions } from "../../apis/Search.api";
+import { useQuery } from "react-query";
+import { useState } from "react";
+import typeaheadStyles from "../../utils/typeaheadStyles";
 
 interface ISearchFilterContentProps {
 	data: IFacetProps[];
@@ -17,6 +21,20 @@ interface ISearchFilterContentProps {
 }
 
 const SearchFilterContent = (props: ISearchFilterContentProps) => {
+	const [query, setQuery] = useState("");
+	const [facetId, setfacetId] = useState("");
+
+	let selectOptionsQuery = useQuery(query, () =>
+		autoCompleteFacetOptions(facetId, query)
+	);
+
+	const onSelectChange = (facetId: string, query: string) => {
+		setQuery(query);
+		setfacetId(facetId);
+
+		return selectOptionsQuery.data;
+	};
+
 	return (
 		<>
 			{props.data.map((facet: IFacetProps) => {
@@ -27,64 +45,68 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 						props.facetSelection && props.facetSelection[facet.facetId],
 					selection = selectedFacetObj?.selection,
 					operator = selectedFacetObj?.operator;
-				console.log(props.facet, selectedFacetObj);
 
 				const facetOptionsOrder = ["not specified", "not collected", "other"];
 				sortObjArrBy(facet.options, facetOptionsOrder, undefined, false, true);
 
-				// TODO: Create component for multivalued
-				if (facetType === "autocomplete" || facetType === "multivalued") {
-					// Create search input
+				if (
+					facet.options.length > 10 ||
+					facetType === "autocomplete" ||
+					facetType === "multivalued"
+				) {
+					// Create select typeahead from options
+					const optionSelectObj = Object.assign(
+						facet.options.map((value) => ({ ["label"]: value }))
+					);
+					const placeholder = facet.placeholder
+						? `Eg. ${facet.placeholder}`
+						: "Select...";
+
 					facetContent = (
-						<InputAndLabel
-							name={facetName}
-							type="search"
-							label={facetName}
-							placeholder={`E.g. ${facet.placeholder}`}
-							labelClassName="hideElement-accessible"
+						// <Select
+						// 	id={facet.facetId}
+						// 	options={[{ text: "All", value: "" }, ...optionSelectObj]}
+						// />
+						<AsyncSelect
+							isMulti
+							placeholder={placeholder}
+							cacheOptions={[{ label: "All", value: "" }, ...optionSelectObj]}
+							defaultOptions={[{ label: "All", value: "" }, ...optionSelectObj]}
+							loadOptions={(inputValue) =>
+								new Promise((resolve) => {
+									resolve(onSelectChange(facet.facetId, inputValue));
+								})
+							}
+							styles={typeaheadStyles}
 						/>
 					);
 				} else {
-					if (facet.options.length > 10) {
-						// Create select from options
-						const optionSelectObj = Object.assign(
-							facet.options.map((value) => ({ ["text"]: value }))
-						);
-
-						facetContent = (
-							<Select
-								id={facet.facetId}
-								options={[{ text: "All", value: "" }, ...optionSelectObj]}
-							/>
-						);
-					} else {
-						// Create checkbox per option
-						facetContent = (
-							<ul className="ul-noStyle m-0">
-								{facet.options.map((option) => (
-									<li key={option}>
-										<InputAndLabel
-											name={option}
-											type="checkbox"
-											label={option}
-											checked={selection?.includes(option)}
-											onChange={(
-												e: React.ChangeEvent<HTMLInputElement>
-											): void => {
-												const actionType = e.target.checked ? "add" : "remove";
-												props.onFilterChange(
-													facet.facetId,
-													option,
-													operator,
-													actionType
-												);
-											}}
-										/>
-									</li>
-								))}
-							</ul>
-						);
-					}
+					// Create checkbox per option
+					facetContent = (
+						<ul className="ul-noStyle m-0">
+							{facet.options.map((option) => (
+								<li key={option}>
+									<InputAndLabel
+										name={option}
+										type="checkbox"
+										label={option}
+										checked={selection?.includes(option)}
+										onChange={(
+											e: React.ChangeEvent<HTMLInputElement>
+										): void => {
+											const actionType = e.target.checked ? "add" : "remove";
+											props.onFilterChange(
+												facet.facetId,
+												option,
+												operator,
+												actionType
+											);
+										}}
+									/>
+								</li>
+							))}
+						</ul>
+					);
 				}
 
 				return (

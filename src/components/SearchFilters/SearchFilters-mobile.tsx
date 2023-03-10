@@ -31,7 +31,10 @@ const SearchFiltersMobile = (props: ISearchFilters) => {
 	}, [props.data]);
 
 	return (
-		<Card className="bg-lightGray bc-transparent" contentClassName="py-3 px-2">
+		<Card
+			className="bg-lightGray bc-transparent overflow-visible"
+			contentClassName="py-3 px-2"
+		>
 			{filterData.map((facet: IFacetSectionProps) => {
 				let facetKey = facet.key,
 					facets = facet.facets,

@@ -186,7 +186,7 @@ const Search: NextPage = () => {
 
 	useEffect(() => {
 		if (searchFilterState === null) return;
-		let filterValues = [];
+		let filterValues: string[] = [];
 		for (const filterId in searchFilterState) {
 			if (searchFilterState[filterId].selection.length) {
 				const operator =

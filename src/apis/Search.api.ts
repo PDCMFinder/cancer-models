@@ -92,7 +92,7 @@ export async function autoCompleteFacetOptions(
 	);
 	return response.json().then((d: Array<any>) => {
 		return d.map(({ option }) => {
-			return option;
+			return { label: option, value: option };
 		});
 	});
 }
