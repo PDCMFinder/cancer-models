@@ -8,6 +8,7 @@ import { autoCompleteFacetOptions } from "../../apis/Search.api";
 import { useQuery } from "react-query";
 import { useState } from "react";
 import typeaheadStyles from "../../utils/typeaheadStyles";
+import { onFilterChangeType } from "../../pages/search";
 
 interface ISearchFilterContentProps {
 	data: IFacetProps[];
@@ -17,7 +18,7 @@ interface ISearchFilterContentProps {
 		facetId: string,
 		selection: string,
 		operator: string,
-		type: "add" | "remove" | "clear" | "toggleOperator" | "init"
+		type: onFilterChangeType["type"]
 	) => void;
 }
 
@@ -92,13 +93,27 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 
 					facetContent = (
 						<Select
-							closeMenuOnSelect={false}
+							// closeMenuOnSelect={false}
 							isMulti
 							options={[{ label: "All", value: "" }, ...optionSelectObj]}
-							onChange={(option, actionMeta) => {
-								console.log({ option, actionMeta });
-								setQuery("");
-								setfacetId(facet.facetId);
+							onChange={(_, actionMeta) => {
+								let option = "",
+									action: onFilterChangeType["type"] = "add";
+
+								switch (actionMeta.action) {
+									case "remove-value":
+										option = actionMeta.option.removedValue;
+										action = "remove";
+										break;
+									case "select-option":
+										option = actionMeta.option.value;
+										break;
+									case "clear":
+										action = "clear";
+										break;
+								}
+
+								props.onFilterChange(facet.facetId, option, operator, action);
 							}}
 							styles={typeaheadStyles}
 						/>

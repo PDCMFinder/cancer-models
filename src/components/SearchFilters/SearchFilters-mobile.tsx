@@ -2,12 +2,12 @@ import Accordion from "../Accordion/Accordion";
 import SearchFilterContent from "./SearchFilterContent";
 import Card from "../Card/Card";
 import {
-	IFacetSidebarOperators,
 	IFacetSidebarSelection,
 	IFacetSectionProps,
 } from "../../types/Facet.model";
 import { sortObjArrBy } from "../../utils/sortArrBy";
 import { useEffect, useState } from "react";
+import { onFilterChangeType } from "../../pages/search";
 
 interface ISearchFilters {
 	data: IFacetSectionProps[];
@@ -16,7 +16,7 @@ interface ISearchFilters {
 		facetId: string,
 		selection: string,
 		operator: string,
-		type: "add" | "remove" | "clear" | "toggleOperator" | "init"
+		type: onFilterChangeType["type"]
 	) => void;
 }
 

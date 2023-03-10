@@ -9,17 +9,8 @@ import Label from "../components/Input/Label";
 import SearchFilters from "../components/SearchFilters/SearchFilters-mobile";
 import { getModelCount } from "../apis/AggregatedData.api";
 import {
-	IFacetSectionSelection,
-	IFacetSidebarOperators,
-	IFacetSidebarSelection,
-} from "../types/Facet.model";
-import {
 	getSearchFacets,
 	getSearchResults,
-	getSearchParams,
-	parseSelectedFacetFromUrl,
-	parseOperatorsFromUrl,
-	useQueryParams,
 	getFacetOptions,
 } from "../apis/Search.api";
 import { useQueries, useQuery } from "react-query";
@@ -27,6 +18,10 @@ import Loader from "../components/Loader/Loader";
 import SearchResultsLoader from "../components/SearchResults/SearchResultsLoader";
 import Pagination from "../components/Pagination/Pagination";
 import { useRouter } from "next/router";
+
+export interface onFilterChangeType {
+	type: "add" | "remove" | "clear" | "toggleOperator" | "init";
+}
 
 const sortByOptions = [
 		{
@@ -48,7 +43,7 @@ const Search: NextPage = () => {
 		(
 			state: any,
 			action: {
-				type: "add" | "remove" | "clear" | "toggleOperator" | "init";
+				type: onFilterChangeType["type"];
 				operator: string;
 				filterId: string;
 				selection: string;
