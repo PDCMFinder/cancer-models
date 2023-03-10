@@ -48,6 +48,13 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 					selection = selectedFacetObj?.selection,
 					operator = selectedFacetObj?.operator;
 
+				const defaultValuesObj = Object.assign(
+					selection.map((value) => ({
+						["label"]: value,
+						["value"]: value,
+					}))
+				);
+
 				const facetOptionsOrder = ["not specified", "not collected", "other"];
 				sortObjArrBy(facet.options, facetOptionsOrder, undefined, false, true);
 
@@ -65,6 +72,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 
 					facetContent = (
 						<AsyncSelect
+							// defaultValue={defaultValuesObj}
 							closeMenuOnSelect={false}
 							isMulti
 							placeholder={placeholder}
@@ -75,7 +83,6 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 								})
 							}
 							onChange={(option, actionMeta) => {
-								console.log({ option, actionMeta });
 								setQuery("");
 								setfacetId(facet.facetId);
 							}}
@@ -95,6 +102,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 						<Select
 							// closeMenuOnSelect={false}
 							isMulti
+							defaultValue={defaultValuesObj}
 							options={[{ label: "All", value: "" }, ...optionSelectObj]}
 							onChange={(_, actionMeta) => {
 								let option = "",
