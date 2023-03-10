@@ -102,7 +102,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 
 								switch (actionMeta.action) {
 									case "remove-value":
-										option = actionMeta.option.removedValue;
+										option = actionMeta.removedValue.value;
 										action = "remove";
 										break;
 									case "select-option":
