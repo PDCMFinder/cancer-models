@@ -34,6 +34,7 @@ const getModelDetails = async (modelId: string, providerId: string) => {
 		publications = await Promise.all(
 			pubmedIds.map(async (p: string) => await getPublicationData(p))
 		);
+		publications = publications.filter((p) => p.title);
 	}
 
 	return {
