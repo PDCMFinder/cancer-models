@@ -555,6 +555,7 @@ const ModelDetails = ({
 																			<a
 																				href={data.rawDataUrl.split(",")[1]}
 																				target="_blank"
+																				rel="noreferrer"
 																			>
 																				{data.rawDataUrl.split(",")[0]}
 																			</a>
