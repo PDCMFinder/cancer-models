@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
         - name: pdcm-web-ui-dev
-          image: "pdxfinder/cancer-models:dev"
+          image: "dockerhub.ebi.ac.uk/mouse-informatics/cancer-models:dev"
           imagePullPolicy: Always
           ports:
             - containerPort: 80
