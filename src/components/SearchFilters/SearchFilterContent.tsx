@@ -48,24 +48,15 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 					selection = selectedFacetObj?.selection,
 					operator = selectedFacetObj?.operator;
 
-				const defaultValuesObj = Object.assign(
-					selection.map((value) => ({
-						["label"]: value,
-						["value"]: value,
-					}))
-				);
+				const defaultValuesObj = selection.map((value) => ({
+					["label"]: value,
+					["value"]: value,
+				}));
 
 				const facetOptionsOrder = ["not specified", "not collected", "other"];
 				sortObjArrBy(facet.options, facetOptionsOrder, undefined, false, true);
 
 				if (facetType === "autocomplete" || facetType === "multivalued") {
-					// Create select typeahead from options
-					const optionSelectObj = Object.assign(
-						facet.options.map((value) => ({
-							["label"]: value,
-							["value"]: value,
-						}))
-					);
 					const placeholder = facet.placeholder
 							? `Eg. ${facet.placeholder}`
 							: "Select...",
@@ -78,10 +69,6 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 								closeMenuOnSelect={false}
 								isMulti
 								placeholder={placeholder}
-								defaultOptions={[
-									{ label: "All", value: "" },
-									...optionSelectObj,
-								]}
 								loadOptions={(inputValue) =>
 									new Promise<{ label: string; value: string }[]>((resolve) => {
 										resolve(
@@ -92,9 +79,24 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 										);
 									})
 								}
-								onChange={(option, actionMeta) => {
-									setQuery("");
-									setfacetId(facet.facetId);
+								onChange={(_, actionMeta) => {
+									let option = "",
+										action: onFilterChangeType["type"] = "add";
+
+									switch (actionMeta.action) {
+										case "remove-value":
+											option = actionMeta.removedValue.value;
+											action = "remove";
+											break;
+										case "select-option":
+											option = actionMeta.option!.value;
+											break;
+										case "clear":
+											action = "clear";
+											break;
+									}
+
+									props.onFilterChange(facet.facetId, option, operator, action);
 								}}
 								styles={typeaheadStyles}
 							/>
@@ -140,12 +142,10 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 					);
 				} else if (facet.options.length > 10) {
 					// Create select typeahead from options
-					const optionSelectObj = Object.assign(
-						facet.options.map((value) => ({
-							["label"]: value,
-							["value"]: value,
-						}))
-					);
+					const optionSelectObj = facet.options.map((value) => ({
+						["label"]: value,
+						["value"]: value,
+					}));
 
 					facetContent = (
 						<>
@@ -164,7 +164,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 											action = "remove";
 											break;
 										case "select-option":
-											option = actionMeta.option.value;
+											option = actionMeta.option!.value;
 											break;
 										case "clear":
 											action = "clear";
