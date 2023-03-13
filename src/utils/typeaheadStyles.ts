@@ -40,6 +40,7 @@ export default {
 	valueContainer: (baseStyles) => ({
 		...baseStyles,
 		lineHeight: 1,
+		padding: "0.7rem 0.8rem",
 	}),
 	indicatorSeparator: (baseStyles) => ({
 		...baseStyles,

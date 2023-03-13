@@ -6,7 +6,7 @@ import AsyncSelect from "react-select/async";
 import Select from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
 import { useQuery } from "react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import typeaheadStyles from "../../utils/typeaheadStyles";
 import { onFilterChangeType } from "../../pages/search";
 
@@ -22,19 +22,44 @@ interface ISearchFilterContentProps {
 	) => void;
 }
 
+interface SelectOption {
+	label: string;
+	value: string;
+}
+
 const SearchFilterContent = (props: ISearchFilterContentProps) => {
 	const [query, setQuery] = useState("");
 	const [facetId, setfacetId] = useState("");
+	const [typeaheadData, setTypeaheadData] = useState<SelectOption[]>();
+	const [typeaheadIsLoading, setTypeaheadIsLoading] = useState(false);
 
-	let selectOptionsQuery = useQuery(query, () =>
-		autoCompleteFacetOptions(facetId, query)
+	let selectOptionsQuery = useQuery(
+		query,
+		() => autoCompleteFacetOptions(facetId, query),
+		{
+			onSuccess(data) {
+				setTypeaheadData(data);
+				setTypeaheadIsLoading(false);
+			},
+		}
 	);
 
-	const onSelectChange = (facetId: string, query: string) => {
+	useEffect(() => {
+		setTypeaheadData(selectOptionsQuery.data);
+		// setTypeaheadIsLoading(false);
+	}, [query, facetId]);
+
+	const onTypeaheadType = (facetId: string, query: string) => {
 		setQuery(query);
 		setfacetId(facetId);
+		setTypeaheadIsLoading(true);
+		if (!typeaheadData || typeaheadData.length === 0) {
+			setTypeaheadIsLoading(false);
+		}
+	};
 
-		return selectOptionsQuery.data;
+	const FragmentComponent = () => {
+		return <></>;
 	};
 
 	return (
@@ -64,21 +89,26 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 
 					facetContent = (
 						<>
-							<AsyncSelect
-								defaultValue={defaultValuesObj}
-								closeMenuOnSelect={false}
+							<Select
+								closeMenuOnSelect
+								blurInputOnSelect
 								isMulti
 								placeholder={placeholder}
-								loadOptions={(inputValue) =>
-									new Promise<{ label: string; value: string }[]>((resolve) => {
-										resolve(
-											onSelectChange(facet.facetId, inputValue) as {
-												label: string;
-												value: string;
-											}[]
-										);
-									})
+								options={typeaheadData}
+								onInputChange={(inputValue) =>
+									onTypeaheadType(facet.facetId, inputValue)
 								}
+								isLoading={typeaheadIsLoading}
+								// loadOptions={(inputValue: string) =>
+								// 	new Promise<SelectOption[]>((resolve) => {
+								// 		resolve(
+								// 			onTypeaheadType(
+								// 				facet.facetId,
+								// 				inputValue
+								// 			) as SelectOption[]
+								// 		);
+								// 	})
+								// }
 								onChange={(_, actionMeta) => {
 									let option = "",
 										action: onFilterChangeType["type"] = "add";
@@ -99,6 +129,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 									props.onFilterChange(facet.facetId, option, operator, action);
 								}}
 								styles={typeaheadStyles}
+								components={{ DropdownIndicator: FragmentComponent }}
 							/>
 							{displayOperators && (
 								<fieldset className="d-flex border-none m-0">
@@ -153,7 +184,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 								// closeMenuOnSelect={false}
 								isMulti
 								defaultValue={defaultValuesObj}
-								options={[{ label: "All", value: "" }, ...optionSelectObj]}
+								options={optionSelectObj}
 								onChange={(_, actionMeta) => {
 									let option = "",
 										action: onFilterChangeType["type"] = "add";
