@@ -13,7 +13,7 @@ const Navbar = (props: ISearchFiltersProps) => {
 
 	return (
 		<>
-			<Form className="h-lg-100">
+			<Form onSubmit={() => console.log("Form submit")} className="h-lg-100">
 				<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
 					<SearchFiltersDesktop filterData={props.filterData} />
 				</ShowHide>

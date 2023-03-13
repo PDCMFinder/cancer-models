@@ -86,7 +86,7 @@ const Search: NextPage = () => {
 						<div className="row">
 							<div className="col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-3">
 								<h1 className="text-white text-center">Cancer Model Finder</h1>
-								<Form>
+								<Form onSubmit={() => console.log("Search")}>
 									<InputAndLabel
 										label="Cancer Model Finder"
 										name="search"

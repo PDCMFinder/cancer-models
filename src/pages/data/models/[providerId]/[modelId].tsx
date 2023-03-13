@@ -171,7 +171,7 @@ const ModelDetails = ({
 			downloadBtnRef.current.link.click();
 		}
 		if (isInitialLoad) setIsInitialLoad(false);
-	}, [downloadData]);
+	}, [downloadData, isInitialLoad]);
 
 	const getDownloadData = (data: MolecularData): void => {
 		getMolecularDataDownload(data, data.dataType)
@@ -555,7 +555,7 @@ const ModelDetails = ({
 																			<a
 																				href={data.rawDataUrl.split(",")[1]}
 																				target="_blank"
-																				rel="noreferrer"
+																				rel="noopener noreferrer"
 																			>
 																				{data.rawDataUrl.split(",")[0]}
 																			</a>
@@ -657,7 +657,11 @@ const ModelDetails = ({
 
 											return (
 												<div key={publication.pmid}>
-													<h3>{publication.title.replace(/<[^>]+>/g, " ")}</h3>
+													{publication.title && (
+														<h3>
+															{publication.title.replace(/<[^>]+>/g, " ")}
+														</h3>
+													)}
 													<p className="text-muted text-small">
 														{publication.authorString}
 													</p>
