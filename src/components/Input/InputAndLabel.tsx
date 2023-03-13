@@ -24,7 +24,11 @@ const InputAndLabel = (props: IInputAndLabel) => {
 
 	return (
 		<div className={`${isAlternateLayout} ${className}`.trim()}>
-			<Label name={name} label={props.label} className={props.labelClassName} />
+			<Label
+				name={props.id ?? name}
+				label={props.label}
+				className={props.labelClassName}
+			/>
 			{/* TODO: When type is search, wrap input and button in form */}
 			<Input
 				name={name}
@@ -34,6 +38,8 @@ const InputAndLabel = (props: IInputAndLabel) => {
 				onChange={props.onChange}
 				value={props.value}
 				checked={props.checked}
+				defaultChecked={props.defaultChecked}
+				id={props.id}
 			/>
 			{type === "search" ? (
 				<>

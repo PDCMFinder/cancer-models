@@ -33,7 +33,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 	const onSelectChange = (facetId: string, query: string) => {
 		setQuery(query);
 		setfacetId(facetId);
-		console.log(selectOptionsQuery.data);
+
 		return selectOptionsQuery.data;
 	};
 
@@ -67,27 +67,76 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 						}))
 					);
 					const placeholder = facet.placeholder
-						? `Eg. ${facet.placeholder}`
-						: "Select...";
+							? `Eg. ${facet.placeholder}`
+							: "Select...",
+						displayOperators = facetType === "multivalued";
 
 					facetContent = (
-						<AsyncSelect
-							// defaultValue={defaultValuesObj}
-							closeMenuOnSelect={false}
-							isMulti
-							placeholder={placeholder}
-							defaultOptions={[{ label: "All", value: "" }, ...optionSelectObj]}
-							loadOptions={(inputValue) =>
-								new Promise((resolve) => {
-									resolve(onSelectChange(facet.facetId, inputValue));
-								})
-							}
-							onChange={(option, actionMeta) => {
-								setQuery("");
-								setfacetId(facet.facetId);
-							}}
-							styles={typeaheadStyles}
-						/>
+						<>
+							<AsyncSelect
+								defaultValue={defaultValuesObj}
+								closeMenuOnSelect={false}
+								isMulti
+								placeholder={placeholder}
+								defaultOptions={[
+									{ label: "All", value: "" },
+									...optionSelectObj,
+								]}
+								loadOptions={(inputValue) =>
+									new Promise<{ label: string; value: string }[]>((resolve) => {
+										resolve(
+											onSelectChange(facet.facetId, inputValue) as {
+												label: string;
+												value: string;
+											}[]
+										);
+									})
+								}
+								onChange={(option, actionMeta) => {
+									setQuery("");
+									setfacetId(facet.facetId);
+								}}
+								styles={typeaheadStyles}
+							/>
+							{displayOperators && (
+								<fieldset className="d-flex border-none m-0">
+									<legend className="hideElement-accessible">Contains:</legend>
+									<InputAndLabel
+										className="mr-3"
+										type="radio"
+										name={`operator-${facet.facetId}`}
+										id={`any-${facet.facetId}`}
+										label="Any"
+										value="any"
+										defaultChecked={operator === "ANY"}
+										onChange={() =>
+											props.onFilterChange(
+												facet.facetId,
+												"",
+												"ANY",
+												"toggleOperator"
+											)
+										}
+									/>
+									<InputAndLabel
+										type="radio"
+										name={`operator-${facet.facetId}`}
+										id={`all-${facet.facetId}`}
+										label="All"
+										value="all"
+										defaultChecked={operator === "ALL"}
+										onChange={() =>
+											props.onFilterChange(
+												facet.facetId,
+												"",
+												"ALL",
+												"toggleOperator"
+											)
+										}
+									/>
+								</fieldset>
+							)}
+						</>
 					);
 				} else if (facet.options.length > 10) {
 					// Create select typeahead from options
@@ -99,32 +148,34 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 					);
 
 					facetContent = (
-						<Select
-							// closeMenuOnSelect={false}
-							isMulti
-							defaultValue={defaultValuesObj}
-							options={[{ label: "All", value: "" }, ...optionSelectObj]}
-							onChange={(_, actionMeta) => {
-								let option = "",
-									action: onFilterChangeType["type"] = "add";
+						<>
+							<Select
+								// closeMenuOnSelect={false}
+								isMulti
+								defaultValue={defaultValuesObj}
+								options={[{ label: "All", value: "" }, ...optionSelectObj]}
+								onChange={(_, actionMeta) => {
+									let option = "",
+										action: onFilterChangeType["type"] = "add";
 
-								switch (actionMeta.action) {
-									case "remove-value":
-										option = actionMeta.removedValue.value;
-										action = "remove";
-										break;
-									case "select-option":
-										option = actionMeta.option.value;
-										break;
-									case "clear":
-										action = "clear";
-										break;
-								}
+									switch (actionMeta.action) {
+										case "remove-value":
+											option = actionMeta.removedValue.value;
+											action = "remove";
+											break;
+										case "select-option":
+											option = actionMeta.option.value;
+											break;
+										case "clear":
+											action = "clear";
+											break;
+									}
 
-								props.onFilterChange(facet.facetId, option, operator, action);
-							}}
-							styles={typeaheadStyles}
-						/>
+									props.onFilterChange(facet.facetId, option, operator, action);
+								}}
+								styles={typeaheadStyles}
+							/>
+						</>
 					);
 				} else {
 					// Create checkbox per option
@@ -141,6 +192,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 											e: React.ChangeEvent<HTMLInputElement>
 										): void => {
 											const actionType = e.target.checked ? "add" : "remove";
+
 											props.onFilterChange(
 												facet.facetId,
 												option,

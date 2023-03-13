@@ -461,6 +461,11 @@ textarea {
 		border-color: transparent !important;
 	}
 }
+.border {
+	&-none {
+		border: none !important;
+	}
+}
 section {
 	padding: $spacing-5 0;
 }

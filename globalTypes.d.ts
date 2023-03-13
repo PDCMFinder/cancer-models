@@ -45,12 +45,14 @@ export interface ILabelProps {
 
 export interface IInputProps {
 	name: string;
+	id?: string;
 	type: typeof inputTypes[number] | "textarea";
 	placeholder?: string;
 	className?: string;
 	value?: string;
 	onChange?: function;
 	checked?: boolean;
+	defaultChecked?: boolean;
 }
 
 export interface IArrowIconProps {

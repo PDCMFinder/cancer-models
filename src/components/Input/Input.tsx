@@ -1,15 +1,15 @@
 import { IInputProps } from "../../../globalTypes";
 
 const Input = (props: IInputProps) => {
-	let name = props.name,
-		commonInputArgs = {
+	let commonInputArgs = {
 			name: props.name,
-			id: name,
+			id: props.id ?? props.name,
 			placeholder: props.placeholder,
 			className: props.className,
 			value: props.value,
 			onChange: props.onChange,
 			checked: props.checked,
+			defaultChecked: props.defaultChecked,
 		},
 		InputElement =
 			props.type === "textarea" ? (

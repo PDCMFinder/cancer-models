@@ -35,7 +35,7 @@ const sortByOptions = [
 
 const Search: NextPage = () => {
 	const router = useRouter();
-	const [sortBy, setSortBy] = useState(sortByOptions[0].value);
+	const [sortBy, setSortBy] = useState<string>(sortByOptions[0].value);
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
 
