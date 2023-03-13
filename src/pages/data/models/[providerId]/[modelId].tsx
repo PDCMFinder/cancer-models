@@ -171,7 +171,7 @@ const ModelDetails = ({
 			downloadBtnRef.current.link.click();
 		}
 		if (isInitialLoad) setIsInitialLoad(false);
-	}, [downloadData, isInitialLoad]);
+	}, [downloadData]);
 
 	const getDownloadData = (data: MolecularData): void => {
 		getMolecularDataDownload(data, data.dataType)
