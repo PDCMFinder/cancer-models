@@ -2,11 +2,10 @@ import InputAndLabel from "../Input/InputAndLabel";
 import { IFacetProps } from "../../types/Facet.model";
 import { sortObjArrBy } from "../../utils/sortArrBy";
 import { IFacetSidebarSelection } from "../../types/Facet.model";
-import AsyncSelect from "react-select/async";
 import Select from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
 import { useQuery } from "react-query";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import typeaheadStyles from "../../utils/typeaheadStyles";
 import { onFilterChangeType } from "../../pages/search";
 
@@ -72,7 +71,15 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 				}));
 
 				const facetOptionsOrder = ["not specified", "not collected", "other"];
-				sortObjArrBy(facet.options, facetOptionsOrder, undefined, false, true);
+				useCallback(() => {
+					sortObjArrBy(
+						facet.options,
+						facetOptionsOrder,
+						undefined,
+						false,
+						true
+					);
+				}, []);
 
 				if (facetType === "autocomplete" || facetType === "multivalued") {
 					const placeholder = facet.placeholder
