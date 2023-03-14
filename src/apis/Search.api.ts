@@ -107,6 +107,7 @@ export async function getSearchResults(
 	if (!searchFilterSelection && !searchValues.length) {
 		return Promise.resolve([0, []]);
 	}
+
 	let query =
 		searchValues.length > 0
 			? `search_terms=ov.{${searchValues.join(",")}}`
@@ -118,17 +119,21 @@ export async function getSearchResults(
 				(d: string) => '"' + d + '"'
 			);
 			let apiOperator = "in";
+
 			if (
-				["dataset_available", "breast_cancer_biomarkers"].includes(filterId) &&
+				["dataset_available", "breast_cancer_biomarkers"].includes(filterId) ||
 				searchFilterSelection[filterId].operator === "ANY"
 			)
 				apiOperator = "ov";
+
 			if (searchFilterSelection[filterId].operator === "ALL")
 				apiOperator = "cs";
+
 			let optionsQuery =
 				apiOperator === "in"
 					? `(${options.join(",")})`
 					: `{${options.join(",")}}`;
+
 			query += `&${filterId}=${apiOperator}.${optionsQuery}`;
 		}
 	}
