@@ -121,7 +121,7 @@ export async function getSearchResults(
 			let apiOperator = "in";
 
 			if (
-				["dataset_available", "breast_cancer_biomarkers"].includes(filterId) ||
+				["dataset_available", "breast_cancer_biomarkers"].includes(filterId) &&
 				searchFilterSelection[filterId].operator === "ANY"
 			)
 				apiOperator = "ov";
