@@ -3,111 +3,111 @@
 // To create media queries using breakpoint names found in vars.scss
 // Can take a custom number
 @mixin mediaOver($breakpoint) {
-	@if map-has-key($breakpointsMediaOver, $breakpoint) {
-		@media screen and #{inspect(map-get($breakpointsMediaOver, $breakpoint))} {
-			@content;
-		}
-	} @else if $breakpoint / 1 == $breakpoint {
-		@media screen and (min-width: #{$breakpoint}px) {
-			@content;
-		}
-	} @else if $breakpoint == "xs" {
-		@content;
-	}
+  @if map-has-key($breakpointsMediaOver, $breakpoint) {
+    @media screen and #{inspect(map-get($breakpointsMediaOver, $breakpoint))} {
+      @content;
+    }
+  } @else if $breakpoint / 1 == $breakpoint {
+    @media screen and (min-width: #{$breakpoint}px) {
+      @content;
+    }
+  } @else if $breakpoint == "xs" {
+    @content;
+  }
 }
 
 @mixin colGrid() {
-	@for $j from 1 through length($bp-names) {
-		@include mediaOver(#{nth($bp-names, $j)}) {
-			@for $i from 0 through $col-amount {
-				@if #{nth($bp-names, $j)} == "xs" {
-					.col-#{$i} {
-						width: calc((100% / $col-amount) * $i);
-					}
-					.offset-#{$i} {
-						margin-left: calc((100% / $col-amount) * $i);
-					}
-				} @else {
-					.col-#{nth($bp-names, $j)}-#{$i} {
-						width: calc((100% / $col-amount) * $i);
-					}
-					.offset-#{nth($bp-names, $j)}-#{$i} {
-						margin-left: calc((100% / $col-amount) * $i);
-					}
-				}
-			}
-		}
-	}
+  @for $j from 1 through length($bp-names) {
+    @include mediaOver(#{nth($bp-names, $j)}) {
+      @for $i from 0 through $col-amount {
+        @if #{nth($bp-names, $j)} == "xs" {
+          .col-#{$i} {
+            width: calc((100% / $col-amount) * $i);
+          }
+          .offset-#{$i} {
+            margin-left: calc((100% / $col-amount) * $i);
+          }
+        } @else {
+          .col-#{nth($bp-names, $j)}-#{$i} {
+            width: calc((100% / $col-amount) * $i);
+          }
+          .offset-#{nth($bp-names, $j)}-#{$i} {
+            margin-left: calc((100% / $col-amount) * $i);
+          }
+        }
+      }
+    }
+  }
 }
 
 $spacers-map: (
-	0: 0,
-	1: $spacing-1,
-	2: $spacing-2,
-	3: $spacing-3,
-	4: $spacing-4,
-	5: $spacing-5,
+  0: 0,
+  1: $spacing-1,
+  2: $spacing-2,
+  3: $spacing-3,
+  4: $spacing-4,
+  5: $spacing-5,
 );
 @mixin spacing() {
-	@for $j from 1 through length($bp-names) {
-		@include mediaOver(#{nth($bp-names, $j)}) {
-			@if #{nth($bp-names, $j)} == "xs" {
-				@each $property, $abbrev in (margin: m, padding: p) {
-					@each $size, $length in $spacers-map {
-						.#{$abbrev}-#{$size} {
-							#{$property}: $length !important;
-						}
-						.#{$abbrev}t-#{$size} {
-							#{$property}-top: $length !important;
-						}
-						.#{$abbrev}r-#{$size} {
-							#{$property}-right: $length !important;
-						}
-						.#{$abbrev}b-#{$size} {
-							#{$property}-bottom: $length !important;
-						}
-						.#{$abbrev}l-#{$size} {
-							#{$property}-left: $length !important;
-						}
-						.#{$abbrev}x-#{$size} {
-							#{$property}-left: $length !important;
-							#{$property}-right: $length !important;
-						}
-						.#{$abbrev}y-#{$size} {
-							#{$property}-bottom: $length !important;
-							#{$property}-top: $length !important;
-						}
-					}
-				}
-			} @else {
-				@each $property, $abbrev in (margin: m, padding: p) {
-					@each $size, $length in $spacers-map {
-						.#{$abbrev}-#{nth($bp-names, $j)}-#{$size} {
-							#{$property}: $length !important;
-						}
-						.#{$abbrev}t-#{nth($bp-names, $j)}-#{$size} {
-							#{$property}-top: $length !important;
-						}
-						.#{$abbrev}r-#{nth($bp-names, $j)}-#{$size} {
-							#{$property}-right: $length !important;
-						}
-						.#{$abbrev}b-#{nth($bp-names, $j)}-#{$size} {
-							#{$property}-bottom: $length !important;
-						}
-						.#{$abbrev}l-#{nth($bp-names, $j)}-#{$size} {
-							#{$property}-left: $length !important;
-						}
-						.#{$abbrev}x-#{nth($bp-names, $j)}-#{$size} {
-							#{$property}-left: $length !important;
-							#{$property}-right: $length !important;
-						}
-						.#{$abbrev}y-#{nth($bp-names, $j)}-#{$size} {
-							#{$property}-bottom: $length !important;
-							#{$property}-top: $length !important;
-						}
-					}
-				}
-			}
-		}
-	}
+  @for $j from 1 through length($bp-names) {
+    @include mediaOver(#{nth($bp-names, $j)}) {
+      @if #{nth($bp-names, $j)} == "xs" {
+        @each $property, $abbrev in (margin: m, padding: p) {
+          @each $size, $length in $spacers-map {
+            .#{$abbrev}-#{$size} {
+              #{$property}: $length !important;
+            }
+            .#{$abbrev}t-#{$size} {
+              #{$property}-top: $length !important;
+            }
+            .#{$abbrev}r-#{$size} {
+              #{$property}-right: $length !important;
+            }
+            .#{$abbrev}b-#{$size} {
+              #{$property}-bottom: $length !important;
+            }
+            .#{$abbrev}l-#{$size} {
+              #{$property}-left: $length !important;
+            }
+            .#{$abbrev}x-#{$size} {
+              #{$property}-left: $length !important;
+              #{$property}-right: $length !important;
+            }
+            .#{$abbrev}y-#{$size} {
+              #{$property}-bottom: $length !important;
+              #{$property}-top: $length !important;
+            }
+          }
+        }
+      } @else {
+        @each $property, $abbrev in (margin: m, padding: p) {
+          @each $size, $length in $spacers-map {
+            .#{$abbrev}-#{nth($bp-names, $j)}-#{$size} {
+              #{$property}: $length !important;
+            }
+            .#{$abbrev}t-#{nth($bp-names, $j)}-#{$size} {
+              #{$property}-top: $length !important;
+            }
+            .#{$abbrev}r-#{nth($bp-names, $j)}-#{$size} {
+              #{$property}-right: $length !important;
+            }
+            .#{$abbrev}b-#{nth($bp-names, $j)}-#{$size} {
+              #{$property}-bottom: $length !important;
+            }
+            .#{$abbrev}l-#{nth($bp-names, $j)}-#{$size} {
+              #{$property}-left: $length !important;
+            }
+            .#{$abbrev}x-#{nth($bp-names, $j)}-#{$size} {
+              #{$property}-left: $length !important;
+              #{$property}-right: $length !important;
+            }
+            .#{$abbrev}y-#{nth($bp-names, $j)}-#{$size} {
+              #{$property}-bottom: $length !important;
+              #{$property}-top: $length !important;
+            }
+          }
+        }
+      }
+    }
+  }
 }
