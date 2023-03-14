@@ -31,7 +31,6 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 	const [query, setQuery] = useState("");
 	const [facetId, setfacetId] = useState("");
 	const [typeaheadData, setTypeaheadData] = useState<SelectOption[]>();
-	const [typeaheadIsLoading, setTypeaheadIsLoading] = useState(false);
 
 	let selectOptionsQuery = useQuery(
 		query,
@@ -39,23 +38,17 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 		{
 			onSuccess(data) {
 				setTypeaheadData(data);
-				setTypeaheadIsLoading(false);
 			},
 		}
 	);
 
 	useEffect(() => {
 		setTypeaheadData(selectOptionsQuery.data);
-		setTypeaheadIsLoading(false);
 	}, [query, facetId]);
 
 	const onTypeaheadType = (facetId: string, query: string) => {
 		setQuery(query);
 		setfacetId(facetId);
-		setTypeaheadIsLoading(true);
-		if (!typeaheadData || typeaheadData.length === 0) {
-			setTypeaheadIsLoading(false);
-		}
 	};
 
 	const FragmentComponent = () => {
@@ -99,19 +92,10 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 								onInputChange={(inputValue) =>
 									onTypeaheadType(facet.facetId, inputValue)
 								}
-								isLoading={typeaheadIsLoading}
-								// loadOptions={(inputValue: string) =>
-								// 	new Promise<SelectOption[]>((resolve) => {
-								// 		resolve(
-								// 			onTypeaheadType(
-								// 				facet.facetId,
-								// 				inputValue
-								// 			) as SelectOption[]
-								// 		);
-								// 	})
-								// }
+								isLoading={selectOptionsQuery.isLoading}
+								loadingMessage={() => "Loading data"}
+								noOptionsMessage={() => "Type to search"}
 								onChange={(_, actionMeta) => {
-									setTypeaheadIsLoading(false);
 									let option = "",
 										action: onFilterChangeType["type"] = "add";
 

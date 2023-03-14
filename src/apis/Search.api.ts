@@ -115,17 +115,24 @@ export async function getSearchResults(
 
 	for (const filterId in searchFilterSelection) {
 		if (searchFilterSelection[filterId].selection?.length) {
+			const multiValuedFacets = [
+				"search_terms",
+				"dataset_available",
+				"breast_cancer_biomarkers",
+				"treatment_list",
+				"model_treatment_list",
+				"makers_with_cna_data",
+				"makers_with_mutation_data",
+				"makers_with_expression_data",
+				"makers_with_cytogenetics_data",
+			];
 			const options = searchFilterSelection[filterId].selection.map(
 				(d: string) => '"' + d + '"'
 			);
 			let apiOperator = "in";
 
 			if (
-				[
-					"dataset_available",
-					"breast_cancer_biomarkers",
-					"treatment_list",
-				].includes(filterId) &&
+				multiValuedFacets.includes(filterId) &&
 				searchFilterSelection[filterId].operator === "ANY"
 			)
 				apiOperator = "ov";
