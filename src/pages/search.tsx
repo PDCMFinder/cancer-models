@@ -267,16 +267,14 @@ const Search: NextPage = () => {
 							<div className="row mb-3 align-center">
 								<div className="col-12 col-md-6">
 									<p className="mb-md-0">
-										{null
-											? `Showing ${(currentPage - 1) * resultsPerPage + 1} to 
+										{`Showing ${(currentPage - 1) * resultsPerPage + 1} to 
 										${
 											totalResults <
 											(currentPage - 1) * resultsPerPage + resultsPerPage
 												? totalResults
 												: (currentPage - 1) * resultsPerPage + resultsPerPage
 										} 
-										of ${totalResults} results`
-											: null}
+										of ${totalResults} results`}
 									</p>
 								</div>
 								<div className="col-12 col-md-6">
