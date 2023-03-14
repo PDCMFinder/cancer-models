@@ -46,7 +46,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 
 	useEffect(() => {
 		setTypeaheadData(selectOptionsQuery.data);
-		// setTypeaheadIsLoading(false);
+		setTypeaheadIsLoading(false);
 	}, [query, facetId]);
 
 	const onTypeaheadType = (facetId: string, query: string) => {
@@ -93,6 +93,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 								closeMenuOnSelect
 								blurInputOnSelect
 								isMulti
+								defaultValue={defaultValuesObj}
 								placeholder={placeholder}
 								options={typeaheadData}
 								onInputChange={(inputValue) =>
@@ -110,6 +111,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 								// 	})
 								// }
 								onChange={(_, actionMeta) => {
+									setTypeaheadIsLoading(false);
 									let option = "",
 										action: onFilterChangeType["type"] = "add";
 
