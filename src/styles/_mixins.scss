@@ -39,3 +39,75 @@
 		}
 	}
 }
+
+$spacers-map: (
+	0: 0,
+	1: $spacing-1,
+	2: $spacing-2,
+	3: $spacing-3,
+	4: $spacing-4,
+	5: $spacing-5,
+);
+@mixin spacing() {
+	@for $j from 1 through length($bp-names) {
+		@include mediaOver(#{nth($bp-names, $j)}) {
+			@if #{nth($bp-names, $j)} == "xs" {
+				@each $property, $abbrev in (margin: m, padding: p) {
+					@each $size, $length in $spacers-map {
+						.#{$abbrev}-#{$size} {
+							#{$property}: $length !important;
+						}
+						.#{$abbrev}t-#{$size} {
+							#{$property}-top: $length !important;
+						}
+						.#{$abbrev}r-#{$size} {
+							#{$property}-right: $length !important;
+						}
+						.#{$abbrev}b-#{$size} {
+							#{$property}-bottom: $length !important;
+						}
+						.#{$abbrev}l-#{$size} {
+							#{$property}-left: $length !important;
+						}
+						.#{$abbrev}x-#{$size} {
+							#{$property}-left: $length !important;
+							#{$property}-right: $length !important;
+						}
+						.#{$abbrev}y-#{$size} {
+							#{$property}-bottom: $length !important;
+							#{$property}-top: $length !important;
+						}
+					}
+				}
+			} @else {
+				@each $property, $abbrev in (margin: m, padding: p) {
+					@each $size, $length in $spacers-map {
+						.#{$abbrev}-#{nth($bp-names, $j)}-#{$size} {
+							#{$property}: $length !important;
+						}
+						.#{$abbrev}t-#{nth($bp-names, $j)}-#{$size} {
+							#{$property}-top: $length !important;
+						}
+						.#{$abbrev}r-#{nth($bp-names, $j)}-#{$size} {
+							#{$property}-right: $length !important;
+						}
+						.#{$abbrev}b-#{nth($bp-names, $j)}-#{$size} {
+							#{$property}-bottom: $length !important;
+						}
+						.#{$abbrev}l-#{nth($bp-names, $j)}-#{$size} {
+							#{$property}-left: $length !important;
+						}
+						.#{$abbrev}x-#{nth($bp-names, $j)}-#{$size} {
+							#{$property}-left: $length !important;
+							#{$property}-right: $length !important;
+						}
+						.#{$abbrev}y-#{nth($bp-names, $j)}-#{$size} {
+							#{$property}-bottom: $length !important;
+							#{$property}-top: $length !important;
+						}
+					}
+				}
+			}
+		}
+	}
+}
