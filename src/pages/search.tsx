@@ -19,6 +19,7 @@ import SearchResultsLoader from "../components/SearchResults/SearchResultsLoader
 import Pagination from "../components/Pagination/Pagination";
 import { useRouter } from "next/router";
 import Button from "../components/Button/Button";
+import SearchBar from "../components/SearchBar/SearchBar";
 
 export interface onFilterChangeType {
 	type: "add" | "remove" | "clear" | "toggleOperator" | "init";
@@ -126,6 +127,12 @@ const Search: NextPage = () => {
 							  };
 					})
 				);
+				initialSearchFilterState["search_terms"] = stateFromUrl["search_terms"]
+					? stateFromUrl["search_terms"]
+					: {
+							operator: "ANY",
+							selection: [],
+					  };
 
 				searchFilterDispatch({
 					type: "init",
@@ -241,22 +248,17 @@ const Search: NextPage = () => {
 					</div>
 					<div className="row">
 						<div className="col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-3">
-							<Form>
-								<InputAndLabel
-									label={`Search over ${
-										modelCountQuery.data
-											? parseFloat(modelCountQuery.data).toLocaleString()
-											: "7,171" //placeholder while we fetch api data
-									} cancer models`}
-									name="search"
-									type="text"
-									placeholder="Cancer diagnosis eg. Melanoma"
-									labelClassName="hideElement-accessible"
-									className="mb-0"
-									onChange={() => {}}
-									value={""}
-								/>
-							</Form>
+							<SearchBar
+								selection={searchFilterState}
+								onFilterChange={(filterId, selection, operator, type) => {
+									searchFilterDispatch({
+										filterId,
+										selection,
+										operator,
+										type,
+									});
+								}}
+							/>
 						</div>
 					</div>
 				</div>

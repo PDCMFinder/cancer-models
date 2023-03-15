@@ -21,7 +21,7 @@ interface ISearchFilterContentProps {
 	) => void;
 }
 
-interface SelectOption {
+export interface SelectOption {
 	label: string;
 	value: string;
 }
