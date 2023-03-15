@@ -65,7 +65,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 					selection = selectedFacetObj?.selection,
 					operator = selectedFacetObj?.operator;
 
-				const defaultValuesObj = selection.map((value) => ({
+				const defaultValuesObj = selection?.map((value) => ({
 					["label"]: value,
 					["value"]: value,
 				}));

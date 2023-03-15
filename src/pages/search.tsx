@@ -37,7 +37,7 @@ const sortByOptions = [
 const Search: NextPage = () => {
 	const router = useRouter();
 	const [sortBy, setSortBy] = useState<string>(sortByOptions[0].value);
-
+	const [blankInitialFilterState, setBlankInitialFilterState] = useState();
 	const [currentPage, setCurrentPage] = useState<number>(1);
 
 	const [searchFilterState, searchFilterDispatch] = useReducer(
@@ -52,16 +52,23 @@ const Search: NextPage = () => {
 			}
 		) => {
 			const newState = { ...state };
-			const { type, filterId, selection, initialState } = action;
+			const {
+				type,
+				filterId,
+				selection,
+				initialState: actionInitialState,
+			} = action;
 			setCurrentPage(1);
 			if (type === "init") {
-				return initialState;
+				return actionInitialState ?? blankInitialFilterState;
 			}
+
 			if (type === "add") {
 				newState[filterId].selection = [
 					...new Set(state[filterId].selection.concat([selection])),
 				];
 			}
+
 			if (type === "remove") {
 				newState[filterId].selection = state[filterId].selection.filter(
 					(item: string) => item !== selection
@@ -88,6 +95,7 @@ const Search: NextPage = () => {
 		() => getSearchFacets(),
 		{
 			onSuccess(data) {
+				const blankState: any = {};
 				const initialSearchFilterState: any = {};
 				const stateFromUrl: any = {};
 				const filters = router.query["filters"]
@@ -103,18 +111,23 @@ const Search: NextPage = () => {
 				});
 
 				data?.forEach((section) =>
-					section.facets.forEach(
-						(facet) =>
-							(initialSearchFilterState[facet.facetId] = stateFromUrl[
-								facet.facetId
-							]
-								? stateFromUrl[facet.facetId]
-								: {
-										operator: "ANY",
-										selection: [],
-								  })
-					)
+					section.facets.forEach((facet) => {
+						initialSearchFilterState[facet.facetId] = stateFromUrl[
+							facet.facetId
+						]
+							? stateFromUrl[facet.facetId]
+							: {
+									operator: "ANY",
+									selection: [],
+							  };
+						blankState[facet.facetId] = {
+							operator: "ANY",
+							selection: [],
+						};
+					})
 				);
+
+				setBlankInitialFilterState(blankState);
 				searchFilterDispatch({
 					type: "init",
 					initialState: initialSearchFilterState,
@@ -242,18 +255,6 @@ const Search: NextPage = () => {
 									onChange={() => {}}
 									value={""}
 								/>
-								{/* <div className="text-right">
-									{searchInputContent && (
-										<Button
-											priority="secondary"
-											color="white"
-											className="text-white link-text mt-2 mb-0"
-											onClick={() => setSearchInputContent("")}
-										>
-											Clear
-										</Button>
-									)}
-								</div> */}
 							</Form>
 						</div>
 					</div>
@@ -303,15 +304,14 @@ const Search: NextPage = () => {
 										className="link-text p-0"
 										priority="secondary"
 										color="dark"
-										// onClick={() =>
-										// 	searchFilterDispatch({
-										// 		type: "init",
-										// 		initialState: "",
-										// 		selection: "",
-										// 		filterId: "",
-										// 		operator: "",
-										// 	})
-										// }
+										onClick={() =>
+											searchFilterDispatch({
+												type: "init",
+												selection: "",
+												filterId: "",
+												operator: "",
+											})
+										}
 									>
 										Clear
 									</Button>
