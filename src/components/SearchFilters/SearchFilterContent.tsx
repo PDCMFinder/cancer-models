@@ -94,6 +94,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 								blurInputOnSelect
 								isMulti
 								defaultValue={defaultValuesObj}
+								value={defaultValuesObj}
 								placeholder={placeholder}
 								options={typeaheadData}
 								onInputChange={(inputValue) =>
@@ -177,6 +178,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 								// closeMenuOnSelect={false}
 								isMulti
 								defaultValue={defaultValuesObj}
+								value={defaultValuesObj}
 								options={optionSelectObj}
 								onChange={(_, actionMeta) => {
 									let option = "",

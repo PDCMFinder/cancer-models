@@ -37,7 +37,6 @@ const sortByOptions = [
 const Search: NextPage = () => {
 	const router = useRouter();
 	const [sortBy, setSortBy] = useState<string>(sortByOptions[0].value);
-	const [blankInitialFilterState, setBlankInitialFilterState] = useState();
 	const [currentPage, setCurrentPage] = useState<number>(1);
 
 	const [searchFilterState, searchFilterDispatch] = useReducer(
@@ -60,7 +59,12 @@ const Search: NextPage = () => {
 			} = action;
 			setCurrentPage(1);
 			if (type === "init") {
-				return actionInitialState ?? blankInitialFilterState;
+				if (actionInitialState) return actionInitialState;
+
+				for (let key in state) {
+					newState[key].selection = [];
+					newState[key].operator = "ANY";
+				}
 			}
 
 			if (type === "add") {
@@ -95,7 +99,6 @@ const Search: NextPage = () => {
 		() => getSearchFacets(),
 		{
 			onSuccess(data) {
-				const blankState: any = {};
 				const initialSearchFilterState: any = {};
 				const stateFromUrl: any = {};
 				const filters = router.query["filters"]
@@ -120,14 +123,9 @@ const Search: NextPage = () => {
 									operator: "ANY",
 									selection: [],
 							  };
-						blankState[facet.facetId] = {
-							operator: "ANY",
-							selection: [],
-						};
 					})
 				);
 
-				setBlankInitialFilterState(blankState);
 				searchFilterDispatch({
 					type: "init",
 					initialState: initialSearchFilterState,
@@ -301,7 +299,7 @@ const Search: NextPage = () => {
 								</div>
 								<div className="col-12 col-md-4 col-lg-6 d-flex justify-content-end">
 									<Button
-										className="link-text p-0"
+										className="m-0"
 										priority="secondary"
 										color="dark"
 										onClick={() =>
