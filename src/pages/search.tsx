@@ -38,6 +38,7 @@ const Search: NextPage = () => {
 	const router = useRouter();
 	const [sortBy, setSortBy] = useState<string>(sortByOptions[0].value);
 	const [currentPage, setCurrentPage] = useState<number>(1);
+	const [hasSelection, setHasSelection] = useState<boolean>(false);
 
 	const [searchFilterState, searchFilterDispatch] = useReducer(
 		(
@@ -208,10 +209,12 @@ const Search: NextPage = () => {
 			}
 		}
 		if (filterValues.length) {
+			setHasSelection(true);
 			router.replace({
 				query: { ...router.query, filters: filterValues.join(" AND ") },
 			});
 		} else {
+			setHasSelection(false);
 			router.replace("/search", undefined, { shallow: true });
 		}
 	}, [searchFilterState]);
@@ -299,9 +302,11 @@ const Search: NextPage = () => {
 								</div>
 								<div className="col-12 col-md-4 col-lg-6 d-flex justify-content-end">
 									<Button
+										style={{ color: "#e02d2d" }}
 										className="m-0"
 										priority="secondary"
 										color="dark"
+										disabled={!hasSelection}
 										onClick={() =>
 											searchFilterDispatch({
 												type: "init",

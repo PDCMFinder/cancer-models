@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useState } from "react";
+import { CSSProperties, useState } from "react";
 import ArrowIcon from "../ArrowIcon/ArrowIcon";
 import styles from "./Button.module.scss";
 import { IArrowIconProps } from "../../../globalTypes";
@@ -8,6 +8,7 @@ const RIGHT = "right",
 	DOWN = "down";
 
 interface IButtonProps {
+	style?: CSSProperties;
 	children: string | JSX.Element;
 	priority: "primary" | "secondary";
 	color: "dark" | "light" | "white";
@@ -16,6 +17,7 @@ interface IButtonProps {
 	href?: string;
 	className?: string;
 	arrow?: boolean;
+	disabled?: boolean;
 	arrowDirection?: IArrowIconProps["direction"];
 	"aria-controls"?: string;
 	onClick?: () => void;
@@ -62,7 +64,12 @@ const Button = (props: IButtonProps) => {
 		}
 
 		return (
-			<LinkTag className={classNames} href={href} {...externalLinkProps}>
+			<LinkTag
+				style={props.style}
+				className={classNames}
+				href={href}
+				{...externalLinkProps}
+			>
 				<>
 					{children}
 					{showArrow && <ArrowIcon direction={arrowDirection} />}
@@ -73,6 +80,8 @@ const Button = (props: IButtonProps) => {
 
 	return (
 		<button
+			disabled={props.disabled}
+			style={props.style}
 			aria-controls={props["aria-controls"]}
 			type={props.type}
 			className={classNames}

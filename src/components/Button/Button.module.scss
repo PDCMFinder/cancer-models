@@ -68,4 +68,9 @@
 			}
 		}
 	}
+	&:disabled {
+		background-color: $color-lightGray !important;
+		color: darken($color-gray, 20%) !important;
+		border-color: currentColor !important;
+	}
 }
