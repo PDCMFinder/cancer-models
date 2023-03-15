@@ -22,9 +22,7 @@ const Home: NextPage = () => {
 	let cancerHierarchyQuery = useQuery("cancerHierarchy", () => {
 		return getCancerHierarchy();
 	});
-	let modelCountQuery = useQuery("modelCountQuery", () => {
-		return getModelCount();
-	});
+	let modelCountQuery = useQuery("modelCount", () => getModelCount());
 	const router = useRouter();
 
 	return (
@@ -60,7 +58,7 @@ const Home: NextPage = () => {
 								label={`Search over ${
 									modelCountQuery.data
 										? parseFloat(modelCountQuery.data).toLocaleString()
-										: "6,998" //placeholder while we fetch api data
+										: "7,170" //placeholder while we fetch api data
 								} cancer models`}
 							/>
 							<div className="d-flex flex-column flex-md-row mb-md-3">

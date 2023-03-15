@@ -18,6 +18,7 @@ import Loader from "../components/Loader/Loader";
 import SearchResultsLoader from "../components/SearchResults/SearchResultsLoader";
 import Pagination from "../components/Pagination/Pagination";
 import { useRouter } from "next/router";
+import Button from "../components/Button/Button";
 
 export interface onFilterChangeType {
 	type: "add" | "remove" | "clear" | "toggleOperator" | "init";
@@ -204,9 +205,7 @@ const Search: NextPage = () => {
 		}
 	}, [searchFilterState]);
 
-	let modelCountQuery = useQuery("modelCountQuery", () => {
-		return getModelCount();
-	});
+	let modelCountQuery = useQuery("modelCount", () => getModelCount());
 	let totalResults = searchResultsQuery.data ? searchResultsQuery.data[0] : 1;
 
 	return (
@@ -220,7 +219,7 @@ const Search: NextPage = () => {
 								{
 									modelCountQuery.data
 										? parseFloat(modelCountQuery.data).toLocaleString()
-										: "6,998" //placeholder while we fetch api data
+										: "7,170" //placeholder while we fetch api data
 								}{" "}
 								cancer models
 							</h1>
@@ -233,7 +232,7 @@ const Search: NextPage = () => {
 									label={`Search over ${
 										modelCountQuery.data
 											? parseFloat(modelCountQuery.data).toLocaleString()
-											: "6,998" //placeholder while we fetch api data
+											: "7,170" //placeholder while we fetch api data
 									} cancer models`}
 									name="search"
 									type="text"
@@ -295,7 +294,29 @@ const Search: NextPage = () => {
 					</div>
 					<div className="row">
 						<div className="col-12 col-lg-3">
-							<h3 className="mt-0">Filters</h3>
+							<div className="row align-center mb-1">
+								<div className="col-12 col-md-8 col-lg-6">
+									<h3 className="m-0">Filters</h3>
+								</div>
+								<div className="col-12 col-md-4 col-lg-6 d-flex justify-content-end">
+									<Button
+										className="link-text p-0"
+										priority="secondary"
+										color="dark"
+										// onClick={() =>
+										// 	searchFilterDispatch({
+										// 		type: "init",
+										// 		initialState: "",
+										// 		selection: "",
+										// 		filterId: "",
+										// 		operator: "",
+										// 	})
+										// }
+									>
+										Clear
+									</Button>
+								</div>
+							</div>
 							{searchFacetSectionsQuery.data ? (
 								<SearchFilters
 									data={searchFacetSectionsQuery.data}
