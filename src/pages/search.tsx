@@ -219,7 +219,7 @@ const Search: NextPage = () => {
 								{
 									modelCountQuery.data
 										? parseFloat(modelCountQuery.data).toLocaleString()
-										: "7,170" //placeholder while we fetch api data
+										: "7,171" //placeholder while we fetch api data
 								}{" "}
 								cancer models
 							</h1>
@@ -232,7 +232,7 @@ const Search: NextPage = () => {
 									label={`Search over ${
 										modelCountQuery.data
 											? parseFloat(modelCountQuery.data).toLocaleString()
-											: "7,170" //placeholder while we fetch api data
+											: "7,171" //placeholder while we fetch api data
 									} cancer models`}
 									name="search"
 									type="text"

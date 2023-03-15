@@ -58,7 +58,7 @@ const Home: NextPage = () => {
 								label={`Search over ${
 									modelCountQuery.data
 										? parseFloat(modelCountQuery.data).toLocaleString()
-										: "7,170" //placeholder while we fetch api data
+										: "7,171" //placeholder while we fetch api data
 								} cancer models`}
 							/>
 							<div className="d-flex flex-column flex-md-row mb-md-3">
