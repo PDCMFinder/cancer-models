@@ -150,6 +150,9 @@ img {
 	}
 }
 .w {
+	&-50 {
+		width: 50%;
+	}
 	&-100 {
 		width: 100%;
 	}
@@ -319,11 +322,6 @@ hr {
 	padding: 0;
 	position: absolute;
 	width: 1px;
-}
-.w {
-	&-auto {
-		width: auto;
-	}
 }
 .overflow {
 	&-hidden {

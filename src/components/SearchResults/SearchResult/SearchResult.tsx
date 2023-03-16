@@ -2,6 +2,7 @@ import Card from "../../Card/Card";
 import styles from "./SearchResult.module.scss";
 import Link from "next/link";
 import { SearchResult } from "../../../types/Search.model";
+import QualityBadge from "../../QualityBadge/QualityBadge";
 
 const dataTypes = [
 	{
@@ -74,7 +75,7 @@ const SearchResult = (props: ISearchResultProps) => {
 							<h2 className="h3 m-0">
 								<Link href={modelLink}>{pdcmId}</Link>
 							</h2>
-							<p className="text-capitalize">
+							<p className="text-capitalize mb-0">
 								<Link href={`/about/provider/${sourceId?.toLowerCase()}`}>
 									{`${providerName?.substring(0, 50)}${
 										providerName?.length > 50 ? "..." : ""
@@ -82,6 +83,7 @@ const SearchResult = (props: ISearchResultProps) => {
 								</Link>
 							</p>
 						</div>
+						<QualityBadge className="w-50" />
 						<p>{histology}</p>
 					</div>
 					<div className="col-12 col-md-6 col-lg-4 mt-3 mt-md-0">
