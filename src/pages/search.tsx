@@ -1,6 +1,4 @@
 import type { NextPage } from "next";
-import Form from "../components/Form/Form";
-import InputAndLabel from "../components/Input/InputAndLabel";
 import SearchResults from "../components/SearchResults/SearchResults";
 import Select from "../components/Input/Select";
 import React, { useEffect, useReducer, useState } from "react";
@@ -24,6 +22,9 @@ import breakPoints from "../utils/breakpoints";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import Modal from "../components/Modal/Modal";
 import ShowHide from "../components/ShowHide/ShowHide";
+import { createPortal } from "react-dom";
+import Card from "../components/Card/Card";
+import CloseIcon from "../components/CloseIcon/CloseIcon";
 
 export interface onFilterChangeType {
 	type: "add" | "remove" | "clear" | "toggleOperator" | "init";
@@ -236,6 +237,25 @@ const Search: NextPage = () => {
 	let modelCountQuery = useQuery("modelCount", () => getModelCount());
 	let totalResults = searchResultsQuery.data ? searchResultsQuery.data[0] : 1;
 
+	const ClearFilterButton = (
+		<Button
+			style={{ color: "#b75858" }}
+			className="m-0"
+			priority="secondary"
+			color="dark"
+			disabled={!hasSelection}
+			onClick={() =>
+				searchFilterDispatch({
+					type: "init",
+					selection: "",
+					filterId: "",
+					operator: "",
+				})
+			}
+		>
+			Clear
+		</Button>
+	);
 	const searchFilters = searchFacetSectionsQuery.data ? (
 		<SearchFilters
 			data={searchFacetSectionsQuery.data ?? []}
@@ -251,6 +271,28 @@ const Search: NextPage = () => {
 		/>
 	) : (
 		<Loader style={{ height: "auto !important" }} />
+	);
+	const modalSearchFilters = (
+		<Modal verticalAlign="top" handleClose={() => setShowFilters(false)}>
+			<Card
+				style={{ backgroundColor: "white" }}
+				header={
+					<div className="d-flex justify-content-between align-center">
+						{ClearFilterButton}
+						<CloseIcon color="dark" onClick={() => setShowFilters(false)} />
+					</div>
+				}
+				footer={
+					<div className="d-flex justify-content-between align-center">
+						{ClearFilterButton}
+						<CloseIcon color="dark" onClick={() => setShowFilters(false)} />
+					</div>
+				}
+				contentClassName="p-0"
+			>
+				{searchFilters}
+			</Card>
+		</Modal>
 	);
 
 	return (
@@ -330,8 +372,16 @@ const Search: NextPage = () => {
 											priority="secondary"
 											color="dark"
 											onClick={() => setShowFilters(true)}
+											className="align-center d-flex"
 										>
-											Filters
+											<>
+												Filters
+												{hasSelection && (
+													<span
+														className={`ml-1 ${styles.Search_filterNotification}`}
+													></span>
+												)}
+											</>
 										</Button>
 									</div>
 								</ShowHide>
@@ -340,33 +390,13 @@ const Search: NextPage = () => {
 										<h3 className="m-0">Filters</h3>
 									</div>
 									<div className="col-6 col-md-4 col-lg-6 d-flex justify-content-end">
-										<Button
-											style={{ color: "#b75858" }}
-											className="m-0"
-											priority="secondary"
-											color="dark"
-											disabled={!hasSelection}
-											onClick={() =>
-												searchFilterDispatch({
-													type: "init",
-													selection: "",
-													filterId: "",
-													operator: "",
-												})
-											}
-										>
-											Clear
-										</Button>
+										{ClearFilterButton}
 									</div>
 								</ShowHide>
 							</div>
-							{windowWidth < bpLarge ? (
-								showFilters ? (
-									<Modal>{searchFilters}</Modal>
-								) : null
-							) : (
-								searchFilters
-							)}
+							{windowWidth < bpLarge
+								? showFilters && createPortal(modalSearchFilters, document.body)
+								: searchFilters}
 						</div>
 						<div className="col-12 col-lg-9">
 							<div className="row">
