@@ -2,7 +2,7 @@ import Link from "next/link";
 import { CSSProperties, useState } from "react";
 import ArrowIcon from "../ArrowIcon/ArrowIcon";
 import styles from "./Button.module.scss";
-import { IArrowIconProps } from "../../../globalTypes";
+import { IArrowIconProps } from "../ArrowIcon/ArrowIcon";
 
 const RIGHT = "right",
 	DOWN = "down";

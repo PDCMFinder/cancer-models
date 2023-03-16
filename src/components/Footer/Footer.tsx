@@ -5,9 +5,16 @@ import ActiveLink from "../ActiveLink/ActiveLink";
 import styles from "./Footer.module.scss";
 import Link from "next/link";
 
-const Footer = () => {
+interface IFooterProps {
+	cookieConsentHeight: number;
+}
+
+const Footer = (props: IFooterProps) => {
 	return (
-		<footer className={`${styles.Footer} text-white`}>
+		<footer
+			className={`${styles.Footer} text-white`}
+			style={{ paddingBottom: `calc(${props.cookieConsentHeight}px + 3.5rem)` }}
+		>
 			<div className="container">
 				<div className={`row ${styles["Footer_row-main"]}`}>
 					<div className="col-12 col-lg-2">
@@ -62,9 +69,9 @@ const Footer = () => {
 										<ActiveLink
 											className="link-text-light"
 											activeClassName={styles["Footer_item-active"]}
-											href="/terms-of-service"
+											href="/terms-of-use"
 										>
-											Terms of Service
+											Terms of Use
 										</ActiveLink>
 									</li>
 									<li>

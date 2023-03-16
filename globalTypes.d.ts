@@ -50,13 +50,13 @@ export interface IInputProps {
 	placeholder?: string;
 	className?: string;
 	value?: string;
-	onChange?: function;
-	checked?: boolean;
-	defaultChecked?: boolean;
-}
-
-export interface IArrowIconProps {
-	direction?: "up" | "right" | "down" | "left";
+	onChange?: (
+		e:
+			| React.ChangeEvent<HTMLInputElement>
+			| React.ChangeEvent<HTMLTextAreaElement>
+	) => void;
+	inputRef?: MutableRefObject<undefined>;
+	required?: boolean;
 }
 
 export interface ITabProps {

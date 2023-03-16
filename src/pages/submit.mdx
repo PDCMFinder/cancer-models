@@ -1,0 +1,87 @@
+import MdLayout from "../components/MdLayout/MdLayout";
+
+[comment]: # "Metadata"
+[comment]: # "Page title = h1 in banner"
+
+export const meta = {
+	pageTitle: "Submit models",
+};
+
+[comment]: # "Page content below"
+[comment]: # "Can include html tags"
+
+## Submit your PDCM data to the PDCM Finder to increase their visibility
+
+To start the process please contact PDCM Finder team: [submissions](mailto:helpdesk@cancermodels.org?subject=PDCM%20producer:%20Data%20Submission%20request)&nbsp;<img className="d-inline" src="/img/envelope-icon.svg" title="Envelope Icon" alt="Envelope Icon"/>
+
+## Download submission templates
+
+### Metadata templates
+
+<div className="col-12 col-lg-6">
+
+|                                                                                                                                                                                |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| <img className="d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[Clinical/Model metadata](/static/templates/metadata_template.xlsx)             |
+| <img className="d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[Sample metadata for OMIC data](/static/templates/sampleplatform_template.xlsx) |
+| <img className="d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[Model type](/static/templates/metadata_template-cell_model.xlsx)               |
+
+</div>
+
+### Data templates
+
+<div className="d-block d-lg-flex">
+  <div className="col-12 col-lg-6">
+
+| Treatment (patient and model)                                                                                                                                                 |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <img className="d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[Patient treatment template](/static/templates/patienttreatment_template.xlsx) |
+| <img className="d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[Drug dosing template](/static/templates/drug_dosing_template.xlsx)            |
+
+  </div>
+  <div className="col-12 col-lg-6">
+
+| Molecular data                                                                                                                                                             |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <img className="d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[Mutation data template](/static/templates/mutation_template_external.xlsx) |
+| <img className="d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[Cytogenetics data template](/static/templates/cytogenetics_template.xlsx)  |
+| <img className="d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[CNA data template](/static/templates/cna_template.xlsx)                    |
+| <img className="d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[Expression data template](/static/templates/expression_template.xlsx)      |
+
+  </div>
+</div>
+
+### Why submit your data to PDCM Finder
+
+The PDCM Finder is the first free global PDCM models catalogue to facilitate PDCM models discovery. We aggregate and display PDCM models metadata and data from academia, large consortia and CROs.
+
+**We can collect and display your data making you more discoverable and visible for end-users.** All submitted models adhere to the PDX-MI standard making it easy for researchers to search and compare models of interest. We aggregate PDCM data to be [FAIR](https://www.nature.com/articles/sdata201618) with the goal of helping users to freely navigate to the originating source for models and/or molecular data. We supply a description page for each provider and models have clear links to the production centres so the users can inquire about obtaining models for their studies.
+
+PDCM Finder is built with the help of and for the benefit of the community, our service is **completely free to providers and users**.
+
+### Submission process
+
+<div className="d-none d-md-block">
+
+[comment]: # "Desktop image"
+
+![Submission process](/img/submitModelProcess-horizontal.svg "Submission process")
+
+</div>
+<div className="d-md-none">
+
+[comment]: # "Mobile image"
+
+![Submission process](/img/submitModelProcess-vertical.svg "Submission process")
+
+</div>
+
+When you are ready to submit your Patient Derived Cancer models, you will be supported through the process by a member of the PDCM Finder team. We currently use spreadsheets for the metadata. In addition to metadata, we encourage producers to upload associated data making models more valuable and discoverable for the users. Currently, we support the following data types: gene expression, gene mutation, copy number alterations, cytogenetics, drug dosing studies, and patient treatment.
+
+Data can be directly uploaded from other file collections, databases and repositories by a member of the PDCM Finder team. Where raw data is available PDCM Finder team can deposit corresponding fastq files to the [European Nucleotide Archive](https://www.ebi.ac.uk/ena/browser/home)&nbsp;<img className="d-inline" src="/img/external-icon.svg" title="External Icon" alt="External Icon"/>
+
+To start the process please contact PDCM Finder team: [submissions](mailto:helpdesk@cancermodels.org?subject=PDCM%20producer:%20Data%20Submission%20request)&nbsp;<img className="d-inline" src="/img/envelope-icon.svg" title="Envelope Icon" alt="Envelope Icon"/>
+
+[comment]: # "End page content - do not edit below this line"
+
+export default ({ children }) => <MdLayout meta={meta}>{children}</MdLayout>;

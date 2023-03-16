@@ -103,9 +103,15 @@ a,
 		&-primary {
 			font-family: $type-primary !important;
 		}
+		&-secondary {
+			font-family: $type-secondary !important;
+		}
 	}
 	&-capitalize {
 		text-transform: capitalize;
+	}
+	&-uppercase {
+		text-transform: uppercase;
 	}
 	&-noDecoration {
 		text-decoration: none !important;

@@ -1,47 +1,28 @@
-import { getAllProvidersBasics } from "../../utils/providers";
+import type { NextPage } from "next";
 import { GetStaticProps } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./providers.module.scss";
 import { remark } from "remark";
-import html from "remark-html";
-import { useEffect, useState } from "react";
-import Button from "../../components/Button/Button";
+import remarkHtml from "remark-html";
+import Button from "../../../components/Button/Button";
+import { promises as fs } from "fs";
+import path from "path";
+import matter from "gray-matter";
 
 interface IProvidersProps {
 	allProvidersBasics: {
 		id: string;
-		content: string;
+		parsedContent: string;
+		abbreviation: string;
 		logo: string;
 		name: string;
-		abbreviation: string;
 	}[];
 }
 
-const Providers = ({ allProvidersBasics }: IProvidersProps) => {
-	const [providersBasics, setProvidersBasics] =
-		useState<IProvidersProps["allProvidersBasics"]>(allProvidersBasics);
-
-	useEffect(() => {
-		const parseContent = async (content: string) => {
-			const processedContent = await remark().use(html).process(content);
-
-			return processedContent.toString();
-		};
-
-		let parsedAllProviderBasics: IProvidersProps["allProvidersBasics"] = [];
-
-		allProvidersBasics.forEach(async (providerBasics) => {
-			const temp = Object.assign({}, providerBasics);
-			temp.content = await parseContent(providerBasics.content);
-			temp.content = temp.content.substring(0, 420);
-
-			parsedAllProviderBasics.push(temp);
-		});
-
-		setProvidersBasics(parsedAllProviderBasics);
-	}, []);
-
+const Providers: NextPage<IProvidersProps> = ({
+	allProvidersBasics,
+}: IProvidersProps) => {
 	return (
 		<>
 			<header className="bg-primary-primary text-white mb-5 py-5">
@@ -56,7 +37,7 @@ const Providers = ({ allProvidersBasics }: IProvidersProps) => {
 			<section>
 				<div className="container">
 					<div className="row">
-						{providersBasics.map((provider) => (
+						{allProvidersBasics?.map((provider) => (
 							<div className="col-12 mb-3" key={provider.id}>
 								<div className="row">
 									<div className="col-12 col-md-2">
@@ -71,19 +52,7 @@ const Providers = ({ allProvidersBasics }: IProvidersProps) => {
 									<div className="col-12 col-md-9 mb-5">
 										<div className="row">
 											<div className="col-12 d-flex align-center">
-												<h2 className="h3 mt-0 mr-3">
-													{/* <Link
-											key={provider.id}
-											href={`/about/provider/${provider.id}`}
-										> */}
-													{provider.name}
-													{/* </Link> */}
-												</h2>
-												{/* <Link
-												href={`/search?facets=model.data_source:${provider.abbreviation}`}
-											>
-												<>See all {provider.abbreviation} models</>
-											</Link> */}
+												<h2 className="h3 mt-0 mr-3">{provider.name}</h2>
 											</div>
 										</div>
 										<div className="row mb-3">
@@ -91,7 +60,7 @@ const Providers = ({ allProvidersBasics }: IProvidersProps) => {
 												<div className={styles.Providers_content}>
 													<div
 														dangerouslySetInnerHTML={{
-															__html: provider.content,
+															__html: provider.parsedContent,
 														}}
 													/>
 												</div>
@@ -100,7 +69,7 @@ const Providers = ({ allProvidersBasics }: IProvidersProps) => {
 										<div className="row mb-3">
 											<div className="col-12">
 												<Link
-													href={`/about/provider/${provider.id}`}
+													href={`/about/providers/${provider.id}`}
 													className="mr-3"
 												>
 													Continue reading...
@@ -129,11 +98,39 @@ const Providers = ({ allProvidersBasics }: IProvidersProps) => {
 export default Providers;
 
 export const getStaticProps: GetStaticProps = async () => {
-	const allProvidersBasics = await getAllProvidersBasics();
+	const providersDirectory = path.join(
+		process.cwd(),
+		"/public/static/providers"
+	);
+	const providersFiles = await fs.readdir(providersDirectory);
+
+	const allProvidersBasicsFirst = providersFiles.map(
+		async (providerFile: string) => {
+			const fullPath = path.join(providersDirectory, providerFile);
+			const fileContents = await fs.readFile(fullPath, "utf8");
+			const matterResult = await matter(fileContents);
+			const processedContent = await remark()
+				.use(remarkHtml, { sanitize: true })
+				.process(matterResult.content);
+
+			return {
+				id: providerFile.replace(/\.md$/, "") as string,
+				text: matterResult.content,
+				parsedContent: JSON.parse(
+					JSON.stringify(processedContent.value)
+				) as string,
+				...(matterResult.data as {
+					abbreviation: string;
+					logo: string;
+					name: string;
+				}),
+			};
+		}
+	);
 
 	return {
 		props: {
-			allProvidersBasics,
+			allProvidersBasics: await Promise.all(allProvidersBasicsFirst),
 		},
 	};
 };

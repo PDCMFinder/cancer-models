@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import "../styles/globals.scss";
 import type { AppProps } from "next/app";
+import App, { AppContext } from "next/app";
 import { Merriweather } from "@next/font/google";
 import { Space_Mono } from "@next/font/google";
 import Layout from "../components/Layout/Layout";
@@ -8,6 +9,8 @@ import Head from "next/head";
 import handleBodyClass from "../utils/handleBodyClass";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { Cookies, CookiesProvider } from "react-cookie";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 const USERNAVIGATION_MOUSE = "userNavigation-mouse",
 	USERNAVIGATION_KEYBOARD = "userNavigation-keyboard",
@@ -28,7 +31,10 @@ if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
 	require("../mocks");
 }
 
-function CancerModels({ Component, pageProps }: AppProps) {
+/* @ts-ignore */
+function CancerModels({ Component, pageProps, cookies }: AppProps) {
+	const isBrowser = typeof window !== "undefined";
+
 	useEffect(() => {
 		handleBodyClass([USERNAVIGATION_MOUSE], ADD);
 
@@ -104,15 +110,27 @@ function CancerModels({ Component, pageProps }: AppProps) {
 						--type-secondary: ${spaceMono.style.fontFamily}, monospace;
 					}
 				`}</style>
-				<Layout>
-					<>
-						<ReactQueryDevtools />
-						<Component {...pageProps} />
-					</>
-				</Layout>
+				<GoogleReCaptchaProvider reCaptchaKey="6LepEiwjAAAAAN9QFU8RpeY0QXCFoRRVVis2B-iF">
+					<CookiesProvider
+						cookies={isBrowser ? undefined : new Cookies(cookies)}
+					>
+						<Layout>
+							<>
+								<ReactQueryDevtools initialIsOpen={false} />
+								<Component {...pageProps} />
+							</>
+						</Layout>
+					</CookiesProvider>
+				</GoogleReCaptchaProvider>
 			</QueryClientProvider>
 		</>
 	);
 }
 
 export default CancerModels;
+
+CancerModels.getInitialProps = async (appContext: AppContext) => {
+	const appProps = await App.getInitialProps(appContext);
+
+	return { ...appProps, cookies: appContext.ctx.req?.headers?.cookie };
+};

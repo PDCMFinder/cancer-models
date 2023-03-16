@@ -1,3 +1,5 @@
+import useWindowDimensions from "../../hooks/useWindowDimensions";
+import breakPoints from "../../utils/breakpoints";
 import styles from "./Pagination.module.scss";
 
 interface IPaginationProps {
@@ -7,7 +9,10 @@ interface IPaginationProps {
 }
 
 const Pagination = (props: IPaginationProps) => {
-	const totalPages = props.totalPages,
+	const { windowWidth } = useWindowDimensions();
+	const bpLarge = breakPoints.large,
+		isMobile = windowWidth && windowWidth < bpLarge,
+		totalPages = props.totalPages,
 		currentPage = props.currentPage,
 		onPageChange = props.onPageChange,
 		allPages = Array.from({ length: totalPages }, (_, i) => i + 1),
@@ -26,7 +31,7 @@ const Pagination = (props: IPaginationProps) => {
 				disabled={currentPage === 1}
 				onClick={() => onPageChange(currentPage - 1)}
 			>
-				Previous
+				{isMobile ? "<" : "Previous"}
 			</button>
 			<button
 				onClick={() => onPageChange(1)}
@@ -73,7 +78,7 @@ const Pagination = (props: IPaginationProps) => {
 				onClick={() => onPageChange(currentPage + 1)}
 				disabled={currentPage === totalPages}
 			>
-				Next
+				{isMobile ? ">" : "Next"}
 			</button>
 		</div>
 	);

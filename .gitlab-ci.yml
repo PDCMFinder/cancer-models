@@ -49,8 +49,6 @@ build_dev_image:
   services:
     - name: $CI_REGISTRY/mouse-informatics/dind:latest
       alias: docker
-  except:
-    - schedules
   before_script:
     - sed -i "s|FROM node|FROM ${LOCAL_GITLAB_NODE_IMAGE}|g" Dockerfile
     - sed -i "s|FROM nginx|FROM ${LOCAL_GITLAB_NGINX_IMAGE}|g" Dockerfile
@@ -74,19 +72,21 @@ build_dev_image:
   artifacts:
     paths:
       - "$MOUNT_POINT/"
-  only:
-    refs:
-      - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: manual
 
-deploy-HX-WP-WEBADMIN-dev:
+deploy-HH-WP-WEBADMIN-dev:
   stage: deploy-dev
   image: dtzar/helm-kubectl:2.13.0
   script:
-    - kubectl config set-cluster local --server="${HX_WP_WEBADMIN_ENDPOINT}"
-    - kubectl config set clusters.local.certificate-authority-data "${HX_WP_WEBADMIN_CERTIFICATE_AUTHORITY}"
-    - kubectl config set-credentials ${HX_WP_WEBADMIN_DEV_USER} --token="${HX_WP_WEBADMIN_DEV_USER_TOKEN}"
-    - kubectl config set-context "${HX_WP_WEBADMIN_DEV_NAMESPACE}" --cluster=local --user=${HX_WP_WEBADMIN_DEV_USER} --namespace="${HX_WP_WEBADMIN_DEV_NAMESPACE}"
-    - kubectl config use-context "${HX_WP_WEBADMIN_DEV_NAMESPACE}"
+    - kubectl config set-cluster local --server="${HH_WP_WEBADMIN_ENDPOINT}"
+    - kubectl config set clusters.local.certificate-authority-data "${HH_WP_WEBADMIN_CERTIFICATE_AUTHORITY}"
+    - kubectl config set-credentials ${HH_WP_WEBADMIN_DEV_USER} --token="${HH_WP_WEBADMIN_DEV_USER_TOKEN}"
+    - kubectl config set-context "${HH_WP_WEBADMIN_DEV_NAMESPACE}" --cluster=local --user=${HH_WP_WEBADMIN_DEV_USER} --namespace="${HH_WP_WEBADMIN_DEV_NAMESPACE}"
+    - kubectl config use-context "${HH_WP_WEBADMIN_DEV_NAMESPACE}"
     - kubectl version
 
     - |
@@ -98,6 +98,8 @@ deploy-HX-WP-WEBADMIN-dev:
       fi
     - kubectl rollout status -f k8s-deploy/dev/deployment.yml
     - kubectl get pods,service,deploy,replicaset,ing
-  only:
-    refs:
-      - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      when: manual

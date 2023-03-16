@@ -2,6 +2,8 @@ import Input from "./Input";
 import Label from "./Label";
 import { IInputProps, ILabelProps } from "../../../globalTypes";
 import styles from "./InputAndLabel.module.scss";
+import Button from "../Button/Button";
+import { RefObject } from "react";
 
 interface IInputAndLabel extends IInputProps, ILabelProps {
 	className?: string;
@@ -9,6 +11,7 @@ interface IInputAndLabel extends IInputProps, ILabelProps {
 	inputClassName?: string;
 	value?: string;
 	onChange?: IInputProps["onChange"];
+	inputRef?: RefObject<HTMLInputElement>;
 }
 
 const InputAndLabel = (props: IInputAndLabel) => {
@@ -40,6 +43,8 @@ const InputAndLabel = (props: IInputAndLabel) => {
 				checked={props.checked}
 				defaultChecked={props.defaultChecked}
 				id={props.id}
+				inputRef={props.inputRef && props.inputRef}
+				required={props.required}
 			/>
 			{type === "search" ? (
 				<>
