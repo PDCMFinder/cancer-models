@@ -1,13 +1,11 @@
 import type { NextPage } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import Button from "../components/Button/Button";
 import bannerImage from "../../public/national-cancer-institute-wUg8xhJ3aBs.jpg";
 import ShowHide from "../components/ShowHide/ShowHide";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import breakPoints from "../utils/breakpoints";
 import styles from "./index.module.scss";
-import Input from "../components/Input/Input";
 import Label from "../components/Input/Label";
 import DataCountCard from "../components/DataCountCard/DataCountCard";
 import CirclePacking from "../components/CirclePacking/CirclePacking";
@@ -15,6 +13,7 @@ import { useQuery } from "react-query";
 import { getCancerHierarchy, getModelCount } from "../apis/AggregatedData.api";
 import { useRouter } from "next/router";
 import Loader from "../components/Loader/Loader";
+import SearchBar from "../components/SearchBar/SearchBar";
 
 const Home: NextPage = () => {
 	const { windowWidth } = useWindowDimensions();
@@ -36,7 +35,7 @@ const Home: NextPage = () => {
 								alt="A scanning electron micrograph of the surface of human skin by National Cancer Institute"
 								priority
 								fill
-								sizes="30vw"
+								sizes="20vw"
 							/>
 						</div>
 					</ShowHide>
@@ -51,33 +50,16 @@ const Home: NextPage = () => {
 						className={`${styles.header_searchBackground} bg-primary-primary`}
 					></div>
 					<div className={`${styles.header_search} py-5`}>
-						<form action="">
-							<Label
-								name="search"
-								className="h3 text-white"
-								label={`Search over ${
-									modelCountQuery.data
-										? parseFloat(modelCountQuery.data).toLocaleString()
-										: "7,171" //placeholder while we fetch api data
-								} cancer models`}
-							/>
-							<div className="d-flex flex-column flex-md-row mb-md-3">
-								<Input
-									type="text"
-									name="search"
-									placeholder="Cancer diagnosis eg. Melanoma"
-									className="mb-0"
-								/>
-							</div>
-						</form>
-						<div className="d-flex justify-content-end">
-							<Link
-								href="/search?advancedSearch"
-								className={`link-text-light ${styles.header_search_advancedSearch}`}
-							>
-								Advanced search
-							</Link>
-						</div>
+						<Label
+							name="search"
+							className="h3 text-white"
+							label={`Search over ${
+								modelCountQuery.data
+									? parseFloat(modelCountQuery.data).toLocaleString()
+									: "7,171" //placeholder while we fetch api data
+							} cancer models`}
+						/>
+						<SearchBar />
 					</div>
 				</div>
 			</header>

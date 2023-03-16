@@ -8,6 +8,7 @@ import { useQuery } from "react-query";
 import { useCallback, useEffect, useState } from "react";
 import typeaheadStyles from "../../utils/typeaheadStyles";
 import { onFilterChangeType } from "../../pages/search";
+import Fragment from "../Fragment/Fragment";
 
 interface ISearchFilterContentProps {
 	data: IFacetProps[];
@@ -48,10 +49,6 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 	const onTypeaheadType = (facetId: string, query: string) => {
 		setQuery(query);
 		setfacetId(facetId);
-	};
-
-	const FragmentComponent = () => {
-		return <></>;
 	};
 
 	return (
@@ -123,7 +120,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 									props.onFilterChange(facet.facetId, option, operator, action);
 								}}
 								styles={typeaheadStyles}
-								components={{ DropdownIndicator: FragmentComponent }}
+								components={{ DropdownIndicator: Fragment }}
 							/>
 							{displayOperators && (
 								<fieldset className="d-flex border-none m-0">

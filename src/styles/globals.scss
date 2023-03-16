@@ -202,6 +202,11 @@ a {
 		}
 	}
 }
+.lh {
+	&-1 {
+		line-height: 1;
+	}
+}
 label {
 	line-height: initial;
 	margin-bottom: 0.5rem;

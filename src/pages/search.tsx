@@ -249,6 +249,7 @@ const Search: NextPage = () => {
 					<div className="row">
 						<div className="col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-3">
 							<SearchBar
+								isMulti
 								selection={searchFilterState}
 								onFilterChange={(filterId, selection, operator, type) => {
 									searchFilterDispatch({
