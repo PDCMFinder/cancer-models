@@ -1,11 +1,10 @@
 import InputAndLabel from "../Input/InputAndLabel";
 import { IFacetProps } from "../../types/Facet.model";
-import { sortObjArrBy } from "../../utils/sortArrBy";
 import { IFacetSidebarSelection } from "../../types/Facet.model";
 import Select from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
 import { useQuery } from "react-query";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import typeaheadStyles from "../../utils/typeaheadStyles";
 import { onFilterChangeType } from "../../pages/search";
 import Fragment from "../Fragment/Fragment";
@@ -57,6 +56,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 				let facetContent = null,
 					facetName = facet.name,
 					facetType = facet.type,
+					facetOptions = facet.options,
 					selectedFacetObj =
 						props.facetSelection && props.facetSelection[facet.facetId],
 					selection = selectedFacetObj?.selection,
@@ -66,17 +66,6 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 					["label"]: value,
 					["value"]: value,
 				}));
-
-				const facetOptionsOrder = ["not specified", "not collected", "other"];
-				useCallback(() => {
-					sortObjArrBy(
-						facet.options,
-						facetOptionsOrder,
-						undefined,
-						false,
-						true
-					);
-				}, []);
 
 				if (facetType === "autocomplete" || facetType === "multivalued") {
 					const placeholder = facet.placeholder
@@ -162,9 +151,9 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 							)}
 						</>
 					);
-				} else if (facet.options.length > 10) {
+				} else if (facetOptions && facetOptions.length > 10) {
 					// Create select typeahead from options
-					const optionSelectObj = facet.options.map((value) => ({
+					const optionSelectObj = facetOptions.map((value) => ({
 						["label"]: value,
 						["value"]: value,
 					}));
@@ -204,7 +193,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 					// Create checkbox per option
 					facetContent = (
 						<ul className="ul-noStyle m-0">
-							{facet.options.map((option) => (
+							{facetOptions?.map((option) => (
 								<li key={option}>
 									<InputAndLabel
 										name={option}

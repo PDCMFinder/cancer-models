@@ -13,14 +13,21 @@ export const sortObjArrBy = (
 			return currArr
 				.slice()
 				.sort(
-					(a, b) => sortArr.indexOf(b[sortBy]) - sortArr.indexOf(a[sortBy])
+					(a, b) =>
+						sortArr.indexOf(b[sortBy].toLowerCase()) -
+						sortArr.indexOf(a[sortBy].toLowerCase())
 				);
 		} else {
 			currArr.sort(
-				(a, b) => sortArr.indexOf(b[sortBy]) - sortArr.indexOf(a[sortBy])
+				(a, b) =>
+					sortArr.indexOf(b[sortBy].toLowerCase()) -
+					sortArr.indexOf(a[sortBy].toLowerCase())
 			);
 		}
 	} else {
-		currArr.sort((a, b) => sortArr.indexOf(a) - sortArr.indexOf(b));
+		currArr.sort(
+			(a, b) =>
+				sortArr.indexOf(a.toLowerCase()) - sortArr.indexOf(b.toLowerCase())
+		);
 	}
 };

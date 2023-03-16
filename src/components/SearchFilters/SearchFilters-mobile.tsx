@@ -46,6 +46,19 @@ const SearchFiltersMobile = (props: ISearchFilters) => {
 					sortObjArrBy(facets, modelFacetOrder, "facetId");
 				}
 
+				const facetOptionsOrder = ["Not Specified", "Not Collected", "Other"];
+				facets.forEach((facetsFacet) => {
+					if (facetsFacet.options.length) {
+						sortObjArrBy(
+							facetsFacet.options,
+							facetOptionsOrder,
+							undefined,
+							false,
+							false
+						);
+					}
+				});
+
 				return (
 					<Accordion
 						buttonClassName="bg-gray"

@@ -305,7 +305,7 @@ const Search: NextPage = () => {
 								</div>
 								<div className="col-12 col-md-4 col-lg-6 d-flex justify-content-end">
 									<Button
-										style={{ color: "#e02d2d" }}
+										style={{ color: "#b75858" }}
 										className="m-0"
 										priority="secondary"
 										color="dark"
