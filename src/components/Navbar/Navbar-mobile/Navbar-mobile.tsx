@@ -21,7 +21,7 @@ const NavMobile = (props: INavProps) => {
 			setIsMenuOpen(false);
 			handleBodyClass(["overflow-hidden"], REMOVE);
 		}
-	}, [isMenuOpen, router.asPath]);
+	}, [router.asPath]);
 
 	const handleToggleMenu = () => {
 		// Add or remove body class to stylize
