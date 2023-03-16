@@ -20,6 +20,10 @@ import Pagination from "../components/Pagination/Pagination";
 import { useRouter } from "next/router";
 import Button from "../components/Button/Button";
 import SearchBar from "../components/SearchBar/SearchBar";
+import breakPoints from "../utils/breakpoints";
+import useWindowDimensions from "../hooks/useWindowDimensions";
+import Modal from "../components/Modal/Modal";
+import ShowHide from "../components/ShowHide/ShowHide";
 
 export interface onFilterChangeType {
 	type: "add" | "remove" | "clear" | "toggleOperator" | "init";
@@ -36,10 +40,13 @@ const sortByOptions = [
 	resultsPerPage = 10;
 
 const Search: NextPage = () => {
-	const router = useRouter();
+	const { windowWidth = 0 } = useWindowDimensions();
+	const bpLarge = breakPoints.large;
+	const [showFilters, setShowFilters] = useState(false);
 	const [sortBy, setSortBy] = useState<string>(sortByOptions[0].value);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [hasSelection, setHasSelection] = useState<boolean>(false);
+	const router = useRouter();
 
 	const [searchFilterState, searchFilterDispatch] = useReducer(
 		(
@@ -229,6 +236,23 @@ const Search: NextPage = () => {
 	let modelCountQuery = useQuery("modelCount", () => getModelCount());
 	let totalResults = searchResultsQuery.data ? searchResultsQuery.data[0] : 1;
 
+	const searchFilters = searchFacetSectionsQuery.data ? (
+		<SearchFilters
+			data={searchFacetSectionsQuery.data ?? []}
+			selection={searchFilterState}
+			onFilterChange={(filterId, selection, operator, type) => {
+				searchFilterDispatch({
+					filterId,
+					selection,
+					operator,
+					type,
+				});
+			}}
+		/>
+	) : (
+		<Loader style={{ height: "auto !important" }} />
+	);
+
 	return (
 		<>
 			<header className={`py-5 ${styles.Search_header}`}>
@@ -300,44 +324,48 @@ const Search: NextPage = () => {
 					<div className="row">
 						<div className="col-12 col-lg-3">
 							<div className="row align-center mb-1">
-								<div className="col-12 col-md-8 col-lg-6">
-									<h3 className="m-0">Filters</h3>
-								</div>
-								<div className="col-12 col-md-4 col-lg-6 d-flex justify-content-end">
-									<Button
-										style={{ color: "#b75858" }}
-										className="m-0"
-										priority="secondary"
-										color="dark"
-										disabled={!hasSelection}
-										onClick={() =>
-											searchFilterDispatch({
-												type: "init",
-												selection: "",
-												filterId: "",
-												operator: "",
-											})
-										}
-									>
-										Clear
-									</Button>
-								</div>
+								<ShowHide hideOver={bpLarge} windowWidth={windowWidth || 0}>
+									<div className="col-6 col-md-8 col-lg-6">
+										<Button
+											priority="secondary"
+											color="dark"
+											onClick={() => setShowFilters(true)}
+										>
+											Filters
+										</Button>
+									</div>
+								</ShowHide>
+								<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
+									<div className="col-6 col-md-8 col-lg-6">
+										<h3 className="m-0">Filters</h3>
+									</div>
+									<div className="col-6 col-md-4 col-lg-6 d-flex justify-content-end">
+										<Button
+											style={{ color: "#b75858" }}
+											className="m-0"
+											priority="secondary"
+											color="dark"
+											disabled={!hasSelection}
+											onClick={() =>
+												searchFilterDispatch({
+													type: "init",
+													selection: "",
+													filterId: "",
+													operator: "",
+												})
+											}
+										>
+											Clear
+										</Button>
+									</div>
+								</ShowHide>
 							</div>
-							{searchFacetSectionsQuery.data ? (
-								<SearchFilters
-									data={searchFacetSectionsQuery.data}
-									selection={searchFilterState}
-									onFilterChange={(filterId, selection, operator, type) => {
-										searchFilterDispatch({
-											filterId,
-											selection,
-											operator,
-											type,
-										});
-									}}
-								/>
+							{windowWidth < bpLarge ? (
+								showFilters ? (
+									<Modal>{searchFilters}</Modal>
+								) : null
 							) : (
-								<Loader style={{ height: "auto !important" }} />
+								searchFilters
 							)}
 						</div>
 						<div className="col-12 col-lg-9">
