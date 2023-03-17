@@ -57,6 +57,8 @@ export interface IInputProps {
 	) => void;
 	inputRef?: MutableRefObject<undefined>;
 	required?: boolean;
+	checked?: boolean;
+	defaultChecked?: boolean;
 }
 
 export interface ITabProps {

@@ -4,7 +4,7 @@ import { IFacetSidebarSelection } from "../../types/Facet.model";
 import Select from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
 import { useQuery } from "react-query";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import typeaheadStyles from "../../utils/typeaheadStyles";
 import { onFilterChangeType } from "../../pages/search";
 import Fragment from "../Fragment/Fragment";
@@ -201,9 +201,12 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 										label={option}
 										checked={selection?.includes(option)}
 										onChange={(
-											e: React.ChangeEvent<HTMLInputElement>
+											e:
+												| ChangeEvent<HTMLInputElement>
+												| ChangeEvent<HTMLTextAreaElement>
 										): void => {
-											const actionType = e.target.checked ? "add" : "remove";
+											const target = e.target as HTMLInputElement;
+											const actionType = target.checked ? "add" : "remove";
 
 											props.onFilterChange(
 												facet.facetId,

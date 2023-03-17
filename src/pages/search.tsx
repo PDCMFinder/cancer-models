@@ -4,7 +4,7 @@ import Select from "../components/Input/Select";
 import React, { useEffect, useReducer, useState } from "react";
 import styles from "./search.module.scss";
 import Label from "../components/Input/Label";
-import SearchFilters from "../components/SearchFilters/SearchFilters-mobile";
+import SearchFilters from "../components/SearchFilters/SearchFilters";
 import { getModelCount } from "../apis/AggregatedData.api";
 import {
 	getSearchFacets,
@@ -79,6 +79,7 @@ const Search: NextPage = () => {
 
 			if (type === "add") {
 				newState[filterId].selection = [
+					// @ts-ignore
 					...new Set(state[filterId].selection.concat([selection])),
 				];
 			}
