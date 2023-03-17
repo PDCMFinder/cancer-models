@@ -28,10 +28,12 @@ const dataTypes = [
 	{
 		key: "dosing studies",
 		name: "Dosing Studies",
+		sectionLink: "dosing-studies",
 	},
 	{
 		key: "patient treatment",
 		name: "Patient Treatment",
+		sectionLink: "patient-treatment",
 	},
 ];
 
