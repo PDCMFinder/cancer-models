@@ -10,16 +10,16 @@ export const routes = [
 		children: [
 			{
 				path: "/about",
-				name: "About PDCM Finder",
+				name: "PDCM Finder",
 			},
-			{
-				path: "/about/metadata-dictionary",
-				name: "Metadata Dictionary",
-			},
-			{
-				path: "/about/faq",
-				name: "FAQ",
-			},
+			// {
+			// 	path: "/about/metadata-dictionary",
+			// 	name: "Metadata Dictionary",
+			// },
+			// {
+			// 	path: "/about/faq",
+			// 	name: "FAQ",
+			// },
 			{
 				path: "/contact",
 				name: "Contact",
