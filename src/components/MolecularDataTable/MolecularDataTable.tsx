@@ -229,7 +229,12 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 															{columnLinks?.length
 																? columnLinks.map((l, k) => (
 																		<>
-																			<a key={k} href={l.link}>
+																			<a
+																				key={k}
+																				href={l.link}
+																				target="_blank"
+																				rel="noopener noreferrer"
+																			>
 																				{l.resource}
 																			</a>{" "}
 																		</>
