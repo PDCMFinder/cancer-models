@@ -27,6 +27,7 @@ interface DataDetailsRow {
 	illumina_hgea_expression_value: string | null;
 	z_score: string | null;
 	non_harmonised_symbol: string | null;
+	external_db_links: any[] | null;
 }
 
 function getSortDirection(
@@ -202,28 +203,42 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 							</tr>
 						) : (
 							dataDetails &&
-							dataDetails[1]?.map((row: DataDetailsRow) => (
-								<tr key={Math.random()}>
+							dataDetails[1]?.map((row: DataDetailsRow, i: number) => (
+								<tr key={`page-${currentPage}-row-${i}`}>
 									{Object.keys(row)
 										.filter((k) =>
 											columnsToDisplay.map((i) => i.key).includes(k)
 										)
-										.map((key) => {
-											if (key === "hgnc_symbol") {
-												return row[key] ? (
-													<td key={Math.random()}>{row[key]}</td>
-												) : (
-													<td key={Math.random()}>
-														{row["non_harmonised_symbol"]}
-													</td>
-												);
-											} else {
-												return (
-													<td key={Math.random()}>
-														{row[key as keyof DataDetailsRow]}
-													</td>
-												);
-											}
+										.map((key, j) => {
+											const columnLinks = row.external_db_links?.filter(
+												(l) => l.column === key
+											);
+											const validKey =
+												key === "hgnc_symbol" && !row[key]
+													? "non_harmonised_symbol"
+													: key;
+											let columnContent = row[validKey as keyof DataDetailsRow];
+											if (!columnContent && key === "amino_acid_change")
+												columnContent = "-";
+											return (
+												<td key={`page-${currentPage}-row-${i}-column-${j}`}>
+													{columnContent}
+													{
+														<>
+															<br />
+															{columnLinks?.length
+																? columnLinks.map((l, k) => (
+																		<>
+																			<a key={k} href={l.link}>
+																				{l.resource}
+																			</a>{" "}
+																		</>
+																  ))
+																: null}
+														</>
+													}
+												</td>
+											);
 										})}
 								</tr>
 							))
