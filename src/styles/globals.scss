@@ -42,7 +42,14 @@ body {
 	min-height: 100vh;
 	position: relative;
 }
+#__next {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	position: relative;
+}
 p {
+	margin: 0 0 2rem;
 	margin: 0 0 2rem;
 }
 svg,

@@ -4,12 +4,21 @@ import { IRoute } from "../../../globalTypes";
 import ActiveLink from "../ActiveLink/ActiveLink";
 import styles from "./Footer.module.scss";
 import Link from "next/link";
+import { useQuery } from "react-query";
+import { getDataReleaseInformation } from "../../apis/AggregatedData.api";
 
+interface IFooterProps {
+	cookieConsentHeight: number;
+}
 interface IFooterProps {
 	cookieConsentHeight: number;
 }
 
 const Footer = (props: IFooterProps) => {
+	let releaseInfo = useQuery("releaseInfo", () => {
+		return getDataReleaseInformation();
+	});
+
 	return (
 		<footer
 			className={`${styles.Footer} text-white`}
@@ -108,14 +117,14 @@ const Footer = (props: IFooterProps) => {
 							</Link>{" "}
 							are co-developers of PDCM Finder. This work is supported by the
 							National Institutes of Health/National Cancer Institute U24
-							CA204781 01 (ended 31.08.2020), U24 CA253539 01 and R01 CA089713.
+							CA204781 01, U24 CA253539 01 and R01 CA089713.
 						</p>
 						<p className="mb-0">
 							<a
-								href="mailto:contact@cancermodels.org"
+								href="mailto:info@cancermodels.org"
 								className="link-text-light mt-2"
 							>
-								contact@cancermodels.org
+								info@cancermodels.org
 							</a>
 						</p>
 					</div>
@@ -124,9 +133,12 @@ const Footer = (props: IFooterProps) => {
 					<div className="col">
 						{/* Placeholder, change for API information */}
 						<p className="text-small text-center m-0">
-							© 2017-2022
+							© 2017-{new Date(releaseInfo.data?.date).getFullYear() || 2023}
 							<br />
-							Data Release 3.1 | 2022-12-07
+							{releaseInfo.data
+								? `Data Release ${releaseInfo.data.name.replace("dr", "")} | 
+								${new Date(releaseInfo.data.date).toISOString().substring(0, 10)}`
+								: null}
 						</p>
 					</div>
 				</div>
