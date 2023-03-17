@@ -4,12 +4,18 @@ import { IRoute } from "../../../globalTypes";
 import ActiveLink from "../ActiveLink/ActiveLink";
 import styles from "./Footer.module.scss";
 import Link from "next/link";
+import { useQuery } from "react-query";
+import { getDataReleaseInformation } from "../../apis/AggregatedData.api";
 
 interface IFooterProps {
 	cookieConsentHeight: number;
 }
 
 const Footer = (props: IFooterProps) => {
+	let releaseInfo = useQuery("releaseInfo", () => {
+		return getDataReleaseInformation();
+	});
+
 	return (
 		<footer
 			className={`${styles.Footer} text-white`}
@@ -124,9 +130,12 @@ const Footer = (props: IFooterProps) => {
 					<div className="col">
 						{/* Placeholder, change for API information */}
 						<p className="text-small text-center m-0">
-							© 2017-2022
+							© 2017-{new Date(releaseInfo.data?.date).getFullYear() || 2023}
 							<br />
-							Data Release 3.1 | 2022-12-07
+							{releaseInfo.data
+								? `Data Release ${releaseInfo.data.name.replace("dr", "")} | 
+								${new Date(releaseInfo.data.date).toISOString().substring(0, 10)}`
+								: null}
 						</p>
 					</div>
 				</div>
