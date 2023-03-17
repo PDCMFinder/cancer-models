@@ -10,7 +10,7 @@ export const routes = [
 		children: [
 			{
 				path: "/about",
-				name: "PDCM Finder",
+				name: "CancerModels.Org",
 			},
 			// {
 			// 	path: "/about/metadata-dictionary",
