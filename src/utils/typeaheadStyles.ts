@@ -1,5 +1,5 @@
 export default {
-	control: (baseStyles: any) => ({
+	control: (baseStyles: {}) => ({
 		...baseStyles,
 		borderColor: "#47938a",
 		borderRadius: 0,
@@ -12,19 +12,19 @@ export default {
 			cursor: "pointer",
 		},
 	}),
-	input: (baseStyles: any) => ({
+	input: (baseStyles: {}) => ({
 		...baseStyles,
 		marginTop: 0,
 		marginBottom: 0,
 	}),
-	multiValueLabel: (baseStyles: any) => ({
+	multiValueLabel: (baseStyles: {}) => ({
 		...baseStyles,
 		backgroundColor: "#003e48",
 		color: "#fff",
 		borderTopRightRadius: 0,
 		borderBottomRightRadius: 0,
 	}),
-	multiValueRemove: (baseStyles: any) => ({
+	multiValueRemove: (baseStyles: {}) => ({
 		...baseStyles,
 		backgroundColor: "#47938a",
 		color: "#fff",
@@ -37,17 +37,17 @@ export default {
 			cursor: "pointer",
 		},
 	}),
-	valueContainer: (baseStyles: any) => ({
+	valueContainer: (baseStyles: {}) => ({
 		...baseStyles,
 		lineHeight: 1,
 		padding: "0.7rem 0.8rem",
 	}),
-	indicatorSeparator: (baseStyles: any) => ({
+	indicatorSeparator: (baseStyles: {}) => ({
 		...baseStyles,
 		backgroundColor: "#fff",
 		display: "none",
 	}),
-	indicatorsContainer: (baseStyles: any) => ({
+	indicatorsContainer: (baseStyles: {}) => ({
 		...baseStyles,
 		backgroundColor: "transparent",
 		color: "#fff",
@@ -56,7 +56,7 @@ export default {
 			color: "#fff",
 		},
 	}),
-	dropdownIndicator: (baseStyles: any) => ({
+	dropdownIndicator: (baseStyles: {}) => ({
 		...baseStyles,
 		backgroundColor: "#e9b114",
 		color: "#000",
@@ -67,7 +67,7 @@ export default {
 			color: "#000",
 		},
 	}),
-	clearIndicator: (baseStyles: any) => ({
+	clearIndicator: (baseStyles: {}) => ({
 		...baseStyles,
 		backgroundColor: "#ffe6a6",
 		color: "#000",
@@ -78,7 +78,7 @@ export default {
 			color: "#000",
 		},
 	}),
-	option: (baseStyles: any) => ({
+	option: (baseStyles: {}) => ({
 		...baseStyles,
 		lineHeight: 1,
 	}),
