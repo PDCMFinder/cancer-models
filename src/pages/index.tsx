@@ -49,7 +49,7 @@ const Home: NextPage = () => {
 							The largest open catalog of harmonised patient-derived cancer
 							models.
 						</h1>
-						<div className="col-10">
+						<div className="col-12 col-lg-10">
 							<p>
 								Looking for PDX Finder? That&apos;s us! We have expanded to
 								organoids and cell lines and are now called CancerModels.Org.{" "}
@@ -59,7 +59,7 @@ const Home: NextPage = () => {
 					<div
 						className={`${styles.header_searchBackground} bg-primary-primary`}
 					></div>
-					<div className={`${styles.header_search} py-5`}>
+					<div className={`${styles.header_search} pt-5 pb-3`}>
 						<form action="">
 							<Label
 								name="search"
@@ -79,14 +79,6 @@ const Home: NextPage = () => {
 								/>
 							</div>
 						</form>
-						<div className="d-flex justify-content-end">
-							<Link
-								href="/search?advancedSearch"
-								className={`link-text-light ${styles.header_search_advancedSearch}`}
-							>
-								Advanced search
-							</Link>
-						</div>
 					</div>
 				</div>
 			</header>
