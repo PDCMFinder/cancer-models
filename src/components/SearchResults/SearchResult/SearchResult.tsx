@@ -3,6 +3,9 @@ import styles from "./SearchResult.module.scss";
 import Link from "next/link";
 import { SearchResult } from "../../../types/Search.model";
 import QualityBadge from "../../QualityBadge/QualityBadge";
+import useWindowDimensions from "../../../hooks/useWindowDimensions";
+import breakPoints from "../../../utils/breakpoints";
+import ShowHide from "../../ShowHide/ShowHide";
 
 const dataTypes = [
 	{
@@ -43,7 +46,9 @@ interface ISearchResultProps {
 }
 
 const SearchResult = (props: ISearchResultProps) => {
-	let {
+	const { windowWidth = 0 } = useWindowDimensions();
+	const bpLarge = breakPoints.large;
+	const {
 		pdcmId,
 		sourceId,
 		providerName,
@@ -85,8 +90,13 @@ const SearchResult = (props: ISearchResultProps) => {
 								</Link>
 							</p>
 						</div>
-						<QualityBadge className="w-50" />
+						<ShowHide showOver={bpLarge} windowWidth={windowWidth}>
+							<QualityBadge className="w-50" />
+						</ShowHide>
 						<p>{histology}</p>
+						<ShowHide hideOver={bpLarge} windowWidth={windowWidth}>
+							<QualityBadge className="w-50" />
+						</ShowHide>
 					</div>
 					<div className="col-12 col-md-6 col-lg-4 mt-3 mt-md-0">
 						<div className={`row ${styles.SearchResult_metadata}`}>
