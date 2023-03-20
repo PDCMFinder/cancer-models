@@ -43,11 +43,18 @@ const Home: NextPage = () => {
 						</div>
 					</ShowHide>
 					<div
-						className={`${styles.header_title} d-flex align-center py-5 py-lg-0`}
+						className={`${styles.header_title} flex-column d-flex py-5 py-lg-0`}
 					>
 						<h1 className="h2 mt-lg-1">
-							Largest open catalog of harmonised Patient-Derived Cancer Models
+							The largest open catalog of harmonised patient-derived cancer
+							models.
 						</h1>
+						<div className="col-10">
+							<p>
+								Looking for PDX Finder? That&apos;s us! We have expanded to
+								organoids and cell lines and are now called CancerModels.Org.{" "}
+							</p>
+						</div>
 					</div>
 					<div
 						className={`${styles.header_searchBackground} bg-primary-primary`}
@@ -160,10 +167,14 @@ const Home: NextPage = () => {
 				<section className="bg-primary-tertiary">
 					<div className="container">
 						<div className="row align-center">
-							<div className="col-12 col-lg-6 offset-lg-1 text-center text-white">
-								<h2>Find the perfect model for your next project.</h2>
-								<h2>Explore and analyse the data.</h2>
-								<h2>Connect with model providers.</h2>
+							<div className="col-12 col-lg-8 offset-lg- text-center text-white">
+								<h1 className="h2 mb-5">
+									Find the right PDX, organoid and cell line patient-derived
+									cancer model for your next project.
+								</h1>
+								<h2 className="h3">Explore and analyse the data.</h2>
+								<h2 className="h3">Connect with model providers.</h2>
+								<h2 className="h3">All in one platform.</h2>
 								<Button
 									color="white"
 									priority="primary"
@@ -175,7 +186,9 @@ const Home: NextPage = () => {
 								</Button>
 							</div>
 							<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
-								<DataCountCard />
+								<div className="col-12 col-lg-3 col-xl-2 offset-lg-1 offset-xl-1">
+									<DataCountCard />
+								</div>
 							</ShowHide>
 						</div>
 					</div>
