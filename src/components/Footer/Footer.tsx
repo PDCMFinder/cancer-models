@@ -98,7 +98,7 @@ const Footer = (props: IFooterProps) => {
 						<p>
 							<Link
 								className="link-text-light"
-								href="https://google.com"
+								href="https://www.ebi.ac.uk/"
 								target="_blank"
 							>
 								EMBL-EBI
