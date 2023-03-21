@@ -238,7 +238,7 @@ const Search: NextPage = () => {
 	let modelCountQuery = useQuery("modelCount", () => getModelCount());
 	let totalResults = searchResultsQuery.data ? searchResultsQuery.data[0] : 1;
 
-	const ClearFilterButton = (
+	const ClearFilterButtonComponent = (
 		<Button
 			style={{ color: "#b75858" }}
 			className="m-0"
@@ -257,7 +257,7 @@ const Search: NextPage = () => {
 			Clear
 		</Button>
 	);
-	const searchFilters = searchFacetSectionsQuery.data ? (
+	const SearchFiltersComponent = searchFacetSectionsQuery.data ? (
 		<SearchFilters
 			data={searchFacetSectionsQuery.data ?? []}
 			selection={searchFilterState}
@@ -273,25 +273,25 @@ const Search: NextPage = () => {
 	) : (
 		<Loader style={{ height: "auto !important" }} />
 	);
-	const modalSearchFilters = (
+	const ModalSearchFiltersComponent = (
 		<Modal verticalAlign="top" handleClose={() => setShowFilters(false)}>
 			<Card
 				style={{ backgroundColor: "white" }}
 				header={
 					<div className="d-flex justify-content-between align-center">
-						{ClearFilterButton}
+						{ClearFilterButtonComponent}
 						<CloseIcon color="dark" onClick={() => setShowFilters(false)} />
 					</div>
 				}
 				footer={
 					<div className="d-flex justify-content-between align-center">
-						{ClearFilterButton}
+						{ClearFilterButtonComponent}
 						<CloseIcon color="dark" onClick={() => setShowFilters(false)} />
 					</div>
 				}
 				contentClassName="p-0"
 			>
-				{searchFilters}
+				{SearchFiltersComponent}
 			</Card>
 		</Modal>
 	);
@@ -391,13 +391,14 @@ const Search: NextPage = () => {
 										<h3 className="m-0">Filters</h3>
 									</div>
 									<div className="col-6 col-md-4 col-lg-6 d-flex justify-content-end">
-										{ClearFilterButton}
+										{ClearFilterButtonComponent}
 									</div>
 								</ShowHide>
 							</div>
 							{windowWidth < bpLarge
-								? showFilters && createPortal(modalSearchFilters, document.body)
-								: searchFilters}
+								? showFilters &&
+								  createPortal(ModalSearchFiltersComponent, document.body)
+								: SearchFiltersComponent}
 						</div>
 						<div className="col-12 col-lg-9">
 							<div className="row">
