@@ -94,7 +94,6 @@ const Footer = (props: IFooterProps) => {
 						</div>
 					</div>
 					<div className="col-12 col-md-7 col-lg-5 col-xl-4 offset-lg-1 offset-xl-3 d-flex flex-column justify-content-between">
-						{/* Replace with content from .md file? How to implement Link component in .md? */}
 						<p>
 							<Link
 								className="link-text-light"
@@ -133,7 +132,9 @@ const Footer = (props: IFooterProps) => {
 							© 2017-{new Date(releaseInfo.data?.date).getFullYear() || 2023}
 							<br />
 							{releaseInfo.data
-								? `Data Release ${releaseInfo.data.name.replace("dr", "")} | 
+								? `Data Release ${releaseInfo.data.name
+										.replace("dr.", "")
+										.replace("dr", "")} | 
 								${new Date(releaseInfo.data.date).toISOString().substring(0, 10)}`
 								: null}
 						</p>
