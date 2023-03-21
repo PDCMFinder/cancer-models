@@ -133,10 +133,22 @@ const Overview: NextPage = () => {
 					</div>
 					<div className="row">
 						<div className="col-12 text-center">
-							<Button priority="primary" color="dark" className="mb-1 mr-3">
+							<Button
+								href="/submit"
+								priority="primary"
+								color="dark"
+								className="mb-1 mr-3"
+								htmlTag="a"
+							>
 								Submit model data
 							</Button>
-							<Button priority="secondary" color="dark" className="mt-1 ml-3">
+							<Button
+								href="/search"
+								priority="secondary"
+								color="dark"
+								className="mt-1 ml-3"
+								htmlTag="a"
+							>
 								Search all model data
 							</Button>
 						</div>
