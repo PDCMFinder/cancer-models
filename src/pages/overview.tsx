@@ -1,13 +1,13 @@
 import { NextPage } from "next";
-import React from "react";
 import BarChart from "../components/BarChart/BarChart";
 import DonutChart from "../components/DonutChart/DonutChart";
 import ProviderMapChart from "../components/ProviderMapChart/ProviderMapChart";
 import SunBurstChart from "../components/SunBurstChart/SunBurstChart";
 import Features from "../../public/img/world_countries.json";
+import Button from "../components/Button/Button";
 
 function collapseEthnicity(
-	ethnicityList: Array<{ patient_ethnicity: string; count: number }>
+	ethnicityList: { patient_ethnicity: string; count: number }[]
 ) {
 	const ethnicityDictionary: any = Object.fromEntries(
 		Object.entries({
@@ -59,7 +59,7 @@ function collapseEthnicity(
 }
 
 function collapseAgeGroup(
-	ageGroupList: Array<{ patient_age: string; count: number }>
+	ageGroupList: { patient_age: string; count: number }[]
 ) {
 	const pediatricAgeGroups = ["0 - 23 months", "2 - 9", "10 - 19"];
 	const mappedAgeGroups: any = { pediatric: 0, adult: 0, "not specified": 0 };
@@ -84,13 +84,66 @@ const Overview: NextPage = () => {
 			<header className="bg-primary-primary text-white mb-5 py-5">
 				<div className="container">
 					<div className="row py-5">
-						<div className="col-12">
-							<h1 className="m-0">Data overview</h1>
+						<div className="col-12 col-lg-8">
+							<h1 className="m-0">
+								Lorem ipsum dolor sit amet consectetur. Vesti bulum cursus
+								suspendisse posuere nullam eu et.
+							</h1>
 						</div>
 					</div>
 				</div>
 			</header>
 			<section>
+				<div className="container">
+					<div className="row mb-5 align-center">
+						<div className="col-12 col-lg-6 text-center text-lg-left mb-5">
+							<h2>
+								Some title letting the user know about all the different models
+								and encouraging to explore them.
+							</h2>
+							<p>
+								Tempus nunc arcu in faucibus amet turpis molestie quam
+								elementum. Id a pretium nisl facilisis. Dui adipiscing tortor
+								fames sed ornare nunc cursus. Tempus ultricies massa feugiat
+								tortor porttitor ultrices nunc quam condimentum.
+							</p>
+						</div>
+						<div className="col-12 col-lg-5 offset-lg-1 mb-5">
+							<b>Chart related to text</b>
+						</div>
+					</div>
+					<div className="row mb-5 align-center">
+						<div className="col-12 col-lg-6 offset-lg-1 order-lg-1 text-center text-lg-left mb-5">
+							<h2>
+								Text about users being able to upload their own model data and
+								contribute to this statistics.
+							</h2>
+							<p>
+								Non diam velit porta velit tempor volutpat elit eleifend velit.
+								Etiam tellus aliquam blandit nunc nunc gravida tempus risus.
+								Tristique gravida gravida tortor fermentum tincidunt eu
+								sollicitudin. Platea amet nisl ac amet vel sapien magna.
+							</p>
+						</div>
+						<div className="col-12 col-lg-5 mb-5">
+							<p>
+								<b>Chart related to text</b>
+							</p>
+						</div>
+					</div>
+					<div className="row">
+						<div className="col-12 text-center">
+							<Button priority="primary" color="dark" className="mb-1 mr-3">
+								Submit model data
+							</Button>
+							<Button priority="secondary" color="dark" className="mt-1 ml-3">
+								Search all model data
+							</Button>
+						</div>
+					</div>
+				</div>
+			</section>
+			{/* <section>
 				<div className="container">
 					<div className="row">
 						<div className="col-12">
@@ -2354,7 +2407,7 @@ const Overview: NextPage = () => {
 						</div>
 					</div>
 				</div>
-			</section>
+			</section> */}
 		</>
 	);
 };
