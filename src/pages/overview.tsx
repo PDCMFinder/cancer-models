@@ -86,8 +86,8 @@ const Overview: NextPage = () => {
 					<div className="row py-5">
 						<div className="col-12 col-lg-8">
 							<h1 className="m-0">
-								Lorem ipsum dolor sit amet consectetur. Vesti bulum cursus
-								suspendisse posuere nullam eu et.
+								Find the right PDX, organoid and cell line patient-derived
+								cancer model for your next project.
 							</h1>
 						</div>
 					</div>
@@ -109,7 +109,29 @@ const Overview: NextPage = () => {
 							</p>
 						</div>
 						<div className="col-12 col-lg-5 offset-lg-1 mb-5">
-							<b>Chart related to text</b>
+							<div style={{ height: "600px", width: "100%" }}>
+								<DonutChart
+									keyId="model_type"
+									data={[
+										{
+											model_type: "xenograft",
+											count: 4864,
+										},
+										{
+											model_type: "cell line",
+											count: 1525,
+										},
+										{
+											model_type: "organoid",
+											count: 351,
+										},
+										{
+											model_type: "other",
+											count: 277,
+										},
+									]}
+								/>
+							</div>
 						</div>
 					</div>
 					<div className="row mb-5 align-center">
