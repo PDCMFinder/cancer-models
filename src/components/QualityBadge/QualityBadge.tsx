@@ -2,6 +2,7 @@ import styles from "./QualityBadge.module.scss";
 
 interface IQualityBadgeProps {
 	className?: string;
+	score: number;
 }
 
 const QualityBadge = (props: IQualityBadgeProps) => {
@@ -9,11 +10,11 @@ const QualityBadge = (props: IQualityBadgeProps) => {
 		<meter
 			className={props.className}
 			min={0}
-			max={42}
-			value={37}
-			high={39}
-			low={34}
-			optimum={42}
+			max={100}
+			value={props.score}
+			high={50}
+			low={20}
+			optimum={60}
 		></meter>
 	);
 };

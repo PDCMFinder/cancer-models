@@ -113,6 +113,15 @@ img {
 		}
 	}
 }
+.order {
+	@include mediaOver("lg") {
+		&-lg {
+			&-1 {
+				order: 1;
+			}
+		}
+	}
+}
 .justify-content {
 	&-between {
 		justify-content: space-between;

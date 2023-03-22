@@ -11,6 +11,7 @@ export interface SearchResult {
 	dataAvailable?: Array<string>;
 	patientSex?: string;
 	patientAge?: number;
+	score: number;
 }
 
 export interface ResultCol {
