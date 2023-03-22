@@ -26,7 +26,7 @@ const DataCountCard = (props: IDataCountCardProps) => {
 									key={d.modelType}
 								>
 									<Link
-										href={`/search?facets=model.model_type:${d.modelType}`}
+										href={`/search?filters=model_type:${d.modelType}`}
 										className="p text-noDecoration"
 									>
 										<p className="h2 mb-0">

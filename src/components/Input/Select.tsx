@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-
 interface ISelectProps {
 	id: string;
 	options: { value?: string; text: string }[];
@@ -11,14 +9,11 @@ const Select = (props: ISelectProps) => {
 	let options = props.options,
 		id = props.id;
 
-	const [selected, setSelected] = useState(options[0].value);
-
 	return (
 		<select
 			name={id}
 			id={id}
 			className={props.className}
-			value={selected}
 			onChange={props.onChange}
 		>
 			{options.map((opt) => {
