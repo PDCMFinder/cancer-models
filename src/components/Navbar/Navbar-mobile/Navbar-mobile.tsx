@@ -111,10 +111,9 @@ const NavMobile = (props: INavProps) => {
 									{new Date(releaseInfo.data?.date).getFullYear() || 2023}
 									<br />
 									{releaseInfo.data
-										? `Data Release ${releaseInfo.data.name.replace(
-												"dr",
-												""
-										  )} | 
+										? `Data Release ${releaseInfo.data.name
+												.replace("dr.", "")
+												.replace("dr", "")} | 
 								${new Date(releaseInfo.data.date).toISOString().substring(0, 10)}`
 										: null}
 								</p>

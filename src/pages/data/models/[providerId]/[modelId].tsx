@@ -78,6 +78,8 @@ interface Metadata {
 	cancerStage: string;
 	primarySite: string;
 	collectionSite: string;
+	licenseName: string;
+	licenseUrl: string;
 	score: number;
 }
 
@@ -231,6 +233,21 @@ const ModelDetails = ({
 									<>Contact {metadata.providerId || "provider"}</>
 								</Button>
 							</div>
+							{metadata.licenseName && metadata.licenseUrl ? (
+								<div className="mt-5">
+									<p className="mb-0">
+										License:{" "}
+										<Link
+											className="text-white"
+											target="_blank"
+											rel="noopener noreferrer"
+											href={metadata.licenseUrl}
+										>
+											{metadata.licenseName}
+										</Link>
+									</p>
+								</div>
+							) : null}
 						</div>
 					</div>
 				</div>

@@ -97,11 +97,10 @@ const Footer = (props: IFooterProps) => {
 						</div>
 					</div>
 					<div className="col-12 col-md-7 col-lg-5 col-xl-4 offset-lg-1 offset-xl-3 d-flex flex-column justify-content-between">
-						{/* Replace with content from .md file? How to implement Link component in .md? */}
 						<p>
 							<Link
 								className="link-text-light"
-								href="https://google.com"
+								href="https://www.ebi.ac.uk/"
 								target="_blank"
 							>
 								EMBL-EBI
@@ -132,13 +131,35 @@ const Footer = (props: IFooterProps) => {
 				<div className="row">
 					<div className="col">
 						{/* Placeholder, change for API information */}
-						<p className="text-small text-center m-0">
+						<p className="text-small text-center">
 							© 2017-{new Date(releaseInfo.data?.date).getFullYear() || 2023}
 							<br />
 							{releaseInfo.data
-								? `Data Release ${releaseInfo.data.name.replace("dr", "")} | 
+								? `Data Release ${releaseInfo.data.name
+										.replace("dr.", "")
+										.replace("dr", "")} | 
 								${new Date(releaseInfo.data.date).toISOString().substring(0, 10)}`
 								: null}
+						</p>
+						<p className="text-center">
+							All model and data submissions are made available under{" "}
+							<Link
+								target="_blank"
+								rel="noreferrer noopener"
+								href="https://creativecommons.org/share-your-work/public-domain/cc0/"
+								className="link-text-light"
+							>
+								CC0
+							</Link>{" "}
+							or{" "}
+							<Link
+								target="_blank"
+								rel="noreferrer noopener"
+								href="https://www.ebi.ac.uk/about/terms-of-use"
+								className="link-text-light"
+							>
+								EMBL-EBI terms of use.
+							</Link>
 						</p>
 					</div>
 				</div>

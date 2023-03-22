@@ -52,6 +52,8 @@ const getModelDetails = async (modelId: string, providerId: string) => {
 			cancerStage: metadata.cancerStage,
 			primarySite: metadata.primarySite,
 			collectionSite: metadata.collectionSite,
+			licenseName: metadata.licenseName ?? "",
+			licenseUrl: metadata.licenseUrl ?? "",
 			score: metadata.score ?? 0,
 			modelId,
 			providerId,
