@@ -207,7 +207,7 @@ const ModelDetails = ({
 							<h3 className="my-0 mb-3 mb-lg-0">
 								<Link
 									className="text-white text-noDecoration"
-									href={`/data/providers/${metadata.providerId}`}
+									href={`/about/providers/${metadata.providerId.toLowerCase()}`}
 								>
 									{metadata.providerName}
 								</Link>

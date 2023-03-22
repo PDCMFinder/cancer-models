@@ -84,7 +84,7 @@ const SearchResult = (props: ISearchResultProps) => {
 								<Link href={modelLink}>{pdcmId}</Link>
 							</h2>
 							<p className="text-capitalize mb-0">
-								<Link href={`/about/provider/${sourceId?.toLowerCase()}`}>
+								<Link href={`/about/providers/${sourceId?.toLowerCase()}`}>
 									{`${providerName?.substring(0, 50)}${
 										providerName?.length > 50 ? "..." : ""
 									}`}
