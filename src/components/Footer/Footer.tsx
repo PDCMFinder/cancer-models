@@ -144,6 +144,7 @@ const Footer = (props: IFooterProps) => {
 								target="_blank"
 								rel="noreferrer noopener"
 								href="https://creativecommons.org/share-your-work/public-domain/cc0/"
+								className="link-text-light"
 							>
 								CC0
 							</Link>{" "}
@@ -152,6 +153,7 @@ const Footer = (props: IFooterProps) => {
 								target="_blank"
 								rel="noreferrer noopener"
 								href="https://www.ebi.ac.uk/about/terms-of-use"
+								className="link-text-light"
 							>
 								EMBL-EBI terms of use.
 							</Link>
