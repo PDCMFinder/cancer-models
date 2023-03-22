@@ -1,13 +1,11 @@
 import type { NextPage } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import Button from "../components/Button/Button";
 import bannerImage from "../../public/national-cancer-institute-wUg8xhJ3aBs.jpg";
 import ShowHide from "../components/ShowHide/ShowHide";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import breakPoints from "../utils/breakpoints";
 import styles from "./index.module.scss";
-import Input from "../components/Input/Input";
 import Label from "../components/Input/Label";
 import DataCountCard from "../components/DataCountCard/DataCountCard";
 import CirclePacking from "../components/CirclePacking/CirclePacking";
@@ -15,6 +13,7 @@ import { useQuery } from "react-query";
 import { getCancerHierarchy, getModelCount } from "../apis/AggregatedData.api";
 import { useRouter } from "next/router";
 import Loader from "../components/Loader/Loader";
+import SearchBar from "../components/SearchBar/SearchBar";
 
 const Home: NextPage = () => {
 	const { windowWidth } = useWindowDimensions();
@@ -22,9 +21,7 @@ const Home: NextPage = () => {
 	let cancerHierarchyQuery = useQuery("cancerHierarchy", () => {
 		return getCancerHierarchy();
 	});
-	let modelCountQuery = useQuery("modelCountQuery", () => {
-		return getModelCount();
-	});
+	let modelCountQuery = useQuery("modelCount", () => getModelCount());
 	const router = useRouter();
 
 	return (
@@ -38,7 +35,7 @@ const Home: NextPage = () => {
 								alt="A scanning electron micrograph of the surface of human skin by National Cancer Institute"
 								priority
 								fill
-								sizes="50vw"
+								sizes="20vw"
 							/>
 						</div>
 					</ShowHide>
@@ -59,26 +56,17 @@ const Home: NextPage = () => {
 					<div
 						className={`${styles.header_searchBackground} bg-primary-primary`}
 					></div>
-					<div className={`${styles.header_search} pt-5 pb-3`}>
-						<form action="">
-							<Label
-								name="search"
-								className="h3 text-white"
-								label={`Search over ${
-									modelCountQuery.data
-										? parseFloat(modelCountQuery.data).toLocaleString()
-										: "6,998" //placeholder while we fetch api data
-								} cancer models`}
-							/>
-							<div className="d-flex flex-column flex-md-row mb-md-3">
-								<Input
-									type="text"
-									name="search"
-									placeholder="Cancer diagnosis eg. Melanoma"
-									className="mb-0"
-								/>
-							</div>
-						</form>
+					<div className={`${styles.header_search} py-5`}>
+						<Label
+							name="search"
+							className="h3 text-white"
+							label={`Search over ${
+								modelCountQuery.data
+									? parseFloat(modelCountQuery.data).toLocaleString()
+									: "7,171" //placeholder while we fetch api data
+							} cancer models`}
+						/>
+						<SearchBar />
 					</div>
 				</div>
 			</header>

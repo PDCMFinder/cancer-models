@@ -54,6 +54,7 @@ const getModelDetails = async (modelId: string, providerId: string) => {
 			collectionSite: metadata.collectionSite,
 			licenseName: metadata.licenseName ?? "",
 			licenseUrl: metadata.licenseUrl ?? "",
+			score: metadata.score ?? 0,
 			modelId,
 			providerId,
 		},

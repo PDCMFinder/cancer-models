@@ -1,0 +1,10 @@
+@import "../../styles/vars";
+@import "../../styles/mixins";
+
+.SearchResultSkeleton {
+	height: 600px;
+	background-color: $color-lightGray;
+	@include mediaOver("lg") {
+		height: 208px;
+	}
+}

@@ -10,6 +10,9 @@ import { getDataReleaseInformation } from "../../apis/AggregatedData.api";
 interface IFooterProps {
 	cookieConsentHeight: number;
 }
+interface IFooterProps {
+	cookieConsentHeight: number;
+}
 
 const Footer = (props: IFooterProps) => {
 	let releaseInfo = useQuery("releaseInfo", () => {

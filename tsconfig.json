@@ -21,8 +21,7 @@
 		"**/*.ts",
 		"**/*.tsx",
 		"cypress-real-events",
-		"./src/jest-setup.ts",
-		"src/pages/about/provider"
+		"./src/jest-setup.ts"
 	],
 	"exclude": ["node_modules", "./cypress.config.ts"]
 }

@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { CSSProperties, useState } from "react";
 import Button from "../Button/Button";
 import styles from "./Accordion.module.scss";
 
 interface IAccordionProps {
-	style?: {};
+	style?: CSSProperties;
 	buttonClassName?: string;
 	className?: string;
 	id: string;
@@ -28,14 +28,15 @@ const Accordion = (props: IAccordionProps) => {
 			<Button
 				color="dark"
 				priority="secondary"
-				className={`my-1 w-100 text-bold text-capitalize ${
+				className={`mt-1 mb-0 w-100 text-capitalize bc-transparent ${
 					isOpen ? styles["Accordion_label-active"] : ""
 				} ${buttonClassName} ${styles.Accordion_label}`.trim()}
 				aria-controls={ariaId}
 				arrow
+				arrowDirection={isOpen ? "right" : "down"}
 				onClick={handleAccordionFold}
 			>
-				{props.id.replace("_", " ")}
+				{props.id}
 			</Button>
 			{isOpen && (
 				<div className={`px-1 ${contentClassName}`.trim()} id={ariaId}>

@@ -15,6 +15,7 @@ import { getMolecularDataDownload } from "../../../../apis/ModelDetails.api";
 import { CSVLink } from "react-csv";
 import CloseIcon from "../../../../components/CloseIcon/CloseIcon";
 import Tooltip from "../../../../components/Tooltip/Tooltip";
+import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
 
 interface IModelDetailsProps {
 	metadata: Metadata;
@@ -79,6 +80,7 @@ interface Metadata {
 	collectionSite: string;
 	licenseName: string;
 	licenseUrl: string;
+	score: number;
 }
 
 interface ExtLinks {
@@ -193,20 +195,21 @@ const ModelDetails = ({
 			<header className="bg-primary-primary text-white py-5">
 				<div className="container">
 					<div className="row align-center py-5 pb-lg-0 text-capitalize">
-						<div className="col-12 col-md-6 col-lg-6 col-xl-6 offset-xl-2 col-xxx-4 offset-xxx-2 mb-5 mb-md-0">
+						<div className="col-12 col-md-10 col-lg-6 col-xl-6 col-xxx-4 offset-md-1 offset-xl-2 offset-xxx-2 mb-5">
 							<h2
 								className={`m-0 text-family-secondary ${styles.ModelDetails_histology}`}
 							>
 								{metadata.histology} - {metadata.modelType}
 							</h2>
-							<h1 className="m-0">{metadata.modelId}</h1>
+							<h1 className="m-0 mb-2">{metadata.modelId}</h1>
+							<QualityBadge score={metadata.score} className="w-50" />
 						</div>
-						<div className="col-12 col-md-6 col-lg-5 offset-lg-1 col-xl-5 offset-xl-5 col-xxx-3 offset-xxx-1 text-right">
+						<div className="col-12 col-md-10 col-lg-5 col-xxx-3 col-xl-5 offset-lg-1 offset-xl-5 offset-xxx-1 offset-md-1 text-right">
 							<p className="mb-1">Provided by</p>
 							<h3 className="my-0 mb-3 mb-lg-0">
 								<Link
 									className="text-white text-noDecoration"
-									href={`/data/providers/${metadata.providerId}`}
+									href={`/about/providers/${metadata.providerId.toLowerCase()}`}
 								>
 									{metadata.providerName}
 								</Link>

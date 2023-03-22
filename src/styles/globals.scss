@@ -42,7 +42,14 @@ body {
 	min-height: 100vh;
 	position: relative;
 }
+#__next {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	position: relative;
+}
 p {
+	margin: 0 0 2rem;
 	margin: 0 0 2rem;
 }
 svg,
@@ -106,6 +113,15 @@ img {
 		}
 	}
 }
+.order {
+	@include mediaOver("lg") {
+		&-lg {
+			&-1 {
+				order: 1;
+			}
+		}
+	}
+}
 .justify-content {
 	&-between {
 		justify-content: space-between;
@@ -150,6 +166,9 @@ img {
 	}
 }
 .w {
+	&-50 {
+		width: 50%;
+	}
 	&-100 {
 		width: 100%;
 	}
@@ -186,245 +205,7 @@ li:not(:last-of-type) {
 a {
 	display: inline-block;
 }
-.m {
-	&-0 {
-		margin: 0 !important;
-	}
-	&x {
-		&-0 {
-			margin-left: 0 !important;
-			margin-right: 0 !important;
-		}
-		&-4 {
-			margin-left: $spacing-4 !important;
-			margin-right: $spacing-4 !important;
-		}
-	}
-	&y {
-		&-0 {
-			margin-top: 0 !important;
-			margin-bottom: 0 !important;
-		}
-		&-1 {
-			margin-top: $spacing-1 !important;
-			margin-bottom: $spacing-1 !important;
-		}
-		&-5 {
-			margin-top: $spacing-5 !important;
-			margin-bottom: $spacing-5 !important;
-		}
-	}
-	&t {
-		&-0 {
-			margin-top: 0 !important;
-		}
-		&-1 {
-			margin-top: $spacing-1 !important;
-		}
-		&-2 {
-			margin-top: $spacing-2 !important;
-		}
-		&-5 {
-			margin-top: $spacing-5 !important;
-		}
-		@include mediaOver("md") {
-			&-md {
-				&-0 {
-					margin-top: 0 !important;
-				}
-			}
-		}
-		@include mediaOver("lg") {
-			&-lg {
-				&-0 {
-					margin-top: 0 !important;
-				}
-				&-1 {
-					margin-top: $spacing-1 !important;
-				}
-				&-3 {
-					margin-top: $spacing-3 !important;
-				}
-			}
-		}
-	}
-	&r {
-		&-1 {
-			margin-right: $spacing-1;
-		}
-		&-3 {
-			margin-right: $spacing-3;
-		}
-		@include mediaOver("md") {
-			&-md {
-				&-0 {
-					margin-right: 0 !important;
-				}
-				&-3 {
-					margin-right: $spacing-3 !important;
-				}
-			}
-		}
-		@include mediaOver("lg") {
-			&-lg {
-				&-3 {
-					margin-right: $spacing-3 !important;
-				}
-			}
-		}
-	}
-	&l {
-		&-0 {
-			margin-left: 0 !important;
-		}
-		&-3 {
-			margin-left: $spacing-3;
-		}
-		&-auto {
-			margin-left: auto !important;
-		}
-		@include mediaOver("md") {
-			&-md {
-				&-auto {
-					margin-left: auto !important;
-				}
-				&-0 {
-					margin-left: 0 !important;
-				}
-			}
-		}
-		@include mediaOver("lg") {
-			&-lg {
-				&-2 {
-					margin-left: $spacing-2 !important;
-				}
-			}
-		}
-	}
-	@include mediaOver("lg") {
-		&-lg {
-			&-0 {
-				margin: 0 !important;
-			}
-		}
-	}
-	&b {
-		&-0 {
-			margin-bottom: 0 !important;
-		}
-		&-1 {
-			margin-bottom: $spacing-1 !important;
-		}
-		&-2 {
-			margin-bottom: $spacing-2 !important;
-		}
-		&-3 {
-			margin-bottom: $spacing-3 !important;
-		}
-		&-5 {
-			margin-bottom: $spacing-5 !important;
-		}
-		@include mediaOver("md") {
-			&-md {
-				&-0 {
-					margin-bottom: 0 !important;
-				}
-				&-1 {
-					margin-bottom: $spacing-1 !important;
-				}
-				&-3 {
-					margin-bottom: $spacing-3 !important;
-				}
-			}
-		}
-		@include mediaOver("lg") {
-			&-lg {
-				&-0 {
-					margin-bottom: 0 !important;
-				}
-			}
-		}
-	}
-	@include mediaOver("md") {
-		&b {
-			&-md {
-				&-0 {
-					margin-bottom: 0 !important;
-				}
-			}
-		}
-		&-md {
-			&-0 {
-				margin: 0 !important;
-			}
-		}
-	}
-}
-.p {
-	&-0 {
-		padding: 0 !important;
-	}
-	&y {
-		&-0 {
-			padding-top: 0 !important;
-			padding-bottom: 0 !important;
-		}
-		&-5 {
-			padding-top: $spacing-5 !important;
-			padding-bottom: $spacing-5 !important;
-		}
-		&-3 {
-			padding-top: $spacing-3 !important;
-			padding-bottom: $spacing-3 !important;
-		}
-	}
-	&b {
-		&-0 {
-			padding-bottom: 0 !important;
-		}
-	}
-	&x {
-		&-1 {
-			padding-left: $spacing-1 !important;
-			padding-right: $spacing-1 !important;
-		}
-	}
-	&l {
-		&-0 {
-			padding-left: 0 !important;
-		}
-	}
-	&-2 {
-		padding: $spacing-2;
-	}
-	&t {
-		&-0 {
-			padding-top: 0 !important;
-		}
-		&-3 {
-			padding-top: $spacing-3 !important;
-		}
-		&-5 {
-			padding-top: $spacing-5 !important;
-		}
-	}
-	@include mediaOver("xl") {
-		&y {
-			&-lg {
-				&-0 {
-					padding-top: 0 !important;
-					padding-bottom: 0 !important;
-				}
-			}
-			&-xl {
-				&-4 {
-					padding-top: $spacing-4 !important;
-					padding-bottom: $spacing-4 !important;
-				}
-			}
-		}
-	}
-}
+@include spacing();
 .ar {
 	&-1 {
 		aspect-ratio: 1;
@@ -469,6 +250,11 @@ a {
 		}
 	}
 }
+.lh {
+	&-1 {
+		line-height: 1;
+	}
+}
 label {
 	line-height: initial;
 	margin-bottom: 0.5rem;
@@ -480,10 +266,11 @@ textarea,
 select {
 	width: 100%;
 	border: 1px solid $color-primary-tertiary;
-	padding: 1rem;
+	padding: 0.8rem;
 	margin-bottom: $spacing-2;
 	max-width: 100%;
 	transition: 0.3s;
+	line-height: 1;
 	&:hover {
 		background-color: $color-focused-light;
 	}
@@ -514,6 +301,12 @@ textarea {
 	&-white {
 		background-color: $color-white !important;
 	}
+	&-lightGray {
+		background-color: $color-lightGray !important;
+	}
+	&-gray {
+		background-color: $color-gray !important;
+	}
 }
 .bc {
 	&-primary-quaternary {
@@ -521,6 +314,14 @@ textarea {
 	}
 	&-gray {
 		border-color: $color-gray !important;
+	}
+	&-transparent {
+		border-color: transparent !important;
+	}
+}
+.border {
+	&-none {
+		border: none !important;
 	}
 }
 section {
@@ -542,11 +343,6 @@ hr {
 	position: absolute;
 	width: 1px;
 }
-.w {
-	&-auto {
-		width: auto;
-	}
-}
 .overflow {
 	&-hidden {
 		overflow: hidden;
@@ -558,6 +354,9 @@ hr {
 		&-scroll {
 			overflow-y: scroll !important;
 		}
+	}
+	&-visible {
+		overflow: visible !important;
 	}
 }
 .sticky {
