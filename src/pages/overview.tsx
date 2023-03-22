@@ -148,9 +148,112 @@ const Overview: NextPage = () => {
 							</p>
 						</div>
 						<div className="col-12 col-lg-5 mb-5">
-							<p>
-								<b>Chart related to text</b>
-							</p>
+							<div style={{ height: "600px" }}>
+								<BarChart
+									chartTitle="Models by top mutated gene"
+									onBarClick={(category) => {
+										return;
+									}}
+									rotateTicks={true}
+									data={collapseEthnicity([
+										{
+											patient_ethnicity: "African",
+											count: 26,
+										},
+										{
+											patient_ethnicity: "African American",
+											count: 17,
+										},
+										{
+											patient_ethnicity: "Asian",
+											count: 69,
+										},
+										{
+											patient_ethnicity: "Black",
+											count: 77,
+										},
+										{
+											patient_ethnicity: "Black Or African American",
+											count: 23,
+										},
+										{
+											patient_ethnicity:
+												"Black Or African American; Not Hispanic Or Latino",
+											count: 4,
+										},
+										{
+											patient_ethnicity: "Caucasian",
+											count: 604,
+										},
+										{
+											patient_ethnicity: "Eastasian",
+											count: 6,
+										},
+										{
+											patient_ethnicity: "East Asian",
+											count: 290,
+										},
+										{
+											patient_ethnicity: "European",
+											count: 182,
+										},
+										{
+											patient_ethnicity: "Hispanic",
+											count: 19,
+										},
+										{
+											patient_ethnicity: "Hispanic Or Latino",
+											count: 67,
+										},
+										{
+											patient_ethnicity: "Latino",
+											count: 1,
+										},
+										{
+											patient_ethnicity: "Mixed_or_unknown",
+											count: 14,
+										},
+										{
+											patient_ethnicity:
+												"Native Hawaiian Or Other Pacific Islander",
+											count: 2,
+										},
+										{
+											patient_ethnicity: "Not Hispanic Or Latino",
+											count: 919,
+										},
+										{
+											patient_ethnicity: "Other",
+											count: 8,
+										},
+										{
+											patient_ethnicity: "South Asian",
+											count: 2,
+										},
+										{
+											patient_ethnicity: "Southasianorhispanic",
+											count: 29,
+										},
+										{
+											patient_ethnicity: "White",
+											count: 931,
+										},
+										{
+											patient_ethnicity: "White; Hispanic Or Latino",
+											count: 2,
+										},
+										{
+											patient_ethnicity: "White; Not Hispanic Or Latino",
+											count: 1,
+										},
+										{
+											patient_ethnicity: "Unknown",
+											count: 733,
+										},
+									]).sort((a, b) => b.count - a.count)}
+									indexKey="patient_ethnicity"
+								/>
+							</div>
 						</div>
 					</div>
 					<div className="row">
@@ -177,7 +280,7 @@ const Overview: NextPage = () => {
 					</div>
 				</div>
 			</section>
-			{/* <section>
+			<section>
 				<div className="container">
 					<div className="row">
 						<div className="col-12">
@@ -192,7 +295,7 @@ const Overview: NextPage = () => {
 					</div>
 					<div className="row">
 						<div className="col-12">
-							<h2>Data reports</h2>
+							<h2>More data reports</h2>
 						</div>
 					</div>
 					<div className="row">
@@ -250,27 +353,19 @@ const Overview: NextPage = () => {
 						</div>
 						<div className="col-12 col-md-6">
 							<div className="text-center">
-								<h3>Models by type</h3>
+								<h3>Models by gender</h3>
 							</div>
 							<div style={{ height: "600px" }}>
 								<DonutChart
-									keyId="model_type"
+									keyId="patient_sex"
 									data={[
 										{
-											model_type: "xenograft",
-											count: 4864,
+											patient_sex: "female",
+											count: 2967,
 										},
 										{
-											model_type: "cell line",
-											count: 1525,
-										},
-										{
-											model_type: "organoid",
-											count: 351,
-										},
-										{
-											model_type: "other",
-											count: 277,
+											patient_sex: "male",
+											count: 3750,
 										},
 									]}
 								/>
@@ -2277,171 +2372,8 @@ const Overview: NextPage = () => {
 							</div>
 						</div>
 					</div>
-					<div className="row">
-						<div className="col-12 col-md-6">
-							<div className="text-center">
-								<h3>Models by gender</h3>
-							</div>
-							<div style={{ height: "600px" }}>
-								<DonutChart
-									keyId="patient_sex"
-									data={[
-										{
-											patient_sex: "female",
-											count: 2967,
-										},
-										{
-											patient_sex: "male",
-											count: 3750,
-										},
-									]}
-								/>
-							</div>
-						</div>
-						<div className="col-12 col-md-6">
-							<div className="text-center">
-								<h3>Models by ethnicity</h3>
-							</div>
-							<div style={{ height: "600px" }}>
-								<BarChart
-									chartTitle="Models by top mutated gene"
-									onBarClick={(category) => {
-										return;
-									}}
-									rotateTicks={true}
-									data={collapseEthnicity([
-										{
-											patient_ethnicity: "African",
-											count: 26,
-										},
-										{
-											patient_ethnicity: "African American",
-											count: 17,
-										},
-										{
-											patient_ethnicity: "Asian",
-											count: 69,
-										},
-										{
-											patient_ethnicity: "Black",
-											count: 77,
-										},
-										{
-											patient_ethnicity: "Black Or African American",
-											count: 23,
-										},
-										{
-											patient_ethnicity:
-												"Black Or African American; Not Hispanic Or Latino",
-											count: 4,
-										},
-										{
-											patient_ethnicity: "Caucasian",
-											count: 604,
-										},
-										{
-											patient_ethnicity: "Eastasian",
-											count: 6,
-										},
-										{
-											patient_ethnicity: "East Asian",
-											count: 290,
-										},
-										{
-											patient_ethnicity: "European",
-											count: 182,
-										},
-										{
-											patient_ethnicity: "Hispanic",
-											count: 19,
-										},
-										{
-											patient_ethnicity: "Hispanic Or Latino",
-											count: 67,
-										},
-										{
-											patient_ethnicity: "Latino",
-											count: 1,
-										},
-										{
-											patient_ethnicity: "Mixed_or_unknown",
-											count: 14,
-										},
-										{
-											patient_ethnicity:
-												"Native Hawaiian Or Other Pacific Islander",
-											count: 2,
-										},
-										{
-											patient_ethnicity: "Not Hispanic Or Latino",
-											count: 919,
-										},
-										{
-											patient_ethnicity: "Other",
-											count: 8,
-										},
-										{
-											patient_ethnicity: "South Asian",
-											count: 2,
-										},
-										{
-											patient_ethnicity: "Southasianorhispanic",
-											count: 29,
-										},
-										{
-											patient_ethnicity: "White",
-											count: 931,
-										},
-										{
-											patient_ethnicity: "White; Hispanic Or Latino",
-											count: 2,
-										},
-										{
-											patient_ethnicity: "White; Not Hispanic Or Latino",
-											count: 1,
-										},
-										{
-											patient_ethnicity: "Unknown",
-											count: 733,
-										},
-									]).sort((a, b) => b.count - a.count)}
-									indexKey="patient_ethnicity"
-								/>
-							</div>
-						</div>
-					</div>
-					<div className="row">
-						<div className="col-12 col-md-12">
-							<div className="text-center">
-								<h3>Models by provider</h3>
-							</div>
-							<div style={{ height: "600px" }}>
-								<ProviderMapChart
-									features={Features as any}
-									data={[
-										{
-											id: "ARG",
-											label: "Cambridge",
-											long: "52.205276",
-											lat: "0.119167",
-											formattedValue: 5,
-											color: "#000",
-										},
-									]}
-									margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-									projectionTranslation={[0.5, 0.6]}
-									projectionRotation={[0, 0, 0]}
-									projectionScale={200}
-									enableGraticule={false}
-									borderWidth={0.5}
-									borderColor="#152538"
-									isInteractive={true}
-								/>
-							</div>
-						</div>
-					</div>
 				</div>
-			</section> */}
+			</section>
 		</>
 	);
 };
