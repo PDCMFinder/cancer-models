@@ -229,11 +229,15 @@ a {
 		display: none;
 		position: absolute;
 		flex-direction: column;
-		width: 130%;
+		min-width: 130%;
+		width: auto;
 		padding: 1rem;
 		background-color: $color-white;
 		border-radius: $br-common;
 		margin-top: 0.5rem;
+		ul {
+			padding: 0;
+		}
 		&-flushRight {
 			left: unset;
 			right: 0;
