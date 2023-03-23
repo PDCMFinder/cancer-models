@@ -205,21 +205,7 @@ function mapApiFacet(apiFacet: any): IFacetProps {
 		name: apiFacet.facet_name,
 		type: facetType,
 		options: apiFacet.facet_options
-			? apiFacet.facet_options.sort((a: String, b: String) => {
-					if (apiFacet.facet_column !== "patient_age")
-						return a.toLocaleLowerCase().trim() > b.toLocaleLowerCase().trim()
-							? 1
-							: -1;
-					else {
-						if (a.includes("months")) return -1;
-						if (b.includes("specified")) return -1;
-						let aa = a.split(" - ");
-						let bb = b.split(" - ");
-						if (+aa[0] > +bb[0]) return 1;
-						else if (+aa[0] < +bb[0]) return -1;
-						else return 0;
-					}
-			  })
+			? sortOptions(apiFacet.facet_column, apiFacet.facet_options)
 			: [],
 		placeholder: apiFacet.facet_example,
 	};
@@ -331,4 +317,27 @@ export function parseOperatorsFromUrl(
 		facetSidebarSelection[sectionKey][facetKey] = urlOperator;
 	});
 	return facetSidebarSelection;
+}
+
+function sortOptions(facet_column, list) {
+	if (facet_column === "patient_age") {
+		return list.sort((a, b) => {
+			if (a.includes("months")) return -1;
+			if (b.includes("specified")) return -1;
+			let aa = a.split(" - ");
+			let bb = b.split(" - ");
+			if (+aa[0] > +bb[0]) return 1;
+			else if (+aa[0] < +bb[0]) return -1;
+			else return 0;
+		});
+	}
+	let endList = list.filter(
+		(str) =>
+			str.toLocaleLowerCase().includes("other") ||
+			str.toLocaleLowerCase().includes("not specified")
+	);
+	let sortedList = list
+		.filter((str) => !endList.includes(str))
+		.sort((a, b) => a.localeCompare(b));
+	return sortedList.concat(endList);
 }

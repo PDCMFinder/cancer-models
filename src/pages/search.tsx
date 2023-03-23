@@ -33,7 +33,7 @@ export interface onFilterChangeType {
 const sortByOptions = [
 		{
 			value: "model_dataset_type_count.desc",
-			text: "Amount of data available",
+			text: "Data available",
 		},
 		{ value: "external_model_id.asc", text: "Model Id: A to Z" },
 		{ value: "external_model_id.desc", text: "Model Id: Z to A" },
