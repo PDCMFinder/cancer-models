@@ -92,8 +92,8 @@ const Home: NextPage = () => {
 											onCircleClick={(circleId, circleDepth) => {
 												const searchPrefix =
 													circleDepth === 1
-														? `?facets=patient_tumour.cancer_system:`
-														: `?q=`;
+														? `?filters=cancer_system:`
+														: `?filters=search_terms:`;
 												const termSuffix = circleDepth === 1 ? "Cancer" : "";
 												const search = `${searchPrefix}${encodeURIComponent(
 													circleId + termSuffix
