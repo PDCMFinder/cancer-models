@@ -319,9 +319,9 @@ export function parseOperatorsFromUrl(
 	return facetSidebarSelection;
 }
 
-function sortOptions(facet_column, list) {
+function sortOptions(facet_column: string, list: string[]) {
 	if (facet_column === "patient_age") {
-		return list.sort((a, b) => {
+		return list.sort((a: string, b: string) => {
 			if (a.includes("months")) return -1;
 			if (b.includes("specified")) return -1;
 			let aa = a.split(" - ");
