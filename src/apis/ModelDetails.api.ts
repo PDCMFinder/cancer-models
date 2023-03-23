@@ -225,7 +225,6 @@ export async function getModelMolecularDataDetails(
 			d.map((item: any) => {
 				delete item.molecular_characterization_id;
 				delete item.text;
-				delete item.external_db_links;
 				return item;
 			}),
 		];
