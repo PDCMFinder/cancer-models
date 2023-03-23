@@ -35,7 +35,7 @@ const Home: NextPage = () => {
 								alt="A scanning electron micrograph of the surface of human skin by National Cancer Institute"
 								priority
 								fill
-								sizes="20vw"
+								sizes="16vw"
 							/>
 						</div>
 					</ShowHide>
