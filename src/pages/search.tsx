@@ -37,6 +37,8 @@ const sortByOptions = [
 		},
 		{ value: "external_model_id.asc", text: "Model Id: A to Z" },
 		{ value: "external_model_id.desc", text: "Model Id: Z to A" },
+		{ value: "score.asc", text: "Metadata: Ascending" },
+		{ value: "score.desc", text: "Metadata: Descending" },
 	],
 	resultsPerPage = 10;
 
