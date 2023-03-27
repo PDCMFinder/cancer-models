@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useEffect } from "react";
+import React, { useEffect } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import getModelDetails from "../../../../utils/getModelDetails";
 import Button from "../../../../components/Button/Button";
@@ -11,11 +11,16 @@ import { useState, useRef } from "react";
 import Modal from "../../../../components/Modal/Modal";
 import Card from "../../../../components/Card/Card";
 import MolecularDataTable from "../../../../components/MolecularDataTable/MolecularDataTable";
-import { getMolecularDataDownload } from "../../../../apis/ModelDetails.api";
+import {
+	getModelPubmedIds,
+	getMolecularDataDownload,
+	getPublicationData,
+} from "../../../../apis/ModelDetails.api";
 import { CSVLink } from "react-csv";
 import CloseIcon from "../../../../components/CloseIcon/CloseIcon";
 import Tooltip from "../../../../components/Tooltip/Tooltip";
 import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
+import { useQueries, useQuery } from "react-query";
 
 interface IModelDetailsProps {
 	metadata: Metadata;
@@ -81,6 +86,7 @@ interface Metadata {
 	licenseName: string;
 	licenseUrl: string;
 	score: number;
+	pdcmModelId: number;
 }
 
 interface ExtLinks {
@@ -137,7 +143,6 @@ const ModelDetails = ({
 	drugDosing,
 	patientTreatment,
 	qualityData,
-	publications,
 	engraftments,
 }: IModelDetailsProps) => {
 	const NA_STRING = "N/A";
@@ -189,6 +194,26 @@ const ModelDetails = ({
 			})
 			.catch((error) => {});
 	};
+
+	const pdcmModelId = metadata.pdcmModelId || 0;
+	const pubmedIdsQuery = useQuery(["pubmed-ids-data", { pdcmModelId }], () =>
+		getModelPubmedIds(pdcmModelId)
+	);
+
+	const pubmedIds = pubmedIdsQuery.data || [];
+
+	const publicationsQuery = useQueries<Publication[]>(
+		pubmedIds.map((p: string) => {
+			return {
+				queryKey: ["publication-data", p],
+				queryFn: () => getPublicationData(p),
+			};
+		})
+	);
+
+	const publications: Publication[] = publicationsQuery
+		.map((q) => q.data as Publication)
+		.filter((d) => d !== undefined);
 
 	return (
 		<>
@@ -801,7 +826,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		drugDosing,
 		patientTreatment,
 		qualityData,
-		publications,
 	} = await getModelDetails(
 		params!.modelId as string,
 		params!.providerId as string
@@ -817,7 +841,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			drugDosing,
 			patientTreatment,
 			qualityData,
-			publications,
 		},
 	};
 };

@@ -24,18 +24,6 @@ const getModelDetails = async (modelId: string, providerId: string) => {
 	const drugDosing = await getModelDrugDosing(pdcmModelId, modelType);
 	const patientTreatment = await getPatientTreatment(pdcmModelId);
 	const qualityData = await getModelQualityData(pdcmModelId);
-	let hasPubmedIds = false;
-	let publications = [];
-	const pubmedIds = await getModelPubmedIds(pdcmModelId);
-	pubmedIds.forEach((id: string) => {
-		if (id) hasPubmedIds = true;
-	});
-	if (hasPubmedIds) {
-		publications = await Promise.all(
-			pubmedIds.map(async (p: string) => await getPublicationData(p))
-		);
-		publications = publications.filter((p) => p.title);
-	}
 
 	return {
 		// deconstruct metadata object so we dont pass more props than we need/should
@@ -55,6 +43,7 @@ const getModelDetails = async (modelId: string, providerId: string) => {
 			licenseName: metadata.licenseName ?? "",
 			licenseUrl: metadata.licenseUrl ?? "",
 			score: metadata.score ?? 0,
+			pdcmModelId,
 			modelId,
 			providerId,
 		},
@@ -65,7 +54,6 @@ const getModelDetails = async (modelId: string, providerId: string) => {
 		drugDosing,
 		patientTreatment,
 		qualityData,
-		publications,
 	};
 };
 
