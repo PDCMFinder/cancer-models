@@ -226,9 +226,13 @@ const Search: NextPage = () => {
 		}
 		if (filterValues.length) {
 			setHasSelection(true);
-			router.replace({
-				query: { ...router.query, filters: filterValues.join(" AND ") },
-			});
+			router.replace(
+				{
+					query: { ...router.query, filters: filterValues.join(" AND ") },
+				},
+				undefined,
+				{ scroll: false }
+			);
 		} else {
 			setHasSelection(false);
 			router.replace("/search", undefined, { shallow: true });
