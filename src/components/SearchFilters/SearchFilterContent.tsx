@@ -90,6 +90,8 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 								loadingMessage={() => "Loading data"}
 								noOptionsMessage={() => "Type to search"}
 								onChange={(_, actionMeta) => {
+									if (actionMeta.action === "pop-value") return;
+
 									let option = "",
 										action: onFilterChangeType["type"] = "add";
 
