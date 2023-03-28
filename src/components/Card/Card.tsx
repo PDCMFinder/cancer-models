@@ -1,3 +1,4 @@
+import { CSSProperties } from "react";
 import styles from "./Card.module.scss";
 
 interface ICardProps {
@@ -8,6 +9,7 @@ interface ICardProps {
 	contentClassName?: string;
 	footer?: JSX.Element;
 	footerClassName?: string;
+	style?: CSSProperties;
 }
 
 const Card = (props: ICardProps) => {
@@ -21,6 +23,7 @@ const Card = (props: ICardProps) => {
 	return (
 		<div
 			className={`${styles.Card} ${cardClassName ? cardClassName : ""}`.trim()}
+			style={props.style}
 		>
 			{header && (
 				<div className={`${styles.Card_header} ${headerClassName}`.trim()}>

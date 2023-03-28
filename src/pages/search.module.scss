@@ -1,24 +1,15 @@
-@import "../styles/mixins";
 @import "../styles/vars";
 
-.search {
-	&_filters {
-		&_card {
-			@include mediaOver("lg") {
-				height: 70vh;
-			}
-			&_content {
-				padding-top: $spacing-1;
-				padding-bottom: 20rem;
-			}
-		}
+.Search {
+	&_header {
+		background-color: $color-primary-primary;
+		background-image: url("../../public/national-cancer-institute-cT0SCB8pb04.jpg");
+		background-blend-mode: soft-light;
 	}
-	&_filter {
-		&_column {
-			max-width: 25%;
-		}
-		&-search {
-			max-width: 75%;
-		}
+	&_filterNotification {
+		height: 0.8em;
+		width: 0.8em;
+		background-color: $color-primary-tertiary;
+		border-radius: 500px;
 	}
 }

@@ -1,28 +1,84 @@
-import breakPoints from "../../utils/breakpoints";
-import useWindowDimensions from "../../hooks/useWindowDimensions";
-import ShowHide from "../ShowHide/ShowHide";
-import SearchFiltersDesktop from "./SearchFilters-desktop";
-import SearchFiltersMobile from "./SearchFilters-mobile";
-import { ISearchFiltersProps } from "../../../globalTypes";
-import Form from "../Form/Form";
+import Accordion from "../Accordion/Accordion";
+import SearchFilterContent from "./SearchFilterContent";
+import Card from "../Card/Card";
+import {
+	IFacetSidebarSelection,
+	IFacetSectionProps,
+} from "../../types/Facet.model";
+import { sortObjArrBy } from "../../utils/sortArrBy";
+import { useEffect, useState } from "react";
+import { onFilterChangeType } from "../../pages/search";
 
-// controls responsive change of component
-const Navbar = (props: ISearchFiltersProps) => {
-	const { windowWidth } = useWindowDimensions();
-	const bpLarge = breakPoints.large;
+interface ISearchFilters {
+	data: IFacetSectionProps[];
+	selection: IFacetSidebarSelection;
+	onFilterChange: (
+		facetId: string,
+		selection: string,
+		operator: string,
+		type: onFilterChangeType["type"]
+	) => void;
+}
+
+// AKA <FacetSection/>
+const SearchFilters = (props: ISearchFilters) => {
+	const [filterData, setFilterData] = useState<any>(props.data);
+
+	useEffect(() => {
+		setFilterData(
+			sortObjArrBy(filterData, ["model", "patient_tumour"], "key", true)
+		);
+	}, [props.data]);
 
 	return (
-		<>
-			<Form className="h-lg-100">
-				<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
-					<SearchFiltersDesktop filterData={props.filterData} />
-				</ShowHide>
-				<ShowHide hideOver={bpLarge} windowWidth={windowWidth || 0}>
-					<SearchFiltersMobile filterData={props.filterData} />
-				</ShowHide>
-			</Form>
-		</>
+		<Card
+			className="bg-lightGray bc-transparent overflow-visible"
+			contentClassName="py-3 px-2"
+		>
+			{filterData.map((facet: IFacetSectionProps) => {
+				let facetKey = facet.key,
+					facets = facet.facets,
+					isModelFacet = facetKey === "model";
+
+				// Order facets
+				if (isModelFacet) {
+					const modelFacetOrder = ["model_type"];
+					sortObjArrBy(facets, modelFacetOrder, "facetId");
+				}
+
+				const facetOptionsOrder = ["Not Specified", "Not Collected", "Other"];
+				facets.forEach((facetsFacet) => {
+					if (facetsFacet.options.length) {
+						sortObjArrBy(
+							facetsFacet.options,
+							facetOptionsOrder,
+							undefined,
+							false,
+							false
+						);
+					}
+				});
+
+				return (
+					<Accordion
+						buttonClassName="bg-gray"
+						key={facetKey}
+						id={facet.name}
+						contentClassName="mb-3"
+						open={isModelFacet}
+						content={
+							<SearchFilterContent
+								onFilterChange={props.onFilterChange}
+								data={facets}
+								facet={facet}
+								facetSelection={props.selection}
+							/>
+						}
+					/>
+				);
+			})}
+		</Card>
 	);
 };
 
-export default Navbar;
+export default SearchFilters;

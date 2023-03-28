@@ -1,13 +1,11 @@
 import type { NextPage } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import Button from "../components/Button/Button";
 import bannerImage from "../../public/national-cancer-institute-wUg8xhJ3aBs.jpg";
 import ShowHide from "../components/ShowHide/ShowHide";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import breakPoints from "../utils/breakpoints";
 import styles from "./index.module.scss";
-import Input from "../components/Input/Input";
 import Label from "../components/Input/Label";
 import DataCountCard from "../components/DataCountCard/DataCountCard";
 import CirclePacking from "../components/CirclePacking/CirclePacking";
@@ -15,6 +13,7 @@ import { useQuery } from "react-query";
 import { getCancerHierarchy, getModelCount } from "../apis/AggregatedData.api";
 import { useRouter } from "next/router";
 import Loader from "../components/Loader/Loader";
+import SearchBar from "../components/SearchBar/SearchBar";
 
 const Home: NextPage = () => {
 	const { windowWidth } = useWindowDimensions();
@@ -22,9 +21,7 @@ const Home: NextPage = () => {
 	let cancerHierarchyQuery = useQuery("cancerHierarchy", () => {
 		return getCancerHierarchy();
 	});
-	let modelCountQuery = useQuery("modelCountQuery", () => {
-		return getModelCount();
-	});
+	let modelCountQuery = useQuery("modelCount", () => getModelCount());
 	const router = useRouter();
 
 	return (
@@ -38,48 +35,38 @@ const Home: NextPage = () => {
 								alt="A scanning electron micrograph of the surface of human skin by National Cancer Institute"
 								priority
 								fill
-								sizes="50vw"
+								sizes="16vw"
 							/>
 						</div>
 					</ShowHide>
 					<div
-						className={`${styles.header_title} d-flex align-center py-5 py-lg-0`}
+						className={`${styles.header_title} flex-column d-flex py-5 py-lg-0`}
 					>
 						<h1 className="h2 mt-lg-1">
-							Largest open catalog of harmonised Patient-Derived Cancer Models
+							The largest open catalog of harmonised patient-derived cancer
+							models.
 						</h1>
+						<div className="col-12 col-lg-10">
+							<p>
+								Looking for PDX Finder? That&apos;s us! We have expanded to
+								organoids and cell lines and are now called CancerModels.Org.{" "}
+							</p>
+						</div>
 					</div>
 					<div
 						className={`${styles.header_searchBackground} bg-primary-primary`}
 					></div>
 					<div className={`${styles.header_search} py-5`}>
-						<form action="">
-							<Label
-								name="search"
-								className="h3 text-white"
-								label={`Search over ${
-									modelCountQuery.data
-										? parseFloat(modelCountQuery.data).toLocaleString()
-										: "6,998" //placeholder while we fetch api data
-								} cancer models`}
-							/>
-							<div className="d-flex flex-column flex-md-row mb-md-3">
-								<Input
-									type="text"
-									name="search"
-									placeholder="Cancer diagnosis eg. Melanoma"
-									className="mb-0"
-								/>
-							</div>
-						</form>
-						<div className="d-flex justify-content-end">
-							<Link
-								href="/search?advancedSearch"
-								className={`link-text-light ${styles.header_search_advancedSearch}`}
-							>
-								Advanced search
-							</Link>
-						</div>
+						<Label
+							name="search"
+							className="h3 text-white"
+							label={`Search over ${
+								modelCountQuery.data
+									? parseFloat(modelCountQuery.data).toLocaleString()
+									: "7,171" //placeholder while we fetch api data
+							} cancer models`}
+						/>
+						<SearchBar />
 					</div>
 				</div>
 			</header>
@@ -105,8 +92,8 @@ const Home: NextPage = () => {
 											onCircleClick={(circleId, circleDepth) => {
 												const searchPrefix =
 													circleDepth === 1
-														? `?facets=patient_tumour.cancer_system:`
-														: `?q=`;
+														? `?filters=cancer_system:`
+														: `?filters=search_terms:`;
 												const termSuffix = circleDepth === 1 ? "Cancer" : "";
 												const search = `${searchPrefix}${encodeURIComponent(
 													circleId + termSuffix
@@ -160,10 +147,14 @@ const Home: NextPage = () => {
 				<section className="bg-primary-tertiary">
 					<div className="container">
 						<div className="row align-center">
-							<div className="col-12 col-lg-6 offset-lg-1 text-center text-white">
-								<h2>Find the perfect model for your next project.</h2>
-								<h2>Explore and analyse the data.</h2>
-								<h2>Connect with model providers.</h2>
+							<div className="col-12 col-lg-8 offset-lg- text-center text-white">
+								<h1 className="h2 mb-5">
+									Find the right PDX, organoid and cell line patient-derived
+									cancer model for your next project.
+								</h1>
+								<h2 className="h3">Explore and analyse the data.</h2>
+								<h2 className="h3">Connect with model providers.</h2>
+								<h2 className="h3">All in one platform.</h2>
 								<Button
 									color="white"
 									priority="primary"
@@ -175,7 +166,9 @@ const Home: NextPage = () => {
 								</Button>
 							</div>
 							<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
-								<DataCountCard />
+								<div className="col-12 col-lg-3 col-xl-2 offset-lg-1 offset-xl-1">
+									<DataCountCard />
+								</div>
 							</ShowHide>
 						</div>
 					</div>

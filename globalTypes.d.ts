@@ -1,5 +1,3 @@
-import React from "react";
-
 const inputTypes = [
 	"button",
 	"checkbox",
@@ -47,6 +45,7 @@ export interface ILabelProps {
 
 export interface IInputProps {
 	name: string;
+	id?: string;
 	type: typeof inputTypes[number] | "textarea";
 	placeholder?: string;
 	className?: string;
@@ -56,10 +55,10 @@ export interface IInputProps {
 			| React.ChangeEvent<HTMLInputElement>
 			| React.ChangeEvent<HTMLTextAreaElement>
 	) => void;
-}
-
-export interface IArrowIconProps {
-	direction?: "up" | "right" | "down" | "left";
+	inputRef?: MutableRefObject<undefined>;
+	required?: boolean;
+	checked?: boolean;
+	defaultChecked?: boolean;
 }
 
 export interface ITabProps {
@@ -79,4 +78,17 @@ export interface ISearchFiltersProps {
 			facet_example?: string;
 		}[];
 	}[];
+}
+
+export interface ISearchResult {
+	patient_age: string;
+	patient_sex: string;
+	external_model_id: string;
+	model_type: string;
+	data_source: string;
+	histology: string;
+	primary_site: string;
+	collection_site: string;
+	tumour_type: string;
+	dataset_available: string[];
 }

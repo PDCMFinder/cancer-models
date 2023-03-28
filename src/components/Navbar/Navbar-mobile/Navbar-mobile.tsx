@@ -7,6 +7,8 @@ import { INavProps, IRoute } from "../../../../globalTypes";
 import ActiveLink from "../../ActiveLink/ActiveLink";
 import Link from "next/link";
 import styles from "./Navbar-mobile.module.scss";
+import { useQuery } from "react-query";
+import { getDataReleaseInformation } from "../../../apis/AggregatedData.api";
 
 const ADD = "add",
 	REMOVE = "remove";
@@ -14,6 +16,10 @@ const ADD = "add",
 const NavMobile = (props: INavProps) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const router = useRouter();
+
+	let releaseInfo = useQuery("releaseInfo", () => {
+		return getDataReleaseInformation();
+	});
 
 	// Close menu when changing page
 	useEffect(() => {
@@ -101,9 +107,15 @@ const NavMobile = (props: INavProps) => {
 							<div className="col">
 								{/* Placeholder, change for API information */}
 								<p className="text-small">
-									© 2017-2022
+									© 2017-
+									{new Date(releaseInfo.data?.date).getFullYear() || 2023}
 									<br />
-									Data Release 3.1 | 2022-12-07
+									{releaseInfo.data
+										? `Data Release ${releaseInfo.data.name
+												.replace("dr.", "")
+												.replace("dr", "")} | 
+								${new Date(releaseInfo.data.date).toISOString().substring(0, 10)}`
+										: null}
 								</p>
 							</div>
 						</div>

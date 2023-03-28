@@ -9,7 +9,6 @@
 	font-size: inherit;
 	text-decoration: none;
 	cursor: pointer;
-	display: inline-block;
 	background-color: $color-white;
 	line-height: 1;
 	color: $color-black;
@@ -67,5 +66,11 @@
 				}
 			}
 		}
+	}
+	&:disabled {
+		background-color: $color-lightGray !important;
+		color: darken($color-gray, 20%) !important;
+		border-color: currentColor !important;
+		cursor: default;
 	}
 }
