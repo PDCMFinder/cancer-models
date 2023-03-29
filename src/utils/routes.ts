@@ -1,4 +1,4 @@
-// children: if it has children, its parent; children of that item
+// children: if it has children, it is parent; children of that item
 export const routes = [
 	{ path: "/", name: "Home" },
 	{ path: "/search", name: "Search" },
@@ -9,17 +9,17 @@ export const routes = [
 		name: "About",
 		children: [
 			{
-				path: "/about/pdcm-finder",
-				name: "About PDCM Finder",
+				path: "/about",
+				name: "CancerModels.Org",
 			},
-			{
-				path: "/about/metadata-dictionary",
-				name: "Metadata Dictionary",
-			},
-			{
-				path: "/about/faq",
-				name: "FAQ",
-			},
+			// {
+			// 	path: "/about/metadata-dictionary",
+			// 	name: "Metadata Dictionary",
+			// },
+			// {
+			// 	path: "/about/faq",
+			// 	name: "FAQ",
+			// },
 			{
 				path: "/contact",
 				name: "Contact",

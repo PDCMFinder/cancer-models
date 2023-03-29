@@ -1,19 +1,25 @@
 @import "../../styles/vars";
 
+.Modal_backdrop {
+	background-color: rgba(0, 0, 0, 0.75);
+}
 .Modal {
-	z-index: 9999;
-	&_backdrop {
-		position: fixed;
-		background-color: rgba(0, 0, 0, 0.75);
-	}
+	z-index: 9999999999;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	min-height: min-content;
+	height: auto;
+	max-height: 100%;
 	&_content {
-		height: calc(100% - $spacing-2 * 2);
-		width: calc(100% - $spacing-2 * 2);
-		left: $spacing-2;
+		max-width: calc(100% - $spacing-2 * 2);
+		left: 50%;
+	}
+	&_content-center {
 		top: 50%;
-		transform: translateY(-50%);
-		@media screen and (min-width: $bp-lg) {
-			height: auto;
-		}
+		transform: translate(-50%, -50%);
+	}
+	&_content-top {
+		padding: $spacing-2 0;
+		transform: translateX(-50%);
 	}
 }

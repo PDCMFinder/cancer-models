@@ -1,51 +1,46 @@
 @import "../../../styles/vars";
+@import "../../../styles/mixins";
 
 .SearchResult {
-	background-color: $color-primary-tertiary;
-	color: $color-white;
+	background-color: $color-white;
 	transition: color 0.05s, background-color 0.4s;
+	h2 {
+		a {
+			color: $color-primary-primary;
+		}
+	}
+	a {
+		color: #426a8e;
+		&:hover {
+			color: $color-primary-primary;
+		}
+	}
+	> div {
+		padding: $spacing-2;
+	}
 	&:hover {
-		background-color: $color-primary-quaternary;
-		color: $color-primary-primary;
-		.SearchResult {
-			&_titleCard {
-				border-color: $color-primary-primary;
-				transition: border-color 0.3s;
-			}
-			&_metadata span,
-			&_availableData_title {
-				color: $color-primary-tertiary;
-			}
-		}
-	}
-	&_titleCard {
-		margin-bottom: 2rem;
-		overflow-wrap: break-word;
-		border-color: $color-primary-quaternary;
-		color: $color-primary-primary;
-		h2 {
-			font-size: 3rem;
-			width: calc(100% - 35px);
-		}
-		&_content {
-			padding: 0.5rem 1rem;
-		}
-	}
-	&_dataContent {
-		gap: $spacing-2;
-	}
-	&_modelID {
-		font-size: 2.5rem;
-		margin-bottom: 0.3rem;
-	}
-	&_metadata {
-		--col-gutter-x: 10px;
+		background-color: lighten($color-primary-quaternary, 12%);
 	}
 	&_metadata span,
 	&_availableData_title {
 		font-size: 1.3rem;
-		color: $color-primary-quaternary;
+		color: $color-primary-secondary;
 		font-family: $type-primary;
 		line-height: 1.2;
 	}
+	&_availableData_title {
+		@include mediaOver("md") {
+			width: 80%;
+		}
+	}
+}
+.dataAvailable_grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: auto auto auto;
+	gap: 20px 15px;
+	grid-template-areas:
+		". ."
+		". ."
+		". .";
 }

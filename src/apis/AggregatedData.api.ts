@@ -93,11 +93,19 @@ export async function getDataReleaseInformation() {
 }
 
 export async function getModelCount() {
-	let response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/search_index`);
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/search_index`,
+		{
+			headers: {
+				"Range-Unit": "items",
+				Range: "0-24",
+				Prefer: "count=exact",
+			},
+		}
+	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	console.log(response.headers);
 
 	return response.headers.get("Content-range")?.split("/")[1];
 }

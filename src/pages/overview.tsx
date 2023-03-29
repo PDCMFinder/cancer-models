@@ -1,13 +1,13 @@
 import { NextPage } from "next";
-import React from "react";
 import BarChart from "../components/BarChart/BarChart";
 import DonutChart from "../components/DonutChart/DonutChart";
 import ProviderMapChart from "../components/ProviderMapChart/ProviderMapChart";
 import SunBurstChart from "../components/SunBurstChart/SunBurstChart";
 import Features from "../../public/img/world_countries.json";
+import Button from "../components/Button/Button";
 
 function collapseEthnicity(
-	ethnicityList: Array<{ patient_ethnicity: string; count: number }>
+	ethnicityList: { patient_ethnicity: string; count: number }[]
 ) {
 	const ethnicityDictionary: any = Object.fromEntries(
 		Object.entries({
@@ -59,7 +59,7 @@ function collapseEthnicity(
 }
 
 function collapseAgeGroup(
-	ageGroupList: Array<{ patient_age: string; count: number }>
+	ageGroupList: { patient_age: string; count: number }[]
 ) {
 	const pediatricAgeGroups = ["0 - 23 months", "2 - 9", "10 - 19"];
 	const mappedAgeGroups: any = { pediatric: 0, adult: 0, "not specified": 0 };
@@ -84,12 +84,202 @@ const Overview: NextPage = () => {
 			<header className="bg-primary-primary text-white mb-5 py-5">
 				<div className="container">
 					<div className="row py-5">
-						<div className="col-12">
-							<h1 className="m-0">Data overview</h1>
+						<div className="col-12 col-lg-8">
+							<h1 className="m-0">
+								Find the right PDX, organoid or cell line patient-derived cancer
+								model for your next project.
+							</h1>
 						</div>
 					</div>
 				</div>
 			</header>
+			<section>
+				<div className="container">
+					<div className="row mb-5 align-center">
+						<div className="col-12 col-lg-6 text-center text-lg-left mb-5">
+							<h2>
+								Some title letting the user know about all the different models
+								and encouraging to explore them.
+							</h2>
+							<p>
+								Tempus nunc arcu in faucibus amet turpis molestie quam
+								elementum. Id a pretium nisl facilisis. Dui adipiscing tortor
+								fames sed ornare nunc cursus. Tempus ultricies massa feugiat
+								tortor porttitor ultrices nunc quam condimentum.
+							</p>
+						</div>
+						<div className="col-12 col-lg-5 offset-lg-1 mb-5">
+							<div style={{ height: "600px", width: "100%" }}>
+								<DonutChart
+									keyId="model_type"
+									data={[
+										{
+											model_type: "xenograft",
+											count: 4864,
+										},
+										{
+											model_type: "cell line",
+											count: 1525,
+										},
+										{
+											model_type: "organoid",
+											count: 351,
+										},
+										{
+											model_type: "other",
+											count: 277,
+										},
+									]}
+								/>
+							</div>
+						</div>
+					</div>
+					<div className="row mb-5 align-center">
+						<div className="col-12 col-lg-6 offset-lg-1 order-lg-1 text-center text-lg-left mb-5">
+							<h2>
+								Text about users being able to upload their own model data and
+								contribute to this statistics.
+							</h2>
+							<p>
+								Non diam velit porta velit tempor volutpat elit eleifend velit.
+								Etiam tellus aliquam blandit nunc nunc gravida tempus risus.
+								Tristique gravida gravida tortor fermentum tincidunt eu
+								sollicitudin. Platea amet nisl ac amet vel sapien magna.
+							</p>
+						</div>
+						<div className="col-12 col-lg-5 mb-5">
+							<div style={{ height: "600px" }}>
+								<BarChart
+									chartTitle="Models by top mutated gene"
+									onBarClick={(category) => {
+										return;
+									}}
+									rotateTicks={true}
+									data={collapseEthnicity([
+										{
+											patient_ethnicity: "African",
+											count: 26,
+										},
+										{
+											patient_ethnicity: "African American",
+											count: 17,
+										},
+										{
+											patient_ethnicity: "Asian",
+											count: 69,
+										},
+										{
+											patient_ethnicity: "Black",
+											count: 77,
+										},
+										{
+											patient_ethnicity: "Black Or African American",
+											count: 23,
+										},
+										{
+											patient_ethnicity:
+												"Black Or African American; Not Hispanic Or Latino",
+											count: 4,
+										},
+										{
+											patient_ethnicity: "Caucasian",
+											count: 604,
+										},
+										{
+											patient_ethnicity: "Eastasian",
+											count: 6,
+										},
+										{
+											patient_ethnicity: "East Asian",
+											count: 290,
+										},
+										{
+											patient_ethnicity: "European",
+											count: 182,
+										},
+										{
+											patient_ethnicity: "Hispanic",
+											count: 19,
+										},
+										{
+											patient_ethnicity: "Hispanic Or Latino",
+											count: 67,
+										},
+										{
+											patient_ethnicity: "Latino",
+											count: 1,
+										},
+										{
+											patient_ethnicity: "Mixed_or_unknown",
+											count: 14,
+										},
+										{
+											patient_ethnicity:
+												"Native Hawaiian Or Other Pacific Islander",
+											count: 2,
+										},
+										{
+											patient_ethnicity: "Not Hispanic Or Latino",
+											count: 919,
+										},
+										{
+											patient_ethnicity: "Other",
+											count: 8,
+										},
+										{
+											patient_ethnicity: "South Asian",
+											count: 2,
+										},
+										{
+											patient_ethnicity: "Southasianorhispanic",
+											count: 29,
+										},
+										{
+											patient_ethnicity: "White",
+											count: 931,
+										},
+										{
+											patient_ethnicity: "White; Hispanic Or Latino",
+											count: 2,
+										},
+										{
+											patient_ethnicity: "White; Not Hispanic Or Latino",
+											count: 1,
+										},
+										{
+											patient_ethnicity: "Unknown",
+											count: 733,
+										},
+									]).sort((a, b) => b.count - a.count)}
+									indexKey="patient_ethnicity"
+								/>
+							</div>
+						</div>
+					</div>
+					<div className="row">
+						<div className="col-12 text-center">
+							<Button
+								href="/submit"
+								priority="primary"
+								color="dark"
+								className="mb-1 mr-3"
+								htmlTag="a"
+							>
+								Submit model data
+							</Button>
+							<Button
+								href="/search"
+								priority="secondary"
+								color="dark"
+								className="mt-1 ml-3"
+								htmlTag="a"
+							>
+								Search all model data
+							</Button>
+						</div>
+					</div>
+				</div>
+			</section>
 			<section>
 				<div className="container">
 					<div className="row">
@@ -105,7 +295,7 @@ const Overview: NextPage = () => {
 					</div>
 					<div className="row">
 						<div className="col-12">
-							<h2>Data reports</h2>
+							<h2>More data reports</h2>
 						</div>
 					</div>
 					<div className="row">
@@ -163,27 +353,19 @@ const Overview: NextPage = () => {
 						</div>
 						<div className="col-12 col-md-6">
 							<div className="text-center">
-								<h3>Models by type</h3>
+								<h3>Models by gender</h3>
 							</div>
 							<div style={{ height: "600px" }}>
 								<DonutChart
-									keyId="model_type"
+									keyId="patient_sex"
 									data={[
 										{
-											model_type: "xenograft",
-											count: 4864,
+											patient_sex: "female",
+											count: 2967,
 										},
 										{
-											model_type: "cell line",
-											count: 1525,
-										},
-										{
-											model_type: "organoid",
-											count: 351,
-										},
-										{
-											model_type: "other",
-											count: 277,
+											patient_sex: "male",
+											count: 3750,
 										},
 									]}
 								/>
@@ -2186,365 +2368,6 @@ const Overview: NextPage = () => {
 										},
 									]}
 									indexKey="treatment"
-								/>
-							</div>
-						</div>
-					</div>
-					<div className="row">
-						<div className="col-12 col-md-6">
-							<div className="text-center">
-								<h3>Models by gender</h3>
-							</div>
-							<div style={{ height: "600px" }}>
-								<DonutChart
-									keyId="patient_sex"
-									data={[
-										{
-											patient_sex: "female",
-											count: 2967,
-										},
-										{
-											patient_sex: "male",
-											count: 3750,
-										},
-									]}
-								/>
-							</div>
-						</div>
-						<div className="col-12 col-md-6">
-							<div className="text-center">
-								<h3>Models by ethnicity</h3>
-							</div>
-							<div style={{ height: "600px" }}>
-								<BarChart
-									chartTitle="Models by top mutated gene"
-									onBarClick={(category) => {
-										return;
-									}}
-									rotateTicks={true}
-									data={collapseEthnicity([
-										{
-											patient_ethnicity: "African",
-											count: 26,
-										},
-										{
-											patient_ethnicity: "African American",
-											count: 17,
-										},
-										{
-											patient_ethnicity: "Asian",
-											count: 69,
-										},
-										{
-											patient_ethnicity: "Black",
-											count: 77,
-										},
-										{
-											patient_ethnicity: "Black Or African American",
-											count: 23,
-										},
-										{
-											patient_ethnicity:
-												"Black Or African American; Not Hispanic Or Latino",
-											count: 4,
-										},
-										{
-											patient_ethnicity: "Caucasian",
-											count: 604,
-										},
-										{
-											patient_ethnicity: "Eastasian",
-											count: 6,
-										},
-										{
-											patient_ethnicity: "East Asian",
-											count: 290,
-										},
-										{
-											patient_ethnicity: "European",
-											count: 182,
-										},
-										{
-											patient_ethnicity: "Hispanic",
-											count: 19,
-										},
-										{
-											patient_ethnicity: "Hispanic Or Latino",
-											count: 67,
-										},
-										{
-											patient_ethnicity: "Latino",
-											count: 1,
-										},
-										{
-											patient_ethnicity: "Mixed_or_unknown",
-											count: 14,
-										},
-										{
-											patient_ethnicity:
-												"Native Hawaiian Or Other Pacific Islander",
-											count: 2,
-										},
-										{
-											patient_ethnicity: "Not Hispanic Or Latino",
-											count: 919,
-										},
-										{
-											patient_ethnicity: "Other",
-											count: 8,
-										},
-										{
-											patient_ethnicity: "South Asian",
-											count: 2,
-										},
-										{
-											patient_ethnicity: "Southasianorhispanic",
-											count: 29,
-										},
-										{
-											patient_ethnicity: "White",
-											count: 931,
-										},
-										{
-											patient_ethnicity: "White; Hispanic Or Latino",
-											count: 2,
-										},
-										{
-											patient_ethnicity: "White; Not Hispanic Or Latino",
-											count: 1,
-										},
-										{
-											patient_ethnicity: "Unknown",
-											count: 733,
-										},
-									]).sort((a, b) => b.count - a.count)}
-									indexKey="patient_ethnicity"
-								/>
-							</div>
-						</div>
-					</div>
-					<div className="row">
-						<div className="col-12 col-md-12">
-							<div className="text-center">
-								<h3>Models by provider</h3>
-							</div>
-							<div style={{ height: "600px" }}>
-								<ProviderMapChart
-									features={Features as any}
-									data={[
-										{
-											id: "Amsterdam - Netherlands",
-											long: "52.377956",
-											lat: "4.897070",
-											color: "#000",
-											providers: [
-												{
-													id: "NKI",
-													name: "Netherlands Cancer Institute",
-													count: 7,
-												},
-											],
-										},
-										{
-											id: "Bar Harbour - USA",
-											long: "44.387699",
-											lat: "-68.212219",
-											color: "#000",
-											providers: [
-												{
-													id: "JAX",
-													name: "Jackson Laboratory",
-													count: 431,
-												},
-											],
-										},
-										{
-											id: "Barcelona - Spain",
-											long: "41.390205",
-											lat: "2.154007",
-											color: "#000",
-											providers: [
-												{
-													id: "VHIO-BC",
-													name: "Vall d’Hebron Institute of Oncology - Breast cancer",
-													count: 7,
-												},
-												{
-													id: "VHIO-CRC",
-													name: "Val d’Hebron Cancer Institute - Colorectal cancer",
-													count: 38,
-												},
-												{
-													id: "VHIO-PC",
-													name: "Vall d'Hebron Institute of Oncology - Pancreatic Cancer",
-													count: 28,
-												},
-											],
-										},
-										{
-											id: "Bethesda - USA",
-											long: "38.984653",
-											lat: "-77.094711",
-											color: "#000",
-											providers: [
-												{
-													id: "PDMR",
-													name: "NCI Patient-Derived Models Repository",
-													count: 1055,
-												},
-											],
-										},
-										{
-											id: "Cambridge - UK",
-											long: "52.205276",
-											lat: "0.119167",
-											color: "#000",
-											providers: [
-												{ id: "CMP", name: "Sanger Institute", count: 1561 },
-												//{ id: "SANG", name: "Sanger Institute", count: 0 },
-												{
-													id: "UOC-BC",
-													name: "Cancer Research UK Cambridge Institute",
-													count: 59,
-												},
-											],
-										},
-										{
-											id: "Cambridge - USA",
-											long: "42.365250",
-											lat: "-71.105011",
-											color: "#000",
-											providers: [
-												{
-													id: "DFCI-CPDM",
-													name: "The Center for Patient Derived Models at Dana Farber Cancer Institute",
-													count: 717,
-												},
-												// {
-												// 	id: "BROD",
-												// 	name: "Broad Institute",
-												// 	count: 0,
-												// },
-											],
-										},
-										// {
-										// 	id: "Chicago - USA",
-										// 	long: "41.881832",
-										// 	lat: "-87.623177",
-										// 	color: "#000",
-										// 	providers: [
-										// 		{
-										// 			id: "LurieChindrens",
-										// 			name: "Ann & Robert H Lurie Children's Hospital of Chicago",
-										// 			count: 0,
-										// 		},
-										// 	],
-										// },
-										// {
-										// 	id: "Cold Spring Harbor - USA",
-										// 	long: "40.861140",
-										// 	lat: "-73.451610",
-										// 	color: "#000",
-										// 	providers: [
-										// 		{
-										// 			id: "CSHL",
-										// 			name: "Cold Spring Harbor Laboratory",
-										// 			count: 0,
-										// 		},
-										// 	],
-										// },
-										{
-											id: "Groningen - Netherlands",
-											long: "53.219383",
-											lat: "6.566502",
-											color: "#000",
-											providers: [
-												{
-													id: "UMCG",
-													name: "University Medical Center Groningen",
-													count: 8,
-												},
-											],
-										},
-										{
-											id: "Houston, USA",
-											long: "29.749907",
-											lat: "-95.358421",
-											color: "#000",
-											providers: [
-												{
-													id: "MDAnderson",
-													name: "University of Texas MD Anderson Cancer Center",
-													count: 315,
-												},
-												// {
-												// 	id: "MD Anderson-CCH",
-												// 	name: "MD Anderson Children's Cancer Hospital",
-												// 	count: 0,
-												// },
-											],
-										},
-										{
-											id: "Leuven - Belgium",
-											long: "50.879844",
-											lat: "4.700518",
-											color: "#000",
-											providers: [
-												{
-													id: "TRACE",
-													name: "TRACE-PDTX",
-													count: 31,
-												},
-											],
-										},
-										// {
-										// 	id: "Lubbock - USA",
-										// 	long: "33.576698",
-										// 	lat: "-101.855072",
-										// 	color: "#000",
-										// 	providers: [
-										// 		{
-										// 			id: "TTUHSC",
-										// 			name: "Texas Tech University Health Sciences Center",
-										// 			count: 0,
-										// 		},
-										// 	],
-										// },
-										{
-											id: "Luxembourg",
-											long: "49.611622",
-											lat: "6.131935",
-											color: "#000",
-											providers: [
-												{
-													id: "LIH",
-													name: "Luxembourg Institute of Health - Gliomas",
-													count: 40,
-												},
-											],
-										},
-										{
-											id: "Manchester - UK",
-											long: "53.483959",
-											lat: "-2.244644",
-											color: "#000",
-											providers: [
-												{
-													id: "UOM-BC",
-													name: "University of Manchester Breast Centre",
-													count: 40,
-												},
-											],
-										},
-									]}
-									margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-									projectionTranslation={[0.7, 0.9]}
-									projectionRotation={[0, 0, 0]}
-									projectionScale={400}
-									enableGraticule={false}
-									borderWidth={0.5}
-									borderColor="#152538"
-									isInteractive={true}
 								/>
 							</div>
 						</div>

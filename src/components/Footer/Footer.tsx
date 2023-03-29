@@ -4,10 +4,26 @@ import { IRoute } from "../../../globalTypes";
 import ActiveLink from "../ActiveLink/ActiveLink";
 import styles from "./Footer.module.scss";
 import Link from "next/link";
+import { useQuery } from "react-query";
+import { getDataReleaseInformation } from "../../apis/AggregatedData.api";
 
-const Footer = () => {
+interface IFooterProps {
+	cookieConsentHeight: number;
+}
+interface IFooterProps {
+	cookieConsentHeight: number;
+}
+
+const Footer = (props: IFooterProps) => {
+	let releaseInfo = useQuery("releaseInfo", () => {
+		return getDataReleaseInformation();
+	});
+
 	return (
-		<footer className={`${styles.Footer} text-white`}>
+		<footer
+			className={`${styles.Footer} text-white`}
+			style={{ paddingBottom: `calc(${props.cookieConsentHeight}px + 3.5rem)` }}
+		>
 			<div className="container">
 				<div className={`row ${styles["Footer_row-main"]}`}>
 					<div className="col-12 col-lg-2">
@@ -62,9 +78,9 @@ const Footer = () => {
 										<ActiveLink
 											className="link-text-light"
 											activeClassName={styles["Footer_item-active"]}
-											href="/terms-of-service"
+											href="/terms-of-use"
 										>
-											Terms of Service
+											Terms of Use
 										</ActiveLink>
 									</li>
 									<li>
@@ -81,11 +97,10 @@ const Footer = () => {
 						</div>
 					</div>
 					<div className="col-12 col-md-7 col-lg-5 col-xl-4 offset-lg-1 offset-xl-3 d-flex flex-column justify-content-between">
-						{/* Replace with content from .md file? How to implement Link component in .md? */}
 						<p>
 							<Link
 								className="link-text-light"
-								href="https://google.com"
+								href="https://www.ebi.ac.uk/"
 								target="_blank"
 							>
 								EMBL-EBI
@@ -101,14 +116,14 @@ const Footer = () => {
 							</Link>{" "}
 							are co-developers of PDCM Finder. This work is supported by the
 							National Institutes of Health/National Cancer Institute U24
-							CA204781 01 (ended 31.08.2020), U24 CA253539 01 and R01 CA089713.
+							CA204781 01, U24 CA253539 01 and R01 CA089713.
 						</p>
 						<p className="mb-0">
 							<a
-								href="mailto:contact@cancermodels.org"
+								href="mailto:info@cancermodels.org"
 								className="link-text-light mt-2"
 							>
-								contact@cancermodels.org
+								info@cancermodels.org
 							</a>
 						</p>
 					</div>
@@ -116,10 +131,35 @@ const Footer = () => {
 				<div className="row">
 					<div className="col">
 						{/* Placeholder, change for API information */}
-						<p className="text-small text-center m-0">
-							© 2017-2022
+						<p className="text-small text-center">
+							© 2017-{new Date(releaseInfo.data?.date).getFullYear() || 2023}
 							<br />
-							Data Release 3.1 | 2022-12-07
+							{releaseInfo.data
+								? `Data Release ${releaseInfo.data.name
+										.replace("dr.", "")
+										.replace("dr", "")} | 
+								${new Date(releaseInfo.data.date).toISOString().substring(0, 10)}`
+								: null}
+						</p>
+						<p className="text-center">
+							All model and data submissions are made available under{" "}
+							<Link
+								target="_blank"
+								rel="noreferrer noopener"
+								href="https://creativecommons.org/share-your-work/public-domain/cc0/"
+								className="link-text-light"
+							>
+								CC0
+							</Link>{" "}
+							or{" "}
+							<Link
+								target="_blank"
+								rel="noreferrer noopener"
+								href="https://www.ebi.ac.uk/about/terms-of-use"
+								className="link-text-light"
+							>
+								EMBL-EBI terms of use.
+							</Link>
 						</p>
 					</div>
 				</div>

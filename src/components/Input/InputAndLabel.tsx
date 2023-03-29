@@ -3,6 +3,7 @@ import Label from "./Label";
 import { IInputProps, ILabelProps } from "../../../globalTypes";
 import styles from "./InputAndLabel.module.scss";
 import Button from "../Button/Button";
+import { RefObject } from "react";
 
 interface IInputAndLabel extends IInputProps, ILabelProps {
 	className?: string;
@@ -10,6 +11,7 @@ interface IInputAndLabel extends IInputProps, ILabelProps {
 	inputClassName?: string;
 	value?: string;
 	onChange?: IInputProps["onChange"];
+	inputRef?: RefObject<HTMLInputElement>;
 }
 
 const InputAndLabel = (props: IInputAndLabel) => {
@@ -25,7 +27,11 @@ const InputAndLabel = (props: IInputAndLabel) => {
 
 	return (
 		<div className={`${isAlternateLayout} ${className}`.trim()}>
-			<Label name={name} label={props.label} className={props.labelClassName} />
+			<Label
+				name={props.id ?? name}
+				label={props.label}
+				className={props.labelClassName}
+			/>
 			{/* TODO: When type is search, wrap input and button in form */}
 			<Input
 				name={name}
@@ -34,6 +40,11 @@ const InputAndLabel = (props: IInputAndLabel) => {
 				className={props.inputClassName}
 				onChange={props.onChange}
 				value={props.value}
+				checked={props.checked}
+				defaultChecked={props.defaultChecked}
+				id={props.id}
+				inputRef={props.inputRef && props.inputRef}
+				required={props.required}
 			/>
 			{type === "search" ? (
 				<>

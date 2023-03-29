@@ -2,30 +2,10 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { remark } from "remark";
-import html from "remark-html";
+import remarkHtml from "remark-html";
+import remarkGfm from "remark-gfm";
 
 const providerDirectory = path.join(process.cwd(), "./public/static/providers");
-
-export const getAllProvidersBasics = async () => {
-	const providersFiles = fs.readdirSync(providerDirectory);
-
-	return providersFiles.map((providerFile: string) => {
-		const fullPath = path.join(providerDirectory, `/${providerFile}`);
-		const fileContents = fs.readFileSync(fullPath, "utf8");
-		const matterResult = matter(fileContents);
-
-		return {
-			id: providerFile.replace(/\.md$/, "") as string,
-			content: matterResult.content as string,
-			parsedContent: "",
-			...(matterResult.data as {
-				abbreviation: string;
-				logo: string;
-				name: string;
-			}),
-		};
-	});
-};
 
 export const getAllProvidersId = () => {
 	const fileNames = fs.readdirSync(providerDirectory);
@@ -47,7 +27,8 @@ export const getProviderData = async (id: string) => {
 	const matterResult = matter(fileContents);
 
 	const processedContent = await remark()
-		.use(html)
+		.use(remarkHtml, { sanitize: true })
+		.use(remarkGfm)
 		.process(matterResult.content);
 	const contentHtml = processedContent.toString();
 

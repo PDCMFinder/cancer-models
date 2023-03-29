@@ -1,0 +1,21 @@
+import MdLayout from "../components/MdLayout/MdLayout";
+
+[comment]: # "Metadata"
+[comment]: # "Page title = h1 in banner"
+
+export const meta = {
+	pageTitle: "Terms of Use",
+};
+
+[comment]: # "Page content below"
+[comment]: # "Can include html tags"
+
+CancerModels.Org is a joint effort by the EMBL-EBI and the Jackson Laboratory. Please, check their terms of use and legal notice in order to follow them in the usage of the CancerModels.Org platform.
+
+[EMBL-EBI terms of use](https://www.ebi.ac.uk/about/terms-of-use)
+
+[The Jackson Laboratory terms of use](https://www.jax.org/terms-of-use)
+
+[comment]: # "End page content - do not edit below this line"
+
+export default ({ children }) => <MdLayout meta={meta}>{children}</MdLayout>;
