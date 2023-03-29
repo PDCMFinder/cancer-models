@@ -3,7 +3,7 @@ export const routes = [
 	{ path: "/", name: "Home" },
 	{ path: "/search", name: "Search" },
 	{ path: "/submit", name: "Submit Data" },
-	// { path: "/overview", name: "Data Overview" },
+	{ path: "/overview", name: "Data Overview" },
 	// { path: "/blog", name: "Blog" },
 	{
 		name: "About",

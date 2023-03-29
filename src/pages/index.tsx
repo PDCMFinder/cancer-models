@@ -155,7 +155,7 @@ const Home: NextPage = () => {
 								<h2 className="h3">Explore and analyse the data.</h2>
 								<h2 className="h3">Connect with model providers.</h2>
 								<h2 className="h3">All in one platform.</h2>
-								{/* <Button
+								<Button
 									color="white"
 									priority="primary"
 									htmlTag="a"
@@ -163,7 +163,7 @@ const Home: NextPage = () => {
 									className="mt-5"
 								>
 									Explore data overview
-								</Button> */}
+								</Button>
 							</div>
 							<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
 								<div className="col-12 col-lg-3 col-xl-2 offset-lg-1 offset-xl-1">
