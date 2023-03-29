@@ -50,11 +50,11 @@ const Contact: NextPage = () => {
 				<div className="container">
 					<div className="row">
 						<div className="col-12 col-md-8 offset-md-2">
-							<h2>PDCM Finder Feedback</h2>
+							<h2>CancerModels.Org Feedback</h2>
 							<p>
-								PDCM Finder is continuously developed in response to
+								CancerModels.Org is continuously developed in response to
 								community&apos;s needs. We need your feedback to improve and
-								refine the PDCM Finder.
+								refine the CancerModels.Org.
 							</p>
 						</div>
 					</div>
