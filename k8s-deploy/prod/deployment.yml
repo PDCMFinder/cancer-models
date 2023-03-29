@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: pdcm-web-ui
+  namespace: pdcm-web-ui
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: pdcm-web-ui
+    spec:
+      containers:
+        - name: pdcm-web-ui
+          image: "dockerhub.ebi.ac.uk/mouse-informatics/cancer-models:prod"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+      imagePullSecrets:
+        - name: regcred
