@@ -77,7 +77,7 @@ const Providers: NextPage<IProvidersProps> = ({
 												<Button
 													color="dark"
 													priority="primary"
-													href={`/search?facets=model.data_source:${provider.abbreviation}`}
+													href={`/search?filters=data_source:${provider.abbreviation}`}
 													htmlTag="a"
 												>
 													<>See all {provider.abbreviation} models</>
