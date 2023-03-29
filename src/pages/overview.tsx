@@ -5,6 +5,9 @@ import ProviderMapChart from "../components/ProviderMapChart/ProviderMapChart";
 import SunBurstChart from "../components/SunBurstChart/SunBurstChart";
 import Features from "../../public/img/world_countries.json";
 import Button from "../components/Button/Button";
+import { useQuery } from "react-query";
+import { getModelsByType } from "../apis/AggregatedData.api";
+import { capitalizeFirstLetter } from "../utils/dataUtils";
 
 function collapseEthnicity(
 	ethnicityList: { patient_ethnicity: string; count: number }[]
@@ -79,6 +82,9 @@ function collapseAgeGroup(
 }
 
 const Overview: NextPage = () => {
+	let modelsByTypeCountsQuery = useQuery("modelsByTypeCounts", () => {
+		return getModelsByType();
+	});
 	return (
 		<>
 			<header className="bg-primary-primary text-white mb-5 py-5">
@@ -112,24 +118,14 @@ const Overview: NextPage = () => {
 							<div style={{ height: "600px", width: "100%" }}>
 								<DonutChart
 									keyId="model_type"
-									data={[
-										{
-											model_type: "xenograft",
-											count: 4864,
-										},
-										{
-											model_type: "cell line",
-											count: 1525,
-										},
-										{
-											model_type: "organoid",
-											count: 351,
-										},
-										{
-											model_type: "other",
-											count: 277,
-										},
-									]}
+									data={modelsByTypeCountsQuery.data
+										?.filter((d) => d.modelType !== "other")
+										.map((d) => {
+											return {
+												model_type: capitalizeFirstLetter(d.modelType),
+												count: parseFloat(d.count).toLocaleString(),
+											};
+										})}
 								/>
 							</div>
 						</div>
