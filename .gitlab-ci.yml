@@ -48,7 +48,6 @@ stages:
 
 build_dev_image:
   stage: build-dev
-  concurrency: 1
   services:
     - name: $CI_REGISTRY/mouse-informatics/dind:latest
       alias: docker
@@ -83,7 +82,6 @@ build_dev_image:
 
 deploy-HH-WP-WEBADMIN-dev:
   stage: deploy-dev
-  concurrency: 1
   image: dtzar/helm-kubectl:2.13.0
   script:
     - kubectl config set-cluster local --server="${HH_WP_WEBADMIN_ENDPOINT}"
@@ -110,7 +108,6 @@ deploy-HH-WP-WEBADMIN-dev:
 
 build_prod_image:
   stage: build-prod
-  concurrency: 1
   services:
     - name: $CI_REGISTRY/mouse-informatics/dind:latest
       alias: docker
@@ -145,7 +142,6 @@ build_prod_image:
 
 deploy-HH-WP-WEBADMIN-prod:
   stage: deploy-prod
-  concurrency: 1
   image: dtzar/helm-kubectl:2.13.0
   script:
     - kubectl config set-cluster local --server="${HH_WP_WEBADMIN_ENDPOINT}"
@@ -172,7 +168,6 @@ deploy-HH-WP-WEBADMIN-prod:
 
 deploy-HX-WP-WEBADMIN-prod:
   stage: deploy-prod
-  concurrency: 1
   image: dtzar/helm-kubectl:2.13.0
   script:
     - kubectl config set-cluster local --server="${HX_WP_WEBADMIN_ENDPOINT}"
