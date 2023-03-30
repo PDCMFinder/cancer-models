@@ -1,7 +1,6 @@
 import { NextPage } from "next";
 import BarChart from "../components/BarChart/BarChart";
 import DonutChart from "../components/DonutChart/DonutChart";
-import ProviderMapChart from "../components/ProviderMapChart/ProviderMapChart";
 import SunBurstChart from "../components/SunBurstChart/SunBurstChart";
 import Features from "../../public/img/world_countries.json";
 import Button from "../components/Button/Button";
