@@ -75,9 +75,9 @@ build_dev_image:
     paths:
       - "$MOUNT_POINT/"
   rules:
-    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_COMMIT_BRANCH == "dev"
       when: always
-    - if: $CI_COMMIT_BRANCH =~ "main" && $CI_COMMIT_BRANCH =~ "dev"
+    - if: $CI_COMMIT_BRANCH =~ "dev"
       when: manual
 
 deploy-HH-WP-WEBADMIN-dev:
@@ -101,9 +101,9 @@ deploy-HH-WP-WEBADMIN-dev:
     - kubectl rollout status -f k8s-deploy/dev/deployment.yml
     - kubectl get pods,service,deploy,replicaset,ing
   rules:
-    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_COMMIT_BRANCH == "dev"
       when: always
-    - if: $CI_COMMIT_BRANCH =~ "main" && $CI_COMMIT_BRANCH =~ "dev"
+    - if: $CI_COMMIT_BRANCH =~ "dev"
       when: manual
 
 build_prod_image:
@@ -135,9 +135,9 @@ build_prod_image:
     paths:
       - "$MOUNT_POINT/"
   rules:
-    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_COMMIT_BRANCH == "main"
       when: always
-    - if: $CI_COMMIT_BRANCH =~ "main" && $CI_COMMIT_BRANCH =~ "dev"
+    - if: $CI_COMMIT_BRANCH =~ "main"
       when: manual
 
 deploy-HH-WP-WEBADMIN-prod:
@@ -187,7 +187,7 @@ deploy-HX-WP-WEBADMIN-prod:
     - kubectl rollout status -f k8s-deploy/prod/deployment.yml
     - kubectl get pods,service,deploy,replicaset,ing
   rules:
-    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_COMMIT_BRANCH == "main"
       when: always
-    - if: $CI_COMMIT_BRANCH =~ "main" && $CI_COMMIT_BRANCH =~ "dev"
+    - if: $CI_COMMIT_BRANCH =~ "main"
       when: manual
