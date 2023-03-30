@@ -115,17 +115,24 @@ const Overview: NextPage = () => {
 						</div>
 						<div className="col-12 col-lg-5 offset-lg-1 mb-5">
 							<div style={{ height: "600px", width: "100%" }}>
-								<DonutChart
-									keyId="model_type"
-									data={modelsByTypeCountsQuery.data
-										?.filter((d) => d.modelType !== "other")
-										.map((d) => {
-											return {
-												model_type: capitalizeFirstLetter(d.modelType),
-												count: parseFloat(d.count).toLocaleString(),
-											};
-										})}
-								/>
+								{modelsByTypeCountsQuery.data ? (
+									<DonutChart
+										keyId="model_type"
+										data={
+											modelsByTypeCountsQuery.data
+												? modelsByTypeCountsQuery.data
+														?.filter((d) => d.modelType !== "other")
+														.map((d) => {
+															return {
+																model_type: capitalizeFirstLetter(d.modelType),
+																count: d.count,
+															};
+														})
+														.sort((a: any, b: any) => a.count - b.count)
+												: []
+										}
+									/>
+								) : null}
 							</div>
 						</div>
 					</div>
