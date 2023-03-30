@@ -161,9 +161,9 @@ deploy-HH-WP-WEBADMIN-prod:
     - kubectl rollout status -f k8s-deploy/prod/deployment.yml
     - kubectl get pods,service,deploy,replicaset,ing
   rules:
-    - if: $CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_COMMIT_BRANCH == "main"
       when: always
-    - if: $CI_COMMIT_BRANCH =~ "main" && $CI_COMMIT_BRANCH =~ "dev"
+    - if: $CI_COMMIT_BRANCH =~ "main"
       when: manual
 
 deploy-HX-WP-WEBADMIN-prod:
