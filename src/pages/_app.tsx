@@ -116,6 +116,25 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
                   a.appendChild(r);
               })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
 				</Script>
+				{/* Google Analytics code */}
+				<Script
+					strategy="afterInteractive"
+					src="https://www.googletagmanager.com/gtag/js?id=G-34S5KH94SX"
+				/>
+				<Script
+					id="google-analytics"
+					strategy="afterInteractive"
+					dangerouslySetInnerHTML={{
+						__html: `
+               window.dataLayer = window.dataLayer || [];
+               function gtag(){dataLayer.push(arguments);}
+               gtag('js', new Date());
+               gtag('config', 'G-34S5KH94SX', {
+                  page_path: window.location.pathname,
+               });
+            `,
+					}}
+				/>
 				<style jsx global>{`
 					:root {
 						--type-primary: ${merriweather.style.fontFamily}, serif;
