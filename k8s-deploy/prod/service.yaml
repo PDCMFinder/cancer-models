@@ -10,7 +10,7 @@ spec:
     - protocol: TCP
       port: 3000
       targetPort: 3000
-      nodePort: 32201
+      nodePort: 32404
   selector:
     app: pdcm-web-ui
   type: NodePort
