@@ -3,34 +3,21 @@ import { memo } from "react";
 import GeoMapWithMarkers from "./GeoMapWithMarkers";
 import { BasicTooltip } from "@nivo/tooltip";
 import { MapMarkerTooltip } from "./MapMarkerTooltip";
+import MapTooltip from "./MapToolTip";
 
-const MapTooltip = memo(({ feature }: { feature: any }) => {
-	if (feature === undefined || feature.providers === undefined) return null;
+const ProviderMapChart: React.FC = (props: any) => (
+	<ResponsiveWrapper>
+		{({ width, height }) => (
+			<GeoMapWithMarkers
+				width={width}
+				height={height}
+				tooltip={MapTooltip}
+				layers={["features", "markers"]}
+				{...props}
+			/>
+		)}
+	</ResponsiveWrapper>
+);
 
-	return (
-		<MapMarkerTooltip
-			id={feature.id}
-			color={feature.color}
-			enableChip={false}
-			providers={feature.providers}
-		/>
-	);
-});
-
-const ProviderMapChart = (props: any) => {
-	return (
-		<ResponsiveWrapper>
-			{({ width, height }) => (
-				<GeoMapWithMarkers
-					width={width}
-					height={height}
-					tooltip={MapTooltip}
-					layers={["features", "markers"]}
-					{...props}
-				/>
-			)}
-		</ResponsiveWrapper>
-	);
-};
-
+ProviderMapChart.displayName = "ProviderMapChart";
 export default ProviderMapChart;

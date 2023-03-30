@@ -34,7 +34,7 @@ export const MapMarkerTooltip = memo<BasicTooltipProps>(
 						<strong>{id}</strong>
 					</p>
 					{providers.map((p) => (
-						<p>
+						<p key={p.name}>
 							{p.name}: <strong>{`${p.count}`}</strong>
 						</p>
 					))}
@@ -43,3 +43,7 @@ export const MapMarkerTooltip = memo<BasicTooltipProps>(
 		);
 	}
 );
+
+MapMarkerTooltip.displayName = "MapMarkerTooltip";
+
+export default MapMarkerTooltip;
