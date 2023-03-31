@@ -267,7 +267,7 @@ export async function getModelEngraftments(
 	pdcmModelId: number,
 	modelType: string
 ) {
-	if ((pdcmModelId !== 0 && !pdcmModelId) || modelType !== "xenograft") {
+	if ((pdcmModelId !== 0 && !pdcmModelId) || modelType !== "PDX") {
 		return [];
 	}
 	let response = await fetch(
@@ -321,7 +321,7 @@ export async function getModelDrugDosing(
 	pdcmModelId: number,
 	modelType: string
 ) {
-	if ((pdcmModelId !== 0 && !pdcmModelId) || modelType !== "xenograft") {
+	if ((pdcmModelId !== 0 && !pdcmModelId) || modelType !== "PDX") {
 		return [];
 	}
 	let response = await fetch(
