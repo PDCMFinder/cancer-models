@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import Image from "next/image";
 import Button from "../components/Button/Button";
 import bannerImage from "../../public/national-cancer-institute-wUg8xhJ3aBs.jpg";
@@ -15,13 +15,16 @@ import { useRouter } from "next/router";
 import Loader from "../components/Loader/Loader";
 import SearchBar from "../components/SearchBar/SearchBar";
 
-const Home: NextPage = () => {
+interface IHomeProps {
+	modelCount: string;
+}
+
+const Home = ({ modelCount }: IHomeProps) => {
 	const { windowWidth } = useWindowDimensions();
 	let bpLarge = breakPoints.large;
 	let cancerHierarchyQuery = useQuery("cancerHierarchy", () => {
 		return getCancerHierarchy();
 	});
-	let modelCountQuery = useQuery("modelCount", () => getModelCount());
 	const router = useRouter();
 
 	return (
@@ -61,9 +64,7 @@ const Home: NextPage = () => {
 							name="search"
 							className="h3 text-white"
 							label={`Search over ${
-								modelCountQuery.data
-									? parseFloat(modelCountQuery.data).toLocaleString()
-									: "7,171" //placeholder while we fetch api data
+								modelCount ? parseFloat(modelCount).toLocaleString() : "7,091" // fallback placeholder
 							} cancer models`}
 						/>
 						<SearchBar />
@@ -179,3 +180,13 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getStaticProps: GetStaticProps = async () => {
+	let modelCount = await getModelCount();
+
+	return {
+		props: {
+			modelCount,
+		},
+	};
+};

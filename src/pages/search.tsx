@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import SearchResults from "../components/SearchResults/SearchResults";
 import Select from "../components/Input/Select";
 import React, { useEffect, useReducer, useState } from "react";
@@ -26,6 +26,10 @@ import { createPortal } from "react-dom";
 import Card from "../components/Card/Card";
 import CloseIcon from "../components/CloseIcon/CloseIcon";
 
+interface ISearchProps {
+	modelCount: string;
+}
+
 export interface onFilterChangeType {
 	type: "add" | "remove" | "clear" | "toggleOperator" | "init";
 }
@@ -42,7 +46,7 @@ const sortByOptions = [
 	],
 	resultsPerPage = 10;
 
-const Search: NextPage = () => {
+const Search = ({ modelCount }: ISearchProps) => {
 	const { windowWidth = 0 } = useWindowDimensions();
 	const bpLarge = breakPoints.large;
 	const [showFilters, setShowFilters] = useState(false);
@@ -241,7 +245,6 @@ const Search: NextPage = () => {
 		}
 	}, [searchFilterState]);
 
-	let modelCountQuery = useQuery("modelCount", () => getModelCount());
 	let totalResults = searchResultsQuery.data ? searchResultsQuery.data[0] : 1;
 
 	const ClearFilterButtonComponent = (
@@ -311,9 +314,7 @@ const Search: NextPage = () => {
 							<h1 className="h2 text-white text-center mt-0">
 								Search over{" "}
 								{
-									modelCountQuery.data
-										? parseFloat(modelCountQuery.data).toLocaleString()
-										: "7,171" //placeholder while we fetch api data
+									modelCount ? parseFloat(modelCount).toLocaleString() : "7,091" // fallback placeholder
 								}{" "}
 								cancer models
 							</h1>
@@ -439,3 +440,13 @@ const Search: NextPage = () => {
 };
 
 export default Search;
+
+export const getStaticProps: GetStaticProps = async () => {
+	let modelCount = await getModelCount();
+
+	return {
+		props: {
+			modelCount,
+		},
+	};
+};
