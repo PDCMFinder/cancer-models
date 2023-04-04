@@ -7,8 +7,6 @@ import {
 	getModelDrugDosing,
 	getPatientTreatment,
 	getModelQualityData,
-	getModelPubmedIds,
-	getPublicationData,
 } from "../apis/ModelDetails.api";
 
 const getModelDetails = async (modelId: string, providerId: string) => {

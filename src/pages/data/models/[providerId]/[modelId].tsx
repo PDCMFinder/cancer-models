@@ -57,6 +57,13 @@ export interface MolecularData {
 	platformName: string;
 	dataAvailability: "TRUE" | "FALSE";
 	dataSource: string;
+	externalDbLinks: ExternalDbLinks[];
+}
+
+interface ExternalDbLinks {
+	column: string;
+	link: string;
+	resource: string;
 }
 
 export interface QualityData {
@@ -554,6 +561,10 @@ const ModelDetails = ({
 															const sampleType = data.xenograftSampleId
 																? "Engrafted Tumour"
 																: "Patient Tumour";
+															const rawDataExternalLink =
+																data.externalDbLinks?.find(
+																	(data) => data.column === "raw_data_url"
+																)?.link;
 
 															return (
 																<tr key={data.id}>
@@ -598,7 +609,7 @@ const ModelDetails = ({
 																	<td>
 																		{data.rawDataUrl ? (
 																			<a
-																				href={data.rawDataUrl.split(",")[1]}
+																				href={rawDataExternalLink}
 																				target="_blank"
 																				rel="noopener noreferrer"
 																			>
