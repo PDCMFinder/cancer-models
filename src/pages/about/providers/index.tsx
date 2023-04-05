@@ -77,7 +77,10 @@ const Providers: NextPage<IProvidersProps> = ({
 												<Button
 													color="dark"
 													priority="primary"
-													href={`/search?filters=data_source:${provider.abbreviation}`}
+													href={`/search?filters=data_source:${provider.abbreviation.replace(
+														" ",
+														"-"
+													)}`}
 													htmlTag="a"
 												>
 													<>See all {provider.abbreviation} models</>
