@@ -166,6 +166,9 @@ img {
 	&-auto {
 		height: auto;
 	}
+	&-fit {
+		height: fit-content;
+	}
 	@include mediaOver("lg") {
 		&-lg {
 			&-100 {
