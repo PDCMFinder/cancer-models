@@ -352,7 +352,7 @@ const Search = ({ modelCount }: ISearchProps) => {
 												? totalResults
 												: (currentPage - 1) * resultsPerPage + resultsPerPage
 										} 
-										of ${totalResults} results`}
+										of ${totalResults.toLocaleString()} results`}
 									</p>
 								</div>
 								<div className="col-12 col-md-6">
