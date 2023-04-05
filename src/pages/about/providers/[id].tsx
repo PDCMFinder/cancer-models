@@ -4,6 +4,7 @@ import { getAllProvidersId, getProviderData } from "../../../utils/providers";
 import { GetStaticProps, GetStaticPaths } from "next";
 import Image from "next/image";
 import Button from "../../../components/Button/Button";
+import Head from "next/head";
 
 interface IProviderProps {
 	providerData: {
@@ -19,6 +20,9 @@ const Provider: NextPage<IProviderProps> = ({
 }: IProviderProps) => {
 	return (
 		<>
+			<Head>
+				<title>{`CancerModels.Org - ${providerData.name}`}</title>
+			</Head>
 			<section>
 				<div className="container">
 					<div className="row mb-5 align-center">
