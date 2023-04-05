@@ -210,6 +210,9 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 											columnsToDisplay.map((i) => i.key).includes(k)
 										)
 										.map((key, j) => {
+											const columnLinks = row.external_db_links?.filter(
+												(l) => l.column === key
+											);
 											const validKey =
 												key === "hgnc_symbol" && !row[key]
 													? "non_harmonised_symbol"
@@ -220,6 +223,24 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 											return (
 												<td key={`page-${currentPage}-row-${i}-column-${j}`}>
 													{columnContent}
+													{
+														<>
+															<br />
+															{columnLinks?.length
+																? columnLinks.map((l, k) => (
+																		<span key={k}>
+																			<a
+																				href={l.link}
+																				target="_blank"
+																				rel="noopener noreferrer"
+																			>
+																				{l.resource}
+																			</a>{" "}
+																		</span>
+																  ))
+																: null}
+														</>
+													}
 												</td>
 											);
 										})}
