@@ -71,8 +71,13 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 		<>
 			<QueryClientProvider client={queryClient}>
 				<Head>
-					<title>Cancer Models Finder</title>
-					<meta name="description" content="Patient Derived Cancer Models" />
+					<title>
+						CancerModels.Org - Find PDX, organoid and cell line cancer models
+					</title>
+					<meta
+						name="description"
+						content="The largest open catalog of harmonised patient-derived cancer models. Find the right PDX, organoid and cell line patient-derived cancer model for your next project."
+					/>
 					<meta
 						name="viewport"
 						content="width=device-width, initial-scale=1.0"

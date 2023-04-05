@@ -21,6 +21,7 @@ import CloseIcon from "../../../../components/CloseIcon/CloseIcon";
 import Tooltip from "../../../../components/Tooltip/Tooltip";
 import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
 import { useQueries, useQuery } from "react-query";
+import Head from "next/head";
 
 interface IModelDetailsProps {
 	metadata: Metadata;
@@ -224,6 +225,13 @@ const ModelDetails = ({
 
 	return (
 		<>
+			{/* metadata */}
+			<Head>
+				<title>
+					{`CancerModels.Org - ${metadata.modelId} - ${metadata.histology} - ${metadata.modelType}`}
+				</title>
+			</Head>
+
 			<header className="bg-primary-primary text-white py-5">
 				<div className="container">
 					<div className="row align-center py-5 pb-lg-0 text-capitalize">
