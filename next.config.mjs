@@ -13,11 +13,6 @@ const nextConfig = {
 	reactStrictMode: true,
 	pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
 	swcMinify: true,
-	experimental: {
-		fontLoaders: [
-			{ loader: "@next/font/google", options: { subsets: ["latin"] } },
-		],
-	},
 	output: "standalone",
 };
 

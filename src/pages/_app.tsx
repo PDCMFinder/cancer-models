@@ -22,9 +22,13 @@ const USERNAVIGATION_MOUSE = "userNavigation-mouse",
 
 const merriweather = Merriweather({
 	weight: "400",
+	subsets: ["latin"],
+	display: "swap",
 });
 const spaceMono = Space_Mono({
 	weight: ["400", "700"],
+	subsets: ["latin"],
+	display: "swap",
 });
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
