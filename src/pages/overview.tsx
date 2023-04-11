@@ -102,54 +102,197 @@ const Overview: NextPage = () => {
 				<div className="container">
 					<div className="row mb-5 align-center">
 						<div className="col-12 col-lg-6 text-center text-lg-left mb-5">
-							<h2>
-								Some title letting the user know about all the different models
-								and encouraging to explore them.
-							</h2>
-							<p>
-								Tempus nunc arcu in faucibus amet turpis molestie quam
-								elementum. Id a pretium nisl facilisis. Dui adipiscing tortor
-								fames sed ornare nunc cursus. Tempus ultricies massa feugiat
-								tortor porttitor ultrices nunc quam condimentum.
-							</p>
+							<h2>Discover Models</h2>
+							<ul>
+								<li>Detailed annotations including Tissue and Cancer type</li>{" "}
+								<li>Advanced filters for model selection</li>
+								<li>Links to originating model source</li>
+							</ul>
+							<a>Browse all models</a>
 						</div>
-						<div className="col-12 col-lg-5 offset-lg-1 mb-5">
+						<div className="col-12 col-lg-5 mb-5">
 							<div style={{ height: "600px", width: "100%" }}>
 								{modelsByTypeCountsQuery.data ? (
 									<DonutChart
-										keyId="model_type"
-										data={
-											modelsByTypeCountsQuery.data
-												? modelsByTypeCountsQuery.data
-														?.filter((d) => d.modelType !== "other")
-														.map((d) => {
-															return {
-																model_type: capitalizeFirstLetter(d.modelType),
-																count: d.count,
-															};
-														})
-														.sort((a: any, b: any) => a.count - b.count)
-												: []
-										}
+										keyId="primary_site"
+										data={[
+											{
+												primary_site: "lung",
+												count: 787,
+											},
+											{
+												primary_site: "breast",
+												count: 443,
+											},
+											{
+												primary_site: "colon",
+												count: 440,
+											},
+											{
+												primary_site: "not provided",
+												count: 429,
+											},
+											{
+												primary_site: "digestive/gastrointestinal",
+												count: 423,
+											},
+											{
+												primary_site: "skin",
+												count: 318,
+											},
+											{
+												primary_site: "pancreas",
+												count: 316,
+											},
+											{
+												primary_site: "haematopoietic and lymphoid",
+												count: 292,
+											},
+											{
+												primary_site: "large intestine",
+												count: 240,
+											},
+											{
+												primary_site: "ovary",
+												count: 193,
+											},
+										]}
 									/>
 								) : null}
 							</div>
 						</div>
 					</div>
 					<div className="row mb-5 align-center">
-						<div className="col-12 col-lg-6 offset-lg-1 order-lg-1 text-center text-lg-left mb-5">
-							<h2>
-								Text about users being able to upload their own model data and
-								contribute to this statistics.
-							</h2>
-							<p>
-								Non diam velit porta velit tempor volutpat elit eleifend velit.
-								Etiam tellus aliquam blandit nunc nunc gravida tempus risus.
-								Tristique gravida gravida tortor fermentum tincidunt eu
-								sollicitudin. Platea amet nisl ac amet vel sapien magna.
-							</p>
+						<div className="col-12 col-lg-6 order-lg-1 text-center text-lg-left mb-5">
+							<h2>Explore Genetic features</h2>
+							<ul>
+								<li>Find models with specific mutations</li>
+								<li>Links to cancer annotation resources</li>
+								<li>Mutation, expression and other molecular datasets</li>
+							</ul>
 						</div>
-						<div className="col-12 col-lg-5 mb-5">
+						<div className="col-12 col-lg-6 mb-5">
+							<div style={{ height: "600px" }}>
+								<BarChart
+									chartTitle="Models by top mutated gene"
+									onBarClick={(category) => {
+										return;
+									}}
+									data={[
+										{
+											mutated_gene: "TP53",
+											count: 2260,
+										},
+										{
+											mutated_gene: "TTN",
+											count: 1517,
+										},
+										{
+											mutated_gene: "MUC16",
+											count: 1346,
+										},
+										{
+											mutated_gene: "KMT2C",
+											count: 1321,
+										},
+										{
+											mutated_gene: "MUC4",
+											count: 1234,
+										},
+										{
+											mutated_gene: "APC",
+											count: 1111,
+										},
+										{
+											mutated_gene: "MUC3A",
+											count: 987,
+										},
+										{
+											mutated_gene: "KRAS",
+											count: 886,
+										},
+										{
+											mutated_gene: "MUC17",
+											count: 865,
+										},
+										{
+											mutated_gene: "PABPC1",
+											count: 856,
+										},
+										{
+											mutated_gene: "GPRIN2",
+											count: 816,
+										},
+										{
+											mutated_gene: "FCGBP",
+											count: 778,
+										},
+										{
+											mutated_gene: "FLG",
+											count: 778,
+										},
+										{
+											mutated_gene: "USH2A",
+											count: 777,
+										},
+										{
+											mutated_gene: "MUC5B",
+											count: 774,
+										},
+									]}
+									rotateTicks={true}
+									indexKey="mutated_gene"
+								/>
+							</div>
+						</div>
+					</div>
+					<div className="row">
+						<div className="col-12 text-center">
+							<Button
+								href="/submit"
+								priority="primary"
+								color="dark"
+								className="mb-1 mr-3"
+								htmlTag="a"
+							>
+								Submit model data
+							</Button>
+							<Button
+								href="/search"
+								priority="secondary"
+								color="dark"
+								className="mt-1 ml-3"
+								htmlTag="a"
+							>
+								Search all model data
+							</Button>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section>
+				<div className="container">
+					<div className="row">
+						<div className="col-12">
+							<h2>Current data release</h2>
+							<ul>
+								<li>Data release version: 3.1</li>
+								<li>Date of publication: 07/02/2023</li>
+								<li>Number of models: 7017</li>
+								<li>Number of providers: 27</li>
+							</ul>
+						</div>
+					</div>
+					<div className="row">
+						<div className="col-12">
+							<h2>More data reports</h2>
+						</div>
+					</div>
+					<div className="row">
+						<div className="col-12 col-md-6">
+							<div className="text-center">
+								<h3>Models by reported ethnicity</h3>
+							</div>
 							<div style={{ height: "600px" }}>
 								<BarChart
 									chartTitle="Models by top mutated gene"
@@ -257,105 +400,71 @@ const Overview: NextPage = () => {
 								/>
 							</div>
 						</div>
-					</div>
-					<div className="row">
-						<div className="col-12 text-center">
-							<Button
-								href="/submit"
-								priority="primary"
-								color="dark"
-								className="mb-1 mr-3"
-								htmlTag="a"
-							>
-								Submit model data
-							</Button>
-							<Button
-								href="/search"
-								priority="secondary"
-								color="dark"
-								className="mt-1 ml-3"
-								htmlTag="a"
-							>
-								Search all model data
-							</Button>
-						</div>
-					</div>
-				</div>
-			</section>
-			<section>
-				<div className="container">
-					<div className="row">
-						<div className="col-12">
-							<h2>Current data release</h2>
-							<ul>
-								<li>Data release version: 3.1</li>
-								<li>Date of publication: 07/02/2023</li>
-								<li>Number of models: 7017</li>
-								<li>Number of providers: 27</li>
-							</ul>
-						</div>
-					</div>
-					<div className="row">
-						<div className="col-12">
-							<h2>More data reports</h2>
-						</div>
-					</div>
-					<div className="row">
 						<div className="col-12 col-md-6">
 							<div className="text-center">
-								<h3>Models by primary site</h3>
+								<h3>Models by patient age</h3>
 							</div>
 							<div style={{ height: "600px" }}>
 								<DonutChart
-									keyId="primary_site"
-									data={[
+									data={collapseAgeGroup([
 										{
-											primary_site: "lung",
-											count: 787,
+											patient_age: "0 - 23 months",
+											count: 48,
 										},
 										{
-											primary_site: "breast",
-											count: 443,
+											patient_age: "2 - 9",
+											count: 201,
 										},
 										{
-											primary_site: "colon",
-											count: 440,
+											patient_age: "10 - 19",
+											count: 201,
 										},
 										{
-											primary_site: "not provided",
-											count: 429,
+											patient_age: "20 - 29",
+											count: 144,
 										},
 										{
-											primary_site: "digestive/gastrointestinal",
-											count: 423,
+											patient_age: "30 - 39",
+											count: 274,
 										},
 										{
-											primary_site: "skin",
-											count: 318,
+											patient_age: "40 - 49",
+											count: 730,
 										},
 										{
-											primary_site: "pancreas",
-											count: 316,
+											patient_age: "50 - 59",
+											count: 1299,
 										},
 										{
-											primary_site: "haematopoietic and lymphoid",
-											count: 292,
+											patient_age: "60 - 69",
+											count: 1538,
 										},
 										{
-											primary_site: "large intestine",
-											count: 240,
+											patient_age: "70 - 79",
+											count: 999,
 										},
 										{
-											primary_site: "ovary",
-											count: 193,
+											patient_age: "80 - 89",
+											count: 273,
 										},
-									]}
+										{
+											patient_age: "90 - 99",
+											count: 4,
+										},
+										{
+											patient_age: "Not specified",
+											count: 1306,
+										},
+									])}
+									keyId="patient_age"
 								/>
 							</div>
 						</div>
+					</div>
+					<div className="row">
 						<div className="col-12 col-md-6">
 							<div className="text-center">
-								<h3>Models by gender</h3>
+								<h3>Models by patient gender</h3>
 							</div>
 							<div style={{ height: "600px" }}>
 								<DonutChart
@@ -373,13 +482,41 @@ const Overview: NextPage = () => {
 								/>
 							</div>
 						</div>
+						<div className="col-12 col-md-6">
+							<div className="text-center">
+								<h3>Models by tumour type</h3>
+							</div>
+							<div style={{ height: "600px" }}>
+								<DonutChart
+									keyId="tumour_type"
+									data={[
+										{
+											tumour_type: "Primary",
+											count: 2398,
+										},
+										{
+											tumour_type: "Metastatic",
+											count: 2370,
+										},
+										{
+											tumour_type: "Recurrent",
+											count: 374,
+										},
+										{
+											tumour_type: "Refractory",
+											count: 7,
+										},
+									]}
+								/>
+							</div>
+						</div>
 					</div>
 					<div className="row">
-						<div className="col-12 col-md-6">
+						<div className="col-12 col-md-12">
 							<div className="text-center">
 								<h3>Models by anatomical system & diagnosis</h3>
 							</div>
-							<div style={{ height: "600px" }}>
+							<div style={{ height: "800px" }}>
 								<SunBurstChart
 									keyId="name"
 									data={{
@@ -2088,215 +2225,10 @@ const Overview: NextPage = () => {
 								/>
 							</div>
 						</div>
-						<div className="col-12 col-md-6">
-							<div className="text-center">
-								<h3>Models by available data</h3>
-							</div>
-							<div style={{ height: "600px" }}>
-								<DonutChart
-									keyId="dataset_availability"
-									data={[
-										{
-											dataset_availability: "copy number alteration",
-											count: 2484,
-										},
-										{
-											dataset_availability: "cytogenetics",
-											count: 151,
-										},
-										{
-											dataset_availability: "dosing studies",
-											count: 570,
-										},
-										{
-											dataset_availability: "expression",
-											count: 2230,
-										},
-										{
-											dataset_availability: "mutation",
-											count: 3761,
-										},
-										{
-											dataset_availability: "patient treatment",
-											count: 675,
-										},
-										{
-											dataset_availability: "publication",
-											count: 1186,
-										},
-									]}
-								/>
-							</div>
-						</div>
 					</div>
+
 					<div className="row">
-						<div className="col-12 col-md-6">
-							<div className="text-center">
-								<h3>Most mutated genes</h3>
-							</div>
-							<div style={{ height: "600px" }}>
-								<BarChart
-									chartTitle="Models by top mutated gene"
-									onBarClick={(category) => {
-										return;
-									}}
-									data={[
-										{
-											mutated_gene: "TP53",
-											count: 2260,
-										},
-										{
-											mutated_gene: "TTN",
-											count: 1517,
-										},
-										{
-											mutated_gene: "MUC16",
-											count: 1346,
-										},
-										{
-											mutated_gene: "KMT2C",
-											count: 1321,
-										},
-										{
-											mutated_gene: "MUC4",
-											count: 1234,
-										},
-										{
-											mutated_gene: "APC",
-											count: 1111,
-										},
-										{
-											mutated_gene: "MUC3A",
-											count: 987,
-										},
-										{
-											mutated_gene: "KRAS",
-											count: 886,
-										},
-										{
-											mutated_gene: "MUC17",
-											count: 865,
-										},
-										{
-											mutated_gene: "PABPC1",
-											count: 856,
-										},
-										{
-											mutated_gene: "GPRIN2",
-											count: 816,
-										},
-										{
-											mutated_gene: "FCGBP",
-											count: 778,
-										},
-										{
-											mutated_gene: "FLG",
-											count: 778,
-										},
-										{
-											mutated_gene: "USH2A",
-											count: 777,
-										},
-										{
-											mutated_gene: "MUC5B",
-											count: 774,
-										},
-									]}
-									indexKey="mutated_gene"
-								/>
-							</div>
-						</div>
-						<div className="col-12 col-md-6">
-							<div className="text-center">
-								<h3>Models by tumour type</h3>
-							</div>
-							<div style={{ height: "600px" }}>
-								<DonutChart
-									keyId="tumour_type"
-									data={[
-										{
-											tumour_type: "Primary",
-											count: 2398,
-										},
-										{
-											tumour_type: "Metastatic",
-											count: 2370,
-										},
-										{
-											tumour_type: "Recurrent",
-											count: 374,
-										},
-										{
-											tumour_type: "Refractory",
-											count: 7,
-										},
-									]}
-								/>
-							</div>
-						</div>
-					</div>
-					<div className="row">
-						<div className="col-12 col-md-6">
-							<div className="text-center">
-								<h3>Models by age</h3>
-							</div>
-							<div style={{ height: "600px" }}>
-								<DonutChart
-									data={collapseAgeGroup([
-										{
-											patient_age: "0 - 23 months",
-											count: 48,
-										},
-										{
-											patient_age: "2 - 9",
-											count: 201,
-										},
-										{
-											patient_age: "10 - 19",
-											count: 201,
-										},
-										{
-											patient_age: "20 - 29",
-											count: 144,
-										},
-										{
-											patient_age: "30 - 39",
-											count: 274,
-										},
-										{
-											patient_age: "40 - 49",
-											count: 730,
-										},
-										{
-											patient_age: "50 - 59",
-											count: 1299,
-										},
-										{
-											patient_age: "60 - 69",
-											count: 1538,
-										},
-										{
-											patient_age: "70 - 79",
-											count: 999,
-										},
-										{
-											patient_age: "80 - 89",
-											count: 273,
-										},
-										{
-											patient_age: "90 - 99",
-											count: 4,
-										},
-										{
-											patient_age: "Not specified",
-											count: 1306,
-										},
-									])}
-									keyId="patient_age"
-								/>
-							</div>
-						</div>
-						<div className="col-12 col-md-6">
+						<div className="col-12 col-md-12">
 							<div className="text-center">
 								<h3>Most used drugs</h3>
 							</div>
