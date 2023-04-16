@@ -7,6 +7,7 @@ import Button from "../components/Button/Button";
 import { useQuery } from "react-query";
 import { getModelsByType } from "../apis/AggregatedData.api";
 import { capitalizeFirstLetter } from "../utils/dataUtils";
+import Link from "next/link";
 
 function collapseEthnicity(
 	ethnicityList: { patient_ethnicity: string; count: number }[]
@@ -101,14 +102,16 @@ const Overview: NextPage = () => {
 			<section>
 				<div className="container">
 					<div className="row mb-5 align-center">
-						<div className="col-12 col-lg-6 text-center text-lg-left mb-5">
+						<div className="col-12 col-lg-6 mb-5">
 							<h2>Discover Models</h2>
 							<ul>
 								<li>Detailed annotations including Tissue and Cancer type</li>{" "}
 								<li>Advanced filters for model selection</li>
 								<li>Links to originating model source</li>
 							</ul>
-							<a>Browse all models</a>
+							<div className="text-center">
+								<Link href="/search">Browse all models</Link>
+							</div>
 						</div>
 						<div className="col-12 col-lg-5 mb-5">
 							<div style={{ height: "600px", width: "100%" }}>
@@ -163,7 +166,7 @@ const Overview: NextPage = () => {
 						</div>
 					</div>
 					<div className="row mb-5 align-center">
-						<div className="col-12 col-lg-6 order-lg-1 text-center text-lg-left mb-5">
+						<div className="col-12 col-lg-6 order-lg-1 mb-5">
 							<h2>Explore Genetic features</h2>
 							<ul>
 								<li>Find models with specific mutations</li>
@@ -252,7 +255,7 @@ const Overview: NextPage = () => {
 								href="/submit"
 								priority="primary"
 								color="dark"
-								className="mb-1 mr-3"
+								className="mb-1 mr-md-3"
 								htmlTag="a"
 							>
 								Submit model data
@@ -261,7 +264,7 @@ const Overview: NextPage = () => {
 								href="/search"
 								priority="secondary"
 								color="dark"
-								className="mt-1 ml-3"
+								className="mt-1 ml-md-3"
 								htmlTag="a"
 							>
 								Search all model data
