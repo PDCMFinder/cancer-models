@@ -21,6 +21,7 @@ import CloseIcon from "../../../../components/CloseIcon/CloseIcon";
 import Tooltip from "../../../../components/Tooltip/Tooltip";
 import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
 import { useQueries, useQuery } from "react-query";
+import Head from "next/head";
 
 interface IModelDetailsProps {
 	metadata: Metadata;
@@ -57,6 +58,13 @@ export interface MolecularData {
 	platformName: string;
 	dataAvailability: "TRUE" | "FALSE";
 	dataSource: string;
+	externalDbLinks: ExternalDbLinks[];
+}
+
+interface ExternalDbLinks {
+	column: string;
+	link: string;
+	resource: string;
 }
 
 export interface QualityData {
@@ -217,6 +225,13 @@ const ModelDetails = ({
 
 	return (
 		<>
+			{/* metadata */}
+			<Head>
+				<title>
+					{`CancerModels.Org - ${metadata.modelId} - ${metadata.histology} - ${metadata.modelType}`}
+				</title>
+			</Head>
+
 			<header className="bg-primary-primary text-white py-5">
 				<div className="container">
 					<div className="row align-center py-5 pb-lg-0 text-capitalize">
@@ -227,7 +242,9 @@ const ModelDetails = ({
 								{metadata.histology} - {metadata.modelType}
 							</h2>
 							<h1 className="m-0 mb-2">{metadata.modelId}</h1>
-							<QualityBadge score={metadata.score} className="w-50" />
+							{metadata.score > 0 && (
+								<QualityBadge score={metadata.score} className="w-50" />
+							)}
 						</div>
 						<div className="col-12 col-md-10 col-lg-5 col-xxx-3 col-xl-5 offset-lg-1 offset-xl-5 offset-xxx-1 offset-md-1 text-right">
 							<p className="mb-1">Provided by</p>
@@ -554,6 +571,10 @@ const ModelDetails = ({
 															const sampleType = data.xenograftSampleId
 																? "Engrafted Tumour"
 																: "Patient Tumour";
+															const rawDataExternalLink =
+																data.externalDbLinks?.find(
+																	(data) => data.column === "raw_data_url"
+																)?.link;
 
 															return (
 																<tr key={data.id}>
@@ -598,7 +619,7 @@ const ModelDetails = ({
 																	<td>
 																		{data.rawDataUrl ? (
 																			<a
-																				href={data.rawDataUrl.split(",")[1]}
+																				href={rawDataExternalLink}
 																				target="_blank"
 																				rel="noopener noreferrer"
 																			>

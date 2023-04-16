@@ -92,11 +92,11 @@ const SearchResult = (props: ISearchResultProps) => {
 							</p>
 						</div>
 						<ShowHide showOver={bpLarge} windowWidth={windowWidth}>
-							<QualityBadge score={score} className="w-50" />
+							{score > 0 && <QualityBadge score={score} className="w-50" />}
 						</ShowHide>
 						<p>{histology}</p>
 						<ShowHide hideOver={bpLarge} windowWidth={windowWidth}>
-							<QualityBadge score={score} className="w-50" />
+							{score > 0 && <QualityBadge score={score} className="w-50" />}
 						</ShowHide>
 					</div>
 					<div className="col-12 col-md-6 col-lg-4 mt-3 mt-md-0">
@@ -119,20 +119,23 @@ const SearchResult = (props: ISearchResultProps) => {
 							})}
 						</div>
 					</div>
-					<div className="col-12 col-md-12 col-lg-4 mt-3 mt-lg-0">
+					<div className="col-12 col-md-12 col-lg-4 mt-3 mt-lg-0 d-flex flex-column">
 						<p
 							className={`text-center ${styles.SearchResult_availableData_title}`}
 						>
 							Available data
 						</p>
 						<div className={`row ${styles.dataAvailable_grid}`}>
-							{dataTypes.map((dt) => {
+							{dataTypes.map((dt, idx) => {
 								const hasData = dataAvailable?.includes(dt.key),
 									name = dt.name;
+								const isOdd = idx % 2 !== 0;
 
 								return (
-									<div key={dt.key} className={!hasData ? "text-muted" : ""}>
-										<p className="mb-0">
+									<div key={dt.key} className="col-6 h-fit">
+										<p
+											className={`mb-0 ${!hasData ? "text-muted" : ""}`.trim()}
+										>
 											{hasData ? (
 												<Link
 													href={`${modelLink}#${
