@@ -92,11 +92,11 @@ const SearchResult = (props: ISearchResultProps) => {
 							</p>
 						</div>
 						<ShowHide showOver={bpLarge} windowWidth={windowWidth}>
-							<QualityBadge score={score} className="w-50" />
+							{score > 0 && <QualityBadge score={score} className="w-50" />}
 						</ShowHide>
 						<p>{histology}</p>
 						<ShowHide hideOver={bpLarge} windowWidth={windowWidth}>
-							<QualityBadge score={score} className="w-50" />
+							{score > 0 && <QualityBadge score={score} className="w-50" />}
 						</ShowHide>
 					</div>
 					<div className="col-12 col-md-6 col-lg-4 mt-3 mt-md-0">
