@@ -11,7 +11,6 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Cookies, CookiesProvider } from "react-cookie";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
-import Script from "next/script";
 
 const USERNAVIGATION_MOUSE = "userNavigation-mouse",
 	USERNAVIGATION_KEYBOARD = "userNavigation-keyboard",
@@ -23,9 +22,13 @@ const USERNAVIGATION_MOUSE = "userNavigation-mouse",
 
 const merriweather = Merriweather({
 	weight: "400",
+	subsets: ["latin"],
+	display: "swap",
 });
 const spaceMono = Space_Mono({
 	weight: ["400", "700"],
+	subsets: ["latin"],
+	display: "swap",
 });
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
@@ -72,8 +75,13 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 		<>
 			<QueryClientProvider client={queryClient}>
 				<Head>
-					<title>Cancer Models Finder</title>
-					<meta name="description" content="Patient Derived Cancer Models" />
+					<title>
+						CancerModels.Org - Find PDX, organoid and cell line cancer models
+					</title>
+					<meta
+						name="description"
+						content="The largest open catalog of harmonised patient-derived cancer models. Find the right PDX, organoid and cell line patient-derived cancer model for your next project."
+					/>
 					<meta
 						name="viewport"
 						content="width=device-width, initial-scale=1.0"

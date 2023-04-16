@@ -90,6 +90,15 @@ img {
 		}
 	}
 }
+.order {
+	@include mediaOver("lg") {
+		&-lg {
+			&-1 {
+				order: 1;
+			}
+		}
+	}
+}
 .flex {
 	&-column {
 		flex-direction: column;
@@ -156,6 +165,9 @@ img {
 	}
 	&-auto {
 		height: auto;
+	}
+	&-fit {
+		height: fit-content;
 	}
 	@include mediaOver("lg") {
 		&-lg {

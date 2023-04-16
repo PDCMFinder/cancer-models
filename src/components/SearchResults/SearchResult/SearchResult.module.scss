@@ -35,12 +35,9 @@
 	}
 }
 .dataAvailable_grid {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: auto auto auto;
-	gap: 20px 15px;
-	grid-template-areas:
-		". ."
-		". ."
-		". .";
+	row-gap: 15px;
+	@include mediaOver("lg") {
+		row-gap: 0;
+		flex-grow: 1;
+	}
 }
