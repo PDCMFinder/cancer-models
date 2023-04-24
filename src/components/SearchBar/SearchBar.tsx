@@ -70,6 +70,7 @@ const SearchBar = (props: ISearchBarProps) => {
 				onTypeaheadType("search_terms", inputValue)
 			}
 			onChange={(option, actionMeta) => {
+				if (actionMeta.action === "pop-value") return;
 				let newOption = "",
 					action: onFilterChangeType["type"] = "add";
 				if (option && !props.isMulti) {
