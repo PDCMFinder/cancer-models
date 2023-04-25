@@ -73,7 +73,6 @@ const Search = ({ modelCount }: ISearchProps) => {
 				selection,
 				initialState: actionInitialState,
 			} = action;
-			setCurrentPage(1);
 			if (type === "init") {
 				if (actionInitialState) return actionInitialState;
 
@@ -108,6 +107,11 @@ const Search = ({ modelCount }: ISearchProps) => {
 			if (type === "toggleOperator") {
 				newState[filterId].operator =
 					state[filterId].operator === "ANY" ? "ALL" : "ANY";
+			}
+
+			if (filterId !== "page") {
+				setCurrentPage(1);
+				newState["page"].selection = 1;
 			}
 
 			return newState;
