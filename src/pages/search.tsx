@@ -31,7 +31,7 @@ interface ISearchProps {
 }
 
 export interface onFilterChangeType {
-	type: "add" | "remove" | "clear" | "toggleOperator" | "init";
+	type: "add" | "remove" | "clear" | "toggleOperator" | "init" | "substitute";
 }
 
 const sortByOptions = [
@@ -96,6 +96,10 @@ const Search = ({ modelCount }: ISearchProps) => {
 				);
 			}
 
+			if (type === "substitute") {
+				newState[filterId].selection = selection;
+			}
+
 			if (type === "clear") {
 				newState[filterId].selection = [];
 				newState[filterId].operator = "ANY";
@@ -130,24 +134,23 @@ const Search = ({ modelCount }: ISearchProps) => {
 					stateFromUrl[filterId] = { operator, selection };
 				});
 
+				const addInitialSearchFilter = (id: string) => {
+					initialSearchFilterState[id] = stateFromUrl[id]
+						? stateFromUrl[id]
+						: {
+								operator: "ANY",
+								selection: [],
+						  };
+				};
+
 				data?.forEach((section) =>
 					section.facets.forEach((facet) => {
-						initialSearchFilterState[facet.facetId] = stateFromUrl[
-							facet.facetId
-						]
-							? stateFromUrl[facet.facetId]
-							: {
-									operator: "ANY",
-									selection: [],
-							  };
+						addInitialSearchFilter(facet.facetId);
 					})
 				);
-				initialSearchFilterState["search_terms"] = stateFromUrl["search_terms"]
-					? stateFromUrl["search_terms"]
-					: {
-							operator: "ANY",
-							selection: [],
-					  };
+
+				const extraFilters = ["search_terms", "page"];
+				extraFilters.forEach((id) => addInitialSearchFilter(id));
 
 				searchFilterDispatch({
 					type: "init",
@@ -219,15 +222,24 @@ const Search = ({ modelCount }: ISearchProps) => {
 		let filterValues: string[] = [];
 		for (const filterId in searchFilterState) {
 			if (searchFilterState[filterId].selection.length) {
-				const operator =
-					searchFilterState[filterId].operator !== "ANY"
-						? `.${searchFilterState[filterId].operator}`
-						: "";
-				filterValues.push(
-					`${filterId}${operator}:${searchFilterState[filterId].selection.join(
-						","
-					)}`
-				);
+				if (filterId === "page") {
+					if (Number(searchFilterState[filterId].selection) > 1) {
+						filterValues.push(
+							`${filterId}:${searchFilterState[filterId].selection}`
+						);
+						setCurrentPage(Number(searchFilterState[filterId].selection));
+					}
+				} else {
+					const operator =
+						searchFilterState[filterId].operator !== "ANY"
+							? `.${searchFilterState[filterId].operator}`
+							: "";
+					filterValues.push(
+						`${filterId}${operator}:${searchFilterState[
+							filterId
+						].selection.join(",")}`
+					);
+				}
 			}
 		}
 		if (filterValues.length) {
@@ -426,6 +438,12 @@ const Search = ({ modelCount }: ISearchProps) => {
 										currentPage={currentPage}
 										onPageChange={(page: number) => {
 											setCurrentPage(page);
+											searchFilterDispatch({
+												type: "substitute",
+												operator: "",
+												filterId: "page",
+												selection: page.toString(),
+											});
 											window.scrollTo(0, 350);
 										}}
 									/>
