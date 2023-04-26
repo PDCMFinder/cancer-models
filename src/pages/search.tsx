@@ -49,7 +49,7 @@ const sortByOptions = [
 const Search = ({ modelCount }: ISearchProps) => {
 	const { windowWidth = 0 } = useWindowDimensions();
 	const bpLarge = breakPoints.large;
-	const [showFilters, setShowFilters] = useState(false);
+	const [showFilters, setShowFilters] = useState<boolean>(false);
 	const [sortBy, setSortBy] = useState<string>(sortByOptions[0].value);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [hasSelection, setHasSelection] = useState<boolean>(false);
@@ -247,7 +247,12 @@ const Search = ({ modelCount }: ISearchProps) => {
 			}
 		}
 		if (filterValues.length) {
-			setHasSelection(true);
+			// Check if only filter is page filter, don't show clear button if so
+			if (filterValues.length === 1 && filterValues[0].includes("page")) {
+				setHasSelection(false);
+			} else {
+				setHasSelection(true);
+			}
 			router.replace(
 				{
 					query: { ...router.query, filters: filterValues.join(" AND ") },
