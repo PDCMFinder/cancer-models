@@ -121,7 +121,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 										type="radio"
 										name={`operator-${facet.facetId}`}
 										id={`any-${facet.facetId}`}
-										label="Any"
+										label="Or"
 										value="any"
 										defaultChecked={operator === "ANY"}
 										onChange={() =>
@@ -137,7 +137,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 										type="radio"
 										name={`operator-${facet.facetId}`}
 										id={`all-${facet.facetId}`}
-										label="All"
+										label="And"
 										value="all"
 										defaultChecked={operator === "ALL"}
 										onChange={() =>
