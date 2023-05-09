@@ -31,7 +31,7 @@ interface ISearchProps {
 }
 
 export interface onFilterChangeType {
-	type: "add" | "remove" | "clear" | "toggleOperator" | "init";
+	type: "add" | "remove" | "clear" | "toggleOperator" | "init" | "substitute";
 }
 
 const sortByOptions = [
@@ -49,7 +49,7 @@ const sortByOptions = [
 const Search = ({ modelCount }: ISearchProps) => {
 	const { windowWidth = 0 } = useWindowDimensions();
 	const bpLarge = breakPoints.large;
-	const [showFilters, setShowFilters] = useState(false);
+	const [showFilters, setShowFilters] = useState<boolean>(false);
 	const [sortBy, setSortBy] = useState<string>(sortByOptions[0].value);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [hasSelection, setHasSelection] = useState<boolean>(false);
@@ -73,7 +73,6 @@ const Search = ({ modelCount }: ISearchProps) => {
 				selection,
 				initialState: actionInitialState,
 			} = action;
-			setCurrentPage(1);
 			if (type === "init") {
 				if (actionInitialState) return actionInitialState;
 
@@ -96,6 +95,10 @@ const Search = ({ modelCount }: ISearchProps) => {
 				);
 			}
 
+			if (type === "substitute") {
+				newState[filterId].selection = selection;
+			}
+
 			if (type === "clear") {
 				newState[filterId].selection = [];
 				newState[filterId].operator = "ANY";
@@ -104,6 +107,11 @@ const Search = ({ modelCount }: ISearchProps) => {
 			if (type === "toggleOperator") {
 				newState[filterId].operator =
 					state[filterId].operator === "ANY" ? "ALL" : "ANY";
+			}
+
+			if (filterId !== "page") {
+				setCurrentPage(1);
+				newState["page"].selection = 1;
 			}
 
 			return newState;
@@ -130,24 +138,23 @@ const Search = ({ modelCount }: ISearchProps) => {
 					stateFromUrl[filterId] = { operator, selection };
 				});
 
+				const addInitialSearchFilter = (id: string) => {
+					initialSearchFilterState[id] = stateFromUrl[id]
+						? stateFromUrl[id]
+						: {
+								operator: "ANY",
+								selection: [],
+						  };
+				};
+
 				data?.forEach((section) =>
 					section.facets.forEach((facet) => {
-						initialSearchFilterState[facet.facetId] = stateFromUrl[
-							facet.facetId
-						]
-							? stateFromUrl[facet.facetId]
-							: {
-									operator: "ANY",
-									selection: [],
-							  };
+						addInitialSearchFilter(facet.facetId);
 					})
 				);
-				initialSearchFilterState["search_terms"] = stateFromUrl["search_terms"]
-					? stateFromUrl["search_terms"]
-					: {
-							operator: "ANY",
-							selection: [],
-					  };
+
+				const extraFilters = ["search_terms", "page"];
+				extraFilters.forEach((id) => addInitialSearchFilter(id));
 
 				searchFilterDispatch({
 					type: "init",
@@ -219,19 +226,33 @@ const Search = ({ modelCount }: ISearchProps) => {
 		let filterValues: string[] = [];
 		for (const filterId in searchFilterState) {
 			if (searchFilterState[filterId].selection.length) {
-				const operator =
-					searchFilterState[filterId].operator !== "ANY"
-						? `.${searchFilterState[filterId].operator}`
-						: "";
-				filterValues.push(
-					`${filterId}${operator}:${searchFilterState[filterId].selection.join(
-						","
-					)}`
-				);
+				if (filterId === "page") {
+					if (Number(searchFilterState[filterId].selection) > 1) {
+						filterValues.push(
+							`${filterId}:${searchFilterState[filterId].selection}`
+						);
+						setCurrentPage(Number(searchFilterState[filterId].selection));
+					}
+				} else {
+					const operator =
+						searchFilterState[filterId].operator !== "ANY"
+							? `.${searchFilterState[filterId].operator}`
+							: "";
+					filterValues.push(
+						`${filterId}${operator}:${searchFilterState[
+							filterId
+						].selection.join(",")}`
+					);
+				}
 			}
 		}
 		if (filterValues.length) {
-			setHasSelection(true);
+			// Check if only filter is page filter, don't show clear button if so
+			if (filterValues.length === 1 && filterValues[0].includes("page")) {
+				setHasSelection(false);
+			} else {
+				setHasSelection(true);
+			}
 			router.replace(
 				{
 					query: { ...router.query, filters: filterValues.join(" AND ") },
@@ -426,6 +447,12 @@ const Search = ({ modelCount }: ISearchProps) => {
 										currentPage={currentPage}
 										onPageChange={(page: number) => {
 											setCurrentPage(page);
+											searchFilterDispatch({
+												type: "substitute",
+												operator: "",
+												filterId: "page",
+												selection: page.toString(),
+											});
 											window.scrollTo(0, 350);
 										}}
 									/>

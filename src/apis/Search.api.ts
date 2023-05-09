@@ -114,7 +114,10 @@ export async function getSearchResults(
 			: "";
 
 	for (const filterId in searchFilterSelection) {
-		if (searchFilterSelection[filterId].selection?.length) {
+		if (
+			searchFilterSelection[filterId].selection?.length &&
+			filterId !== "page"
+		) {
 			const multiValuedFacets = [
 				"search_terms",
 				"dataset_available",
@@ -151,7 +154,7 @@ export async function getSearchResults(
 
 	let response = await fetch(
 		`${API_URL}/search_index?${query}&limit=${pageSize}&offset=${
-			(page - 1) * pageSize
+			(searchFilterSelection["page"].selection[0] - 1) * pageSize
 		}&select=provider_name,patient_age,patient_sex,external_model_id,model_type,data_source,histology,primary_site,collection_site,tumour_type,dataset_available,score&order=${sortBy}.nullslast`,
 		{ headers: { Prefer: "count=exact" } }
 	);
