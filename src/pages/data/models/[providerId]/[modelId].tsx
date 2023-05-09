@@ -243,7 +243,11 @@ const ModelDetails = ({
 							</h2>
 							<h1 className="m-0 mb-2">{metadata.modelId}</h1>
 							{metadata.score > 0 && (
-								<QualityBadge score={metadata.score} className="w-50" />
+								<QualityBadge
+									score={metadata.score}
+									containerClassName="text-white"
+									className="w-50"
+								/>
 							)}
 						</div>
 						<div className="col-12 col-md-10 col-lg-5 col-xxx-3 col-xl-5 offset-lg-1 offset-xl-5 offset-xxx-1 offset-md-1 text-right">
