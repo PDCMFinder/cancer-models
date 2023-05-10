@@ -46,16 +46,26 @@ const SearchFilters = (props: ISearchFilters) => {
 					sortObjArrBy(facets, modelFacetOrder, "facetId");
 				}
 
-				const facetOptionsOrder = ["Not Specified", "Not Collected", "Other"];
+				const facetOptionsOrder = [
+					"not specified",
+					"not provided",
+					"not collected",
+					"other",
+				];
 				facets.forEach((facetsFacet) => {
 					if (facetsFacet.options.length) {
-						sortObjArrBy(
-							facetsFacet.options,
-							facetOptionsOrder,
-							undefined,
-							false,
-							false
-						);
+						const matches: string[] = [];
+						const remaining: string[] = [];
+
+						facetsFacet.options.forEach((option) => {
+							if (facetOptionsOrder.includes(option.toLowerCase())) {
+								matches.push(option);
+							} else {
+								remaining.push(option);
+							}
+						});
+
+						facetsFacet.options = [...remaining, ...matches];
 					}
 				});
 
