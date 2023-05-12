@@ -2,12 +2,11 @@ import { NextPage } from "next";
 import BarChart from "../components/BarChart/BarChart";
 import DonutChart from "../components/DonutChart/DonutChart";
 import SunBurstChart from "../components/SunBurstChart/SunBurstChart";
-import Features from "../../public/img/world_countries.json";
 import Button from "../components/Button/Button";
 import { useQuery } from "react-query";
 import { getModelsByType } from "../apis/AggregatedData.api";
-import { capitalizeFirstLetter } from "../utils/dataUtils";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 function collapseEthnicity(
 	ethnicityList: { patient_ethnicity: string; count: number }[]
@@ -85,6 +84,16 @@ const Overview: NextPage = () => {
 	let modelsByTypeCountsQuery = useQuery("modelsByTypeCounts", () => {
 		return getModelsByType();
 	});
+
+	const router = useRouter();
+
+	const onGraphClick = (node: any, filterId: string) => {
+		router.push({
+			pathname: "/search",
+			search: `?filters=${filterId}:${node.data[filterId]}`,
+		});
+	};
+
 	return (
 		<>
 			<header className="bg-primary-primary text-white mb-5 py-5">
@@ -160,6 +169,7 @@ const Overview: NextPage = () => {
 												count: 193,
 											},
 										]}
+										onClick={onGraphClick}
 									/>
 								) : null}
 							</div>
@@ -178,73 +188,71 @@ const Overview: NextPage = () => {
 							<div style={{ height: "600px" }}>
 								<BarChart
 									chartTitle="Models by top mutated gene"
-									onBarClick={(category) => {
-										return;
-									}}
+									onClick={onGraphClick}
 									data={[
 										{
-											mutated_gene: "TP53",
+											makers_with_mutation_data: "TP53",
 											count: 2260,
 										},
 										{
-											mutated_gene: "TTN",
+											makers_with_mutation_data: "TTN",
 											count: 1517,
 										},
 										{
-											mutated_gene: "MUC16",
+											makers_with_mutation_data: "MUC16",
 											count: 1346,
 										},
 										{
-											mutated_gene: "KMT2C",
+											makers_with_mutation_data: "KMT2C",
 											count: 1321,
 										},
 										{
-											mutated_gene: "MUC4",
+											makers_with_mutation_data: "MUC4",
 											count: 1234,
 										},
 										{
-											mutated_gene: "APC",
+											makers_with_mutation_data: "APC",
 											count: 1111,
 										},
 										{
-											mutated_gene: "MUC3A",
+											makers_with_mutation_data: "MUC3A",
 											count: 987,
 										},
 										{
-											mutated_gene: "KRAS",
+											makers_with_mutation_data: "KRAS",
 											count: 886,
 										},
 										{
-											mutated_gene: "MUC17",
+											makers_with_mutation_data: "MUC17",
 											count: 865,
 										},
 										{
-											mutated_gene: "PABPC1",
+											makers_with_mutation_data: "PABPC1",
 											count: 856,
 										},
 										{
-											mutated_gene: "GPRIN2",
+											makers_with_mutation_data: "GPRIN2",
 											count: 816,
 										},
 										{
-											mutated_gene: "FCGBP",
+											makers_with_mutation_data: "FCGBP",
 											count: 778,
 										},
 										{
-											mutated_gene: "FLG",
+											makers_with_mutation_data: "FLG",
 											count: 778,
 										},
 										{
-											mutated_gene: "USH2A",
+											makers_with_mutation_data: "USH2A",
 											count: 777,
 										},
 										{
-											mutated_gene: "MUC5B",
+											makers_with_mutation_data: "MUC5B",
 											count: 774,
 										},
 									]}
 									rotateTicks={true}
-									indexKey="mutated_gene"
+									indexKey="makers_with_mutation_data"
 								/>
 							</div>
 						</div>
@@ -299,9 +307,7 @@ const Overview: NextPage = () => {
 							<div style={{ height: "600px" }}>
 								<BarChart
 									chartTitle="Models by top mutated gene"
-									onBarClick={(category) => {
-										return;
-									}}
+									onClick={onGraphClick}
 									rotateTicks={true}
 									data={collapseEthnicity([
 										{
@@ -460,6 +466,7 @@ const Overview: NextPage = () => {
 										},
 									])}
 									keyId="patient_age"
+									onClick={onGraphClick}
 								/>
 							</div>
 						</div>
@@ -482,6 +489,7 @@ const Overview: NextPage = () => {
 											count: 3750,
 										},
 									]}
+									onClick={onGraphClick}
 								/>
 							</div>
 						</div>
@@ -510,6 +518,7 @@ const Overview: NextPage = () => {
 											count: 7,
 										},
 									]}
+									onClick={onGraphClick}
 								/>
 							</div>
 						</div>
@@ -521,1710 +530,1791 @@ const Overview: NextPage = () => {
 							</div>
 							<div style={{ height: "800px" }}>
 								<SunBurstChart
-									keyId="name"
+									keyId="search_terms"
 									data={{
-										name: "PDCM",
+										search_terms: "PDCM",
 										children: [
 											{
-												name: "Digestive System Cancer",
+												search_terms: "Digestive System Cancer",
 												children: [
 													{
-														name: "Colorectal Carcinoma",
+														search_terms: "Colorectal Carcinoma",
 														count: 641,
 													},
 													{
-														name: "Colon Adenocarcinoma",
+														search_terms: "Colon Adenocarcinoma",
 														count: 477,
 													},
 													{
-														name: "Colorectal Adenocarcinoma",
+														search_terms: "Colorectal Adenocarcinoma",
 														count: 243,
 													},
 													{
-														name: "Pancreatic Ductal Adenocarcinoma",
+														search_terms: "Pancreatic Ductal Adenocarcinoma",
 														count: 196,
 													},
 													{
-														name: "Pancreatic Adenocarcinoma",
+														search_terms: "Pancreatic Adenocarcinoma",
 														count: 157,
 													},
 													{
-														name: "Colon Cancer",
+														search_terms: "Colon Cancer",
 														count: 90,
 													},
 													{
-														name: "Gastric Carcinoma",
+														search_terms: "Gastric Carcinoma",
 														count: 76,
 													},
 													{
-														name: "Rectal Adenocarcinoma",
+														search_terms: "Rectal Adenocarcinoma",
 														count: 62,
 													},
 													{
-														name: "Pancreatic Cancer",
+														search_terms: "Pancreatic Cancer",
 														count: 57,
 													},
 													{
-														name: "Esophageal Adenocarcinoma",
+														search_terms: "Esophageal Adenocarcinoma",
 														count: 56,
 													},
 													{
-														name: "Gastric Cancer",
+														search_terms: "Gastric Cancer",
 														count: 41,
 													},
 													{
-														name: "Cholangiocarcinoma",
+														search_terms: "Cholangiocarcinoma",
 														count: 40,
 													},
 													{
-														name: "Esophageal Squamous Cell Carcinoma",
+														search_terms: "Esophageal Squamous Cell Carcinoma",
 														count: 32,
 													},
 													{
-														name: "Hepatocellular Carcinoma",
+														search_terms: "Hepatocellular Carcinoma",
 														count: 28,
 													},
 													{
-														name: "Ampulla of Vater Adenocarcinoma",
+														search_terms: "Ampulla of Vater Adenocarcinoma",
 														count: 26,
 													},
 													{
-														name: "Colon Carcinoma",
+														search_terms: "Colon Carcinoma",
 														count: 24,
 													},
 													{
-														name: "Gastric Adenocarcinoma",
+														search_terms: "Gastric Adenocarcinoma",
 														count: 23,
 													},
 													{
-														name: "Cecum Adenocarcinoma",
+														search_terms: "Cecum Adenocarcinoma",
 														count: 23,
 													},
 													{
-														name: "Colon Mucinous Adenocarcinoma",
+														search_terms: "Colon Mucinous Adenocarcinoma",
 														count: 18,
 													},
 													{
-														name: "Gastroesophageal Junction Adenocarcinoma",
+														search_terms:
+															"Gastroesophageal Junction Adenocarcinoma",
 														count: 17,
 													},
 													{
-														name: "Pancreatic Carcinoma",
+														search_terms: "Pancreatic Carcinoma",
 														count: 13,
 													},
 													{
-														name: "Hepatobiliary Cancer",
+														search_terms: "Hepatobiliary Cancer",
 														count: 12,
 													},
 													{
-														name: "Colorectal Cancer",
+														search_terms: "Colorectal Cancer",
 														count: 11,
 													},
 													{
-														name: "Small Intestinal Adenocarcinoma",
+														search_terms: "Small Intestinal Adenocarcinoma",
 														count: 11,
 													},
 													{
-														name: "Anal Squamous Cell Carcinoma",
+														search_terms: "Anal Squamous Cell Carcinoma",
 														count: 8,
 													},
 													{
-														name: "Intrahepatic Cholangiocarcinoma",
+														search_terms: "Intrahepatic Cholangiocarcinoma",
 														count: 7,
 													},
 													{
-														name: "Hepatoblastoma",
+														search_terms: "Hepatoblastoma",
 														count: 7,
 													},
 													{
-														name: "Gastric Tubular Adenocarcinoma",
+														search_terms: "Gastric Tubular Adenocarcinoma",
 														count: 6,
 													},
 													{
-														name: "Gallbladder Carcinoma",
+														search_terms: "Gallbladder Carcinoma",
 														count: 6,
 													},
 													{
-														name: "Pancreatic Adenosquamous Carcinoma",
+														search_terms: "Pancreatic Adenosquamous Carcinoma",
 														count: 6,
 													},
 													{
-														name: "Anal Cancer",
+														search_terms: "Anal Cancer",
 														count: 5,
 													},
 													{
-														name: "Pancreatic Neuroendocrine Carcinoma",
+														search_terms: "Pancreatic Neuroendocrine Carcinoma",
 														count: 5,
 													},
 													{
-														name: "Gastric Signet Ring Cell Adenocarcinoma",
+														search_terms:
+															"Gastric Signet Ring Cell Adenocarcinoma",
 														count: 5,
 													},
 													{
-														name: "Esophageal Cancer",
+														search_terms: "Esophageal Cancer",
 														count: 4,
 													},
 													{
-														name: "Pancreatic Intraductal Papillary-Mucinous Neoplasm with an Associated Invasive Carcinoma",
+														search_terms:
+															"Pancreatic Intraductal Papillary-Mucinous Neoplasm with an Associated Invasive Carcinoma",
 														count: 3,
 													},
 													{
-														name: "Liver and Intrahepatic Bile Duct Carcinoma",
+														search_terms:
+															"Liver and Intrahepatic Bile Duct Carcinoma",
 														count: 3,
 													},
 													{
-														name: "Duodenal Adenocarcinoma",
+														search_terms: "Duodenal Adenocarcinoma",
 														count: 3,
 													},
 													{
-														name: "Colorectal Mucinous Adenocarcinoma",
+														search_terms: "Colorectal Mucinous Adenocarcinoma",
 														count: 3,
 													},
 													{
-														name: "Extrahepatic Bile Duct Carcinoma",
+														search_terms: "Extrahepatic Bile Duct Carcinoma",
 														count: 3,
 													},
 													{
-														name: "Pancreatic Colloid Carcinoma",
+														search_terms: "Pancreatic Colloid Carcinoma",
 														count: 3,
 													},
 													{
-														name: "Hepatosplenic T-Cell Lymphoma",
+														search_terms: "Hepatosplenic T-Cell Lymphoma",
 														count: 3,
 													},
 													{
-														name: "Gallbladder Adenocarcinoma",
+														search_terms: "Gallbladder Adenocarcinoma",
 														count: 2,
 													},
 													{
-														name: "Pancreatic Poorly Differentiated Ductal Adenocarcinoma",
+														search_terms:
+															"Pancreatic Poorly Differentiated Ductal Adenocarcinoma",
 														count: 2,
 													},
 													{
-														name: "Pancreatic Moderately Differentiated Ductal Adenocarcinoma",
+														search_terms:
+															"Pancreatic Moderately Differentiated Ductal Adenocarcinoma",
 														count: 2,
 													},
 													{
-														name: "Biliary Tract Carcinoma",
+														search_terms: "Biliary Tract Carcinoma",
 														count: 2,
 													},
 													{
-														name: "Gastric Small Cell Neuroendocrine Carcinoma",
+														search_terms:
+															"Gastric Small Cell Neuroendocrine Carcinoma",
 														count: 2,
 													},
 													{
-														name: "Gastric Fundus Carcinoma",
+														search_terms: "Gastric Fundus Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Bile Duct Adenocarcinoma",
+														search_terms: "Bile Duct Adenocarcinoma",
 														count: 1,
 													},
 													{
-														name: "Hilar Cholangiocarcinoma",
+														search_terms: "Hilar Cholangiocarcinoma",
 														count: 1,
 													},
 													{
-														name: "Gastric Neuroendocrine Carcinoma",
+														search_terms: "Gastric Neuroendocrine Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Pancreatic Mixed Acinar-Neuroendocrine Carcinoma",
+														search_terms:
+															"Pancreatic Mixed Acinar-Neuroendocrine Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Colorectal Medullary Carcinoma",
+														search_terms: "Colorectal Medullary Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Appendix Carcinoma",
+														search_terms: "Appendix Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Pancreatic Undifferentiated Carcinoma",
+														search_terms:
+															"Pancreatic Undifferentiated Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Colon Squamous Cell Carcinoma",
+														search_terms: "Colon Squamous Cell Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Anal Adenocarcinoma",
+														search_terms: "Anal Adenocarcinoma",
 														count: 1,
 													},
 													{
-														name: "Exocrine Pancreas Cancer",
+														search_terms: "Exocrine Pancreas Cancer",
 														count: 1,
 													},
 													{
-														name: "Rectal Cribriform Comedo-Type Adenocarcinoma",
+														search_terms:
+															"Rectal Cribriform Comedo-Type Adenocarcinoma",
 														count: 1,
 													},
 													{
-														name: "Adult Liver Carcinoma",
+														search_terms: "Adult Liver Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Gallbladder Undifferentiated Carcinoma",
+														search_terms:
+															"Gallbladder Undifferentiated Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Appendix Cancer",
+														search_terms: "Appendix Cancer",
 														count: 1,
 													},
 													{
-														name: "Barrett Adenocarcinoma",
+														search_terms: "Barrett Adenocarcinoma",
 														count: 1,
 													},
 													{
-														name: "Anal Canal Squamous Cell Carcinoma",
+														search_terms: "Anal Canal Squamous Cell Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Pancreatic Squamous Cell Carcinoma",
+														search_terms: "Pancreatic Squamous Cell Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Duodenal Carcinoma",
+														search_terms: "Duodenal Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Gastric Adenosquamous Carcinoma",
+														search_terms: "Gastric Adenosquamous Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Gastric Mucinous Adenocarcinoma",
+														search_terms: "Gastric Mucinous Adenocarcinoma",
 														count: 1,
 													},
 													{
-														name: "Rectosigmoid Adenocarcinoma",
+														search_terms: "Rectosigmoid Adenocarcinoma",
 														count: 1,
 													},
 													{
-														name: "Pancreatic Acinar Cell Carcinoma",
+														search_terms: "Pancreatic Acinar Cell Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Extrahepatic Bile Duct Adenosquamous Carcinoma",
+														search_terms:
+															"Extrahepatic Bile Duct Adenosquamous Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Gastric Choriocarcinoma",
+														search_terms: "Gastric Choriocarcinoma",
 														count: 1,
 													},
 												],
 											},
 											{
-												name: "Skin Cancer",
+												search_terms: "Skin Cancer",
 												children: [
 													{
-														name: "Cutaneous Melanoma",
+														search_terms: "Cutaneous Melanoma",
 														count: 350,
 													},
 													{
-														name: "Cutaneous Nodular Melanoma",
+														search_terms: "Cutaneous Nodular Melanoma",
 														count: 16,
 													},
 													{
-														name: "Skin Squamous Cell Carcinoma",
+														search_terms: "Skin Squamous Cell Carcinoma",
 														count: 13,
 													},
 													{
-														name: "Low-CSD Melanoma",
+														search_terms: "Low-CSD Melanoma",
 														count: 9,
 													},
 													{
-														name: "Amelanotic Cutaneous Melanoma",
+														search_terms: "Amelanotic Cutaneous Melanoma",
 														count: 8,
 													},
 													{
-														name: "Acral Lentiginous Melanoma",
+														search_terms: "Acral Lentiginous Melanoma",
 														count: 8,
 													},
 													{
-														name: "Skin Carcinoma",
+														search_terms: "Skin Carcinoma",
 														count: 2,
 													},
 													{
-														name: "Stage 0 Cutaneous Melanoma AJCC v6 and v7",
+														search_terms:
+															"Stage 0 Cutaneous Melanoma AJCC v6 and v7",
 														count: 2,
 													},
 													{
-														name: "Lentigo Maligna Melanoma",
+														search_terms: "Lentigo Maligna Melanoma",
 														count: 1,
 													},
 													{
-														name: "Skin Basal Cell Carcinoma",
+														search_terms: "Skin Basal Cell Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Keratoacanthoma",
+														search_terms: "Keratoacanthoma",
 														count: 1,
 													},
 												],
 											},
 											{
-												name: "Thoracic Cancer",
+												search_terms: "Thoracic Cancer",
 												children: [
 													{
-														name: "Lung Adenocarcinoma",
+														search_terms: "Lung Adenocarcinoma",
 														count: 284,
 													},
 													{
-														name: "Lung Squamous Cell Carcinoma",
+														search_terms: "Lung Squamous Cell Carcinoma",
 														count: 221,
 													},
 													{
-														name: "Lung Non-Small Cell Carcinoma",
+														search_terms: "Lung Non-Small Cell Carcinoma",
 														count: 117,
 													},
 													{
-														name: "Lung Cancer",
+														search_terms: "Lung Cancer",
 														count: 27,
 													},
 													{
-														name: "Lung Large Cell Carcinoma",
+														search_terms: "Lung Large Cell Carcinoma",
 														count: 20,
 													},
 													{
-														name: "Pleural Epithelioid Mesothelioma",
+														search_terms: "Pleural Epithelioid Mesothelioma",
 														count: 15,
 													},
 													{
-														name: "Lung Carcinoma",
+														search_terms: "Lung Carcinoma",
 														count: 14,
 													},
 													{
-														name: "Lung Adenosquamous Carcinoma",
+														search_terms: "Lung Adenosquamous Carcinoma",
 														count: 12,
 													},
 													{
-														name: "Pleural Mesothelioma",
+														search_terms: "Pleural Mesothelioma",
 														count: 10,
 													},
 													{
-														name: "Pleural Biphasic Mesothelioma",
+														search_terms: "Pleural Biphasic Mesothelioma",
 														count: 7,
 													},
 													{
-														name: "Pleural Malignant Mesothelioma",
+														search_terms: "Pleural Malignant Mesothelioma",
 														count: 7,
 													},
 													{
-														name: "Lung Pleomorphic Carcinoma",
+														search_terms: "Lung Pleomorphic Carcinoma",
 														count: 6,
 													},
 													{
-														name: "Pleural Sarcomatoid Mesothelioma",
+														search_terms: "Pleural Sarcomatoid Mesothelioma",
 														count: 5,
 													},
 													{
-														name: "Lung Giant Cell Carcinoma",
+														search_terms: "Lung Giant Cell Carcinoma",
 														count: 4,
 													},
 													{
-														name: "Thoracic Cancer",
+														search_terms: "Thoracic Cancer",
 														count: 3,
 													},
 													{
-														name: "Lung Papillary Adenocarcinoma",
+														search_terms: "Lung Papillary Adenocarcinoma",
 														count: 3,
 													},
 													{
-														name: "Lung Acinar Adenocarcinoma",
+														search_terms: "Lung Acinar Adenocarcinoma",
 														count: 2,
 													},
 													{
-														name: "Lung Mucoepidermoid Carcinoma",
+														search_terms: "Lung Mucoepidermoid Carcinoma",
 														count: 2,
 													},
 													{
-														name: "Solid Lung Adenocarcinoma",
+														search_terms: "Solid Lung Adenocarcinoma",
 														count: 1,
 													},
 													{
-														name: "Lung Colloid Adenocarcinoma",
+														search_terms: "Lung Colloid Adenocarcinoma",
 														count: 1,
 													},
 													{
-														name: "Lung Sarcomatoid Carcinoma",
+														search_terms: "Lung Sarcomatoid Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Lung Basaloid Squamous Cell  Carcinoma",
+														search_terms:
+															"Lung Basaloid Squamous Cell  Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Lung Adenocarcinoma In Situ",
+														search_terms: "Lung Adenocarcinoma In Situ",
 														count: 1,
 													},
 													{
-														name: "Bronchogenic Carcinoma",
+														search_terms: "Bronchogenic Carcinoma",
 														count: 1,
 													},
 												],
 											},
 											{
-												name: "Breast Cancer",
+												search_terms: "Breast Cancer",
 												children: [
 													{
-														name: "Invasive Breast Carcinoma of No Special Type",
+														search_terms:
+															"Invasive Breast Carcinoma of No Special Type",
 														count: 158,
 													},
 													{
-														name: "Breast Carcinoma",
+														search_terms: "Breast Carcinoma",
 														count: 104,
 													},
 													{
-														name: "Breast Cancer",
+														search_terms: "Breast Cancer",
 														count: 70,
 													},
 													{
-														name: "Breast Ductal Carcinoma",
+														search_terms: "Breast Ductal Carcinoma",
 														count: 50,
 													},
 													{
-														name: "Invasive Breast Carcinoma",
+														search_terms: "Invasive Breast Carcinoma",
 														count: 38,
 													},
 													{
-														name: "Breast Adenocarcinoma",
+														search_terms: "Breast Adenocarcinoma",
 														count: 13,
 													},
 													{
-														name: "Basal-Like Breast Carcinoma",
+														search_terms: "Basal-Like Breast Carcinoma",
 														count: 11,
 													},
 													{
-														name: "Luminal B Breast Carcinoma",
+														search_terms: "Luminal B Breast Carcinoma",
 														count: 9,
 													},
 													{
-														name: "Breast Metaplastic Carcinoma",
+														search_terms: "Breast Metaplastic Carcinoma",
 														count: 6,
 													},
 													{
-														name: "Multifocal Breast Carcinoma",
+														search_terms: "Multifocal Breast Carcinoma",
 														count: 3,
 													},
 													{
-														name: "Breast Inflammatory Carcinoma",
+														search_terms: "Breast Inflammatory Carcinoma",
 														count: 3,
 													},
 													{
-														name: "Invasive Breast Lobular Carcinoma",
+														search_terms: "Invasive Breast Lobular Carcinoma",
 														count: 3,
 													},
 													{
-														name: "Breast Ductal Carcinoma In Situ",
+														search_terms: "Breast Ductal Carcinoma In Situ",
 														count: 2,
 													},
 													{
-														name: "Breast Micropapillary Ductal Carcinoma In Situ",
+														search_terms:
+															"Breast Micropapillary Ductal Carcinoma In Situ",
 														count: 1,
 													},
 													{
-														name: "Triple-Negative Breast Carcinoma",
+														search_terms: "Triple-Negative Breast Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Breast Adenocarcinoma with Spindle Cell Metaplasia",
+														search_terms:
+															"Breast Adenocarcinoma with Spindle Cell Metaplasia",
 														count: 1,
 													},
 													{
-														name: "Breast Lobular Carcinoma",
+														search_terms: "Breast Lobular Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Breast Lobular Carcinoma In Situ",
+														search_terms: "Breast Lobular Carcinoma In Situ",
 														count: 1,
 													},
 													{
-														name: "Breast Squamous Cell Carcinoma, Acantholytic Variant",
+														search_terms:
+															"Breast Squamous Cell Carcinoma, Acantholytic Variant",
 														count: 1,
 													},
 												],
 											},
 											{
-												name: "Hematopoietic and Lymphoid System Cancer",
+												search_terms:
+													"Hematopoietic and Lymphoid System Cancer",
 												children: [
 													{
-														name: "B Acute Lymphoblastic Leukemia",
+														search_terms: "B Acute Lymphoblastic Leukemia",
 														count: 143,
 													},
 													{
-														name: "Acute Myeloid Leukemia",
+														search_terms: "Acute Myeloid Leukemia",
 														count: 122,
 													},
 													{
-														name: "Diffuse Large B-Cell Lymphoma",
+														search_terms: "Diffuse Large B-Cell Lymphoma",
 														count: 43,
 													},
 													{
-														name: "Acute Lymphoblastic Leukemia",
+														search_terms: "Acute Lymphoblastic Leukemia",
 														count: 37,
 													},
 													{
-														name: "Plasma Cell Myeloma",
+														search_terms: "Plasma Cell Myeloma",
 														count: 31,
 													},
 													{
-														name: "Burkitt Lymphoma",
+														search_terms: "Burkitt Lymphoma",
 														count: 25,
 													},
 													{
-														name: "Childhood T Acute Lymphoblastic Leukemia",
+														search_terms:
+															"Childhood T Acute Lymphoblastic Leukemia",
 														count: 24,
 													},
 													{
-														name: "T Acute Lymphoblastic Leukemia",
+														search_terms: "T Acute Lymphoblastic Leukemia",
 														count: 24,
 													},
 													{
-														name: "Recurrent T Acute Lymphoblastic Leukemia",
+														search_terms:
+															"Recurrent T Acute Lymphoblastic Leukemia",
 														count: 24,
 													},
 													{
-														name: "T Lymphoblastic Leukemia/Lymphoma",
+														search_terms: "T Lymphoblastic Leukemia/Lymphoma",
 														count: 19,
 													},
 													{
-														name: "Chronic Myelogenous Leukemia, BCR-ABL1 Positive",
+														search_terms:
+															"Chronic Myelogenous Leukemia, BCR-ABL1 Positive",
 														count: 18,
 													},
 													{
-														name: "Leukemia",
+														search_terms: "Leukemia",
 														count: 16,
 													},
 													{
-														name: "Mantle Cell Lymphoma",
+														search_terms: "Mantle Cell Lymphoma",
 														count: 16,
 													},
 													{
-														name: "Central Nervous System Lymphoma",
+														search_terms: "Central Nervous System Lymphoma",
 														count: 13,
 													},
 													{
-														name: "Lymphoma",
+														search_terms: "Lymphoma",
 														count: 12,
 													},
 													{
-														name: "Hodgkin Lymphoma",
+														search_terms: "Hodgkin Lymphoma",
 														count: 11,
 													},
 													{
-														name: "Anaplastic Large Cell Lymphoma",
+														search_terms: "Anaplastic Large Cell Lymphoma",
 														count: 9,
 													},
 													{
-														name: "B-Cell Non-Hodgkin Lymphoma",
+														search_terms: "B-Cell Non-Hodgkin Lymphoma",
 														count: 8,
 													},
 													{
-														name: "Adult B Acute Lymphoblastic Leukemia",
+														search_terms:
+															"Adult B Acute Lymphoblastic Leukemia",
 														count: 7,
 													},
 													{
-														name: "Follicular Lymphoma",
+														search_terms: "Follicular Lymphoma",
 														count: 6,
 													},
 													{
-														name: "Chronic Lymphocytic Leukemia",
+														search_terms: "Chronic Lymphocytic Leukemia",
 														count: 6,
 													},
 													{
-														name: "Primary Effusion Lymphoma",
+														search_terms: "Primary Effusion Lymphoma",
 														count: 6,
 													},
 													{
-														name: "Early T Acute Lymphoblastic Leukemia",
+														search_terms:
+															"Early T Acute Lymphoblastic Leukemia",
 														count: 6,
 													},
 													{
-														name: "Natural Killer Cell Lymphoblastic Leukemia/Lymphoma",
+														search_terms:
+															"Natural Killer Cell Lymphoblastic Leukemia/Lymphoma",
 														count: 5,
 													},
 													{
-														name: "Primary Cutaneous T-Cell Non-Hodgkin Lymphoma",
+														search_terms:
+															"Primary Cutaneous T-Cell Non-Hodgkin Lymphoma",
 														count: 5,
 													},
 													{
-														name: "Hairy Cell Leukemia",
+														search_terms: "Hairy Cell Leukemia",
 														count: 4,
 													},
 													{
-														name: "Acute Monocytic Leukemia",
+														search_terms: "Acute Monocytic Leukemia",
 														count: 4,
 													},
 													{
-														name: "Angioimmunoblastic T-Cell Lymphoma",
+														search_terms: "Angioimmunoblastic T-Cell Lymphoma",
 														count: 4,
 													},
 													{
-														name: "Erythroleukemia",
+														search_terms: "Erythroleukemia",
 														count: 4,
 													},
 													{
-														name: "Aggressive Non-Hodgkin Lymphoma",
+														search_terms: "Aggressive Non-Hodgkin Lymphoma",
 														count: 4,
 													},
 													{
-														name: "Myelodysplastic Syndrome",
+														search_terms: "Myelodysplastic Syndrome",
 														count: 4,
 													},
 													{
-														name: "Adult Acute Monocytic Leukemia",
+														search_terms: "Adult Acute Monocytic Leukemia",
 														count: 4,
 													},
 													{
-														name: "Adult T-Cell Leukemia/Lymphoma",
+														search_terms: "Adult T-Cell Leukemia/Lymphoma",
 														count: 3,
 													},
 													{
-														name: "Childhood Acute Megakaryoblastic Leukemia",
+														search_terms:
+															"Childhood Acute Megakaryoblastic Leukemia",
 														count: 3,
 													},
 													{
-														name: "Myeloid Leukemia",
+														search_terms: "Myeloid Leukemia",
 														count: 2,
 													},
 													{
-														name: "Mycosis Fungoides and Sezary Syndrome",
+														search_terms:
+															"Mycosis Fungoides and Sezary Syndrome",
 														count: 2,
 													},
 													{
-														name: "Acute Leukemia",
+														search_terms: "Acute Leukemia",
 														count: 2,
 													},
 													{
-														name: "Childhood Acute Monocytic Leukemia",
+														search_terms: "Childhood Acute Monocytic Leukemia",
 														count: 2,
 													},
 													{
-														name: "Non-Hodgkin Lymphoma",
+														search_terms: "Non-Hodgkin Lymphoma",
 														count: 2,
 													},
 													{
-														name: "Acute Megakaryoblastic Leukemia",
+														search_terms: "Acute Megakaryoblastic Leukemia",
 														count: 2,
 													},
 													{
-														name: "T Lymphoblastic Lymphoma",
+														search_terms: "T Lymphoblastic Lymphoma",
 														count: 2,
 													},
 													{
-														name: "Acute Biphenotypic Leukemia",
+														search_terms: "Acute Biphenotypic Leukemia",
 														count: 2,
 													},
 													{
-														name: "Splenic Marginal Zone Lymphoma",
+														search_terms: "Splenic Marginal Zone Lymphoma",
 														count: 1,
 													},
 													{
-														name: "Refractory Lymphoma",
+														search_terms: "Refractory Lymphoma",
 														count: 1,
 													},
 													{
-														name: "T-Cell Large Granular Lymphocyte Leukemia",
+														search_terms:
+															"T-Cell Large Granular Lymphocyte Leukemia",
 														count: 1,
 													},
 													{
-														name: "Juvenile Myelomonocytic Leukemia",
+														search_terms: "Juvenile Myelomonocytic Leukemia",
 														count: 1,
 													},
 													{
-														name: "Chronic Eosinophilic Leukemia, Not Otherwise Specified",
+														search_terms:
+															"Chronic Eosinophilic Leukemia, Not Otherwise Specified",
 														count: 1,
 													},
 													{
-														name: "Adult Acute Promyelocytic Leukemia with PML-RARA",
+														search_terms:
+															"Adult Acute Promyelocytic Leukemia with PML-RARA",
 														count: 1,
 													},
 													{
-														name: "Sezary Syndrome",
+														search_terms: "Sezary Syndrome",
 														count: 1,
 													},
 													{
-														name: "T-Cell Non-Hodgkin Lymphoma",
+														search_terms: "T-Cell Non-Hodgkin Lymphoma",
 														count: 1,
 													},
 													{
-														name: "Centroblastic Lymphoma",
+														search_terms: "Centroblastic Lymphoma",
 														count: 1,
 													},
 													{
-														name: "Mixed Phenotype Acute Leukemia",
+														search_terms: "Mixed Phenotype Acute Leukemia",
 														count: 1,
 													},
 													{
-														name: "Blastic Plasmacytoid Dendritic Cell Neoplasm",
+														search_terms:
+															"Blastic Plasmacytoid Dendritic Cell Neoplasm",
 														count: 1,
 													},
 													{
-														name: "Peripheral T-Cell Lymphoma, Not Otherwise Specified",
+														search_terms:
+															"Peripheral T-Cell Lymphoma, Not Otherwise Specified",
 														count: 1,
 													},
 													{
-														name: "Lymphoblastic Lymphoma",
+														search_terms: "Lymphoblastic Lymphoma",
 														count: 1,
 													},
 													{
-														name: "Childhood Acute Myeloid Leukemia with Maturation",
+														search_terms:
+															"Childhood Acute Myeloid Leukemia with Maturation",
 														count: 1,
 													},
 													{
-														name: "B-Cell Prolymphocytic Leukemia",
+														search_terms: "B-Cell Prolymphocytic Leukemia",
 														count: 1,
 													},
 													{
-														name: "T-Cell Prolymphocytic Leukemia",
+														search_terms: "T-Cell Prolymphocytic Leukemia",
 														count: 1,
 													},
 													{
-														name: "Mature T-Cell and NK-Cell Non-Hodgkin Lymphoma",
+														search_terms:
+															"Mature T-Cell and NK-Cell Non-Hodgkin Lymphoma",
 														count: 1,
 													},
 													{
-														name: "Marginal Zone Lymphoma",
+														search_terms: "Marginal Zone Lymphoma",
 														count: 1,
 													},
 													{
-														name: "Primary Mediastinal (Thymic) Large B-Cell Lymphoma",
+														search_terms:
+															"Primary Mediastinal (Thymic) Large B-Cell Lymphoma",
 														count: 1,
 													},
 												],
 											},
 											{
-												name: "Unclassified",
+												search_terms: "Unclassified",
 												children: [
 													{
-														name: "Melanoma of Unknown Primary",
+														search_terms: "Melanoma of Unknown Primary",
 														count: 128,
 													},
 													{
-														name: "Melanoma",
+														search_terms: "Melanoma",
 														count: 17,
 													},
 													{
-														name: "Wilms Tumor",
+														search_terms: "Wilms Tumor",
 														count: 13,
 													},
 													{
-														name: "Rhabdoid Tumor",
+														search_terms: "Rhabdoid Tumor",
 														count: 8,
 													},
 													{
-														name: "Mucosal Melanoma",
+														search_terms: "Mucosal Melanoma",
 														count: 6,
 													},
 													{
-														name: "Endometrioid Adenocarcinoma",
+														search_terms: "Endometrioid Adenocarcinoma",
 														count: 6,
 													},
 													{
-														name: "Amelanotic Melanoma",
+														search_terms: "Amelanotic Melanoma",
 														count: 5,
 													},
 													{
-														name: "Malignant Mesothelioma",
+														search_terms: "Malignant Mesothelioma",
 														count: 4,
 													},
 													{
-														name: "Adenocarcinoma",
+														search_terms: "Adenocarcinoma",
 														count: 2,
 													},
 													{
-														name: "Recurrent Melanoma",
+														search_terms: "Recurrent Melanoma",
 														count: 2,
 													},
 													{
-														name: "Carcinoma",
+														search_terms: "Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Epithelioid Mesothelioma",
+														search_terms: "Epithelioid Mesothelioma",
 														count: 1,
 													},
 													{
-														name: "Mucinous Cystadenocarcinoma",
+														search_terms: "Mucinous Cystadenocarcinoma",
 														count: 1,
 													},
 													{
-														name: "Recurrent Rhabdoid Tumor",
+														search_terms: "Recurrent Rhabdoid Tumor",
 														count: 1,
 													},
 													{
-														name: "Breast Intracystic Papillary Carcinoma",
+														search_terms:
+															"Breast Intracystic Papillary Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Adenocarcinoma of Unknown Primary",
+														search_terms: "Adenocarcinoma of Unknown Primary",
 														count: 1,
 													},
 													{
-														name: "Basaloid Squamous Cell Carcinoma",
+														search_terms: "Basaloid Squamous Cell Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Yolk Sac Tumor",
+														search_terms: "Yolk Sac Tumor",
 														count: 1,
 													},
 													{
-														name: "Papillary Serous Cystadenocarcinoma",
+														search_terms: "Papillary Serous Cystadenocarcinoma",
 														count: 1,
 													},
 												],
 											},
 											{
-												name: "Endocrine Cancer",
+												search_terms: "Endocrine Cancer",
 												children: [
 													{
-														name: "Lung Small Cell Carcinoma",
+														search_terms: "Lung Small Cell Carcinoma",
 														count: 100,
 													},
 													{
-														name: "Merkel Cell Carcinoma",
+														search_terms: "Merkel Cell Carcinoma",
 														count: 9,
 													},
 													{
-														name: "Lung Large Cell Neuroendocrine Carcinoma",
+														search_terms:
+															"Lung Large Cell Neuroendocrine Carcinoma",
 														count: 7,
 													},
 													{
-														name: "Neuroendocrine Carcinoma",
+														search_terms: "Neuroendocrine Carcinoma",
 														count: 6,
 													},
 													{
-														name: "Lung Carcinoid Tumor",
+														search_terms: "Lung Carcinoid Tumor",
 														count: 6,
 													},
 													{
-														name: "Thyroid Gland Follicular Carcinoma",
+														search_terms: "Thyroid Gland Follicular Carcinoma",
 														count: 6,
 													},
 													{
-														name: "Small Cell Neuroendocrine Carcinoma",
+														search_terms: "Small Cell Neuroendocrine Carcinoma",
 														count: 5,
 													},
 													{
-														name: "Lung Neuroendocrine Neoplasm",
+														search_terms: "Lung Neuroendocrine Neoplasm",
 														count: 4,
 													},
 													{
-														name: "Thyroid Gland Papillary Carcinoma",
+														search_terms: "Thyroid Gland Papillary Carcinoma",
 														count: 3,
 													},
 													{
-														name: "Cervical Small Cell Neuroendocrine Carcinoma",
+														search_terms:
+															"Cervical Small Cell Neuroendocrine Carcinoma",
 														count: 2,
 													},
 													{
-														name: "Hereditary Thyroid Gland Medullary Carcinoma",
+														search_terms:
+															"Hereditary Thyroid Gland Medullary Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Extrapulmonary Small Cell Neuroendocrine Carcinoma",
+														search_terms:
+															"Extrapulmonary Small Cell Neuroendocrine Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Thyroid Gland Hurthle Cell Carcinoma",
+														search_terms:
+															"Thyroid Gland Hurthle Cell Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Bladder Neuroendocrine Carcinoma",
+														search_terms: "Bladder Neuroendocrine Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Adrenal Cortex Carcinoma",
+														search_terms: "Adrenal Cortex Carcinoma",
 														count: 1,
 													},
 												],
 											},
 											{
-												name: "Reproductive System Cancer",
+												search_terms: "Reproductive System Cancer",
 												children: [
 													{
-														name: "High Grade Ovarian Serous Adenocarcinoma",
+														search_terms:
+															"High Grade Ovarian Serous Adenocarcinoma",
 														count: 80,
 													},
 													{
-														name: "Ovarian Cancer",
+														search_terms: "Ovarian Cancer",
 														count: 36,
 													},
 													{
-														name: "Endometrial Endometrioid Adenocarcinoma",
+														search_terms:
+															"Endometrial Endometrioid Adenocarcinoma",
 														count: 34,
 													},
 													{
-														name: "Ovarian Carcinoma",
+														search_terms: "Ovarian Carcinoma",
 														count: 30,
 													},
 													{
-														name: "Endometrial Adenocarcinoma",
+														search_terms: "Endometrial Adenocarcinoma",
 														count: 25,
 													},
 													{
-														name: "Ovarian Serous Adenocarcinoma",
+														search_terms: "Ovarian Serous Adenocarcinoma",
 														count: 19,
 													},
 													{
-														name: "Uterine Carcinosarcoma",
+														search_terms: "Uterine Carcinosarcoma",
 														count: 17,
 													},
 													{
-														name: "Cervical Squamous Cell Carcinoma, Not Otherwise Specified",
+														search_terms:
+															"Cervical Squamous Cell Carcinoma, Not Otherwise Specified",
 														count: 14,
 													},
 													{
-														name: "Human Papillomavirus-Related Cervical Squamous Cell Carcinoma",
+														search_terms:
+															"Human Papillomavirus-Related Cervical Squamous Cell Carcinoma",
 														count: 12,
 													},
 													{
-														name: "Malignant Mixed Mesodermal (Mullerian) Tumor",
+														search_terms:
+															"Malignant Mixed Mesodermal (Mullerian) Tumor",
 														count: 9,
 													},
 													{
-														name: "Ovarian Clear Cell Adenocarcinoma",
+														search_terms: "Ovarian Clear Cell Adenocarcinoma",
 														count: 8,
 													},
 													{
-														name: "Prostate Carcinoma",
+														search_terms: "Prostate Carcinoma",
 														count: 8,
 													},
 													{
-														name: "Endometrial Carcinoma",
+														search_terms: "Endometrial Carcinoma",
 														count: 8,
 													},
 													{
-														name: "Cervical Adenocarcinoma",
+														search_terms: "Cervical Adenocarcinoma",
 														count: 7,
 													},
 													{
-														name: "Ovarian Cystadenocarcinoma",
+														search_terms: "Ovarian Cystadenocarcinoma",
 														count: 7,
 													},
 													{
-														name: "Ovarian Adenocarcinoma",
+														search_terms: "Ovarian Adenocarcinoma",
 														count: 6,
 													},
 													{
-														name: "Cervical Cancer",
+														search_terms: "Cervical Cancer",
 														count: 6,
 													},
 													{
-														name: "Ovarian Endometrioid Adenocarcinoma",
+														search_terms: "Ovarian Endometrioid Adenocarcinoma",
 														count: 6,
 													},
 													{
-														name: "Prostate Cancer",
+														search_terms: "Prostate Cancer",
 														count: 5,
 													},
 													{
-														name: "Endometrial Serous Adenocarcinoma",
+														search_terms: "Endometrial Serous Adenocarcinoma",
 														count: 5,
 													},
 													{
-														name: "Ovarian Carcinosarcoma",
+														search_terms: "Ovarian Carcinosarcoma",
 														count: 5,
 													},
 													{
-														name: "Ovarian Mucinous Adenocarcinoma",
+														search_terms: "Ovarian Mucinous Adenocarcinoma",
 														count: 4,
 													},
 													{
-														name: "Gestational Choriocarcinoma",
+														search_terms: "Gestational Choriocarcinoma",
 														count: 4,
 													},
 													{
-														name: "Ovarian Serous Cystadenocarcinoma",
+														search_terms: "Ovarian Serous Cystadenocarcinoma",
 														count: 4,
 													},
 													{
-														name: "Ovarian Serous Surface Papillary Adenocarcinoma",
+														search_terms:
+															"Ovarian Serous Surface Papillary Adenocarcinoma",
 														count: 4,
 													},
 													{
-														name: "Vaginal Cancer",
+														search_terms: "Vaginal Cancer",
 														count: 3,
 													},
 													{
-														name: "Uterine Cancer",
+														search_terms: "Uterine Cancer",
 														count: 3,
 													},
 													{
-														name: "Testicular Cancer",
+														search_terms: "Testicular Cancer",
 														count: 3,
 													},
 													{
-														name: "Testicular Embryonal Carcinoma",
+														search_terms: "Testicular Embryonal Carcinoma",
 														count: 2,
 													},
 													{
-														name: "Squamous Cell Carcinoma of the Penis",
+														search_terms:
+															"Squamous Cell Carcinoma of the Penis",
 														count: 2,
 													},
 													{
-														name: "Endometrial Adenosquamous Carcinoma",
+														search_terms: "Endometrial Adenosquamous Carcinoma",
 														count: 2,
 													},
 													{
-														name: "Vulvar Squamous Cell Carcinoma",
+														search_terms: "Vulvar Squamous Cell Carcinoma",
 														count: 2,
 													},
 													{
-														name: "Prostate Adenocarcinoma",
+														search_terms: "Prostate Adenocarcinoma",
 														count: 2,
 													},
 													{
-														name: "Uterine Corpus Carcinosarcoma",
+														search_terms: "Uterine Corpus Carcinosarcoma",
 														count: 2,
 													},
 													{
-														name: "Vulvar Carcinoma",
+														search_terms: "Vulvar Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Malignant Ovarian Endometrioid Tumor",
+														search_terms:
+															"Malignant Ovarian Endometrioid Tumor",
 														count: 1,
 													},
 													{
-														name: "Ovarian Undifferentiated Carcinoma",
+														search_terms: "Ovarian Undifferentiated Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Vulvar Melanoma",
+														search_terms: "Vulvar Melanoma",
 														count: 1,
 													},
 													{
-														name: "Cervical Carcinoma",
+														search_terms: "Cervical Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Malignant Ovarian Granulosa Cell Tumor",
+														search_terms:
+															"Malignant Ovarian Granulosa Cell Tumor",
 														count: 1,
 													},
 													{
-														name: "Low Grade Ovarian Serous Adenocarcinoma",
+														search_terms:
+															"Low Grade Ovarian Serous Adenocarcinoma",
 														count: 1,
 													},
 													{
-														name: "Cervical Carcinosarcoma",
+														search_terms: "Cervical Carcinosarcoma",
 														count: 1,
 													},
 													{
-														name: "Ovarian Yolk Sac Tumor",
+														search_terms: "Ovarian Yolk Sac Tumor",
 														count: 1,
 													},
 													{
-														name: "Malignant Ovarian Brenner Tumor",
+														search_terms: "Malignant Ovarian Brenner Tumor",
 														count: 1,
 													},
 													{
-														name: "Testicular Teratoma with Somatic-Type Malignancy",
+														search_terms:
+															"Testicular Teratoma with Somatic-Type Malignancy",
 														count: 1,
 													},
 													{
-														name: "Childhood Malignant Testicular Germ Cell Tumor",
+														search_terms:
+															"Childhood Malignant Testicular Germ Cell Tumor",
 														count: 1,
 													},
 												],
 											},
 											{
-												name: "Nervous System Cancer",
+												search_terms: "Nervous System Cancer",
 												children: [
 													{
-														name: "Brain Glioblastoma",
+														search_terms: "Brain Glioblastoma",
 														count: 61,
 													},
 													{
-														name: "Glioblastoma",
+														search_terms: "Glioblastoma",
 														count: 58,
 													},
 													{
-														name: "Peripheral Neuroblastoma",
+														search_terms: "Peripheral Neuroblastoma",
 														count: 35,
 													},
 													{
-														name: "Glioblastoma, Not Otherwise Specified",
+														search_terms:
+															"Glioblastoma, Not Otherwise Specified",
 														count: 32,
 													},
 													{
-														name: "Neuroblastoma",
+														search_terms: "Neuroblastoma",
 														count: 31,
 													},
 													{
-														name: "Glioblastoma, IDH-Wildtype",
+														search_terms: "Glioblastoma, IDH-Wildtype",
 														count: 29,
 													},
 													{
-														name: "Medulloblastoma",
+														search_terms: "Medulloblastoma",
 														count: 28,
 													},
 													{
-														name: "Brain Astrocytoma",
+														search_terms: "Brain Astrocytoma",
 														count: 22,
 													},
 													{
-														name: "Childhood Neuroblastoma",
+														search_terms: "Childhood Neuroblastoma",
 														count: 17,
 													},
 													{
-														name: "Central Nervous System Cancer",
+														search_terms: "Central Nervous System Cancer",
 														count: 13,
 													},
 													{
-														name: "Atypical Teratoid/Rhabdoid Tumor",
+														search_terms: "Atypical Teratoid/Rhabdoid Tumor",
 														count: 11,
 													},
 													{
-														name: "Primitive Neuroectodermal Tumor",
+														search_terms: "Primitive Neuroectodermal Tumor",
 														count: 10,
 													},
 													{
-														name: "Brain Stem Glioblastoma",
+														search_terms: "Brain Stem Glioblastoma",
 														count: 8,
 													},
 													{
-														name: "Adrenal Gland Neuroblastoma",
+														search_terms: "Adrenal Gland Neuroblastoma",
 														count: 7,
 													},
 													{
-														name: "Ependymoma",
+														search_terms: "Ependymoma",
 														count: 6,
 													},
 													{
-														name: "Anaplastic Astrocytoma",
+														search_terms: "Anaplastic Astrocytoma",
 														count: 5,
 													},
 													{
-														name: "Secondary Glioblastoma",
+														search_terms: "Secondary Glioblastoma",
 														count: 4,
 													},
 													{
-														name: "Glioblastoma, IDH-Mutant",
+														search_terms: "Glioblastoma, IDH-Mutant",
 														count: 3,
 													},
 													{
-														name: "Anaplastic Oligodendroglioma, Not Otherwise Specified",
+														search_terms:
+															"Anaplastic Oligodendroglioma, Not Otherwise Specified",
 														count: 3,
 													},
 													{
-														name: "Embryonal Tumor with Multilayered Rosettes, Not Otherwise Specified",
+														search_terms:
+															"Embryonal Tumor with Multilayered Rosettes, Not Otherwise Specified",
 														count: 3,
 													},
 													{
-														name: "Gliosarcoma",
+														search_terms: "Gliosarcoma",
 														count: 3,
 													},
 													{
-														name: "Anaplastic Oligodendroglioma",
+														search_terms: "Anaplastic Oligodendroglioma",
 														count: 2,
 													},
 													{
-														name: "Askin Tumor",
+														search_terms: "Askin Tumor",
 														count: 2,
 													},
 													{
-														name: "Malignant Brain Glioma",
+														search_terms: "Malignant Brain Glioma",
 														count: 2,
 													},
 													{
-														name: "Diffuse Intrinsic Pontine Glioma",
+														search_terms: "Diffuse Intrinsic Pontine Glioma",
 														count: 2,
 													},
 													{
-														name: "Pineoblastoma",
+														search_terms: "Pineoblastoma",
 														count: 1,
 													},
 													{
-														name: "Recurrent Malignant Glioma",
+														search_terms: "Recurrent Malignant Glioma",
 														count: 1,
 													},
 													{
-														name: "Embryonal Tumor with Multilayered Rosettes, C19MC-Altered",
+														search_terms:
+															"Embryonal Tumor with Multilayered Rosettes, C19MC-Altered",
 														count: 1,
 													},
 													{
-														name: "Malignant Glioma",
+														search_terms: "Malignant Glioma",
 														count: 1,
 													},
 													{
-														name: "Central Nervous System Germinoma",
+														search_terms: "Central Nervous System Germinoma",
 														count: 1,
 													},
 													{
-														name: "Central Nervous System Embryonal Neoplasm",
+														search_terms:
+															"Central Nervous System Embryonal Neoplasm",
 														count: 1,
 													},
 													{
-														name: "Brain Cancer",
+														search_terms: "Brain Cancer",
 														count: 1,
 													},
 													{
-														name: "Childhood Ependymoma",
+														search_terms: "Childhood Ependymoma",
 														count: 1,
 													},
 													{
-														name: "Childhood Meningeal Melanoma",
+														search_terms: "Childhood Meningeal Melanoma",
 														count: 1,
 													},
 													{
-														name: "Mediastinal Neuroblastoma",
+														search_terms: "Mediastinal Neuroblastoma",
 														count: 1,
 													},
 													{
-														name: "WHO Grade III Glioma",
+														search_terms: "WHO Grade III Glioma",
 														count: 1,
 													},
 												],
 											},
 											{
-												name: "Urinary System Cancer",
+												search_terms: "Urinary System Cancer",
 												children: [
 													{
-														name: "Kidney Cancer",
+														search_terms: "Kidney Cancer",
 														count: 52,
 													},
 													{
-														name: "Clear Cell Renal Cell Carcinoma",
+														search_terms: "Clear Cell Renal Cell Carcinoma",
 														count: 52,
 													},
 													{
-														name: "Urinary System Cancer",
+														search_terms: "Urinary System Cancer",
 														count: 36,
 													},
 													{
-														name: "Bladder Carcinoma",
+														search_terms: "Bladder Carcinoma",
 														count: 36,
 													},
 													{
-														name: "Renal Cell Carcinoma",
+														search_terms: "Renal Cell Carcinoma",
 														count: 32,
 													},
 													{
-														name: "Bladder Cancer",
+														search_terms: "Bladder Cancer",
 														count: 20,
 													},
 													{
-														name: "Urothelial Carcinoma",
+														search_terms: "Urothelial Carcinoma",
 														count: 19,
 													},
 													{
-														name: "Bladder Urothelial Carcinoma",
+														search_terms: "Bladder Urothelial Carcinoma",
 														count: 11,
 													},
 													{
-														name: "Childhood Kidney Wilms Tumor",
+														search_terms: "Childhood Kidney Wilms Tumor",
 														count: 5,
 													},
 													{
-														name: "Papillary Renal Cell Carcinoma",
+														search_terms: "Papillary Renal Cell Carcinoma",
 														count: 4,
 													},
 													{
-														name: "Kidney Carcinoma",
+														search_terms: "Kidney Carcinoma",
 														count: 3,
 													},
 													{
-														name: "Bladder Papillary Urothelial Carcinoma",
+														search_terms:
+															"Bladder Papillary Urothelial Carcinoma",
 														count: 3,
 													},
 													{
-														name: "Rhabdoid Tumor of the Kidney",
+														search_terms: "Rhabdoid Tumor of the Kidney",
 														count: 2,
 													},
 													{
-														name: "Ureter Urothelial Carcinoma",
+														search_terms: "Ureter Urothelial Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Renal Pelvis Carcinoma",
+														search_terms: "Renal Pelvis Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Bladder Adenocarcinoma",
+														search_terms: "Bladder Adenocarcinoma",
 														count: 1,
 													},
 													{
-														name: "Kidney Wilms Tumor",
+														search_terms: "Kidney Wilms Tumor",
 														count: 1,
 													},
 													{
-														name: "Bladder Squamous Cell Carcinoma",
+														search_terms: "Bladder Squamous Cell Carcinoma",
 														count: 1,
 													},
 												],
 											},
 											{
-												name: "Head and Neck Cancer",
+												search_terms: "Head and Neck Cancer",
 												children: [
 													{
-														name: "Lip and Oral Cavity Squamous Cell Carcinoma",
+														search_terms:
+															"Lip and Oral Cavity Squamous Cell Carcinoma",
 														count: 52,
 													},
 													{
-														name: "Tongue Squamous Cell Carcinoma",
+														search_terms: "Tongue Squamous Cell Carcinoma",
 														count: 40,
 													},
 													{
-														name: "Head and Neck Squamous Cell Carcinoma",
+														search_terms:
+															"Head and Neck Squamous Cell Carcinoma",
 														count: 35,
 													},
 													{
-														name: "Laryngeal Squamous Cell Carcinoma",
+														search_terms: "Laryngeal Squamous Cell Carcinoma",
 														count: 21,
 													},
 													{
-														name: "Pharyngeal Squamous Cell Carcinoma",
+														search_terms: "Pharyngeal Squamous Cell Carcinoma",
 														count: 20,
 													},
 													{
-														name: "Oral Cavity Squamous Cell Carcinoma",
+														search_terms: "Oral Cavity Squamous Cell Carcinoma",
 														count: 16,
 													},
 													{
-														name: "Salivary Gland Cancer",
+														search_terms: "Salivary Gland Cancer",
 														count: 13,
 													},
 													{
-														name: "Thyroid Gland Anaplastic Carcinoma",
+														search_terms: "Thyroid Gland Anaplastic Carcinoma",
 														count: 8,
 													},
 													{
-														name: "Buccal Mucosa Squamous Cell Carcinoma",
+														search_terms:
+															"Buccal Mucosa Squamous Cell Carcinoma",
 														count: 6,
 													},
 													{
-														name: "Floor of Mouth Squamous Cell Carcinoma",
+														search_terms:
+															"Floor of Mouth Squamous Cell Carcinoma",
 														count: 6,
 													},
 													{
-														name: "Head and Neck Cancer",
+														search_terms: "Head and Neck Cancer",
 														count: 6,
 													},
 													{
-														name: "Glottic Squamous Cell Carcinoma",
+														search_terms: "Glottic Squamous Cell Carcinoma",
 														count: 4,
 													},
 													{
-														name: "Thyroid Gland Cancer",
+														search_terms: "Thyroid Gland Cancer",
 														count: 4,
 													},
 													{
-														name: "Retromolar Trigone Squamous Cell Carcinoma",
+														search_terms:
+															"Retromolar Trigone Squamous Cell Carcinoma",
 														count: 4,
 													},
 													{
-														name: "Hypopharyngeal Squamous Cell Carcinoma",
+														search_terms:
+															"Hypopharyngeal Squamous Cell Carcinoma",
 														count: 3,
 													},
 													{
-														name: "Gingival Squamous Cell Carcinoma",
+														search_terms: "Gingival Squamous Cell Carcinoma",
 														count: 2,
 													},
 													{
-														name: "Laryngeal Cancer",
+														search_terms: "Laryngeal Cancer",
 														count: 2,
 													},
 													{
-														name: "Thyroid Gland Squamous Cell Carcinoma",
+														search_terms:
+															"Thyroid Gland Squamous Cell Carcinoma",
 														count: 2,
 													},
 													{
-														name: "Hard Palate Squamous Cell Carcinoma",
+														search_terms: "Hard Palate Squamous Cell Carcinoma",
 														count: 2,
 													},
 													{
-														name: "Nasopharyngeal Carcinoma",
+														search_terms: "Nasopharyngeal Carcinoma",
 														count: 2,
 													},
 													{
-														name: "Tonsillar Squamous Cell Carcinoma",
+														search_terms: "Tonsillar Squamous Cell Carcinoma",
 														count: 2,
 													},
 													{
-														name: "Tongue Cancer",
+														search_terms: "Tongue Cancer",
 														count: 1,
 													},
 													{
-														name: "Postcricoid Squamous Cell Carcinoma",
+														search_terms: "Postcricoid Squamous Cell Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Oral Cavity Cancer",
+														search_terms: "Oral Cavity Cancer",
 														count: 1,
 													},
 													{
-														name: "Parotid Gland Mucoepidermoid Carcinoma",
+														search_terms:
+															"Parotid Gland Mucoepidermoid Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Salivary Gland Mucoepidermoid Carcinoma",
+														search_terms:
+															"Salivary Gland Mucoepidermoid Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Salivary Gland Squamous Cell Carcinoma",
+														search_terms:
+															"Salivary Gland Squamous Cell Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Pharyngeal Cancer",
+														search_terms: "Pharyngeal Cancer",
 														count: 1,
 													},
 													{
-														name: "Supraglottic Squamous Cell Carcinoma",
+														search_terms:
+															"Supraglottic Squamous Cell Carcinoma",
 														count: 1,
 													},
 													{
-														name: "Tonsillar Cancer",
+														search_terms: "Tonsillar Cancer",
 														count: 1,
 													},
 												],
 											},
 											{
-												name: "Connective and Soft Tissue Cancer",
+												search_terms: "Connective and Soft Tissue Cancer",
 												children: [
 													{
-														name: "Soft Tissue Sarcoma",
+														search_terms: "Soft Tissue Sarcoma",
 														count: 47,
 													},
 													{
-														name: "Bone Osteosarcoma",
+														search_terms: "Bone Osteosarcoma",
 														count: 45,
 													},
 													{
-														name: "Osteosarcoma",
+														search_terms: "Osteosarcoma",
 														count: 38,
 													},
 													{
-														name: "Childhood Osteosarcoma",
+														search_terms: "Childhood Osteosarcoma",
 														count: 37,
 													},
 													{
-														name: "Fusion-Negative Rhabdomyosarcoma",
+														search_terms: "Fusion-Negative Rhabdomyosarcoma",
 														count: 25,
 													},
 													{
-														name: "Ewing Sarcoma",
+														search_terms: "Ewing Sarcoma",
 														count: 19,
 													},
 													{
-														name: "Fusion-Positive Rhabdomyosarcoma",
+														search_terms: "Fusion-Positive Rhabdomyosarcoma",
 														count: 17,
 													},
 													{
-														name: "Fibrosarcoma",
+														search_terms: "Fibrosarcoma",
 														count: 16,
 													},
 													{
-														name: "Undifferentiated Pleomorphic Sarcoma",
+														search_terms:
+															"Undifferentiated Pleomorphic Sarcoma",
 														count: 15,
 													},
 													{
-														name: "Uterine Corpus Leiomyosarcoma",
+														search_terms: "Uterine Corpus Leiomyosarcoma",
 														count: 15,
 													},
 													{
-														name: "Alveolar Rhabdomyosarcoma",
+														search_terms: "Alveolar Rhabdomyosarcoma",
 														count: 15,
 													},
 													{
-														name: "Ewing Sarcoma of Bone",
+														search_terms: "Ewing Sarcoma of Bone",
 														count: 13,
 													},
 													{
-														name: "Synovial Sarcoma",
+														search_terms: "Synovial Sarcoma",
 														count: 12,
 													},
 													{
-														name: "Rhabdomyosarcoma",
+														search_terms: "Rhabdomyosarcoma",
 														count: 11,
 													},
 													{
-														name: "Sarcoma",
+														search_terms: "Sarcoma",
 														count: 10,
 													},
 													{
-														name: "Leiomyosarcoma",
+														search_terms: "Leiomyosarcoma",
 														count: 10,
 													},
 													{
-														name: "Liposarcoma",
+														search_terms: "Liposarcoma",
 														count: 8,
 													},
 													{
-														name: "Childhood Soft Tissue Sarcoma",
+														search_terms: "Childhood Soft Tissue Sarcoma",
 														count: 6,
 													},
 													{
-														name: "Chondrosarcoma",
+														search_terms: "Chondrosarcoma",
 														count: 6,
 													},
 													{
-														name: "Childhood Desmoplastic Small Round Cell Tumor",
+														search_terms:
+															"Childhood Desmoplastic Small Round Cell Tumor",
 														count: 5,
 													},
 													{
-														name: "Embryonal Rhabdomyosarcoma",
+														search_terms: "Embryonal Rhabdomyosarcoma",
 														count: 5,
 													},
 													{
-														name: "Uterine Corpus Sarcoma",
+														search_terms: "Uterine Corpus Sarcoma",
 														count: 4,
 													},
 													{
-														name: "Gastrointestinal Stromal Tumor",
+														search_terms: "Gastrointestinal Stromal Tumor",
 														count: 4,
 													},
 													{
-														name: "Epithelioid Sarcoma",
+														search_terms: "Epithelioid Sarcoma",
 														count: 4,
 													},
 													{
-														name: "Sacral Chordoma",
+														search_terms: "Sacral Chordoma",
 														count: 3,
 													},
 													{
-														name: "Bone Sarcoma",
+														search_terms: "Bone Sarcoma",
 														count: 3,
 													},
 													{
-														name: "Malignancy in Giant Cell Tumor of Bone",
+														search_terms:
+															"Malignancy in Giant Cell Tumor of Bone",
 														count: 3,
 													},
 													{
-														name: "Spindle Cell Sarcoma",
+														search_terms: "Spindle Cell Sarcoma",
 														count: 3,
 													},
 													{
-														name: "Metastatic Bone Sarcoma",
+														search_terms: "Metastatic Bone Sarcoma",
 														count: 3,
 													},
 													{
-														name: "Malignant Gastric Gastrointestinal Stromal Tumor",
+														search_terms:
+															"Malignant Gastric Gastrointestinal Stromal Tumor",
 														count: 2,
 													},
 													{
-														name: "Undifferentiated Round Cell Sarcoma",
+														search_terms: "Undifferentiated Round Cell Sarcoma",
 														count: 2,
 													},
 													{
-														name: "Advanced Gastrointestinal Stromal Tumor",
+														search_terms:
+															"Advanced Gastrointestinal Stromal Tumor",
 														count: 2,
 													},
 													{
-														name: "Spindle Cell Rhabdomyosarcoma",
+														search_terms: "Spindle Cell Rhabdomyosarcoma",
 														count: 1,
 													},
 													{
-														name: "Malignant Epithelioid Cell Type Gastrointestinal Stromal Tumor",
+														search_terms:
+															"Malignant Epithelioid Cell Type Gastrointestinal Stromal Tumor",
 														count: 1,
 													},
 													{
-														name: "Clear Cell Sarcoma of Soft Tissue",
+														search_terms: "Clear Cell Sarcoma of Soft Tissue",
 														count: 1,
 													},
 													{
-														name: "Clivus Chordoma",
+														search_terms: "Clivus Chordoma",
 														count: 1,
 													},
 													{
-														name: "Childhood Epithelioid Sarcoma",
+														search_terms: "Childhood Epithelioid Sarcoma",
 														count: 1,
 													},
 													{
-														name: "Liver Embryonal Sarcoma",
+														search_terms: "Liver Embryonal Sarcoma",
 														count: 1,
 													},
 													{
-														name: "Childhood Rhabdomyosarcoma",
+														search_terms: "Childhood Rhabdomyosarcoma",
 														count: 1,
 													},
 													{
-														name: "Ovarian Leiomyosarcoma",
+														search_terms: "Ovarian Leiomyosarcoma",
 														count: 1,
 													},
 													{
-														name: "Refractory Osteosarcoma",
+														search_terms: "Refractory Osteosarcoma",
 														count: 1,
 													},
 													{
-														name: "Sclerosing Rhabdomyosarcoma",
+														search_terms: "Sclerosing Rhabdomyosarcoma",
 														count: 1,
 													},
 													{
-														name: "Childhood Fibrosarcoma",
+														search_terms: "Childhood Fibrosarcoma",
 														count: 1,
 													},
 													{
-														name: "Uterine Corpus Myxoid Leiomyosarcoma",
+														search_terms:
+															"Uterine Corpus Myxoid Leiomyosarcoma",
 														count: 1,
 													},
 													{
-														name: "Childhood Synovial Sarcoma",
+														search_terms: "Childhood Synovial Sarcoma",
 														count: 1,
 													},
 													{
-														name: "Kidney Ewing Sarcoma",
+														search_terms: "Kidney Ewing Sarcoma",
 														count: 1,
 													},
 													{
-														name: "Endometrioid Stromal Sarcoma",
+														search_terms: "Endometrioid Stromal Sarcoma",
 														count: 1,
 													},
 													{
-														name: "Childhood Gastrointestinal Stromal Tumor",
+														search_terms:
+															"Childhood Gastrointestinal Stromal Tumor",
 														count: 1,
 													},
 													{
-														name: "Primary Central Chondrosarcoma",
+														search_terms: "Primary Central Chondrosarcoma",
 														count: 1,
 													},
 													{
-														name: "Vulvar Leiomyosarcoma",
+														search_terms: "Vulvar Leiomyosarcoma",
 														count: 1,
 													},
 													{
-														name: "Small Cell Sarcoma",
+														search_terms: "Small Cell Sarcoma",
 														count: 1,
 													},
 													{
-														name: "Thyroid Gland Sarcoma",
+														search_terms: "Thyroid Gland Sarcoma",
 														count: 1,
 													},
 													{
-														name: "Childhood Liposarcoma",
+														search_terms: "Childhood Liposarcoma",
 														count: 1,
 													},
 												],
 											},
 											{
-												name: "Eye Cancer",
+												search_terms: "Eye Cancer",
 												children: [
 													{
-														name: "Childhood Intraocular Retinoblastoma",
+														search_terms:
+															"Childhood Intraocular Retinoblastoma",
 														count: 38,
 													},
 													{
-														name: "Uveal Melanoma",
+														search_terms: "Uveal Melanoma",
 														count: 5,
 													},
 													{
-														name: "Retinoblastoma",
+														search_terms: "Retinoblastoma",
 														count: 2,
 													},
 												],
 											},
 											{
-												name: "Peritoneal and Retroperitoneal Cancer",
+												search_terms: "Peritoneal and Retroperitoneal Cancer",
 												children: [
 													{
-														name: "Primary Peritoneal Carcinoma",
+														search_terms: "Primary Peritoneal Carcinoma",
 														count: 1,
 													},
 												],
 											},
 										],
 									}}
+									onClick={onGraphClick}
 								/>
 							</div>
 						</div>
@@ -2238,73 +2328,71 @@ const Overview: NextPage = () => {
 							<div style={{ height: "600px" }}>
 								<BarChart
 									chartTitle="Models by top mutated gene"
-									onBarClick={(category) => {
-										return;
-									}}
+									onClick={onGraphClick}
 									rotateTicks={true}
 									data={[
 										{
-											treatment: "fluorouracil",
+											treatment_list: "fluorouracil",
 											count: 246,
 										},
 										{
-											treatment: "oxaliplatin",
+											treatment_list: "oxaliplatin",
 											count: 208,
 										},
 										{
-											treatment: "leucovorin calcium",
+											treatment_list: "leucovorin calcium",
 											count: 184,
 										},
 										{
-											treatment: "radiation therapy",
+											treatment_list: "radiation therapy",
 											count: 159,
 										},
 										{
-											treatment: "cisplatin",
+											treatment_list: "cisplatin",
 											count: 122,
 										},
 										{
-											treatment: "cyclophosphamide",
+											treatment_list: "cyclophosphamide",
 											count: 113,
 										},
 										{
-											treatment: "gemcitabine",
+											treatment_list: "gemcitabine",
 											count: 110,
 										},
 										{
-											treatment: "irinotecan",
+											treatment_list: "irinotecan",
 											count: 109,
 										},
 										{
-											treatment: "doxorubicin",
+											treatment_list: "doxorubicin",
 											count: 99,
 										},
 										{
-											treatment: "bevacizumab",
+											treatment_list: "bevacizumab",
 											count: 98,
 										},
 										{
-											treatment: "paclitaxel",
+											treatment_list: "paclitaxel",
 											count: 97,
 										},
 										{
-											treatment: "leucovorin",
+											treatment_list: "leucovorin",
 											count: 96,
 										},
 										{
-											treatment: "nab-paclitaxel",
+											treatment_list: "nab-paclitaxel",
 											count: 93,
 										},
 										{
-											treatment: "capecitabine",
+											treatment_list: "capecitabine",
 											count: 81,
 										},
 										{
-											treatment: "carboplatin",
+											treatment_list: "carboplatin",
 											count: 74,
 										},
 									]}
-									indexKey="treatment"
+									indexKey="treatment_list"
 								/>
 							</div>
 						</div>

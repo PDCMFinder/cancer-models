@@ -5,16 +5,16 @@ interface BarChartProps {
 	chartTitle: string;
 	data: any;
 	rotateTicks?: boolean;
-	onBarClick: (key: string | number) => void;
+	onClick: (node: any, filterId: string) => void;
 }
 
-const BarChart: React.FC<BarChartProps> = ({
+const BarChart = ({
 	data,
 	indexKey,
 	chartTitle,
 	rotateTicks,
-	onBarClick,
-}) => {
+	onClick,
+}: BarChartProps) => {
 	return (
 		<ResponsiveBar
 			data={data}
@@ -50,8 +50,8 @@ const BarChart: React.FC<BarChartProps> = ({
 			labelTextColor={"#fff"}
 			role="application"
 			ariaLabel={chartTitle}
-			onClick={(datum) => {
-				onBarClick(datum.data[indexKey]);
+			onClick={(node: any) => {
+				onClick(node, indexKey);
 			}}
 			barAriaLabel={function (e) {
 				return e.id + ": " + e.formattedValue + " in country: " + e.indexValue;

@@ -3,14 +3,15 @@ import { ResponsiveSunburst } from "@nivo/sunburst";
 interface SunBurstChartProps {
 	keyId: string;
 	data: any;
+	onClick: (node: any, filterId: string) => void;
 }
 
-const SunBurstChart: React.FC<SunBurstChartProps> = ({ keyId, data }) => {
+const SunBurstChart = (props: SunBurstChartProps) => {
 	return (
 		<ResponsiveSunburst
-			data={data}
+			data={props.data}
 			margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-			id={keyId}
+			id={props.keyId}
 			value="count"
 			cornerRadius={2}
 			//borderColor={{ theme: "background" }}
@@ -25,6 +26,7 @@ const SunBurstChart: React.FC<SunBurstChartProps> = ({ keyId, data }) => {
 				from: "color",
 				modifiers: [["darker", 2.0]],
 			}}
+			onClick={(node: any) => props.onClick(node, props.keyId)}
 		/>
 	);
 };
