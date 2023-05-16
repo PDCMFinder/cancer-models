@@ -4,7 +4,10 @@ import DonutChart from "../components/DonutChart/DonutChart";
 import SunBurstChart from "../components/SunBurstChart/SunBurstChart";
 import Button from "../components/Button/Button";
 import { useQuery } from "react-query";
-import { getModelsByType } from "../apis/AggregatedData.api";
+import {
+	getModelsByTreatment,
+	getModelsByType,
+} from "../apis/AggregatedData.api";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -64,19 +67,39 @@ function collapseAgeGroup(
 	ageGroupList: { patient_age: string; count: number }[]
 ) {
 	const pediatricAgeGroups = ["0 - 23 months", "2 - 9", "10 - 19"];
-	const mappedAgeGroups: any = { pediatric: 0, adult: 0, "not specified": 0 };
+	const adultAgeGroups = [
+		"20 - 29",
+		"30 - 39",
+		"40 - 49",
+		"50 - 59",
+		"60 - 69",
+		"70 - 79",
+		"80 - 89",
+		"90 - 99",
+	];
+	const mappedAgeGroups: any = {
+		pediatric: { label: "Pediatric", count: 0, ranges: pediatricAgeGroups },
+		adult: { label: "Adult", count: 0, ranges: adultAgeGroups },
+		"Not Provided": { count: 0, ranges: ["Not Provided"] },
+	};
 	ageGroupList.forEach((a) => {
 		if (pediatricAgeGroups.includes(a.patient_age)) {
-			mappedAgeGroups.pediatric += a.count;
-		} else if (a.patient_age.toLowerCase() !== "not specified") {
-			mappedAgeGroups.adult += a.count;
+			mappedAgeGroups.pediatric.count += a.count;
+		} else if (adultAgeGroups.includes(a.patient_age)) {
+			mappedAgeGroups.adult.count += a.count;
 		} else {
-			mappedAgeGroups["not specified"] += a.count;
+			mappedAgeGroups["Not Provided"].count += a.count;
 		}
 	});
 
 	return Object.keys(mappedAgeGroups).map((e) => {
-		return { patient_age: e, count: mappedAgeGroups[e] };
+		const group = mappedAgeGroups[e];
+
+		return {
+			label: group.label,
+			patient_age: group.ranges.join(", "),
+			count: group.count,
+		};
 	});
 }
 
@@ -84,6 +107,9 @@ const Overview: NextPage = () => {
 	let modelsByTypeCountsQuery = useQuery("modelsByTypeCounts", () => {
 		return getModelsByType();
 	});
+	// let modelsByTreatment = useQuery("modelsByTreatment", () => {
+	// 	return getModelsByTreatment();
+	// });
 
 	const router = useRouter();
 
@@ -129,47 +155,47 @@ const Overview: NextPage = () => {
 										keyId="primary_site"
 										data={[
 											{
-												primary_site: "lung",
+												primary_site: "Lung",
 												count: 787,
 											},
 											{
-												primary_site: "breast",
+												primary_site: "Breast",
 												count: 443,
 											},
 											{
-												primary_site: "colon",
+												primary_site: "Colon",
 												count: 440,
 											},
 											{
-												primary_site: "not provided",
+												primary_site: "Not provided",
 												count: 429,
 											},
 											{
-												primary_site: "digestive/gastrointestinal",
+												primary_site: "Digestive/gastrointestinal",
 												count: 423,
 											},
 											{
-												primary_site: "skin",
+												primary_site: "Skin",
 												count: 318,
 											},
 											{
-												primary_site: "pancreas",
+												primary_site: "Pancreas",
 												count: 316,
 											},
 											{
-												primary_site: "haematopoietic and lymphoid",
+												primary_site: "Haematopoietic and lymphoid",
 												count: 292,
 											},
 											{
-												primary_site: "large intestine",
+												primary_site: "Large intestine",
 												count: 240,
 											},
 											{
-												primary_site: "ovary",
+												primary_site: "Ovary",
 												count: 193,
 											},
 										]}
-										onClick={onGraphClick}
+										onSliceClick={onGraphClick}
 									/>
 								) : null}
 							</div>
@@ -188,7 +214,7 @@ const Overview: NextPage = () => {
 							<div style={{ height: "600px" }}>
 								<BarChart
 									chartTitle="Models by top mutated gene"
-									onClick={onGraphClick}
+									onBarClick={onGraphClick}
 									data={[
 										{
 											makers_with_mutation_data: "TP53",
@@ -307,7 +333,7 @@ const Overview: NextPage = () => {
 							<div style={{ height: "600px" }}>
 								<BarChart
 									chartTitle="Models by top mutated gene"
-									onClick={onGraphClick}
+									onBarClick={onGraphClick}
 									rotateTicks={true}
 									data={collapseEthnicity([
 										{
@@ -415,6 +441,7 @@ const Overview: NextPage = () => {
 							</div>
 							<div style={{ height: "600px" }}>
 								<DonutChart
+									onSliceClick={onGraphClick}
 									data={collapseAgeGroup([
 										{
 											patient_age: "0 - 23 months",
@@ -466,7 +493,6 @@ const Overview: NextPage = () => {
 										},
 									])}
 									keyId="patient_age"
-									onClick={onGraphClick}
 								/>
 							</div>
 						</div>
@@ -478,18 +504,18 @@ const Overview: NextPage = () => {
 							</div>
 							<div style={{ height: "600px" }}>
 								<DonutChart
+									onSliceClick={onGraphClick}
 									keyId="patient_sex"
 									data={[
 										{
-											patient_sex: "female",
+											patient_sex: "Female",
 											count: 2967,
 										},
 										{
-											patient_sex: "male",
+											patient_sex: "Male",
 											count: 3750,
 										},
 									]}
-									onClick={onGraphClick}
 								/>
 							</div>
 						</div>
@@ -499,6 +525,7 @@ const Overview: NextPage = () => {
 							</div>
 							<div style={{ height: "600px" }}>
 								<DonutChart
+									onSliceClick={onGraphClick}
 									keyId="tumour_type"
 									data={[
 										{
@@ -518,7 +545,6 @@ const Overview: NextPage = () => {
 											count: 7,
 										},
 									]}
-									onClick={onGraphClick}
 								/>
 							</div>
 						</div>
@@ -2314,7 +2340,7 @@ const Overview: NextPage = () => {
 											},
 										],
 									}}
-									onClick={onGraphClick}
+									onSliceClick={onGraphClick}
 								/>
 							</div>
 						</div>
@@ -2328,7 +2354,7 @@ const Overview: NextPage = () => {
 							<div style={{ height: "600px" }}>
 								<BarChart
 									chartTitle="Models by top mutated gene"
-									onClick={onGraphClick}
+									onBarClick={onGraphClick}
 									rotateTicks={true}
 									data={[
 										{

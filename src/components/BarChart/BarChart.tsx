@@ -5,21 +5,15 @@ interface BarChartProps {
 	chartTitle: string;
 	data: any;
 	rotateTicks?: boolean;
-	onClick: (node: any, filterId: string) => void;
+	onBarClick: (node: any, filterId: string) => void;
 }
 
-const BarChart = ({
-	data,
-	indexKey,
-	chartTitle,
-	rotateTicks,
-	onClick,
-}: BarChartProps) => {
+const BarChart = (props: BarChartProps) => {
 	return (
 		<ResponsiveBar
-			data={data}
+			data={props.data}
 			keys={["count"]}
-			indexBy={indexKey}
+			indexBy={props.indexKey}
 			margin={{
 				top: 0,
 				right: 60,
@@ -37,7 +31,7 @@ const BarChart = ({
 			axisBottom={{
 				tickSize: 5,
 				tickPadding: 5,
-				tickRotation: rotateTicks ? 25 : 0,
+				tickRotation: props.rotateTicks ? 25 : 0,
 			}}
 			axisLeft={{
 				tickSize: 5,
@@ -49,10 +43,8 @@ const BarChart = ({
 			colorBy="id"
 			labelTextColor={"#fff"}
 			role="application"
-			ariaLabel={chartTitle}
-			onClick={(node: any) => {
-				onClick(node, indexKey);
-			}}
+			ariaLabel={props.chartTitle}
+			onClick={(node: any) => props.onBarClick(node, props.indexKey)}
 			barAriaLabel={function (e) {
 				return e.id + ": " + e.formattedValue + " in country: " + e.indexValue;
 			}}

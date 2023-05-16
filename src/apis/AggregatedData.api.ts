@@ -49,9 +49,15 @@ export async function getModelsByTreatment() {
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response
-		.json()
-		.then((d: Array<any>) => d.reverse().map((i: any) => camelCase(i)));
+	return response.json().then((d: Array<any>) => {
+		var i;
+		for (i = 0; i < d.length; i++) {
+			d[i]["treatment_list"] = d[i]["treatment"];
+			delete d[i].treatment;
+		}
+
+		return d.reverse();
+	});
 }
 
 export async function getModelsByType() {

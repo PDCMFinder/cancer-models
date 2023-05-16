@@ -3,7 +3,7 @@ import { ResponsiveSunburst } from "@nivo/sunburst";
 interface SunBurstChartProps {
 	keyId: string;
 	data: any;
-	onClick: (node: any, filterId: string) => void;
+	onSliceClick: (node: any, filterId: string) => void;
 }
 
 const SunBurstChart = (props: SunBurstChartProps) => {
@@ -26,7 +26,7 @@ const SunBurstChart = (props: SunBurstChartProps) => {
 				from: "color",
 				modifiers: [["darker", 2.0]],
 			}}
-			onClick={(node: any) => props.onClick(node, props.keyId)}
+			onClick={(node) => props.onSliceClick(node, props.keyId)}
 		/>
 	);
 };
