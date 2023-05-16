@@ -102,7 +102,7 @@ const Home = ({ modelCount }: IHomeProps) => {
 
 												router.push({
 													pathname: "/search",
-													search: search,
+													search,
 												});
 											}}
 										/>
