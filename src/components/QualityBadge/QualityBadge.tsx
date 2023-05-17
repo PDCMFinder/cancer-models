@@ -18,7 +18,7 @@ const QualityBadge = (props: IQualityBadgeProps) => {
 				low={20}
 				optimum={60}
 			></meter>
-			<p className="text-small m-0">Data amount score</p>
+			<p className="text-small m-0">Model characterisation</p>
 		</div>
 	);
 };
