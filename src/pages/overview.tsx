@@ -4,10 +4,7 @@ import DonutChart from "../components/DonutChart/DonutChart";
 import SunBurstChart from "../components/SunBurstChart/SunBurstChart";
 import Button from "../components/Button/Button";
 import { useQuery } from "react-query";
-import {
-	getModelsByTreatment,
-	getModelsByType,
-} from "../apis/AggregatedData.api";
+import { getModelsByType } from "../apis/AggregatedData.api";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -155,43 +152,43 @@ const Overview: NextPage = () => {
 										keyId="primary_site"
 										data={[
 											{
-												primary_site: "Lung",
+												primary_site: "lung",
 												count: 787,
 											},
 											{
-												primary_site: "Breast",
+												primary_site: "breast",
 												count: 443,
 											},
 											{
-												primary_site: "Colon",
+												primary_site: "colon",
 												count: 440,
 											},
 											{
-												primary_site: "Not provided",
+												primary_site: "not provided",
 												count: 429,
 											},
 											{
-												primary_site: "Digestive/gastrointestinal",
+												primary_site: "digestive/gastrointestinal",
 												count: 423,
 											},
 											{
-												primary_site: "Skin",
+												primary_site: "skin",
 												count: 318,
 											},
 											{
-												primary_site: "Pancreas",
+												primary_site: "pancreas",
 												count: 316,
 											},
 											{
-												primary_site: "Haematopoietic and lymphoid",
+												primary_site: "haematopoietic and lymphoid",
 												count: 292,
 											},
 											{
-												primary_site: "Large intestine",
+												primary_site: "large intestine",
 												count: 240,
 											},
 											{
-												primary_site: "Ovary",
+												primary_site: "ovary",
 												count: 193,
 											},
 										]}
@@ -508,11 +505,11 @@ const Overview: NextPage = () => {
 									keyId="patient_sex"
 									data={[
 										{
-											patient_sex: "Female",
+											patient_sex: "female",
 											count: 2967,
 										},
 										{
-											patient_sex: "Male",
+											patient_sex: "male",
 											count: 3750,
 										},
 									]}
