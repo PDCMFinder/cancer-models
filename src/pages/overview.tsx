@@ -8,58 +8,6 @@ import { getModelsByType } from "../apis/AggregatedData.api";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-function collapseEthnicity(
-	ethnicityList: { patient_ethnicity: string; count: number }[]
-) {
-	const ethnicityDictionary: any = Object.fromEntries(
-		Object.entries({
-			African: "Black Or African American",
-			"African American": "Black Or African American",
-			Black: "Black Or African American",
-			"Black Or African American": "Black Or African American",
-			"Black Or African American; Not Hispanic Or Latino":
-				"Black Or African American",
-			Eastasian: "Asian",
-			"East Asian": "Asian",
-			"South Asian": "Asian",
-			Southasianorhispanic: "Asian",
-			"White; Not Hispanic Or Latino": "White",
-			European: "White",
-			Caucasian: "White",
-			Latino: "Hispanic Or Latino",
-			"White; Hispanic Or Latino": "Hispanic Or Latino",
-			"Not Specified": "Not Provided",
-			Unknown: "Not Provided",
-			"Not Collected": "Not Provided",
-			Mixed_or_unknown: "Not Provided",
-			Other: "Not Provided",
-			Arabic: "Other",
-			"Native Hawaiian Or Other Pacific Islander": "Other",
-			"Not hispanic or Latino": "Other",
-			Asian: "Asian",
-			Hispanic: "Hispanic Or Latino",
-			"Hispanic Or Latino": "Hispanic Or Latino",
-			White: "White",
-		}).map(([k, v]) => [k.toLowerCase(), v])
-	);
-
-	const mappedEthnictyCounts: any = {};
-
-	ethnicityList.forEach((ethnicity) => {
-		const mappedEthnicty =
-			ethnicityDictionary[ethnicity.patient_ethnicity.toLowerCase()];
-		if (!mappedEthnicty) console.log(ethnicity.patient_ethnicity);
-
-		if (!mappedEthnictyCounts[mappedEthnicty]) {
-			mappedEthnictyCounts[mappedEthnicty] = 0;
-		}
-		mappedEthnictyCounts[mappedEthnicty] += ethnicity.count;
-	});
-	return Object.keys(mappedEthnictyCounts).map((e) => {
-		return { patient_ethnicity: e, count: mappedEthnictyCounts[e] };
-	});
-}
-
 function collapseAgeGroup(
 	ageGroupList: { patient_age: string; count: number }[]
 ) {
@@ -332,7 +280,7 @@ const Overview: NextPage = () => {
 									chartTitle="Models by top mutated gene"
 									onBarClick={onGraphClick}
 									rotateTicks={true}
-									data={collapseEthnicity([
+									data={[
 										{
 											patient_ethnicity: "African",
 											count: 26,
@@ -383,10 +331,6 @@ const Overview: NextPage = () => {
 											count: 67,
 										},
 										{
-											patient_ethnicity: "Latino",
-											count: 1,
-										},
-										{
 											patient_ethnicity: "Mixed_or_unknown",
 											count: 14,
 										},
@@ -416,18 +360,10 @@ const Overview: NextPage = () => {
 											count: 931,
 										},
 										{
-											patient_ethnicity: "White; Hispanic Or Latino",
-											count: 2,
-										},
-										{
-											patient_ethnicity: "White; Not Hispanic Or Latino",
-											count: 1,
-										},
-										{
 											patient_ethnicity: "Unknown",
 											count: 733,
 										},
-									]).sort((a, b) => b.count - a.count)}
+									].sort((a, b) => b.count - a.count)}
 									indexKey="patient_ethnicity"
 								/>
 							</div>
