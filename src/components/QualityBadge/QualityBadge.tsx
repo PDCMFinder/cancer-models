@@ -1,16 +1,14 @@
-import Tooltip from "../Tooltip/Tooltip";
 import styles from "./QualityBadge.module.scss";
 
 interface IQualityBadgeProps {
 	className?: string;
+	containerClassName?: string;
 	score: number;
 }
 
 const QualityBadge = (props: IQualityBadgeProps) => {
 	return (
-		<Tooltip
-			content={<p className="text-small mb-0 lh-1">Metadata richness score</p>}
-		>
+		<div className={props.containerClassName}>
 			<meter
 				className={props.className}
 				min={0}
@@ -20,7 +18,8 @@ const QualityBadge = (props: IQualityBadgeProps) => {
 				low={20}
 				optimum={60}
 			></meter>
-		</Tooltip>
+			<p className="text-small m-0">Model characterisation</p>
+		</div>
 	);
 };
 

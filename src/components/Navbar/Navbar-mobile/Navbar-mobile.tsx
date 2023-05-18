@@ -42,13 +42,13 @@ const NavMobile = (props: INavProps) => {
 		<nav className={styles["Navbar-mobile"]}>
 			<div className={`container text-white ${styles["Navbar-mobile_topBar"]}`}>
 				<div className="row align-center">
-					<div className="col-7">
+					<div className="col-8">
 						<Link href="/">
 							<Logotype color="white" />
 						</Link>
 					</div>
 					<div
-						className={`col-5 text-right ${styles["Navbar-mobile_toggleMenuContainer"]}`}
+						className={`col-4 text-right ${styles["Navbar-mobile_toggleMenuContainer"]}`}
 					>
 						{!isMenuOpen ? (
 							<button onClick={handleToggleMenu}>Menu</button>

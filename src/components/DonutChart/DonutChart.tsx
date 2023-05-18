@@ -3,15 +3,16 @@ import { ResponsivePie } from "@nivo/pie";
 interface DonutChartProps {
 	keyId: string;
 	data: any;
+	onSliceClick: (node: any, filterId: string) => void;
 }
 
-const DonutChart: React.FC<DonutChartProps> = ({ keyId, data }) => {
+const DonutChart = (props: DonutChartProps) => {
 	return (
 		<ResponsivePie
-			data={data}
-			id={keyId}
+			data={props.data}
+			id={props.keyId}
 			value="count"
-			arcLinkLabel={(d: any) => d.id}
+			arcLinkLabel={(d: any) => d.label ?? d.id}
 			margin={{ top: 80, right: 80, bottom: 80, left: 80 }}
 			innerRadius={0.5}
 			padAngle={0.7}
@@ -32,6 +33,7 @@ const DonutChart: React.FC<DonutChartProps> = ({ keyId, data }) => {
 				from: "color",
 				modifiers: [["darker", 2]],
 			}}
+			onClick={(node: any) => props.onSliceClick(node, props.keyId)}
 		/>
 	);
 };
