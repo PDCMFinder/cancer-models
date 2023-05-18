@@ -114,36 +114,6 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 						sizes="180x180"
 					/>
 				</Head>
-				{/* Hotjar Tracking Code for Cancer Models Org */}
-				<Script id="hotjar">
-					{`(function(h,o,t,j,a,r){
-                  h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-                  h._hjSettings={hjid:3209855,hjsv:6};
-                  a=o.getElementsByTagName('head')[0];
-                  r=o.createElement('script');r.async=1;
-                  r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-                  a.appendChild(r);
-              })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
-				</Script>
-				{/* Google Analytics code */}
-				<Script
-					strategy="afterInteractive"
-					src="https://www.googletagmanager.com/gtag/js?id=G-34S5KH94SX"
-				/>
-				<Script
-					id="google-analytics"
-					strategy="afterInteractive"
-					dangerouslySetInnerHTML={{
-						__html: `
-               window.dataLayer = window.dataLayer || [];
-               function gtag(){dataLayer.push(arguments);}
-               gtag('js', new Date());
-               gtag('config', 'G-34S5KH94SX', {
-                  page_path: window.location.pathname,
-               });
-            `,
-					}}
-				/>
 				<style jsx global>{`
 					:root {
 						--type-primary: ${merriweather.style.fontFamily}, serif;
