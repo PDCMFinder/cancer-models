@@ -595,7 +595,7 @@ const ModelDetails = ({
 																		data.dataAvailability === "TRUE" ? (
 																			<>
 																				<button
-																					className="text-left link-text mr-3 mr-md-0 mb-md-1"
+																					className="text-left link-text mr-3 mr-md-0 mb-md-1 mr-xxx-3"
 																					onClick={() =>
 																						setSelectedMolecularData(data)
 																					}
@@ -603,7 +603,7 @@ const ModelDetails = ({
 																					VIEW DATA
 																				</button>
 																				<button
-																					className="text-left link-text mr-3 mr-md-0 mb-md-1"
+																					className="text-left link-text mr-3 mr-md-0 mb-md-1 mr-xxx-3"
 																					onClick={() => getDownloadData(data)}
 																				>
 																					DOWNLOAD DATA
