@@ -15,7 +15,7 @@ const CirclePacking: FunctionComponent<CirclePackingProps> = ({
 		<ResponsiveCirclePacking
 			data={data}
 			margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-			id="name"
+			id="search_terms"
 			value="count"
 			colors={[
 				styles["color-graph"],
