@@ -201,3 +201,21 @@ export async function getModelCount() {
 
 	return response.headers.get("Content-range")?.split("/")[1];
 }
+
+export async function getProviderCount() {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/provider_group?select=id`,
+		{
+			headers: {
+				"Range-Unit": "items",
+				Range: "0-24",
+				Prefer: "count=exact",
+			},
+		}
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response.headers.get("Content-range")?.split("/")[1];
+}

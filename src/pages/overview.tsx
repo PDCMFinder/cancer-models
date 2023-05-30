@@ -6,6 +6,8 @@ import Button from "../components/Button/Button";
 import { useQuery } from "react-query";
 import {
 	getCancerHierarchy,
+	getDataReleaseInformation,
+	getModelCount,
 	getModelsByMutatedGene,
 	getModelsByPatientAge,
 	getModelsByPatientEthnicity,
@@ -13,6 +15,7 @@ import {
 	getModelsByPrimarySite,
 	getModelsByTreatment,
 	getModelsByTumourType,
+	getProviderCount,
 } from "../apis/AggregatedData.api";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -81,6 +84,15 @@ const Overview: NextPage = () => {
 	});
 	let modelsByPatientAge = useQuery("modelsByPatientAge", () => {
 		return getModelsByPatientAge();
+	});
+	let providerCount = useQuery("providerCount", () => {
+		return getProviderCount();
+	});
+	let modelCount = useQuery("modelCount", () => {
+		return getModelCount();
+	});
+	let releaseInfo = useQuery("releaseInfo", () => {
+		return getDataReleaseInformation();
 	});
 
 	const router = useRouter();
@@ -185,10 +197,22 @@ const Overview: NextPage = () => {
 						<div className="col-12">
 							<h2>Current data release</h2>
 							<ul>
-								<li>Data release version: 3.1</li>
-								<li>Date of publication: 07/02/2023</li>
-								<li>Number of models: 7017</li>
-								<li>Number of providers: 27</li>
+								{releaseInfo.data ? (
+									<li>
+										Data release version:{" "}
+										{releaseInfo.data.name.replace("dr.", "").replace("dr", "")}
+									</li>
+								) : null}
+								{releaseInfo.data ? (
+									<li>
+										Date of publication:{" "}
+										{new Date(releaseInfo.data.date)
+											.toISOString()
+											.substring(0, 10)}
+									</li>
+								) : null}
+								<li>Number of models: {modelCount.data ?? 7091}</li>
+								<li>Number of providers: {providerCount.data ?? 33}</li>
 							</ul>
 						</div>
 					</div>
