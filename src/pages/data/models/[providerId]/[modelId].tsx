@@ -312,8 +312,7 @@ const ModelDetails = ({
 											</Link>
 										</li>
 										<li className="mb-2">
-											{metadata.modelType === "xenograft" &&
-											engraftments?.length ? (
+											{metadata.modelType === "PDX" && engraftments?.length ? (
 												<Link
 													href="#engraftments"
 													className="text-primary-primary"
