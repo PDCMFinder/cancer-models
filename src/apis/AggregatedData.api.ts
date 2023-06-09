@@ -17,16 +17,20 @@ export async function getCancerHierarchy(): Promise<any> {
 		).forEach((element: any) => {
 			if (hierarchy[element.cancer_system] === undefined) {
 				hierarchy[element.cancer_system] = {
-					name: element.cancer_system.replace("Cancer", ""),
+					search_terms: element.cancer_system.replace("Cancer", ""),
 					children: [],
 				};
 			}
 			hierarchy[element.cancer_system].children.push({
-				name: element.histology,
+				search_terms: element.histology,
 				count: element.count,
 			});
 		});
-		return { name: "PDCM Models", children: Object.values(hierarchy) };
+
+		return {
+			search_terms: "CancerModels.Org Models",
+			children: Object.values(hierarchy),
+		};
 	});
 }
 
@@ -46,9 +50,11 @@ export async function getModelsByTreatment() {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_treatment?order=count.desc&limit=20`
 	);
+
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
+
 	return response.json().then((d: Array<any>) => {
 		var i;
 		for (i = 0; i < d.length; i++) {
@@ -56,7 +62,7 @@ export async function getModelsByTreatment() {
 			delete d[i].treatment;
 		}
 
-		return d.reverse();
+		return d;
 	});
 }
 
@@ -70,6 +76,86 @@ export async function getModelsByType() {
 	return response
 		.json()
 		.then((d: Array<any>) => d.map((i: any) => camelCase(i)));
+}
+
+export async function getModelsByPrimarySite() {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_primary_site?order=count.desc&limit=10`
+	);
+
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response.json();
+}
+
+export async function getModelsByMutatedGene() {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_mutated_gene?order=count.desc&limit=10`
+	);
+
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response.json().then((d: Array<any>) => {
+		var i;
+		for (i = 0; i < d.length; i++) {
+			d[i]["makers_with_mutation_data"] = d[i]["mutated_gene"];
+			delete d[i]["mutated_gene"];
+		}
+
+		return d;
+	});
+}
+
+export async function getModelsByPatientGender() {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_sex?order=count.desc&limit=10`
+	);
+
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response.json();
+}
+
+export async function getModelsByTumourType() {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_tumour_type?order=count.desc&limit=10`
+	);
+
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response.json();
+}
+
+export async function getModelsByPatientEthnicity() {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_ethnicity?order=count.desc`
+	);
+
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response.json();
+}
+
+export async function getModelsByPatientAge() {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_age?order=count.desc&limit=10`
+	);
+
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response.json();
 }
 
 export async function getModelsByDatasetAvailability() {
@@ -101,6 +187,24 @@ export async function getDataReleaseInformation() {
 export async function getModelCount() {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/search_index`,
+		{
+			headers: {
+				"Range-Unit": "items",
+				Range: "0-24",
+				Prefer: "count=exact",
+			},
+		}
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response.headers.get("Content-range")?.split("/")[1];
+}
+
+export async function getProviderCount() {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/provider_group?select=id`,
 		{
 			headers: {
 				"Range-Unit": "items",

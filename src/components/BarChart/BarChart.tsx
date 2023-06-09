@@ -5,7 +5,7 @@ interface BarChartProps {
 	chartTitle: string;
 	data: any;
 	rotateTicks?: boolean;
-	onBarClick: (node: any, filterId: string) => void;
+	onBarClick: (node: any, filterId: string, onClickFilters?: boolean) => void;
 }
 
 const BarChart = (props: BarChartProps) => {
@@ -44,9 +44,12 @@ const BarChart = (props: BarChartProps) => {
 			labelTextColor={"#fff"}
 			role="application"
 			ariaLabel={props.chartTitle}
-			onClick={(node: any) => props.onBarClick(node, props.indexKey)}
-			barAriaLabel={function (e) {
-				return e.id + ": " + e.formattedValue + " in country: " + e.indexValue;
+			onClick={(node: any) => {
+				if (node.data.onClickFilters.length > 0) {
+					props.onBarClick(node, props.indexKey, true);
+				} else {
+					props.onBarClick(node, props.indexKey);
+				}
 			}}
 		/>
 	);
