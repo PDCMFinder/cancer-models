@@ -20,6 +20,78 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+interface IEthnicityCounter {
+	patient_ethnicity: string;
+	count: number;
+}
+
+function collapseEthnicity(ethnicityList: IEthnicityCounter[]) {
+	const ethnicityEntries = Object.entries({
+		African: "Black Or African American",
+		"African American": "Black Or African American",
+		Black: "Black Or African American",
+		"Black Or African American": "Black Or African American",
+		"Black Or African American; Not Hispanic Or Latino":
+			"Black Or African American",
+		Eastasian: "Asian",
+		"East Asian": "Asian",
+		"South Asian": "Asian",
+		Southasianorhispanic: "Asian",
+		"White; Not Hispanic Or Latino": "White",
+		European: "White",
+		Caucasian: "White",
+		Latino: "Hispanic Or Latino",
+		"White; Hispanic Or Latino": "Hispanic Or Latino",
+		"Not Specified": "Not Provided",
+		Unknown: "Not Provided",
+		"Not Provided": "Not Provided",
+		"Not Collected": "Not Provided",
+		Mixed_or_unknown: "Not Provided",
+		"Declined To Answer": "Not Provided",
+		Other: "Other",
+		Arabic: "Other",
+		"Native Hawaiian Or Other Pacific Islander": "Other",
+		"Not hispanic or Latino": "Other",
+		Asian: "Asian",
+		Hispanic: "Hispanic Or Latino",
+		"Hispanic Or Latino": "Hispanic Or Latino",
+		White: "White",
+	});
+
+	const ethnicityDictionary: any = Object.fromEntries(
+		ethnicityEntries.map(([k, v]: string[]) => [k.toLowerCase(), v])
+	);
+
+	const mappedEthnictyCounts: any = {};
+
+	ethnicityList.forEach((ethnicity) => {
+		const mappedEthnicty =
+			ethnicityDictionary[ethnicity.patient_ethnicity.toLowerCase()];
+
+		if (!mappedEthnictyCounts[mappedEthnicty]) {
+			mappedEthnictyCounts[mappedEthnicty] = 0;
+		}
+
+		mappedEthnictyCounts[mappedEthnicty] += ethnicity.count;
+	});
+
+	return Object.keys(mappedEthnictyCounts).map((e) => {
+		const ethnicityDictionaryArr = ethnicityEntries.map(([k, v]: string[]) => [
+			k,
+			v,
+		]);
+		const subcategories = ethnicityDictionaryArr
+			.filter((subcategory) => subcategory[1] === e)
+			.map((categoryPair) => categoryPair[0]);
+
+		return {
+			patient_ethnicity: e,
+			count: mappedEthnictyCounts[e],
+			onClickFilters: subcategories,
+		};
+	});
+}
+
 function collapseAgeGroup(
 	ageGroupList: { patient_age: string; count: number }[]
 ) {
@@ -61,6 +133,8 @@ function collapseAgeGroup(
 }
 
 const Overview: NextPage = () => {
+	const notValidCategories = ["not provided", "not collected"];
+
 	let modelsByCancerHierarchy = useQuery("modelsByCancerHierarchy", () => {
 		return getCancerHierarchy();
 	});
@@ -97,10 +171,16 @@ const Overview: NextPage = () => {
 
 	const router = useRouter();
 
-	const onGraphClick = (node: any, filterId: string) => {
+	const onGraphClick = (
+		node: any,
+		filterId: string,
+		onClickFilters?: boolean
+	) => {
 		router.push({
 			pathname: "/search",
-			search: `?filters=${filterId}:${node.data[filterId]}`,
+			search: `?filters=${filterId}:${
+				node.data[onClickFilters ? "onClickFilters" : filterId]
+			}`,
 		});
 	};
 
@@ -232,12 +312,22 @@ const Overview: NextPage = () => {
 										chartTitle="Models by top mutated gene"
 										onBarClick={onGraphClick}
 										rotateTicks={true}
-										data={modelsByPatientEthnicity.data?.sort(
-											(
-												a: { patient_ethnicity: string; count: number },
-												b: { patient_ethnicity: string; count: number }
-											) => b.count - a.count
-										)}
+										data={collapseEthnicity(modelsByPatientEthnicity.data)
+											.sort(
+												(
+													a: { patient_ethnicity: string; count: number },
+													b: { patient_ethnicity: string; count: number }
+												) => b.count - a.count
+											)
+											.filter(
+												(ethnicity: {
+													patient_ethnicity: string;
+													count: number;
+												}) =>
+													!notValidCategories.includes(
+														ethnicity.patient_ethnicity.toLowerCase()
+													)
+											)}
 										indexKey="patient_ethnicity"
 									/>
 								</div>

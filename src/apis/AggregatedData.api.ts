@@ -136,7 +136,7 @@ export async function getModelsByTumourType() {
 
 export async function getModelsByPatientEthnicity() {
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_ethnicity?order=count.desc&limit=10`
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_ethnicity?order=count.desc`
 	);
 
 	if (!response.ok) {
