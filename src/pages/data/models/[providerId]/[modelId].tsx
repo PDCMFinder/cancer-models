@@ -31,7 +31,6 @@ interface IModelDetailsProps {
 	drugDosing: any[];
 	patientTreatment: PatientTreatment[];
 	qualityData: QualityData[];
-	publications: Publication[];
 	className: string;
 	modelId: string;
 	providerId: string;
@@ -203,9 +202,12 @@ const ModelDetails = ({
 			.catch((error) => {});
 	};
 
-	const pdcmModelId = metadata.pdcmModelId || 0;
-	const pubmedIdsQuery = useQuery(["pubmed-ids-data", { pdcmModelId }], () =>
-		getModelPubmedIds(pdcmModelId)
+	const pubmedIdsQuery = useQuery(
+		[
+			"pubmed-ids-data",
+			{ modelId: metadata.modelId, providerId: metadata.providerId },
+		],
+		() => getModelPubmedIds(metadata.modelId, metadata.providerId)
 	);
 
 	const pubmedIds = pubmedIdsQuery.data || [];
