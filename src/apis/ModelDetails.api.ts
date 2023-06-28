@@ -18,12 +18,12 @@ export async function getModelDetailsMetadata(
 	return response.json().then((d) => camelCase(d[0]));
 }
 
-export async function getModelPubmedIds(pdcmModelId: number): Promise<any> {
-	if (pdcmModelId !== 0 && !pdcmModelId) {
-		return [];
-	}
+export async function getModelPubmedIds(
+	modelId: string,
+	providerId: string
+): Promise<any> {
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/model_information?id=eq.${pdcmModelId}&select=publication_group(pubmed_ids)`
+		`${process.env.NEXT_PUBLIC_API_URL}/model_information?external_model_id=eq.${modelId}&data_source=eq.${providerId}&select=publication_group(pubmed_ids)`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
