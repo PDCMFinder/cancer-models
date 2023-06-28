@@ -11,6 +11,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Cookies, CookiesProvider } from "react-cookie";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
+import Script from "next/script";
 
 const USERNAVIGATION_MOUSE = "userNavigation-mouse",
 	USERNAVIGATION_KEYBOARD = "userNavigation-keyboard",
@@ -71,6 +72,13 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 		},
 	});
 
+	const isProductionEnvironment = () => {
+		if (process.env.NEXT_PUBLIC_APP_ENV === "production") {
+			return true;
+		}
+		return false;
+	};
+
 	return (
 		<>
 			<QueryClientProvider client={queryClient}>
@@ -120,6 +128,40 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 					}
 				`}</style>
 				<GoogleReCaptchaProvider reCaptchaKey="6LepEiwjAAAAAN9QFU8RpeY0QXCFoRRVVis2B-iF">
+					{isProductionEnvironment() && (
+						<>
+							{/* Hotjar Tracking Code for Cancer Models Org */}
+							<Script id="hotjar">
+								{`(function(h,o,t,j,a,r){
+                  h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+                  h._hjSettings={hjid:3209855,hjsv:6};
+                  a=o.getElementsByTagName('head')[0];
+                  r=o.createElement('script');r.async=1;
+                  r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+                  a.appendChild(r);
+              })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
+							</Script>
+							{/* Google Analytics code */}
+							<Script
+								strategy="afterInteractive"
+								src="https://www.googletagmanager.com/gtag/js?id=G-34S5KH94SX"
+							/>
+							<Script
+								id="google-analytics"
+								strategy="afterInteractive"
+								dangerouslySetInnerHTML={{
+									__html: `
+               window.dataLayer = window.dataLayer || [];
+               function gtag(){dataLayer.push(arguments);}
+               gtag('js', new Date());
+               gtag('config', 'G-34S5KH94SX', {
+                  page_path: window.location.pathname,
+               });
+            `,
+								}}
+							/>
+						</>
+					)}
 					<CookiesProvider
 						cookies={isBrowser ? undefined : new Cookies(cookies)}
 					>
