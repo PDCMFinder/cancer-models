@@ -145,8 +145,8 @@ export async function getSearchResults(
 
 			let optionsQuery =
 				apiOperator === "in"
-					? `(${options.join(",").replace(";", "%3B")})`
-					: `{${options.join(",").replace(";", "%3B")}}`;
+					? `(${options.join(",").replaceAll(";", "%3B")})`
+					: `{${options.join(",").replaceAll(";", "%3B")}}`;
 
 			query += `&${filterId}=${apiOperator}.${optionsQuery}`;
 		}
