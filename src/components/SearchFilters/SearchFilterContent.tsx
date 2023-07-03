@@ -169,6 +169,8 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 								value={defaultValuesObj}
 								options={optionSelectObj}
 								onChange={(_, actionMeta) => {
+									if (actionMeta.action === "pop-value") return;
+
 									let option = "",
 										action: onFilterChangeType["type"] = "add";
 
