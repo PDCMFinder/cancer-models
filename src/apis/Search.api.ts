@@ -6,6 +6,7 @@ import {
 	IFacetSidebarSelection,
 } from "../types/Facet.model";
 import { SearchResult } from "../types/Search.model";
+import { ethnicityCategories } from "../utils/collapseEthnicity";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -29,9 +30,7 @@ export async function getSearchOptions() {
 	});
 }
 
-export async function getSearchFacets(
-	noOptions = false
-): Promise<Array<IFacetSectionProps>> {
+export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
 	let response = await fetch(
 		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example`
 	);
@@ -100,10 +99,9 @@ export async function autoCompleteFacetOptions(
 export async function getSearchResults(
 	searchValues: Array<string> = [],
 	searchFilterSelection: any,
-	page: number,
 	pageSize: number = 10,
 	sortBy: string
-): Promise<[number, Array<SearchResult>]> {
+): Promise<[number, SearchResult[]]> {
 	if (!searchFilterSelection && !searchValues.length) {
 		return Promise.resolve([0, []]);
 	}
@@ -129,9 +127,19 @@ export async function getSearchResults(
 				"makers_with_expression_data",
 				"makers_with_cytogenetics_data",
 			];
-			const options = searchFilterSelection[filterId].selection.map(
-				(d: string) => '"' + d + '"'
+			let options: string[] = searchFilterSelection[filterId].selection.map(
+				(d: string) => `"${d}"`
 			);
+
+			// Handle filtering of subcategories while selecting top category
+			if (filterId === "patient_ethnicity") {
+				for (let key in ethnicityCategories) {
+					if (searchFilterSelection[filterId].selection.includes(key)) {
+						options = ethnicityCategories[key].map((d: string) => `"${d}"`);
+					}
+				}
+			}
+
 			let apiOperator = "in";
 
 			if (

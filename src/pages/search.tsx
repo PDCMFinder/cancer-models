@@ -207,18 +207,10 @@ const Search = ({ modelCount }: ISearchProps) => {
 				searchValues: [],
 				searchFilterState,
 				resultsPerPage,
-				currentPage,
 				sortBy,
 			},
 		],
-		async () =>
-			getSearchResults(
-				[],
-				searchFilterState,
-				currentPage,
-				resultsPerPage,
-				sortBy
-			)
+		async () => getSearchResults([], searchFilterState, resultsPerPage, sortBy)
 	);
 
 	useEffect(() => {

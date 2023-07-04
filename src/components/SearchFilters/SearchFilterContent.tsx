@@ -8,6 +8,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import typeaheadStyles from "../../utils/typeaheadStyles";
 import { onFilterChangeType } from "../../pages/search";
 import Fragment from "../Fragment/Fragment";
+import { ethnicityCategories } from "../../utils/collapseEthnicity";
 
 interface ISearchFilterContentProps {
 	data: IFacetProps[];
@@ -50,6 +51,13 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 		setfacetId(facetId);
 	};
 
+	const optionSelectObj = (options: string[]): SelectOption[] => {
+		return options?.map((value: string) => ({
+			["label"]: value,
+			["value"]: value,
+		}));
+	};
+
 	return (
 		<>
 			{props.data.map((facet: IFacetProps) => {
@@ -62,10 +70,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 					selection = selectedFacetObj?.selection,
 					operator = selectedFacetObj?.operator;
 
-				const defaultValuesObj = selection?.map((value) => ({
-					["label"]: value,
-					["value"]: value,
-				}));
+				const defaultValues = optionSelectObj(selection);
 
 				if (facetType === "autocomplete" || facetType === "multivalued") {
 					const placeholder = facet.placeholder
@@ -79,8 +84,8 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 								closeMenuOnSelect
 								blurInputOnSelect
 								isMulti
-								defaultValue={defaultValuesObj}
-								value={defaultValuesObj}
+								defaultValue={defaultValues}
+								value={defaultValues}
 								placeholder={placeholder}
 								options={typeaheadData}
 								onInputChange={(inputValue) =>
@@ -155,43 +160,43 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 					);
 				} else if (facetOptions && facetOptions.length > 10) {
 					// Create select typeahead from options
-					const optionSelectObj = facetOptions.map((value) => ({
-						["label"]: value,
-						["value"]: value,
-					}));
+					// Get grouped ethnicity categories from dictionary
+					const optionsSelectObj =
+						facet.facetId !== "patient_ethnicity"
+							? optionSelectObj(facetOptions)
+							: optionSelectObj(Object.keys(ethnicityCategories));
 
 					facetContent = (
-						<>
-							<Select
-								// closeMenuOnSelect={false}
-								isMulti
-								defaultValue={defaultValuesObj}
-								value={defaultValuesObj}
-								options={optionSelectObj}
-								onChange={(_, actionMeta) => {
-									if (actionMeta.action === "pop-value") return;
+						<Select
+							closeMenuOnSelect
+							blurInputOnSelect
+							isMulti
+							defaultValue={defaultValues}
+							value={defaultValues}
+							options={optionsSelectObj}
+							onChange={(_, actionMeta) => {
+								if (actionMeta.action === "pop-value") return;
 
-									let option = "",
-										action: onFilterChangeType["type"] = "add";
+								let option = "",
+									action: onFilterChangeType["type"] = "add";
 
-									switch (actionMeta.action) {
-										case "remove-value":
-											option = actionMeta.removedValue.value;
-											action = "remove";
-											break;
-										case "select-option":
-											option = actionMeta.option!.value;
-											break;
-										case "clear":
-											action = "clear";
-											break;
-									}
+								switch (actionMeta.action) {
+									case "remove-value":
+										option = actionMeta.removedValue.value;
+										action = "remove";
+										break;
+									case "select-option":
+										option = actionMeta.option!.value;
+										break;
+									case "clear":
+										action = "clear";
+										break;
+								}
 
-									props.onFilterChange(facet.facetId, option, operator, action);
-								}}
-								styles={typeaheadStyles}
-							/>
-						</>
+								props.onFilterChange(facet.facetId, option, operator, action);
+							}}
+							styles={typeaheadStyles}
+						/>
 					);
 				} else {
 					// Create checkbox per option

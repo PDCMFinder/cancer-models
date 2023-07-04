@@ -45,7 +45,7 @@ const BarChart = (props: BarChartProps) => {
 			role="application"
 			ariaLabel={props.chartTitle}
 			onClick={(node: any) => {
-				if (node.data.onClickFilters.length > 0) {
+				if (node.data.onClickFilters?.length > 0) {
 					props.onBarClick(node, props.indexKey, true);
 				} else {
 					props.onBarClick(node, props.indexKey);
