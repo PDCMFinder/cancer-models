@@ -1,7 +1,7 @@
 import type { GetStaticProps, NextPage } from "next";
 import SearchResults from "../components/SearchResults/SearchResults";
 import Select from "../components/Input/Select";
-import React, { useEffect, useReducer, useState } from "react";
+import React, { ChangeEvent, useEffect, useReducer, useState } from "react";
 import styles from "./search.module.scss";
 import Label from "../components/Input/Label";
 import SearchFilters from "../components/SearchFilters/SearchFilters";
@@ -53,7 +53,16 @@ const Search = ({ modelCount }: ISearchProps) => {
 	const [sortBy, setSortBy] = useState<string>(sortByOptions[0].value);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [hasSelection, setHasSelection] = useState<boolean>(false);
+	const [modelsToCompare, setModelsToCompare] = useState<string[]>([]);
 	const router = useRouter();
+
+	useEffect(() => {
+		if (modelsToCompare.length === 2) {
+			// open compare page with both models
+			console.log(`Compare ${modelsToCompare[0]} vs ${modelsToCompare[1]}`);
+			setModelsToCompare([]);
+		}
+	}, [modelsToCompare]);
 
 	const [searchFilterState, searchFilterDispatch] = useReducer(
 		(
@@ -318,6 +327,17 @@ const Search = ({ modelCount }: ISearchProps) => {
 		</Modal>
 	);
 
+	const compareModel = (
+		e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
+		id: string
+	): void => {
+		if (modelsToCompare.includes(id)) {
+			setModelsToCompare((prev) => prev.filter((model) => model !== id));
+		} else {
+			setModelsToCompare((prev) => [...prev, id]);
+		}
+	};
+
 	return (
 		<>
 			<header className={`py-5 ${styles.Search_header}`}>
@@ -424,7 +444,11 @@ const Search = ({ modelCount }: ISearchProps) => {
 							<div className="row">
 								<div className="col-12">
 									{searchResultsQuery.data ? (
-										<SearchResults data={searchResultsQuery.data[1]} />
+										<SearchResults
+											compareModel={compareModel}
+											modelsToCompare={modelsToCompare}
+											data={searchResultsQuery.data[1]}
+										/>
 									) : (
 										<SearchResultsLoader amount={resultsPerPage} />
 									)}
