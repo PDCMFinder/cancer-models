@@ -56,14 +56,6 @@ const Search = ({ modelCount }: ISearchProps) => {
 	const [modelsToCompare, setModelsToCompare] = useState<string[]>([]);
 	const router = useRouter();
 
-	useEffect(() => {
-		if (modelsToCompare.length === 2) {
-			// open compare page with both models
-			console.log(`Compare ${modelsToCompare[0]} vs ${modelsToCompare[1]}`);
-			setModelsToCompare([]);
-		}
-	}, [modelsToCompare]);
-
 	const [searchFilterState, searchFilterDispatch] = useReducer(
 		(
 			state: any,
@@ -267,6 +259,26 @@ const Search = ({ modelCount }: ISearchProps) => {
 		}
 	}, [searchFilterState]);
 
+	const compareModel = (id: string): void => {
+		if (modelsToCompare.includes(id)) {
+			setModelsToCompare((prev) => prev.filter((model) => model !== id));
+		} else {
+			setModelsToCompare((prev) => [...prev, id]);
+		}
+	};
+
+	useEffect(() => {
+		if (modelsToCompare.length === 2) {
+			console.log(`Compare ${modelsToCompare[0]} vs ${modelsToCompare[1]}`);
+			// Open compare page with both models
+			window.open(
+				`/compare?models=${modelsToCompare[0]}+${modelsToCompare[1]}`,
+				"_blank"
+			);
+			setModelsToCompare([]);
+		}
+	}, [modelsToCompare]);
+
 	let totalResults = searchResultsQuery.data ? searchResultsQuery.data[0] : 1;
 
 	const ClearFilterButtonComponent = (
@@ -326,17 +338,6 @@ const Search = ({ modelCount }: ISearchProps) => {
 			</Card>
 		</Modal>
 	);
-
-	const compareModel = (
-		e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
-		id: string
-	): void => {
-		if (modelsToCompare.includes(id)) {
-			setModelsToCompare((prev) => prev.filter((model) => model !== id));
-		} else {
-			setModelsToCompare((prev) => [...prev, id]);
-		}
-	};
 
 	return (
 		<>
