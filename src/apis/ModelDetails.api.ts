@@ -18,6 +18,16 @@ export async function getModelDetailsMetadata(
 	return response.json().then((d) => camelCase(d[0]));
 }
 
+export async function getProviderId(modelId: string) {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&select=data_source`
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+	return response.json();
+}
+
 export async function getModelPubmedIds(
 	modelId: string,
 	providerId: string
@@ -360,6 +370,57 @@ export async function getExpressionHeatmap(
 		return d.map((item: any) => camelCase(item));
 	});
 }
+
+export const getAllModelData = async (modelId: string, providerId?: string) => {
+	const modelProviderId =
+		providerId ?? (await getProviderId(modelId))[0].data_source;
+	const metadata = await getModelDetailsMetadata(modelId, modelProviderId);
+	const pdcmModelId: number = metadata.pdcmModelId;
+	const extLinks = await getModelExtLinks(pdcmModelId, modelId);
+	const molecularData = await getModelMolecularData(
+		modelProviderId,
+		pdcmModelId
+	);
+	const molecularDataRestrictions = await getMolecularDataRestrictions(
+		modelProviderId
+	);
+	const modelType = metadata.modelType;
+	const engraftments = await getModelEngraftments(pdcmModelId, modelType);
+	const drugDosing = await getModelDrugDosing(pdcmModelId, modelType);
+	const patientTreatment = await getPatientTreatment(pdcmModelId);
+	const qualityData = await getModelQualityData(pdcmModelId);
+
+	return {
+		// deconstruct metadata object so we dont pass more props than we need/should
+		metadata: {
+			histology: metadata.histology,
+			providerName: metadata.providerName,
+			cancerSystem: metadata.cancerSystem,
+			modelType: metadata.modelType,
+			patientSex: metadata.patientSex,
+			patientAge: metadata.patientAge,
+			patientEthnicity: metadata.patientEthnicity,
+			tumourType: metadata.tumourType,
+			cancerGrade: metadata.cancerGrade,
+			cancerStage: metadata.cancerStage,
+			primarySite: metadata.primarySite,
+			collectionSite: metadata.collectionSite,
+			licenseName: metadata.licenseName ?? "",
+			licenseUrl: metadata.licenseUrl ?? "",
+			score: metadata.score ?? 0,
+			pdcmModelId,
+			modelId,
+			providerId: modelProviderId,
+		},
+		extLinks,
+		molecularData,
+		molecularDataRestrictions,
+		engraftments,
+		drugDosing,
+		patientTreatment,
+		qualityData,
+	};
+};
 
 function createMailToLink(emails: string, externalModelId: string) {
 	const subject = `Information about ${externalModelId}`;

@@ -172,14 +172,16 @@ const SearchResult = (props: ISearchResultProps) => {
 								);
 							})}
 						</div>
-						<InputAndLabel
-							name={pdcmId}
-							type="checkbox"
-							label="Compare this data with another models data"
-							className="text-smaller mt-2"
-							onChange={props.addModelToCompare}
-							checked={props.compareCheck}
-						></InputAndLabel>
+						<ShowHide showOver={bpLarge} windowWidth={windowWidth}>
+							<InputAndLabel
+								name={pdcmId}
+								type="checkbox"
+								label="Compare this data with another models data"
+								className="text-smaller mt-2"
+								onChange={props.addModelToCompare}
+								checked={props.compareCheck}
+							></InputAndLabel>
+						</ShowHide>
 					</div>
 				</div>
 			</div>

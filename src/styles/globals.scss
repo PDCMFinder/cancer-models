@@ -153,6 +153,9 @@ img {
 	&-center {
 		align-items: center;
 	}
+	&-baseline {
+		align-items: baseline;
+	}
 	&-self {
 		&-end {
 			align-self: flex-end;

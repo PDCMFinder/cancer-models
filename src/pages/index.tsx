@@ -39,6 +39,7 @@ const Home = ({ modelCount }: IHomeProps) => {
 								priority
 								fill
 								sizes="16vw"
+								quality={50}
 							/>
 						</div>
 					</ShowHide>

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
-import getModelDetails from "../../../../utils/getModelDetails";
 import Button from "../../../../components/Button/Button";
 import Link from "next/link";
 import ShowHide from "../../../../components/ShowHide/ShowHide";
@@ -22,6 +21,7 @@ import Tooltip from "../../../../components/Tooltip/Tooltip";
 import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
 import { useQueries, useQuery } from "react-query";
 import Head from "next/head";
+import { getAllModelData } from "../../../../apis/ModelDetails.api";
 
 interface IModelDetailsProps {
 	metadata: Metadata;
@@ -852,7 +852,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		drugDosing,
 		patientTreatment,
 		qualityData,
-	} = await getModelDetails(
+	} = await getAllModelData(
 		params!.modelId as string,
 		params!.providerId as string
 	);
