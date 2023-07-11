@@ -30,18 +30,6 @@ interface DataDetailsRow {
 	external_db_links: any[] | null;
 }
 
-function getSortDirection(
-	newColumn: string,
-	sortColumn: string,
-	sortDirection: string = "asc"
-) {
-	if (newColumn === sortColumn && sortDirection === "asc") {
-		return "desc";
-	} else {
-		return "asc";
-	}
-}
-
 const MolecularDataTable = (props: IMolecularDataTableProps) => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	let columnsToDisplay: { key: string; name: string }[] = [];
