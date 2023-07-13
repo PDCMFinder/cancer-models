@@ -1,19 +1,28 @@
 import DosingTable from "./DosingTable";
 import EngraftmentsTable from "./EngraftmentsTable";
-import MolecularDataTable from "./MolecularDataTable";
+import MolecularTable from "./MolecularTable";
+import PublicationsTable from "./PublicationsTable";
 import QualityTable from "./QualityTable";
+import TreatmentTable from "./TreatmentTable";
 
 interface ICommonDataTablesProps {
 	tableName: string;
 	firstModelData: any;
 	secondModelData?: any;
 	limited?: boolean;
+	firstModelMolecularDataRestrictions?: any;
+	firstModelExtLinks?: any;
+	secondModelMolecularDataRestrictions?: any;
+	secondModelExtLinks?: any;
 }
 
 const CommonDataTables = (props: ICommonDataTablesProps) => {
 	let tableTitle: string = "";
 
 	switch (props.tableName) {
+		case "molecularData":
+			tableTitle = "Molecular data";
+			break;
 		case "engraftments":
 			tableTitle = "PDX model engraftment";
 			break;
@@ -23,20 +32,43 @@ const CommonDataTables = (props: ICommonDataTablesProps) => {
 		case "drugDosing":
 			tableTitle = "Dosing studies";
 			break;
+		case "patientTreatment":
+			tableTitle = "Patient treatment";
+			break;
+		case "publications":
+			tableTitle = "Publications";
+			break;
 		default:
 			break;
 	}
 
-	const getDataTable = (tableName: string, tableData: any) => {
+	const getDataTable = (
+		tableName: string,
+		tableData: any,
+		molecularDataRestrictions: any = [],
+		extLinks: any = []
+	) => {
+		const commonProps = { data: tableData, limited: props.limited };
 		switch (tableName) {
 			case "molecularData":
-				return <MolecularDataTable />;
+				return (
+					<MolecularTable
+						{...commonProps}
+						molecularDataRestrictions={molecularDataRestrictions}
+						extLinks={extLinks}
+					/>
+				);
+				return <></>;
 			case "engraftments":
-				return <EngraftmentsTable data={tableData} limited={props.limited} />;
+				return <EngraftmentsTable {...commonProps} />;
 			case "qualityData":
-				return <QualityTable data={tableData} limited={props.limited} />;
+				return <QualityTable {...commonProps} />;
 			case "drugDosing":
-				return <DosingTable data={tableData} limited={props.limited} />;
+				return <DosingTable {...commonProps} />;
+			case "patientTreatment":
+				return <TreatmentTable {...commonProps} />;
+			case "publications":
+				return <PublicationsTable {...commonProps} />;
 			default:
 				break;
 		}
@@ -49,16 +81,22 @@ const CommonDataTables = (props: ICommonDataTablesProps) => {
 			</div>
 			{props.firstModelData.length > 0 && (
 				<div className="col-6">
-					{getDataTable(props.tableName, props.firstModelData)}
+					{getDataTable(
+						props.tableName,
+						props.firstModelData,
+						props.firstModelMolecularDataRestrictions,
+						props.firstModelExtLinks
+					)}
 				</div>
 			)}
 			{props.secondModelData.length > 0 && (
-				<div
-					className={`col-6 ${
-						props.firstModelData.length === 0 ? "offset-6" : ""
-					}`}
-				>
-					{getDataTable(props.tableName, props.secondModelData)}
+				<div className="col-6">
+					{getDataTable(
+						props.tableName,
+						props.secondModelData,
+						props.secondModelMolecularDataRestrictions,
+						props.secondModelExtLinks
+					)}
 				</div>
 			)}
 		</div>

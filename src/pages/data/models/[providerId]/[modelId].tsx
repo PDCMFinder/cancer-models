@@ -101,7 +101,7 @@ interface ExtLinks {
 	sourceDatabaseUrl: string;
 }
 
-interface Publication {
+export interface Publication {
 	pmid: string;
 	doi: string;
 	pubYear: string;
@@ -128,7 +128,7 @@ interface Engraftment {
 	hostStrainNomenclature: string;
 }
 
-interface TypesMap {
+export interface TypesMap {
 	expression_molecular_data: string;
 	cna_molecular_data: string;
 	mutation_measurement_data: string;

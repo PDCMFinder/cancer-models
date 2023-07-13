@@ -1,7 +1,11 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { getAllModelData } from "../apis/ModelDetails.api";
-import { useQuery } from "react-query";
+import {
+	getAllModelData,
+	getModelPubmedIds,
+	getPublicationData,
+} from "../apis/ModelDetails.api";
+import { useQueries, useQuery } from "react-query";
 import Loader from "../components/Loader/Loader";
 import Head from "next/head";
 import styles from "./compare.module.scss";
@@ -9,6 +13,8 @@ import Header from "../components/Compare/Header/Header";
 import CommonDataTables from "../components/DataTables/CommonDataTables";
 import DataTables from "../components/DataTables/DataTables";
 import Button from "../components/Button/Button";
+import Link from "next/link";
+import { Publication } from "./data/models/[providerId]/[modelId]";
 
 const Compare: NextPage = () => {
 	const { query } = useRouter();
@@ -33,21 +39,77 @@ const Compare: NextPage = () => {
 		}
 	};
 
+	const firstModelPubmedIdsQuery = useQuery(
+		[
+			"pubmed-ids-data",
+			{
+				modelId: firstModelData?.metadata.modelId,
+				providerId: firstModelData?.metadata.providerId,
+			},
+		],
+		() =>
+			getModelPubmedIds(
+				firstModelData?.metadata.modelId,
+				firstModelData?.metadata.providerId
+			)
+	);
+	const firstModelPubmedIds = firstModelPubmedIdsQuery.data || [];
+	const firstModelPublicationsQuery = useQueries<Publication[]>(
+		firstModelPubmedIds.map((p: string) => {
+			return {
+				queryKey: ["publication-data", p],
+				queryFn: () => getPublicationData(p),
+			};
+		})
+	);
 	let firstModelKeys: string[] = [];
 	if (firstModelData) {
+		firstModelData.publications = firstModelPublicationsQuery
+			.map((q) => q.data as Publication)
+			.filter((d) => d !== undefined);
+
 		getModelDataKeys(firstModelKeys, firstModelData);
 	}
 	let secondModelKeys: string[] = [];
+
+	const secondModelPubmedIdsQuery = useQuery(
+		[
+			"pubmed-ids-data",
+			{
+				modelId: secondModelData?.metadata.modelId,
+				providerId: secondModelData?.metadata.providerId,
+			},
+		],
+		() =>
+			getModelPubmedIds(
+				secondModelData?.metadata.modelId,
+				secondModelData?.metadata.providerId
+			)
+	);
+	const secondModelPubmedIds = secondModelPubmedIdsQuery.data || [];
+	const secondModelPublicationsQuery = useQueries<Publication[]>(
+		secondModelPubmedIds.map((p: string) => {
+			return {
+				queryKey: ["publication-data", p],
+				queryFn: () => getPublicationData(p),
+			};
+		})
+	);
 	if (secondModelData) {
+		secondModelData.publications = secondModelPublicationsQuery
+			.map((q) => q.data as Publication)
+			.filter((d) => d !== undefined);
+
 		getModelDataKeys(secondModelKeys, secondModelData);
 	}
 
 	let commonData: string[] = [];
 	let differentData: string[] = [];
 	const allModelDataKeys = [...firstModelKeys, ...secondModelKeys];
+	const ignoredKeys = ["metadata", "extLinks", "molecularDataRestrictions"];
 	allModelDataKeys.forEach((key) => {
-		// don't add keys that don't use data table
-		if (key === "metadata" || key === "extLinks") {
+		// don't add keys that don't use own data table
+		if (ignoredKeys.includes(key)) {
 			return;
 		}
 		let counter = 0;
@@ -139,7 +201,7 @@ const Compare: NextPage = () => {
 				</div>
 			</header>
 			{firstModelData && secondModelData ? (
-				<section className="pt-0">
+				<section id="header" className="pt-0">
 					<div className="container">
 						<div className="row sticky top-0 pt-3 mb-3">
 							<div className="col-12 col-lg-6">
@@ -212,15 +274,26 @@ const Compare: NextPage = () => {
 						</div>
 						{commonData.map((dataName) => (
 							<CommonDataTables
+								key={dataName}
 								tableName={dataName}
 								// @ts-ignore
 								firstModelData={firstModelData && firstModelData[dataName]}
 								// @ts-ignore
 								secondModelData={secondModelData && secondModelData[dataName]}
+								firstModelMolecularDataRestrictions={
+									firstModelData && firstModelData.molecularDataRestrictions
+								}
+								firstModelExtLinks={firstModelData && firstModelData.extLinks}
+								secondModelMolecularDataRestrictions={
+									secondModelData && secondModelData.molecularDataRestrictions
+								}
+								secondModelExtLinks={
+									secondModelData && secondModelData.extLinks
+								}
 								limited={true}
 							/>
 						))}
-						{differentData && (
+						{differentData.length > 0 && (
 							<>
 								<div className="row">
 									<div className="col-12">
@@ -228,9 +301,11 @@ const Compare: NextPage = () => {
 									</div>
 								</div>
 								<div className="row">
+									{/* first model column data */}
 									<div className="col-6">
 										{differentData.map((dataName) => (
 											<DataTables
+												key={dataName}
 												tableName={dataName}
 												modelData={
 													// @ts-ignore
@@ -240,9 +315,11 @@ const Compare: NextPage = () => {
 											/>
 										))}
 									</div>
+									{/* second model column data */}
 									<div className="col-6">
 										{differentData.map((dataName) => (
 											<DataTables
+												key={dataName}
 												tableName={dataName}
 												modelData={
 													// @ts-ignore
@@ -255,16 +332,6 @@ const Compare: NextPage = () => {
 								</div>
 							</>
 						)}
-						{differentData.map((dataName) => (
-							<DataTables
-								tableName={dataName}
-								// @ts-ignore
-								firstModelData={firstModelData && firstModelData[dataName]}
-								// @ts-ignore
-								secondModelData={secondModelData && secondModelData[dataName]}
-								limited={true}
-							/>
-						))}
 					</div>
 					<div className="row">
 						<div className="col-6 text-center">
@@ -285,6 +352,15 @@ const Compare: NextPage = () => {
 								href={`/data/models/${secondModelData.metadata.providerId}/${modelsToCompare[1]}`}
 							>
 								<>See full {modelsToCompare[1]} details</>
+							</Button>
+						</div>
+					</div>
+					<div className="row mt-5">
+						<div className="col-12 text-center">
+							<Button color="dark" priority="secondary">
+								<Link href="#header" className="p text-noDecoration">
+									Scroll to top
+								</Link>
 							</Button>
 						</div>
 					</div>

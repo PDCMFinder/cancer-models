@@ -1,6 +1,7 @@
 import DosingTable from "./DosingTable";
 import EngraftmentsTable from "./EngraftmentsTable";
-import MolecularDataTable from "./MolecularDataTable";
+import MolecularDataTable from "./MolecularTable";
+import PublicationsTable from "./PublicationsTable";
 import QualityTable from "./QualityTable";
 import TreatmentTable from "./TreatmentTable";
 
@@ -26,14 +27,15 @@ const DataTables = (props: DataTablesProps) => {
 		case "patientTreatment":
 			tableTitle = "Patient treatment";
 			break;
+		case "publications":
+			tableTitle = "Publications";
+			break;
 		default:
 			break;
 	}
 
 	const getDataTable = (tableName: string, tableData: any) => {
 		switch (tableName) {
-			case "molecularData":
-				return <MolecularDataTable />;
 			case "engraftments":
 				return <EngraftmentsTable data={tableData} limited={props.limited} />;
 			case "qualityData":
@@ -42,6 +44,8 @@ const DataTables = (props: DataTablesProps) => {
 				return <DosingTable data={tableData} limited={props.limited} />;
 			case "patientTreatment":
 				return <TreatmentTable data={tableData} limited={props.limited} />;
+			case "publications":
+				return <PublicationsTable data={tableData} limited={props.limited} />;
 			default:
 				break;
 		}

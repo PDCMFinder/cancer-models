@@ -3,13 +3,13 @@ import Link from "next/link";
 
 interface IPublicationsTableProps {
 	data: any;
+	limited?: boolean;
 }
 
 const PublicationsTable = (props: IPublicationsTableProps) => {
 	return (
 		<div id="publications" className="row mb-5 pt-3">
 			<div className="col-12">
-				<h2 className="mt-0">Publications</h2>
 				{props.data?.map((publication: any, idx: number) => {
 					const needsSeparator =
 						props.data.length > 1 && idx !== props.data.length - 1;
