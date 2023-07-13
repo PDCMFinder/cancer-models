@@ -30,7 +30,7 @@ export async function getProviderId(modelId: string) {
 }
 
 export async function getModelPubmedIds(
-	modelId: string,
+	modelId: string = "",
 	providerId: string
 ): Promise<any> {
 	let response = await fetch(

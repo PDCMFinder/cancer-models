@@ -25,6 +25,10 @@ const DosingTable = (props: IDosingTableProps) => {
 									treatmentName: name,
 									treatmentDose: dose,
 									treatmentResponse: response,
+								}: {
+									treatmentName: string;
+									treatmentDose: string;
+									treatmentResponse: string;
 								}) => (
 									<tr key={name}>
 										<td>{name}</td>

@@ -25,6 +25,10 @@ const TreatmentTable = (props: ITreatmentTableProps) => {
 									treatmentName: name,
 									treatmentDose: dose,
 									treatmentResponse: response,
+								}: {
+									treatmentName: string;
+									treatmentDose: string;
+									treatmentResponse: string;
 								}) => (
 									<tr key={name}>
 										<td className="white-space-unset">{name}</td>

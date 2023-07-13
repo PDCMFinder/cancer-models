@@ -54,7 +54,7 @@ const MolecularTable = (props: IMolecularTableProps) => {
 	};
 
 	const restrictedTypes = props.molecularDataRestrictions?.map(
-		(d) => typesMap[d.molecularDataTable as keyof TypesMap]
+		(d: any) => typesMap[d.molecularDataTable as keyof TypesMap]
 	);
 
 	return (
@@ -76,7 +76,7 @@ const MolecularTable = (props: IMolecularTableProps) => {
 						</thead>
 						<tbody>
 							{props.data &&
-								props.data.map((data) => {
+								props.data.map((data: any) => {
 									const sampleId =
 										data.xenograftSampleId ||
 										data.patientSampleId ||
@@ -85,7 +85,7 @@ const MolecularTable = (props: IMolecularTableProps) => {
 										? "Engrafted Tumour"
 										: "Patient Tumour";
 									const rawDataExternalLink = data.externalDbLinks?.find(
-										(data) => data.column === "raw_data_url"
+										(data: any) => data.column === "raw_data_url"
 									)?.link;
 
 									return (

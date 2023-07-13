@@ -27,21 +27,23 @@ const EngraftmentsTable = (props: IEngraftmentsTableProps) => {
 							</tr>
 						</thead>
 						<tbody>
-							{props.data?.map((engraftment) => {
+							{props.data?.map((engraftment: any) => {
 								const hostStrainNomenclatures =
-									engraftment.hostStrainNomenclature.split(" ").map((h) => {
-										const regExp = /(.*)<sup>(.*)<\/sup>(.*)/gm;
-										const matches = regExp.exec(h) || [];
-										const strainPrefix = matches[1] || "";
-										const strainSup = matches[2] || "";
-										const strainSuffix = matches[3] || "";
+									engraftment.hostStrainNomenclature
+										.split(" ")
+										.map((h: any) => {
+											const regExp = /(.*)<sup>(.*)<\/sup>(.*)/gm;
+											const matches = regExp.exec(h) || [];
+											const strainPrefix = matches[1] || "";
+											const strainSup = matches[2] || "";
+											const strainSuffix = matches[3] || "";
 
-										return {
-											strainPrefix,
-											strainSup,
-											strainSuffix,
-										};
-									});
+											return {
+												strainPrefix,
+												strainSup,
+												strainSuffix,
+											};
+										});
 
 								return (
 									<tr key={engraftment.hostStrainNomenclature}>
