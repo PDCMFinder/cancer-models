@@ -7,7 +7,7 @@ const EngraftmentsTable = (props: IEngraftmentsTableProps) => {
 	const isLimited = props.limited;
 
 	return (
-		<div id="quality-control" className="row mb-5 pt-3">
+		<div id="quality-control" className="row mb-5 pt-1">
 			<div className="col-12 mb-1">
 				<div className="overflow-scroll showScrollbar-vertical">
 					<table>

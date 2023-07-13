@@ -7,7 +7,7 @@ interface IDosingTableProps {
 
 const DosingTable = (props: IDosingTableProps) => {
 	return (
-		<div id="dosing-studies" className="row mb-5 pt-3">
+		<div id="dosing-studies" className="row mb-5 pt-1">
 			<div className="col-12 mb-1">
 				<div className="overflow-scroll showScrollbar-vertical">
 					<table>

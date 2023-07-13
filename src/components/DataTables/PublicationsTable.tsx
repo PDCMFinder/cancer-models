@@ -8,7 +8,7 @@ interface IPublicationsTableProps {
 
 const PublicationsTable = (props: IPublicationsTableProps) => {
 	return (
-		<div id="publications" className="row mb-5 pt-3">
+		<div id="publications" className="row mb-5 pt-1">
 			<div className="col-12">
 				{props.data?.map((publication: any, idx: number) => {
 					const needsSeparator =
@@ -17,7 +17,9 @@ const PublicationsTable = (props: IPublicationsTableProps) => {
 					return (
 						<div key={publication.pmid}>
 							{publication.title && (
-								<h3>{publication.title.replace(/<[^>]+>/g, " ")}</h3>
+								<h3 className="mt-1">
+									{publication.title.replace(/<[^>]+>/g, " ")}
+								</h3>
 							)}
 							<p className="text-muted text-small">
 								{publication.authorString}
