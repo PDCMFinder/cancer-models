@@ -269,7 +269,6 @@ const Search = ({ modelCount }: ISearchProps) => {
 
 	useEffect(() => {
 		if (modelsToCompare.length === 2) {
-			console.log(`Compare ${modelsToCompare[0]} vs ${modelsToCompare[1]}`);
 			// Open compare page with both models
 			window.open(
 				`/compare?models=${modelsToCompare[0]}+${modelsToCompare[1]}`,
@@ -376,7 +375,7 @@ const Search = ({ modelCount }: ISearchProps) => {
 				<div className="container">
 					<div className="row">
 						<div className="col-12 col-lg-9 offset-lg-3">
-							<div className="row mb-3 align-center">
+							<div className="row mb-3">
 								<div className="col-12 col-md-6">
 									<p className="mb-md-0">
 										{`Showing ${(currentPage - 1) * resultsPerPage + 1} to 
@@ -388,6 +387,16 @@ const Search = ({ modelCount }: ISearchProps) => {
 										} 
 										of ${totalResults.toLocaleString()} results`}
 									</p>
+									<p
+										className={`mb-0 mt-1`}
+										style={{
+											visibility: modelsToCompare[0] ? "visible" : "hidden",
+											height: "5rem",
+										}}
+									>
+										<b>Comparing:</b> {modelsToCompare[0]} + select another
+										model to compare
+									</p>
 								</div>
 								<div className="col-12 col-md-6">
 									<div className="d-flex align-center justify-content-md-end">
@@ -396,7 +405,7 @@ const Search = ({ modelCount }: ISearchProps) => {
 											id="sortBy"
 											options={sortByOptions}
 											className="w-auto mb-0"
-											onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+											onChange={(e: ChangeEvent<HTMLSelectElement>) =>
 												setSortBy(e.target.value)
 											}
 										/>
