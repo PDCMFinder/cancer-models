@@ -27,7 +27,7 @@ interface IModelDetailsProps {
 	metadata: Metadata;
 	extLinks: ExtLinks;
 	molecularData: MolecularData[];
-	molecularDataRestrictions: any[];
+	molecularDataRestrictions: MolecularDataRestrictions[];
 	drugDosing: any[];
 	patientTreatment: PatientTreatment[];
 	qualityData: QualityData[];
@@ -35,6 +35,11 @@ interface IModelDetailsProps {
 	modelId: string;
 	providerId: string;
 	engraftments?: Engraftment[];
+}
+
+export interface MolecularDataRestrictions {
+	dataSource: string;
+	molecularDataTable: string;
 }
 
 interface PatientTreatment {
@@ -96,9 +101,9 @@ interface Metadata {
 	pdcmModelId: number;
 }
 
-interface ExtLinks {
-	contactLink: string;
-	sourceDatabaseUrl: string;
+export interface ExtLinks {
+	contactLink?: string;
+	sourceDatabaseUrl?: string;
 }
 
 export interface Publication {
@@ -263,14 +268,16 @@ const ModelDetails = ({
 								</Link>
 							</h3>
 							<div className="d-flex flex-column d-lg-block">
-								<Link
-									className="text-white mr-lg-3 mr-xl-0"
-									href={extLinks.sourceDatabaseUrl}
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									View data at {metadata.providerId || "provider"}
-								</Link>
+								{extLinks.sourceDatabaseUrl && (
+									<Link
+										className="text-white mr-lg-3 mr-xl-0"
+										href={extLinks.sourceDatabaseUrl}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										View data at {metadata.providerId || "provider"}
+									</Link>
+								)}
 								<Button
 									priority="secondary"
 									color="white"

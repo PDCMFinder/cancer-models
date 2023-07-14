@@ -1,10 +1,8 @@
-import { Publication } from "../pages/data/models/[providerId]/[modelId]";
+import {
+	ExtLinks,
+	Publication,
+} from "../pages/data/models/[providerId]/[modelId]";
 import { camelCase } from "../utils/dataUtils";
-
-export interface IModelExtLinks {
-	contactLink?: string;
-	sourceDatabaseUrl?: string;
-}
 
 export async function getModelDetailsMetadata(
 	modelId: string,
@@ -74,7 +72,7 @@ export async function getPublicationData(pubmedId: string) {
 export async function getModelExtLinks(
 	pdcmModelId: number,
 	modelId: string
-): Promise<IModelExtLinks> {
+): Promise<ExtLinks> {
 	if (pdcmModelId !== 0 && !pdcmModelId) {
 		return {};
 	}
@@ -89,7 +87,7 @@ export async function getModelExtLinks(
 		for (let d in extLinks) {
 			extLinks[d] = camelCase(extLinks[d]);
 		}
-		let modelExtLinks: IModelExtLinks = {
+		let modelExtLinks: ExtLinks = {
 			contactLink: extLinks.contactForm.formUrl
 				? extLinks.contactForm.formUrl
 				: createMailToLink(extLinks.contactPeople.emailList, modelId),

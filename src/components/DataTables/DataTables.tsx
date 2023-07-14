@@ -1,6 +1,10 @@
+import {
+	ExtLinks,
+	MolecularDataRestrictions,
+} from "../../pages/data/models/[providerId]/[modelId]";
 import DosingTable from "./DosingTable";
 import EngraftmentsTable from "./EngraftmentsTable";
-import MolecularDataTable from "./MolecularTable";
+import MolecularTable from "./MolecularTable";
 import PublicationsTable from "./PublicationsTable";
 import QualityTable from "./QualityTable";
 import TreatmentTable from "./TreatmentTable";
@@ -9,6 +13,8 @@ interface DataTablesProps {
 	tableName: string;
 	modelData: any;
 	limited?: boolean;
+	molecularDataRestrictions?: MolecularDataRestrictions[];
+	extLinks?: ExtLinks[];
 }
 
 const DataTables = (props: DataTablesProps) => {
@@ -34,18 +40,32 @@ const DataTables = (props: DataTablesProps) => {
 			break;
 	}
 
-	const getDataTable = (tableName: string, tableData: any) => {
+	const getDataTable = (
+		tableName: string,
+		tableData: any,
+		molecularDataRestrictions: MolecularDataRestrictions[] = [],
+		extLinks: ExtLinks = {}
+	) => {
+		const commonProps = { data: tableData, limited: props.limited };
 		switch (tableName) {
+			case "molecularData":
+				return (
+					<MolecularTable
+						{...commonProps}
+						molecularDataRestrictions={molecularDataRestrictions}
+						extLinks={extLinks}
+					/>
+				);
 			case "engraftments":
-				return <EngraftmentsTable data={tableData} limited={props.limited} />;
+				return <EngraftmentsTable {...commonProps} />;
 			case "qualityData":
-				return <QualityTable data={tableData} limited={props.limited} />;
+				return <QualityTable {...commonProps} />;
 			case "drugDosing":
-				return <DosingTable data={tableData} limited={props.limited} />;
+				return <DosingTable {...commonProps} />;
 			case "patientTreatment":
-				return <TreatmentTable data={tableData} limited={props.limited} />;
+				return <TreatmentTable {...commonProps} />;
 			case "publications":
-				return <PublicationsTable data={tableData} limited={props.limited} />;
+				return <PublicationsTable {...commonProps} />;
 			default:
 				break;
 		}

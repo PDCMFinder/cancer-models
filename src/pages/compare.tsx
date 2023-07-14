@@ -231,8 +231,8 @@ const Compare: NextPage = () => {
 								<h2 className="h3">Patient / Tumour Metadata</h2>
 							</div>
 							<div className="col-12">
-								<div className="row">
-									<div className="col-3">{/* <Image/> */}</div>
+								<div className="row align-center">
+									<div className="col-3"></div>
 									<div className="col-6">
 										<ul className="w-100 p-0 ul-noStyle">
 											{metadataDataArr.map((data) => (
@@ -268,7 +268,23 @@ const Compare: NextPage = () => {
 											))}
 										</ul>
 									</div>
-									<div className="col-3">{/* <Image/> */}</div>
+									{/* <div
+										style={{
+											objectFit: "cover",
+											height: "100%",
+											position: "relative",
+										}}
+										className="ar-1 col-3"
+									>
+										<Image
+											src={TM01612Img}
+											alt="TM01612 3000x"
+											fill
+											quality={50}
+											style={{ objectFit: "cover" }}
+										/>
+									</div> */}
+									<div className="col-3"></div>
 								</div>
 							</div>
 						</div>
@@ -332,36 +348,36 @@ const Compare: NextPage = () => {
 								</div>
 							</>
 						)}
-					</div>
-					<div className="row">
-						<div className="col-6 text-center">
-							<Button
-								color="dark"
-								priority="primary"
-								htmlTag="a"
-								href={`/data/models/${firstModelData.metadata.providerId}/${modelsToCompare[0]}`}
-							>
-								<>See full {modelsToCompare[0]} details</>
-							</Button>
+						<div className="row">
+							<div className="col-6 text-center">
+								<Button
+									color="dark"
+									priority="primary"
+									htmlTag="a"
+									href={`/data/models/${firstModelData.metadata.providerId}/${modelsToCompare[0]}`}
+								>
+									<>See full {modelsToCompare[0]} details</>
+								</Button>
+							</div>
+							<div className="col-6 text-center">
+								<Button
+									color="dark"
+									priority="primary"
+									htmlTag="a"
+									href={`/data/models/${secondModelData.metadata.providerId}/${modelsToCompare[1]}`}
+								>
+									<>See full {modelsToCompare[1]} details</>
+								</Button>
+							</div>
 						</div>
-						<div className="col-6 text-center">
-							<Button
-								color="dark"
-								priority="primary"
-								htmlTag="a"
-								href={`/data/models/${secondModelData.metadata.providerId}/${modelsToCompare[1]}`}
-							>
-								<>See full {modelsToCompare[1]} details</>
-							</Button>
-						</div>
-					</div>
-					<div className="row mt-5">
-						<div className="col-12 text-center">
-							<Button color="dark" priority="secondary">
-								<Link href="#header" className="p text-noDecoration">
-									Scroll to top
-								</Link>
-							</Button>
+						<div className="row mt-5">
+							<div className="col-12 text-center">
+								<Button color="dark" priority="secondary">
+									<Link href="#header" className="p text-noDecoration">
+										Scroll to top
+									</Link>
+								</Button>
+							</div>
 						</div>
 					</div>
 				</section>

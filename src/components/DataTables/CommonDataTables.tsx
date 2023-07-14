@@ -1,3 +1,7 @@
+import {
+	ExtLinks,
+	MolecularDataRestrictions,
+} from "../../pages/data/models/[providerId]/[modelId]";
 import DosingTable from "./DosingTable";
 import EngraftmentsTable from "./EngraftmentsTable";
 import MolecularTable from "./MolecularTable";
@@ -5,15 +9,15 @@ import PublicationsTable from "./PublicationsTable";
 import QualityTable from "./QualityTable";
 import TreatmentTable from "./TreatmentTable";
 
-interface ICommonDataTablesProps {
+export interface ICommonDataTablesProps {
 	tableName: string;
 	firstModelData: any;
 	secondModelData?: any;
 	limited?: boolean;
-	firstModelMolecularDataRestrictions?: any;
-	firstModelExtLinks?: any;
-	secondModelMolecularDataRestrictions?: any;
-	secondModelExtLinks?: any;
+	firstModelMolecularDataRestrictions?: MolecularDataRestrictions[];
+	firstModelExtLinks?: ExtLinks;
+	secondModelMolecularDataRestrictions?: MolecularDataRestrictions[];
+	secondModelExtLinks?: ExtLinks;
 }
 
 const CommonDataTables = (props: ICommonDataTablesProps) => {
@@ -45,8 +49,8 @@ const CommonDataTables = (props: ICommonDataTablesProps) => {
 	const getDataTable = (
 		tableName: string,
 		tableData: any,
-		molecularDataRestrictions: any = [],
-		extLinks: any = []
+		molecularDataRestrictions: MolecularDataRestrictions[] = [],
+		extLinks: ExtLinks = {}
 	) => {
 		const commonProps = { data: tableData, limited: props.limited };
 		switch (tableName) {
@@ -58,7 +62,6 @@ const CommonDataTables = (props: ICommonDataTablesProps) => {
 						extLinks={extLinks}
 					/>
 				);
-				return <></>;
 			case "engraftments":
 				return <EngraftmentsTable {...commonProps} />;
 			case "qualityData":

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import {
+	ExtLinks,
 	MolecularData,
+	MolecularDataRestrictions,
 	TypesMap,
 } from "../../pages/data/models/[providerId]/[modelId]";
 import { useRef, useState } from "react";
@@ -21,8 +23,8 @@ const typesMap: TypesMap = {
 
 interface IMolecularTableProps {
 	data: any;
-	molecularDataRestrictions: any;
-	extLinks: any;
+	molecularDataRestrictions: MolecularDataRestrictions[];
+	extLinks: ExtLinks;
 	limited?: boolean;
 }
 
@@ -101,7 +103,7 @@ const MolecularTable = (props: IMolecularTableProps) => {
 												data.dataAvailability === "TRUE" ? (
 													<>
 														<button
-															className="text-left link-text mr-3 mr-md-0 mb-md-1 mr-xxx-3"
+															className="text-left link-text mr-3 mb-md-1 mr-xxx-3"
 															onClick={() => setSelectedMolecularData(data)}
 														>
 															VIEW DATA
