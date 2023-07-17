@@ -1,4 +1,4 @@
-import type { GetStaticProps, NextPage } from "next";
+import type { GetStaticProps } from "next";
 import SearchResults from "../components/SearchResults/SearchResults";
 import Select from "../components/Input/Select";
 import React, { ChangeEvent, useEffect, useReducer, useState } from "react";
@@ -375,7 +375,7 @@ const Search = ({ modelCount }: ISearchProps) => {
 				<div className="container">
 					<div className="row">
 						<div className="col-12 col-lg-9 offset-lg-3">
-							<div className="row mb-3">
+							<div className="row mb-3 align-center">
 								<div className="col-12 col-md-6">
 									<p className="mb-md-0">
 										{`Showing ${(currentPage - 1) * resultsPerPage + 1} to 
