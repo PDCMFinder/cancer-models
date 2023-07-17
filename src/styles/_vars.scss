@@ -7,6 +7,7 @@ $color-primary-primary: #003e48;
 $color-primary-secondary: #005363;
 $color-primary-tertiary: #47938a;
 $color-primary-quaternary: #c0ede6;
+$color-primary-quaternary-lighter: lighten($color-primary-quaternary, 12%);
 $color-secondary-primary: #e9b114;
 $color-secondary-secondary: #ffd86b;
 $color-secondary-tertiary: #ffe6a6;

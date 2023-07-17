@@ -387,16 +387,6 @@ const Search = ({ modelCount }: ISearchProps) => {
 										} 
 										of ${totalResults.toLocaleString()} results`}
 									</p>
-									<p
-										className={`mb-0 mt-1`}
-										style={{
-											visibility: modelsToCompare[0] ? "visible" : "hidden",
-											height: "5rem",
-										}}
-									>
-										<b>Comparing:</b> {modelsToCompare[0]} + select another
-										model to compare
-									</p>
 								</div>
 								<div className="col-12 col-md-6">
 									<div className="d-flex align-center justify-content-md-end">
@@ -486,6 +476,33 @@ const Search = ({ modelCount }: ISearchProps) => {
 							</div>
 						</div>
 					</div>
+					{modelsToCompare[0]
+						? createPortal(
+								<div className="row position-sticky bottom-0">
+									<div className="col-6 offset-3">
+										<Card
+											className="bg-primary-quaternary mb-2"
+											contentClassName="py-2"
+										>
+											<div className="d-flex align-center justify-content-between">
+												<p className="m-0">
+													<b>Comparing:</b> {modelsToCompare[0]}
+												</p>
+												<Button
+													color="dark"
+													priority="secondary"
+													className="my-1 py-1"
+													onClick={() => setModelsToCompare([])}
+												>
+													Clear
+												</Button>
+											</div>
+										</Card>
+									</div>
+								</div>,
+								document.getElementsByTagName("main")[0] as HTMLElement
+						  )
+						: null}
 				</div>
 			</section>
 		</>
