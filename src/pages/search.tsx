@@ -36,13 +36,13 @@ export interface onFilterChangeType {
 
 const sortByOptions = [
 		{
-			value: "model_dataset_type_count.desc",
+			value: "scores->>data_score.desc",
 			text: "Data available",
 		},
 		{ value: "external_model_id.asc", text: "Model Id: A to Z" },
 		{ value: "external_model_id.desc", text: "Model Id: Z to A" },
-		{ value: "score.asc", text: "Metadata: Ascending" },
-		{ value: "score.desc", text: "Metadata: Descending" },
+		{ value: "scores->>pdx_metadata_score.asc", text: "Metadata: Ascending" },
+		{ value: "scores->>pdx_metadata_score.desc", text: "Metadata: Descending" },
 	],
 	resultsPerPage = 10;
 
