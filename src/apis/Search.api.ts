@@ -163,7 +163,7 @@ export async function getSearchResults(
 	let response = await fetch(
 		`${API_URL}/search_index?${query}&limit=${pageSize}&offset=${
 			(searchFilterSelection["page"].selection[0] - 1) * pageSize
-		}&select=provider_name,patient_age,patient_sex,external_model_id,model_type,data_source,histology,primary_site,collection_site,tumour_type,dataset_available,scores&order=${sortBy}.nullslast`,
+		}&select=provider_name,patient_age,patient_sex,external_model_id,model_type,data_source,histology,primary_site,collection_site,tumour_type,dataset_available,scores&order=${sortBy}`,
 		{ headers: { Prefer: "count=exact" } }
 	);
 	if (!response.ok) {
