@@ -26,7 +26,7 @@ import { getAllModelData } from "../../../../apis/ModelDetails.api";
 interface IModelDetailsProps {
 	metadata: Metadata;
 	extLinks: ExtLinks;
-	molecularData: MolecularData[];
+	molecularData: IMolecularData[];
 	molecularDataRestrictions: MolecularDataRestrictions[];
 	drugDosing: any[];
 	patientTreatment: PatientTreatment[];
@@ -34,7 +34,7 @@ interface IModelDetailsProps {
 	className: string;
 	modelId: string;
 	providerId: string;
-	engraftments?: Engraftment[];
+	engraftments?: IEngraftment[];
 }
 
 export interface MolecularDataRestrictions {
@@ -48,7 +48,7 @@ interface PatientTreatment {
 	treatmentResponse: string;
 }
 
-export interface MolecularData {
+export interface IMolecularData {
 	id: number;
 	patientSampleId: string;
 	patientModelId: string;
@@ -106,7 +106,7 @@ export interface ExtLinks {
 	sourceDatabaseUrl?: string;
 }
 
-export interface Publication {
+export interface IPublication {
 	pmid: string;
 	doi: string;
 	pubYear: string;
@@ -115,15 +115,7 @@ export interface Publication {
 	journalTitle: string;
 }
 
-interface FullTextIdList {
-	fullTextId: string;
-}
-
-interface TmAccessionTypeList {
-	accessionType: string;
-}
-
-interface Engraftment {
+export interface IEngraftment {
 	passageNumber: string;
 	hostStrain: string;
 	engraftmentSite: string;
@@ -159,7 +151,7 @@ const ModelDetails = ({
 }: IModelDetailsProps) => {
 	const NA_STRING = "N/A";
 	const [downloadData, setDownloadData] = useState<{
-		data: MolecularData[];
+		data: IMolecularData[];
 		filename: string;
 	}>({
 		data: [],
@@ -168,7 +160,7 @@ const ModelDetails = ({
 	const downloadBtnRef =
 		useRef<CSVLink & HTMLAnchorElement & { link: HTMLAnchorElement }>(null);
 	const [selectedMolecularData, setSelectedMolecularData] =
-		useState<MolecularData>();
+		useState<IMolecularData>();
 	const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
 
 	const { windowWidth } = useWindowDimensions();
@@ -194,7 +186,7 @@ const ModelDetails = ({
 		if (isInitialLoad) setIsInitialLoad(false);
 	}, [downloadData]);
 
-	const getDownloadData = (data: MolecularData): void => {
+	const getDownloadData = (data: IMolecularData): void => {
 		getMolecularDataDownload(data, data.dataType)
 			.then((d) => {
 				setDownloadData({
@@ -217,7 +209,7 @@ const ModelDetails = ({
 
 	const pubmedIds = pubmedIdsQuery.data || [];
 
-	const publicationsQuery = useQueries<Publication[]>(
+	const publicationsQuery = useQueries<IPublication[]>(
 		pubmedIds.map((p: string) => {
 			return {
 				queryKey: ["publication-data", p],
@@ -226,8 +218,8 @@ const ModelDetails = ({
 		})
 	);
 
-	const publications: Publication[] = publicationsQuery
-		.map((q) => q.data as Publication)
+	const publications: IPublication[] = publicationsQuery
+		.map((q) => q.data as IPublication)
 		.filter((d) => d !== undefined);
 
 	return (

@@ -267,14 +267,21 @@ const Search = ({ modelCount }: ISearchProps) => {
 		}
 	};
 
-	useEffect(() => {
-		if (modelsToCompare.length === 2) {
-			// Open compare page with both models
-			window.open(
-				`/compare?models=${modelsToCompare[0]}+${modelsToCompare[1]}`,
-				"_blank"
-			);
+	const compareModels = () => {
+		if (modelsToCompare.length > 1) {
+			let compareModelsQuery = modelsToCompare.join("+");
+			window.open(`/compare?models=${compareModelsQuery}`, "_blank");
+
 			setModelsToCompare([]);
+		} else {
+			alert("Please select at least 2 models to compare");
+		}
+	};
+
+	useEffect(() => {
+		if (modelsToCompare.length === 4) {
+			// Open compare page with both models
+			compareModels();
 		}
 	}, [modelsToCompare]);
 
@@ -479,23 +486,75 @@ const Search = ({ modelCount }: ISearchProps) => {
 					{modelsToCompare[0]
 						? createPortal(
 								<div className="row position-sticky bottom-0">
-									<div className="col-6 offset-3">
+									<div className="col-10 offset-1">
 										<Card
 											className="bg-primary-quaternary mb-2"
 											contentClassName="py-2"
 										>
 											<div className="d-flex align-center justify-content-between">
 												<p className="m-0">
-													<b>Comparing:</b> {modelsToCompare[0]}
+													<b>Compare up to 4 models: </b>
+													{modelsToCompare.map((model, idx) => {
+														const clearX = (
+															<sup
+																onClick={() =>
+																	setModelsToCompare((prev) =>
+																		prev.filter(
+																			(prevModel) => prevModel !== model
+																		)
+																	)
+																}
+															>
+																<Button
+																	color="dark"
+																	priority="secondary"
+																	className="text-underline m-0 ml-1"
+																	style={{ padding: ".2rem .3rem" }}
+																>
+																	X
+																</Button>
+															</sup>
+														);
+
+														if (idx === 0) {
+															return (
+																<React.Fragment key={model}>
+																	{model}
+																	{clearX}
+																</React.Fragment>
+															);
+														}
+
+														return (
+															<React.Fragment key={model}>
+																{" "}
+																<span className="text-primary-tertiary">
+																	+
+																</span>{" "}
+																{model}
+																{clearX}
+															</React.Fragment>
+														);
+													})}
 												</p>
-												<Button
-													color="dark"
-													priority="secondary"
-													className="my-1 py-1"
-													onClick={() => setModelsToCompare([])}
-												>
-													Clear
-												</Button>
+												<div className="d-flex">
+													<Button
+														color="dark"
+														priority="primary"
+														className="my-1 py-1"
+														onClick={() => compareModels()}
+													>
+														Compare
+													</Button>
+													<Button
+														color="dark"
+														priority="secondary"
+														className="my-1 ml-1 py-1"
+														onClick={() => setModelsToCompare([])}
+													>
+														Clear
+													</Button>
+												</div>
 											</div>
 										</Card>
 									</div>

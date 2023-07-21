@@ -296,6 +296,9 @@ textarea {
 	min-width: 100%;
 }
 .bg {
+	&-transparent {
+		background-color: transparent !important;
+	}
 	&-primary-primary {
 		background-color: $color-primary-primary !important;
 	}

@@ -1,6 +1,6 @@
 import {
 	ExtLinks,
-	Publication,
+	IPublication,
 } from "../pages/data/models/[providerId]/[modelId]";
 import { camelCase } from "../utils/dataUtils";
 
@@ -418,7 +418,7 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 		drugDosing,
 		patientTreatment,
 		qualityData,
-		publications: [] as Publication[],
+		publications: [] as IPublication[],
 	};
 };
 

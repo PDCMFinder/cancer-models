@@ -1,8 +1,25 @@
 @import "../styles/vars";
 
-.metadataLabel {
-	font-size: 1.5rem;
-	color: $color-primary-secondary;
-	font-family: $type-primary;
-	line-height: 1.2;
+.Compare {
+	&_table {
+		margin-bottom: $spacing-4;
+		&_title {
+			border-bottom: 1px solid $color-primary-primary;
+			padding-bottom: $spacing-2;
+			margin: 0;
+			h3 {
+				margin-bottom: 0;
+			}
+		}
+	}
+	&_row {
+		border-bottom: 1px solid $color-primary-tertiary;
+		padding: $spacing-2 0;
+		p {
+			margin: 0;
+		}
+		p:not(:first-of-type) {
+			color: $color-primary-secondary;
+		}
+	}
 }

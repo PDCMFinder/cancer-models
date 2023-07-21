@@ -1,7 +1,7 @@
 import Link from "next/link";
 import {
 	ExtLinks,
-	MolecularData,
+	IMolecularData,
 	MolecularDataRestrictions,
 	TypesMap,
 } from "../../pages/data/models/[providerId]/[modelId]";
@@ -33,16 +33,16 @@ const MolecularTable = (props: IMolecularTableProps) => {
 	const downloadBtnRef =
 		useRef<CSVLink & HTMLAnchorElement & { link: HTMLAnchorElement }>(null);
 	const [selectedMolecularData, setSelectedMolecularData] =
-		useState<MolecularData>();
+		useState<IMolecularData>();
 	const [downloadData, setDownloadData] = useState<{
-		data: MolecularData[];
+		data: IMolecularData[];
 		filename: string;
 	}>({
 		data: [],
 		filename: "",
 	});
 
-	const getDownloadData = (data: MolecularData): void => {
+	const getDownloadData = (data: IMolecularData): void => {
 		getMolecularDataDownload(data, data.dataType)
 			.then((d) => {
 				setDownloadData({
