@@ -1,209 +1,159 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import {
-	getAllModelData,
-	getModelPubmedIds,
-	getPublicationData,
-} from "../apis/ModelDetails.api";
-import { useQueries, useQuery } from "react-query";
-import Loader from "../components/Loader/Loader";
+import { getAllModelData } from "../apis/ModelDetails.api";
+import { useQueries } from "react-query";
 import Head from "next/head";
-import styles from "./compare.module.scss";
-import Header from "../components/Compare/Header/Header";
-import CommonDataTables from "../components/DataTables/CommonDataTables";
-import DataTables from "../components/DataTables/DataTables";
+import Loader from "../components/Loader/Loader";
+import QualityBadge from "../components/QualityBadge/QualityBadge";
+import {
+	IEngraftment,
+	IMolecularData,
+	QualityData,
+} from "./data/models/[providerId]/[modelId]";
+import styles from "./oldCompare.module.scss";
+import Tooltip from "../components/Tooltip/Tooltip";
 import Button from "../components/Button/Button";
-import Link from "next/link";
-import { IPublication } from "./data/models/[providerId]/[modelId]";
 
-const mockData = {
-	patientTumourMetadata: {
-		patientSex: ["male", "female", "female"],
-		patientAge: ["40 - 49", "40 - 49", "70 - 79"],
-		patientEthnicity: ["Caucasian", "Not Provided", "Caucasian"],
-	},
-	PDXModelEngraftment: {
-		hostStrain: ["NMRI", "", "NMRI"],
-		site: ["Subcutaneous", "", "Subcutaneos"],
-		type: ["Heterotpoic", "", "Heterotopic"],
-	},
-};
+// const dataStructure = {
+// 	"Patient / tumour metadata": {
+// 		// row value label
+// 		"Patient sex": "metadata.patientSex",
+
+// 		"Patient age": "metadata.patientAge",
+
+// 		"Patient ethnicity": "metadata.patientEthnicity",
+
+// 		"Tumour type": "metadata.tumourType",
+
+// 		"Cancer grade": "metadata.cancerGrade",
+
+// 		"Cancer stage": "metadata.cancerStage",
+
+// 		"Primary site": "metadata.primarySite",
+
+// 		"Collection site": "metadata.collectionSite",
+// 	},
+// 	// "PDX model engraftment": {
+// 	// 	tableRows: {
+// 	// 		// row value label
+// 	// 		hostStrain: {
+// 	// 			rowLabel: "Host strain",
+// 	// 		},
+// 	// 		site: {
+// 	// 			rowLabel: "Site",
+// 	// 		},
+// 	// 		type: {
+// 	// 			rowLabel: "Type",
+// 	// 		},
+// 	// 		passage: {
+// 	// 			rowLabel: "passage",
+// 	// 		},
+// 	// 	},
+// 	// },
+// 	// "Model quality control": {
+// 	// 	tableRows: {
+// 	// 		// row value label
+// 	// 		technique: {
+// 	// 			rowLabel: "Technique",
+// 	// 		},
+// 	// 		passage: {
+// 	// 			rowLabel: "Passage",
+// 	// 		},
+// 	// 	},
+// 	// },
+// 	// "Available data": {
+// 	// 	usesChecks: true,
+// 	// 	tableRows: {
+// 	// 		// row value label
+// 	// 		mutation: {
+// 	// 			rowLabel: "Mutation",
+// 	// 		},
+// 	// 		expression: {
+// 	// 			rowLabel: "Expression",
+// 	// 		},
+// 	// 		CNA: {
+// 	// 			rowLabel: "CNA",
+// 	// 		},
+// 	// 		cytogenetics: {
+// 	// 			rowLabel: "Cytogenetics",
+// 	// 		},
+// 	// 		patientTreatment: {
+// 	// 			rowLabel: "Patient treatment",
+// 	// 		},
+// 	// 		drugDosing: {
+// 	// 			rowLabel: "Drug dosing",
+// 	// 		},
+// 	// 	},
+// 	// },
+// };
 
 const Compare: NextPage = () => {
+	const CHECKMARK_STRING = "✔";
 	const { query } = useRouter();
-	console.log(query);
 	const modelsToCompare: string[] =
 		typeof query.models === "string" ? query.models.split(" ") : [];
 
-	let { data: firstModelData } = useQuery(modelsToCompare[0], () => {
-		return getAllModelData(modelsToCompare[0]);
-	});
-	let { data: secondModelData } = useQuery(modelsToCompare[1], () => {
-		return getAllModelData(modelsToCompare[1]);
-	});
-
-	const getModelDataKeys = (targetArr: string[], data: any) => {
-		for (const [key, value] of Object.entries(data)) {
-			// add to keys to be shown if it contains data
-			if (Array.isArray(value)) {
-				if (value.length > 0) targetArr.push(key);
-			} else if (Object.getOwnPropertyNames(value).length > 0) {
-				targetArr.push(key);
-			}
-		}
-	};
-
-	const firstModelPubmedIdsQuery = useQuery(
-		[
-			"pubmed-ids-data",
-			{
-				modelId: firstModelData?.metadata.modelId,
-				providerId: firstModelData?.metadata.providerId,
-			},
-		],
-		() =>
-			getModelPubmedIds(
-				firstModelData?.metadata.modelId,
-				firstModelData?.metadata.providerId
-			)
-	);
-	const firstModelPubmedIds = firstModelPubmedIdsQuery.data || [];
-	const firstModelPublicationsQuery = useQueries<IPublication[]>(
-		firstModelPubmedIds.map((p: string) => {
+	const allModelsData = useQueries(
+		modelsToCompare.map((model: string) => {
 			return {
-				queryKey: ["publication-data", p],
-				queryFn: () => getPublicationData(p),
+				queryKey: ["model-data", model],
+				queryFn: () => getAllModelData(model),
 			};
 		})
 	);
-	let firstModelKeys: string[] = [];
-	if (firstModelData) {
-		firstModelData.publications = firstModelPublicationsQuery
-			.map((q) => q.data as IPublication)
-			.filter((d) => d !== undefined);
-
-		getModelDataKeys(firstModelKeys, firstModelData);
-	}
-	let secondModelKeys: string[] = [];
-
-	const secondModelPubmedIdsQuery = useQuery(
-		[
-			"pubmed-ids-data",
-			{
-				modelId: secondModelData?.metadata.modelId,
-				providerId: secondModelData?.metadata.providerId,
-			},
-		],
-		() =>
-			getModelPubmedIds(
-				secondModelData?.metadata.modelId,
-				secondModelData?.metadata.providerId
-			)
+	let allModelDataIsLoaded = allModelsData.every(
+		(data) => data.data !== undefined
 	);
-	const secondModelPubmedIds = secondModelPubmedIdsQuery.data || [];
-	const secondModelPublicationsQuery = useQueries<IPublication[]>(
-		secondModelPubmedIds.map((p: string) => {
-			return {
-				queryKey: ["publication-data", p],
-				queryFn: () => getPublicationData(p),
-			};
-		})
-	);
-	if (secondModelData) {
-		secondModelData.publications = secondModelPublicationsQuery
-			.map((q) => q.data as IPublication)
-			.filter((d) => d !== undefined);
 
-		getModelDataKeys(secondModelKeys, secondModelData);
-	}
+	// const dataTables = () => {
+	// 	let tables = [];
+	// 	for (let [tableKey, tableValue] of Object.entries(dataStructure)) {
+	// 		tables.push(
+	// 			<div className="row">
+	// 				<div className="col-12">
+	// 					<h3>{tableKey}</h3>
+	// 				</div>
+	// 				<div className="col-12">
+	// 					{Object.entries(tableValue).map((rowValue) => {
+	// 						return (
+	// 							<div className="row">
+	// 								<div className="col-3">
+	// 									<p className="text-uppercase">
+	// 										<b>{rowValue[0]}</b>
+	// 									</p>
+	// 								</div>
+	// 								{allModelsData.map((modelData) => {
+	// 									if (modelData.data) {
+	// 										let value = modelData.data[rowValue[1]];
+	// 										if (rowValue[1].includes(".")) {
+	// 											let keys = rowValue[1].split(".");
+	// 											value = keys.reduce((a, c) => a[c], modelData.data);
+	// 										}
 
-	let commonData: string[] = [];
-	let differentData: string[] = [];
-	const allModelDataKeys = [...firstModelKeys, ...secondModelKeys];
-	const ignoredKeys = ["metadata", "extLinks", "molecularDataRestrictions"];
-	allModelDataKeys.forEach((key) => {
-		// don't add keys that don't use own data table
-		if (ignoredKeys.includes(key)) {
-			return;
-		}
-		let counter = 0;
-		for (let i = 0; i <= allModelDataKeys.length; i++) {
-			if (allModelDataKeys[i] == key) {
-				counter++;
-			}
-		}
-		if (counter === 1) {
-			// add key to different data keys since there's only one instance of it
-			differentData.push(key);
-		} else if (!commonData.includes(key)) {
-			// add key to common data keys since both models have this key
-			commonData.push(key);
-		}
-	});
+	// 										return (
+	// 											<div className="col">
+	// 												<p>{value}</p>
+	// 											</div>
+	// 										);
+	// 									}
+	// 								})}
+	// 							</div>
+	// 						);
+	// 					})}
+	// 				</div>
+	// 			</div>
+	// 		);
+	// 	}
 
-	const metadataDataArr = [
-		{
-			label: "Patient Sex",
-			value: [
-				firstModelData?.metadata.patientSex,
-				secondModelData?.metadata.patientSex,
-			],
-		},
-		{
-			label: "Patient Age",
-			value: [
-				firstModelData?.metadata.patientAge,
-				secondModelData?.metadata.patientAge,
-			],
-		},
-		{
-			label: "Patient Ethnicity",
-			value: [
-				firstModelData?.metadata.patientEthnicity,
-				secondModelData?.metadata.patientEthnicity,
-			],
-		},
-		{
-			label: "Tumour Type",
-			value: [
-				firstModelData?.metadata.tumourType,
-				secondModelData?.metadata.tumourType,
-			],
-		},
-		{
-			label: "Cancer Grade",
-			value: [
-				firstModelData?.metadata.cancerGrade,
-				secondModelData?.metadata.cancerGrade,
-			],
-		},
-		{
-			label: "Cancer Stage",
-			value: [
-				firstModelData?.metadata.cancerStage,
-				secondModelData?.metadata.cancerStage,
-			],
-		},
-		{
-			label: "Primary Site",
-			value: [
-				firstModelData?.metadata.primarySite,
-				secondModelData?.metadata.primarySite,
-			],
-		},
-		{
-			label: "Collection Site",
-			value: [
-				firstModelData?.metadata.collectionSite,
-				secondModelData?.metadata.collectionSite,
-			],
-		},
-	];
+	// 	return tables;
+	// };
 
 	return (
 		<>
 			<Head>
-				<title>{`CancerModels.Org - Comparing ${modelsToCompare[0]} and ${modelsToCompare[1]}`}</title>
+				<title>{`CancerModels.Org - Comparing ${modelsToCompare.join(
+					", "
+				)}`}</title>
 			</Head>
 			<header className="bg-primary-primary text-white mb-5 py-5">
 				<div className="container">
@@ -214,184 +164,400 @@ const Compare: NextPage = () => {
 					</div>
 				</div>
 			</header>
-			{firstModelData && secondModelData ? (
-				<section id="header" className="pt-0">
+			{allModelDataIsLoaded ? (
+				<section>
 					<div className="container">
-						<div className="row sticky top-0 pt-3 mb-3">
-							<div className="col-12 col-lg-6">
-								<Header
-									modelId={modelsToCompare[0]}
-									score={firstModelData?.metadata?.score}
-									histology={firstModelData?.metadata?.histology}
-								/>
-							</div>
-							<div className="col-12 col-lg-6">
-								<Header
-									modelId={modelsToCompare[1]}
-									score={secondModelData?.metadata?.score}
-									histology={secondModelData?.metadata?.histology}
-								/>
-							</div>
+						<div className="row bg-white position-sticky top-0 py-2">
+							{/* fake offset to reduce nesting a bit */}
+							<div className="col-3"></div>
+							{allModelsData.map((model) => (
+								<div className="col">
+									<h1 className="h2 m-0">{model.data?.metadata.modelId}</h1>
+									<h2 className="p mt-0">{model.data?.metadata.histology}</h2>
+									<QualityBadge
+										className="w-50"
+										score={model.data?.metadata.score}
+									/>
+								</div>
+							))}
 						</div>
-						{commonData && (
-							<div className="row">
-								<div className="col-12">
-									<h2>Sections where models overlap</h2>
+						<div className={`row ${styles.Compare_table}`}>
+							<div className={`col-12 ${styles.Compare_table_title}`}>
+								<h3>Patient / tumour metadata</h3>
+							</div>
+							<div className="col-12">
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
+											<b>Patient sex</b>
+										</p>
+									</div>
+									{allModelsData.map(({ data }) => {
+										return (
+											<div className="col">
+												<p className="text-capitalize">
+													{data?.metadata.patientSex}
+												</p>
+											</div>
+										);
+									})}
+								</div>
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
+											<b>Patient age</b>
+										</p>
+									</div>
+									{allModelsData.map(({ data }) => {
+										return (
+											<div className="col">
+												<p>{data?.metadata.patientAge}</p>
+											</div>
+										);
+									})}
+								</div>
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
+											<b>Patient ethnicity</b>
+										</p>
+									</div>
+									{allModelsData.map(({ data }) => {
+										return (
+											<div className="col">
+												<p>{data?.metadata.patientEthnicity}</p>
+											</div>
+										);
+									})}
+								</div>
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
+											<b>Tumour type</b>
+										</p>
+									</div>
+									{allModelsData.map(({ data }) => {
+										return (
+											<div className="col">
+												<p>{data?.metadata.tumourType}</p>
+											</div>
+										);
+									})}
+								</div>
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
+											<b>Cancer grade</b>
+										</p>
+									</div>
+									{allModelsData.map(({ data }) => {
+										return (
+											<div className="col">
+												<p>{data?.metadata.cancerGrade}</p>
+											</div>
+										);
+									})}
+								</div>
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
+											<b>Cancer stage</b>
+										</p>
+									</div>
+									{allModelsData.map(({ data }) => {
+										return (
+											<div className="col">
+												<p>{data?.metadata.cancerStage}</p>
+											</div>
+										);
+									})}
+								</div>
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
+											<b>Primary site</b>
+										</p>
+									</div>
+									{allModelsData.map(({ data }) => {
+										return (
+											<div className="col">
+												<p className="text-capitalize">
+													{data?.metadata.primarySite}
+												</p>
+											</div>
+										);
+									})}
+								</div>
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
+											<b>Collection site</b>
+										</p>
+									</div>
+									{allModelsData.map(({ data }) => {
+										return (
+											<div className="col">
+												<p className="text-capitalize">
+													{data?.metadata.collectionSite}
+												</p>
+											</div>
+										);
+									})}
 								</div>
 							</div>
-						)}
-						<div className="row">
-							<div className="col-12">
-								<h2 className="h3">Patient / Tumour Metadata</h2>
+						</div>
+						<div className={`row ${styles.Compare_table}`}>
+							<div className={`col-12 ${styles.Compare_table_title}`}>
+								<h3>PDX Model Engraftment</h3>
 							</div>
 							<div className="col-12">
-								<div className="row align-center">
-									<div className="col-3"></div>
-									<div className="col-6">
-										<ul className="w-100 p-0 ul-noStyle">
-											{metadataDataArr.map((data) => (
-												<li
-													key={data.label}
-													className="mb-2 text-capitalize col-6 col-lg-3 w-100 text-center"
-												>
-													<span className={styles.metadataLabel}>
-														{data.label}
-													</span>
-													<br />
-													<div className="d-flex justify-content-between">
-														{data.value.map((modelData, i) => {
-															modelData =
-																typeof modelData === "string"
-																	? modelData.replace("/", " / ")
-																	: modelData ?? "NA";
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
+											<b>Host strain name</b>
+										</p>
+									</div>
+									{allModelsData.map(({ data }) => {
+										return data?.engraftments.map(
+											(engraftment: IEngraftment) => {
+												const hostStrainNomenclatures =
+													engraftment.hostStrainNomenclature
+														.split(" ")
+														.map((h) => {
+															const regExp = /(.*)<sup>(.*)<\/sup>(.*)/gm;
+															const matches = regExp.exec(h) || [];
+															const strainPrefix = matches[1] || "";
+															const strainSup = matches[2] || "";
+															const strainSuffix = matches[3] || "";
 
-															return (
-																<span
-																	key={`${modelData}-${i}`}
-																	style={{ width: "45%" }}
-																	className={
-																		i === 0 ? "text-right" : "text-left"
-																	}
-																>
-																	{modelData}
-																</span>
-															);
-														})}
+															return {
+																strainPrefix,
+																strainSup,
+																strainSuffix,
+															};
+														});
+												return (
+													<div className="col">
+														<Tooltip
+															content={hostStrainNomenclatures.map(
+																({
+																	strainPrefix,
+																	strainSup,
+																	strainSuffix,
+																}: {
+																	strainPrefix: string;
+																	strainSup: string;
+																	strainSuffix: string;
+																}) => (
+																	<span
+																		className="text-small"
+																		key={
+																			strainPrefix + strainSup + strainSuffix
+																		}
+																	>
+																		{strainPrefix}
+																		<sup>{strainSup}</sup>
+																		{strainSuffix}{" "}
+																	</span>
+																)
+															)}
+														>
+															<p className="d-inline text-uppercase">
+																{engraftment.hostStrain}
+															</p>
+														</Tooltip>
 													</div>
-												</li>
-											))}
-										</ul>
+												);
+											}
+										);
+									})}
+								</div>
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
+											<b>Site</b>
+										</p>
 									</div>
-									{/* <div
-										style={{
-											objectFit: "cover",
-											height: "100%",
-											position: "relative",
-										}}
-										className="ar-1 col-3"
-									>
-										<Image
-											src={TM01612Img}
-											alt="TM01612 3000x"
-											fill
-											quality={50}
-											style={{ objectFit: "cover" }}
-										/>
-									</div> */}
-									<div className="col-3"></div>
+									{allModelsData.map(({ data }) => {
+										return data?.engraftments.map(
+											(engraftment: IEngraftment) => {
+												return (
+													<div className="col">
+														<p>{engraftment.engraftmentSite}</p>
+													</div>
+												);
+											}
+										);
+									})}
 								</div>
 							</div>
 						</div>
-						{commonData.map((dataName) => (
-							<CommonDataTables
-								key={dataName}
-								tableName={dataName}
-								// @ts-ignore
-								firstModelData={firstModelData && firstModelData[dataName]}
-								// @ts-ignore
-								secondModelData={secondModelData && secondModelData[dataName]}
-								firstModelMolecularDataRestrictions={
-									firstModelData && firstModelData.molecularDataRestrictions
-								}
-								firstModelExtLinks={firstModelData && firstModelData.extLinks}
-								secondModelMolecularDataRestrictions={
-									secondModelData && secondModelData.molecularDataRestrictions
-								}
-								secondModelExtLinks={
-									secondModelData && secondModelData.extLinks
-								}
-								limited={true}
-							/>
-						))}
-						{differentData.length > 0 && (
-							<>
-								<div className="row">
-									<div className="col-12">
-										<h2>Other sections</h2>
+						<div className={`row ${styles.Compare_table}`}>
+							<div className={`col-12 ${styles.Compare_table_title}`}>
+								<h3>Model quality control</h3>
+							</div>
+							<div className="col-12">
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
+											<b>Technique</b>
+										</p>
 									</div>
+									{allModelsData.map(({ data }) => {
+										return data?.qualityData.map((qData: QualityData) => {
+											return (
+												<div className="col">
+													<p>{qData.validationTechnique}</p>
+												</div>
+											);
+										});
+									})}
 								</div>
-								<div className="row">
-									{/* first model column data */}
-									<div className="col-6">
-										{differentData.map((dataName) => (
-											<DataTables
-												key={dataName}
-												tableName={dataName}
-												modelData={
-													// @ts-ignore
-													firstModelData && firstModelData[dataName]
-												}
-												limited={true}
-											/>
-										))}
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
+											<b>Passage</b>
+										</p>
 									</div>
-									{/* second model column data */}
-									<div className="col-6">
-										{differentData.map((dataName) => (
-											<DataTables
-												key={dataName}
-												tableName={dataName}
-												modelData={
-													// @ts-ignore
-													secondModelData && secondModelData[dataName]
-												}
-												limited={true}
-											/>
-										))}
-									</div>
+									{allModelsData.map(({ data }) => {
+										return data?.qualityData.map((qData: QualityData) => {
+											return (
+												<div className="col">
+													<p>{qData.passagesTested}</p>
+												</div>
+											);
+										});
+									})}
 								</div>
-							</>
-						)}
+							</div>
+						</div>
+						<div className={`row ${styles.Compare_table}`}>
+							<div className={`col-12 ${styles.Compare_table_title}`}>
+								<h3>Available data</h3>
+							</div>
+							<div className="col-12">
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
+											<b>Mutation</b>
+										</p>
+									</div>
+									{allModelsData.map(({ data }) => (
+										<div className="col">
+											<p>
+												{data?.molecularData.some(
+													(mData: IMolecularData) =>
+														mData.dataType === "mutation"
+												)
+													? CHECKMARK_STRING
+													: ""}
+											</p>
+										</div>
+									))}
+								</div>
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
+											<b>Expression</b>
+										</p>
+									</div>
+									{allModelsData.map(({ data }) => (
+										<div className="col">
+											<p>
+												{data?.molecularData.some(
+													(mData: IMolecularData) =>
+														mData.dataType === "expression"
+												)
+													? CHECKMARK_STRING
+													: ""}
+											</p>
+										</div>
+									))}
+								</div>
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
+											<b>CNA</b>
+										</p>
+									</div>
+									{allModelsData.map(({ data }) => (
+										<div className="col">
+											<p>
+												{data?.molecularData.some(
+													(mData: IMolecularData) =>
+														mData.dataType === "copy number alteration"
+												)
+													? CHECKMARK_STRING
+													: ""}
+											</p>
+										</div>
+									))}
+								</div>
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
+											<b>Cytogenetics</b>
+										</p>
+									</div>
+									{allModelsData.map(({ data }) => (
+										<div className="col">
+											<p>
+												{data?.molecularData.some(
+													(mData: IMolecularData) =>
+														mData.dataType === "cytogenetics"
+												)
+													? CHECKMARK_STRING
+													: ""}
+											</p>
+										</div>
+									))}
+								</div>
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
+											<b>Patient treatment</b>
+										</p>
+									</div>
+									{allModelsData.map(({ data }) => (
+										<div className="col">
+											<p>
+												{data?.patientTreatment.length > 0
+													? CHECKMARK_STRING
+													: ""}
+											</p>
+										</div>
+									))}
+								</div>
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
+											<b>Drug dosing</b>
+										</p>
+									</div>
+									{allModelsData.map(({ data }) => (
+										<div className="col">
+											<p>
+												{data?.drugDosing.length > 0 ? CHECKMARK_STRING : ""}
+											</p>
+										</div>
+									))}
+								</div>
+							</div>
+						</div>
 						<div className="row">
-							<div className="col-6 text-center">
-								<Button
-									color="dark"
-									priority="primary"
-									htmlTag="a"
-									href={`/data/models/${firstModelData.metadata.providerId}/${modelsToCompare[0]}`}
-								>
-									<>See full {modelsToCompare[0]} details</>
-								</Button>
-							</div>
-							<div className="col-6 text-center">
-								<Button
-									color="dark"
-									priority="primary"
-									htmlTag="a"
-									href={`/data/models/${secondModelData.metadata.providerId}/${modelsToCompare[1]}`}
-								>
-									<>See full {modelsToCompare[1]} details</>
-								</Button>
-							</div>
-						</div>
-						<div className="row mt-5">
-							<div className="col-12 text-center">
-								<Button color="dark" priority="secondary">
-									<Link href="#header" className="p text-noDecoration">
-										Scroll to top
-									</Link>
-								</Button>
-							</div>
+							<div className="col-3"></div>
+							{allModelsData.map(({ data }) => (
+								<div className="col">
+									<Button
+										color="dark"
+										priority="primary"
+										htmlTag="a"
+										href={`/data/models/${data?.metadata.providerId}/${data?.metadata.modelId}`}
+									>
+										View model
+									</Button>
+								</div>
+							))}
 						</div>
 					</div>
 				</section>

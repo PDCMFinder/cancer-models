@@ -15,17 +15,11 @@
 	&_row {
 		border-bottom: 1px solid $color-primary-tertiary;
 		padding: $spacing-2 0;
-		&:last-of-type {
-			border-bottom: none;
-		}
 		p {
 			margin: 0;
 		}
 		p:not(:first-of-type) {
 			color: $color-primary-secondary;
-		}
-		&-divider {
-			width: 65%;
 		}
 	}
 }
