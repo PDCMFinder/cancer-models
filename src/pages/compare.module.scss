@@ -1,6 +1,9 @@
 @import "../styles/vars";
 
 .Compare {
+	&_header {
+		border-bottom: 1px solid $color-primary-quaternary;
+	}
 	&_table {
 		margin-bottom: $spacing-4;
 		&_title {

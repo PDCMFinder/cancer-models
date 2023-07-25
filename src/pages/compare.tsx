@@ -13,14 +13,13 @@ import {
 import styles from "./compare.module.scss";
 import Tooltip from "../components/Tooltip/Tooltip";
 import Button from "../components/Button/Button";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 const Compare: NextPage = () => {
 	const CHECKMARK_STRING = "✔";
 	const { query } = useRouter();
 	const modelsToCompare: string[] =
 		typeof query.models === "string" ? query.models.split(" ") : [];
-	const modelTitlesRef = useRef<HTMLDivElement>(null);
 
 	const allModelsData = useQueries(
 		modelsToCompare.map((model: string) => {
@@ -33,26 +32,6 @@ const Compare: NextPage = () => {
 	let allModelDataIsLoaded = allModelsData.every(
 		(data) => data.data !== undefined
 	);
-
-	// const handleScroll = () => {
-	// 	if (modelTitlesRef.current) {
-	// 		if (modelTitlesRef.current.offsetTop === window.scrollY) {
-	// 			if (modelTitlesRef.current.style.fontSize === "18px") {
-	// 				modelTitlesRef.current.style.fontSize = "10px";
-	// 			}
-	// 		} else {
-	// 			modelTitlesRef.current.style.fontSize = "18px";
-	// 		}
-	// 	}
-	// };
-
-	// useEffect(() => {
-	// 	window.addEventListener("scroll", handleScroll, { passive: true });
-
-	// 	return () => {
-	// 		window.removeEventListener("scroll", handleScroll);
-	// 	};
-	// }, []);
 
 	return (
 		<>
@@ -73,7 +52,7 @@ const Compare: NextPage = () => {
 			{allModelDataIsLoaded ? (
 				<section>
 					<div className="container">
-						<div className="row bg-white position-sticky top-0 py-2">
+						<div className="row bg-white position-sticky top-0 pt-2 pb-3">
 							{/* fake offset to reduce nesting a bit */}
 							<div className="col-3"></div>
 							{allModelsData.map((model) => (
