@@ -80,6 +80,9 @@ a,
 	&-primary-primary {
 		color: $color-primary-primary !important;
 	}
+	&-primary-tertiary {
+		color: $color-primary-tertiary !important;
+	}
 	&-left {
 		text-align: left !important;
 	}
@@ -91,6 +94,10 @@ a,
 	}
 	&-small {
 		font-size: 1.4rem !important;
+		line-height: 2rem !important;
+	}
+	&-smaller {
+		font-size: 1.2rem !important;
 		line-height: 2rem !important;
 	}
 	&-muted {

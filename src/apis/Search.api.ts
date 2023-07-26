@@ -6,6 +6,7 @@ import {
 	IFacetSidebarSelection,
 } from "../types/Facet.model";
 import { SearchResult } from "../types/Search.model";
+import { ethnicityCategories } from "../utils/collapseEthnicity";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -29,9 +30,7 @@ export async function getSearchOptions() {
 	});
 }
 
-export async function getSearchFacets(
-	noOptions = false
-): Promise<Array<IFacetSectionProps>> {
+export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
 	let response = await fetch(
 		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example`
 	);
@@ -100,10 +99,9 @@ export async function autoCompleteFacetOptions(
 export async function getSearchResults(
 	searchValues: Array<string> = [],
 	searchFilterSelection: any,
-	page: number,
 	pageSize: number = 10,
 	sortBy: string
-): Promise<[number, Array<SearchResult>]> {
+): Promise<[number, SearchResult[]]> {
 	if (!searchFilterSelection && !searchValues.length) {
 		return Promise.resolve([0, []]);
 	}
@@ -129,9 +127,19 @@ export async function getSearchResults(
 				"makers_with_expression_data",
 				"makers_with_cytogenetics_data",
 			];
-			const options = searchFilterSelection[filterId].selection.map(
-				(d: string) => '"' + d + '"'
+			let options: string[] = searchFilterSelection[filterId].selection.map(
+				(d: string) => `"${d}"`
 			);
+
+			// Handle filtering of subcategories while selecting top category
+			if (filterId === "patient_ethnicity") {
+				for (let key in ethnicityCategories) {
+					if (searchFilterSelection[filterId].selection.includes(key)) {
+						options = ethnicityCategories[key].map((d: string) => `"${d}"`);
+					}
+				}
+			}
+
 			let apiOperator = "in";
 
 			if (
@@ -155,7 +163,7 @@ export async function getSearchResults(
 	let response = await fetch(
 		`${API_URL}/search_index?${query}&limit=${pageSize}&offset=${
 			(searchFilterSelection["page"].selection[0] - 1) * pageSize
-		}&select=provider_name,patient_age,patient_sex,external_model_id,model_type,data_source,histology,primary_site,collection_site,tumour_type,dataset_available,score&order=${sortBy}.nullslast`,
+		}&select=provider_name,patient_age,patient_sex,external_model_id,model_type,data_source,histology,primary_site,collection_site,tumour_type,dataset_available,scores&order=${sortBy}`,
 		{ headers: { Prefer: "count=exact" } }
 	);
 	if (!response.ok) {
@@ -178,7 +186,7 @@ export async function getSearchResults(
 					modelType: result.model_type,
 					patientAge: result.patient_age,
 					patientSex: result.patient_sex,
-					score: result.score,
+					score: result.scores.pdx_metadata_score,
 				};
 			}),
 		];

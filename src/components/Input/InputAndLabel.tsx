@@ -2,7 +2,6 @@ import Input from "./Input";
 import Label from "./Label";
 import { IInputProps, ILabelProps } from "../../../globalTypes";
 import styles from "./InputAndLabel.module.scss";
-import Button from "../Button/Button";
 import { RefObject } from "react";
 
 interface IInputAndLabel extends IInputProps, ILabelProps {
@@ -32,13 +31,12 @@ const InputAndLabel = (props: IInputAndLabel) => {
 				label={props.label}
 				className={props.labelClassName}
 			/>
-			{/* TODO: When type is search, wrap input and button in form */}
 			<Input
 				name={name}
 				type={type}
 				placeholder={props.placeholder}
 				className={props.inputClassName}
-				onChange={props.onChange}
+				onChange={(e) => props.onChange && props.onChange(e)}
 				value={props.value}
 				checked={props.checked}
 				defaultChecked={props.defaultChecked}

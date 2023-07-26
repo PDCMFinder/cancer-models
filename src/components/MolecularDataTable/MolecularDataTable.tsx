@@ -1,4 +1,4 @@
-import { MolecularData } from "../../pages/data/models/[providerId]/[modelId]";
+import { IMolecularData } from "../../pages/data/models/[providerId]/[modelId]";
 import Button from "../Button/Button";
 import { useQuery } from "react-query";
 import {
@@ -11,8 +11,8 @@ import { useState } from "react";
 import InputAndLabel from "../Input/InputAndLabel";
 
 interface IMolecularDataTableProps {
-	data: MolecularData;
-	handleDownload: (data: MolecularData) => void;
+	data: IMolecularData;
+	handleDownload: (data: IMolecularData) => void;
 }
 
 interface DataDetailsRow {
@@ -28,18 +28,6 @@ interface DataDetailsRow {
 	z_score: string | null;
 	non_harmonised_symbol: string | null;
 	external_db_links: any[] | null;
-}
-
-function getSortDirection(
-	newColumn: string,
-	sortColumn: string,
-	sortDirection: string = "asc"
-) {
-	if (newColumn === sortColumn && sortDirection === "asc") {
-		return "desc";
-	} else {
-		return "asc";
-	}
 }
 
 const MolecularDataTable = (props: IMolecularDataTableProps) => {
