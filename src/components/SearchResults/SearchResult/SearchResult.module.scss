@@ -19,7 +19,7 @@
 		padding: $spacing-2;
 	}
 	&:hover {
-		background-color: lighten($color-primary-quaternary, 12%);
+		background-color: $color-primary-quaternary-lighter;
 	}
 	&_metadata span,
 	&_availableData_title {

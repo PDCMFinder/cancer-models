@@ -6,6 +6,8 @@ import QualityBadge from "../../QualityBadge/QualityBadge";
 import useWindowDimensions from "../../../hooks/useWindowDimensions";
 import breakPoints from "../../../utils/breakpoints";
 import ShowHide from "../../ShowHide/ShowHide";
+import InputAndLabel from "../../Input/InputAndLabel";
+import { ChangeEvent } from "react";
 
 const dataTypes = [
 	{
@@ -43,6 +45,10 @@ const dataTypes = [
 interface ISearchResultProps {
 	className?: string;
 	data: SearchResult;
+	addModelToCompare: (
+		e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+	) => void;
+	compareCheck: boolean;
 }
 
 const SearchResult = (props: ISearchResultProps) => {
@@ -166,6 +172,16 @@ const SearchResult = (props: ISearchResultProps) => {
 								);
 							})}
 						</div>
+						<ShowHide showOver={bpLarge} windowWidth={windowWidth}>
+							<InputAndLabel
+								name={pdcmId}
+								type="checkbox"
+								label="Add to compare"
+								className="text-smaller mt-2"
+								onChange={props.addModelToCompare}
+								checked={props.compareCheck}
+							/>
+						</ShowHide>
 					</div>
 				</div>
 			</div>

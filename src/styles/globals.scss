@@ -42,12 +42,6 @@ body {
 	min-height: 100vh;
 	position: relative;
 }
-#__next {
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-	position: relative;
-}
 p {
 	margin: 0 0 2rem;
 	margin: 0 0 2rem;
@@ -153,6 +147,9 @@ img {
 	&-center {
 		align-items: center;
 	}
+	&-baseline {
+		align-items: baseline;
+	}
 	&-self {
 		&-end {
 			align-self: flex-end;
@@ -233,6 +230,10 @@ a {
 	&-fixed {
 		position: fixed;
 	}
+	&-sticky {
+		position: sticky;
+		z-index: 9997;
+	}
 }
 .dropdownParent {
 	position: relative;
@@ -295,6 +296,9 @@ textarea {
 	min-width: 100%;
 }
 .bg {
+	&-transparent {
+		background-color: transparent !important;
+	}
 	&-primary-primary {
 		background-color: $color-primary-primary !important;
 	}
@@ -306,6 +310,9 @@ textarea {
 	}
 	&-primary-quaternary {
 		background-color: $color-primary-quaternary !important;
+	}
+	&-primary-quaternary-lighter {
+		background-color: $color-primary-quaternary-lighter !important;
 	}
 	&-secondary-quaternary {
 		background-color: $color-secondary-quaternary !important;
@@ -371,15 +378,21 @@ hr {
 		overflow: visible !important;
 	}
 }
-.sticky {
-	position: sticky;
-	z-index: 9997;
-}
 .top-0 {
 	top: 0 !important;
 }
 .bottom-0 {
 	bottom: 0 !important;
+}
+.left-50 {
+	left: 50%;
+}
+.translate-center {
+	&-vertical {
+		left: 50%;
+		@extend .left-50;
+		transform: translateX(-50%);
+	}
 }
 table {
 	line-height: initial;

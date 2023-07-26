@@ -1,0 +1,34 @@
+@import "../styles/vars";
+
+.Compare {
+	&_header {
+		border-bottom: 1px solid $color-primary-quaternary;
+	}
+	&_table {
+		margin-bottom: $spacing-4;
+		&_title {
+			border-bottom: 1px solid $color-primary-primary;
+			padding-bottom: $spacing-2;
+			margin: 0;
+			h3 {
+				margin-bottom: 0;
+			}
+		}
+	}
+	&_row {
+		border-bottom: 1px solid $color-primary-tertiary;
+		padding: $spacing-2 0;
+		&:last-of-type {
+			border-bottom: none;
+		}
+		p {
+			margin: 0;
+		}
+		p:not(:first-of-type) {
+			color: $color-primary-secondary;
+		}
+		&-divider {
+			width: 65%;
+		}
+	}
+}

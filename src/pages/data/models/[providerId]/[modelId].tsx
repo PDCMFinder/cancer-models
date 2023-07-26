@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
-import getModelDetails from "../../../../utils/getModelDetails";
 import Button from "../../../../components/Button/Button";
 import Link from "next/link";
 import ShowHide from "../../../../components/ShowHide/ShowHide";
@@ -22,19 +21,25 @@ import Tooltip from "../../../../components/Tooltip/Tooltip";
 import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
 import { useQueries, useQuery } from "react-query";
 import Head from "next/head";
+import { getAllModelData } from "../../../../apis/ModelDetails.api";
 
 interface IModelDetailsProps {
 	metadata: Metadata;
 	extLinks: ExtLinks;
-	molecularData: MolecularData[];
-	molecularDataRestrictions: any[];
+	molecularData: IMolecularData[];
+	molecularDataRestrictions: MolecularDataRestrictions[];
 	drugDosing: any[];
 	patientTreatment: PatientTreatment[];
 	qualityData: QualityData[];
 	className: string;
 	modelId: string;
 	providerId: string;
-	engraftments?: Engraftment[];
+	engraftments?: IEngraftment[];
+}
+
+export interface MolecularDataRestrictions {
+	dataSource: string;
+	molecularDataTable: string;
 }
 
 interface PatientTreatment {
@@ -43,7 +48,7 @@ interface PatientTreatment {
 	treatmentResponse: string;
 }
 
-export interface MolecularData {
+export interface IMolecularData {
 	id: number;
 	patientSampleId: string;
 	patientModelId: string;
@@ -96,12 +101,12 @@ interface Metadata {
 	pdcmModelId: number;
 }
 
-interface ExtLinks {
-	contactLink: string;
-	sourceDatabaseUrl: string;
+export interface ExtLinks {
+	contactLink?: string;
+	sourceDatabaseUrl?: string;
 }
 
-interface Publication {
+export interface IPublication {
 	pmid: string;
 	doi: string;
 	pubYear: string;
@@ -110,15 +115,7 @@ interface Publication {
 	journalTitle: string;
 }
 
-interface FullTextIdList {
-	fullTextId: string;
-}
-
-interface TmAccessionTypeList {
-	accessionType: string;
-}
-
-interface Engraftment {
+export interface IEngraftment {
 	passageNumber: string;
 	hostStrain: string;
 	engraftmentSite: string;
@@ -128,7 +125,7 @@ interface Engraftment {
 	hostStrainNomenclature: string;
 }
 
-interface TypesMap {
+export interface TypesMap {
 	expression_molecular_data: string;
 	cna_molecular_data: string;
 	mutation_measurement_data: string;
@@ -154,7 +151,7 @@ const ModelDetails = ({
 }: IModelDetailsProps) => {
 	const NA_STRING = "N/A";
 	const [downloadData, setDownloadData] = useState<{
-		data: MolecularData[];
+		data: IMolecularData[];
 		filename: string;
 	}>({
 		data: [],
@@ -163,7 +160,7 @@ const ModelDetails = ({
 	const downloadBtnRef =
 		useRef<CSVLink & HTMLAnchorElement & { link: HTMLAnchorElement }>(null);
 	const [selectedMolecularData, setSelectedMolecularData] =
-		useState<MolecularData>();
+		useState<IMolecularData>();
 	const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
 
 	const { windowWidth } = useWindowDimensions();
@@ -189,7 +186,7 @@ const ModelDetails = ({
 		if (isInitialLoad) setIsInitialLoad(false);
 	}, [downloadData]);
 
-	const getDownloadData = (data: MolecularData): void => {
+	const getDownloadData = (data: IMolecularData): void => {
 		getMolecularDataDownload(data, data.dataType)
 			.then((d) => {
 				setDownloadData({
@@ -212,7 +209,7 @@ const ModelDetails = ({
 
 	const pubmedIds = pubmedIdsQuery.data || [];
 
-	const publicationsQuery = useQueries<Publication[]>(
+	const publicationsQuery = useQueries<IPublication[]>(
 		pubmedIds.map((p: string) => {
 			return {
 				queryKey: ["publication-data", p],
@@ -221,8 +218,8 @@ const ModelDetails = ({
 		})
 	);
 
-	const publications: Publication[] = publicationsQuery
-		.map((q) => q.data as Publication)
+	const publications: IPublication[] = publicationsQuery
+		.map((q) => q.data as IPublication)
 		.filter((d) => d !== undefined);
 
 	return (
@@ -263,14 +260,16 @@ const ModelDetails = ({
 								</Link>
 							</h3>
 							<div className="d-flex flex-column d-lg-block">
-								<Link
-									className="text-white mr-lg-3 mr-xl-0"
-									href={extLinks.sourceDatabaseUrl}
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									View data at {metadata.providerId || "provider"}
-								</Link>
+								{extLinks.sourceDatabaseUrl && (
+									<Link
+										className="text-white mr-lg-3 mr-xl-0"
+										href={extLinks.sourceDatabaseUrl}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										View data at {metadata.providerId || "provider"}
+									</Link>
+								)}
 								<Button
 									priority="secondary"
 									color="white"
@@ -852,7 +851,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		drugDosing,
 		patientTreatment,
 		qualityData,
-	} = await getModelDetails(
+	} = await getAllModelData(
 		params!.modelId as string,
 		params!.providerId as string
 	);

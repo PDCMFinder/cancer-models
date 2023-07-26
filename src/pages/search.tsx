@@ -1,7 +1,7 @@
-import type { GetStaticProps, NextPage } from "next";
+import type { GetStaticProps } from "next";
 import SearchResults from "../components/SearchResults/SearchResults";
 import Select from "../components/Input/Select";
-import React, { useEffect, useReducer, useState } from "react";
+import React, { ChangeEvent, useEffect, useReducer, useState } from "react";
 import styles from "./search.module.scss";
 import Label from "../components/Input/Label";
 import SearchFilters from "../components/SearchFilters/SearchFilters";
@@ -60,6 +60,7 @@ const Search = ({ modelCount }: ISearchProps) => {
 	const [sortBy, setSortBy] = useState<string>(sortByOptions[0].value);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [hasSelection, setHasSelection] = useState<boolean>(false);
+	const [modelsToCompare, setModelsToCompare] = useState<string[]>([]);
 	const router = useRouter();
 
 	const [searchFilterState, searchFilterDispatch] = useReducer(
@@ -265,6 +266,32 @@ const Search = ({ modelCount }: ISearchProps) => {
 		}
 	}, [searchFilterState]);
 
+	const compareModel = (id: string): void => {
+		if (modelsToCompare.includes(id)) {
+			setModelsToCompare((prev) => prev.filter((model) => model !== id));
+		} else {
+			setModelsToCompare((prev) => [...prev, id]);
+		}
+	};
+
+	const compareModels = () => {
+		if (modelsToCompare.length > 1) {
+			let compareModelsQuery = modelsToCompare.join("+");
+			window.open(`/compare?models=${compareModelsQuery}`, "_blank");
+
+			setModelsToCompare([]);
+		} else {
+			alert("Please select at least 2 models to compare");
+		}
+	};
+
+	useEffect(() => {
+		if (modelsToCompare.length === 4) {
+			// Open compare page with both models
+			compareModels();
+		}
+	}, [modelsToCompare]);
+
 	let totalResults = searchResultsQuery.data ? searchResultsQuery.data[0] : 1;
 
 	const ClearFilterButtonComponent = (
@@ -382,7 +409,7 @@ const Search = ({ modelCount }: ISearchProps) => {
 											id="sortBy"
 											options={sortByOptions}
 											className="w-auto mb-0"
-											onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+											onChange={(e: ChangeEvent<HTMLSelectElement>) =>
 												setSortBy(e.target.value)
 											}
 										/>
@@ -431,7 +458,11 @@ const Search = ({ modelCount }: ISearchProps) => {
 							<div className="row">
 								<div className="col-12">
 									{searchResultsQuery.data ? (
-										<SearchResults data={searchResultsQuery.data[1]} />
+										<SearchResults
+											compareModel={compareModel}
+											modelsToCompare={modelsToCompare}
+											data={searchResultsQuery.data[1]}
+										/>
 									) : (
 										<SearchResultsLoader amount={resultsPerPage} />
 									)}
@@ -459,6 +490,84 @@ const Search = ({ modelCount }: ISearchProps) => {
 							</div>
 						</div>
 					</div>
+					{modelsToCompare[0]
+						? createPortal(
+								<div className="row position-sticky bottom-0">
+									<div className="col-10 offset-1">
+										<Card
+											className="bg-primary-quaternary mb-2"
+											contentClassName="py-2"
+										>
+											<div className="d-flex align-center justify-content-between">
+												<p className="m-0">
+													<b>Compare up to 4 models: </b>
+													{modelsToCompare.map((model, idx) => {
+														const clearX = (
+															<sup>
+																<Button
+																	color="dark"
+																	priority="secondary"
+																	className="text-underline m-0 ml-1"
+																	style={{ padding: ".2rem .3rem" }}
+																	onClick={() =>
+																		setModelsToCompare((prev) =>
+																			prev.filter(
+																				(prevModel) => prevModel !== model
+																			)
+																		)
+																	}
+																>
+																	X
+																</Button>
+															</sup>
+														);
+
+														if (idx === 0) {
+															return (
+																<React.Fragment key={model}>
+																	{model}
+																	{clearX}
+																</React.Fragment>
+															);
+														}
+
+														return (
+															<React.Fragment key={model}>
+																{" "}
+																<span className="text-primary-tertiary">
+																	+
+																</span>{" "}
+																{model}
+																{clearX}
+															</React.Fragment>
+														);
+													})}
+												</p>
+												<div className="d-flex">
+													<Button
+														color="dark"
+														priority="primary"
+														className="my-1 py-1"
+														onClick={() => compareModels()}
+													>
+														Compare
+													</Button>
+													<Button
+														color="dark"
+														priority="secondary"
+														className="my-1 ml-1 py-1"
+														onClick={() => setModelsToCompare([])}
+													>
+														Clear
+													</Button>
+												</div>
+											</div>
+										</Card>
+									</div>
+								</div>,
+								document.getElementsByTagName("main")[0] as HTMLElement
+						  )
+						: null}
 				</div>
 			</section>
 		</>
