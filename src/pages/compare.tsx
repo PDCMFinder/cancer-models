@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 import { getAllModelData } from "../apis/ModelDetails.api";
 import { useQueries } from "react-query";
 import Head from "next/head";
@@ -13,13 +13,15 @@ import {
 import styles from "./compare.module.scss";
 import Tooltip from "../components/Tooltip/Tooltip";
 import Button from "../components/Button/Button";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Compare: NextPage = () => {
 	const CHECKMARK_STRING = "✔";
 	const { query } = useRouter();
-	const modelsToCompare: string[] =
-		typeof query.models === "string" ? query.models.split(" ") : [];
+	const router = useRouter();
+	const [modelsToCompare, setModelsToCompare] = useState(
+		typeof query.models === "string" ? query.models.split(" ") : []
+	);
 
 	const allModelsData = useQueries(
 		modelsToCompare.map((model: string) => {
@@ -32,6 +34,25 @@ const Compare: NextPage = () => {
 	let allModelDataIsLoaded = allModelsData.every(
 		(data) => data.data !== undefined
 	);
+
+	useEffect(() => {
+		setModelsToCompare(
+			typeof query.models === "string" ? query.models.split(" ") : []
+		);
+	}, []);
+
+	useEffect(() => {
+		router.push(
+			{
+				pathname: "/compare",
+				query: {
+					models: modelsToCompare.join(" "),
+				},
+			},
+			undefined,
+			{ shallow: true }
+		);
+	}, [modelsToCompare]);
 
 	return (
 		<>
@@ -57,6 +78,24 @@ const Compare: NextPage = () => {
 							<div className="col-3"></div>
 							{allModelsData.map((model) => (
 								<div className="col" key={model.data?.metadata.modelId}>
+									<sub>
+										<Button
+											color="dark"
+											priority="secondary"
+											className="text-underline m-0 mb-1"
+											style={{ padding: ".2rem .3rem" }}
+											onClick={() =>
+												setModelsToCompare((prevModels) =>
+													prevModels.filter(
+														(prevModel) =>
+															prevModel !== model.data?.metadata.modelId
+													)
+												)
+											}
+										>
+											X
+										</Button>
+									</sub>
 									<h1 className="h3 m-0">{model.data?.metadata.modelId}</h1>
 									<h2 className="p mt-0">{model.data?.metadata.histology}</h2>
 									<QualityBadge

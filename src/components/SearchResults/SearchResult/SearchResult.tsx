@@ -176,11 +176,11 @@ const SearchResult = (props: ISearchResultProps) => {
 							<InputAndLabel
 								name={pdcmId}
 								type="checkbox"
-								label="Compare this data with another models data"
+								label="Add to compare"
 								className="text-smaller mt-2"
 								onChange={props.addModelToCompare}
 								checked={props.compareCheck}
-							></InputAndLabel>
+							/>
 						</ShowHide>
 					</div>
 				</div>

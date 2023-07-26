@@ -496,20 +496,19 @@ const Search = ({ modelCount }: ISearchProps) => {
 													<b>Compare up to 4 models: </b>
 													{modelsToCompare.map((model, idx) => {
 														const clearX = (
-															<sup
-																onClick={() =>
-																	setModelsToCompare((prev) =>
-																		prev.filter(
-																			(prevModel) => prevModel !== model
-																		)
-																	)
-																}
-															>
+															<sup>
 																<Button
 																	color="dark"
 																	priority="secondary"
 																	className="text-underline m-0 ml-1"
 																	style={{ padding: ".2rem .3rem" }}
+																	onClick={() =>
+																		setModelsToCompare((prev) =>
+																			prev.filter(
+																				(prevModel) => prevModel !== model
+																			)
+																		)
+																	}
 																>
 																	X
 																</Button>
