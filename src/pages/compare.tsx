@@ -56,7 +56,7 @@ const Compare: NextPage = () => {
 							{/* fake offset to reduce nesting a bit */}
 							<div className="col-3"></div>
 							{allModelsData.map((model) => (
-								<div className="col">
+								<div className="col" key={model.data?.metadata.modelId}>
 									<h1 className="h3 m-0">{model.data?.metadata.modelId}</h1>
 									<h2 className="p mt-0">{model.data?.metadata.histology}</h2>
 									<QualityBadge
@@ -79,7 +79,10 @@ const Compare: NextPage = () => {
 									</div>
 									{allModelsData.map(({ data }) => {
 										return (
-											<div className="col">
+											<div
+												className="col"
+												key={data?.metadata.modelId + data?.metadata.patientSex}
+											>
 												<p className="text-capitalize">
 													{data?.metadata.patientSex}
 												</p>
@@ -95,7 +98,10 @@ const Compare: NextPage = () => {
 									</div>
 									{allModelsData.map(({ data }) => {
 										return (
-											<div className="col">
+											<div
+												className="col"
+												key={data?.metadata.modelId + data?.metadata.patientAge}
+											>
 												<p>{data?.metadata.patientAge}</p>
 											</div>
 										);
@@ -109,7 +115,13 @@ const Compare: NextPage = () => {
 									</div>
 									{allModelsData.map(({ data }) => {
 										return (
-											<div className="col">
+											<div
+												className="col"
+												key={
+													data?.metadata.modelId +
+													data?.metadata.patientEthnicity
+												}
+											>
 												<p>{data?.metadata.patientEthnicity}</p>
 											</div>
 										);
@@ -123,7 +135,10 @@ const Compare: NextPage = () => {
 									</div>
 									{allModelsData.map(({ data }) => {
 										return (
-											<div className="col">
+											<div
+												className="col"
+												key={data?.metadata.modelId + data?.metadata.tumourType}
+											>
 												<p>{data?.metadata.tumourType}</p>
 											</div>
 										);
@@ -137,7 +152,12 @@ const Compare: NextPage = () => {
 									</div>
 									{allModelsData.map(({ data }) => {
 										return (
-											<div className="col">
+											<div
+												className="col"
+												key={
+													data?.metadata.modelId + data?.metadata.cancerGrade
+												}
+											>
 												<p>{data?.metadata.cancerGrade}</p>
 											</div>
 										);
@@ -151,7 +171,12 @@ const Compare: NextPage = () => {
 									</div>
 									{allModelsData.map(({ data }) => {
 										return (
-											<div className="col">
+											<div
+												className="col"
+												key={
+													data?.metadata.modelId + data?.metadata.cancerStage
+												}
+											>
 												<p>{data?.metadata.cancerStage}</p>
 											</div>
 										);
@@ -165,7 +190,12 @@ const Compare: NextPage = () => {
 									</div>
 									{allModelsData.map(({ data }) => {
 										return (
-											<div className="col">
+											<div
+												className="col"
+												key={
+													data?.metadata.modelId + data?.metadata.primarySite
+												}
+											>
 												<p className="text-capitalize">
 													{data?.metadata.primarySite}
 												</p>
@@ -181,7 +211,12 @@ const Compare: NextPage = () => {
 									</div>
 									{allModelsData.map(({ data }) => {
 										return (
-											<div className="col">
+											<div
+												className="col"
+												key={
+													data?.metadata.modelId + data?.metadata.collectionSite
+												}
+											>
 												<p className="text-capitalize">
 													{data?.metadata.collectionSite}
 												</p>
@@ -203,10 +238,7 @@ const Compare: NextPage = () => {
 										return (
 											<div
 												className="col"
-												key={
-													data?.engraftments[0].hostStrainNomenclature +
-													data?.engraftments[0].hostStrain
-												}
+												key={data?.metadata.modelId + "engraftment"}
 											>
 												{data?.engraftments.map((engraftment: IEngraftment) => {
 													const hostStrainNomenclatures =
@@ -227,7 +259,13 @@ const Compare: NextPage = () => {
 															});
 
 													return (
-														<div className="mb-2">
+														<div
+															className="mb-2"
+															key={
+																data?.metadata.modelId +
+																engraftment.engraftmentSite
+															}
+														>
 															<div className="mb-2">
 																<p className="text-uppercase">
 																	<b>Host strain name</b>
@@ -291,6 +329,7 @@ const Compare: NextPage = () => {
 											<div
 												className="col"
 												key={
+													data?.metadata.modelId +
 													data?.qualityData[0].validationTechnique +
 													data?.qualityData[0].passagesTested
 												}
@@ -300,7 +339,14 @@ const Compare: NextPage = () => {
 														const isLast = idx === data?.qualityData.length - 1;
 
 														return (
-															<div className="mb-2" key={qData.passagesTested}>
+															<div
+																className="mb-2"
+																key={
+																	data?.metadata.modelId +
+																	qData.validationTechnique +
+																	qData.passagesTested
+																}
+															>
 																<div className="mb-2">
 																	<p className="text-uppercase">
 																		<b>Technique</b>
@@ -340,7 +386,10 @@ const Compare: NextPage = () => {
 										</p>
 									</div>
 									{allModelsData.map(({ data }) => (
-										<div className="col">
+										<div
+											className="col"
+											key={data?.metadata.modelId + "mutationData"}
+										>
 											<p>
 												{data?.molecularData.some(
 													(mData: IMolecularData) =>
@@ -359,7 +408,10 @@ const Compare: NextPage = () => {
 										</p>
 									</div>
 									{allModelsData.map(({ data }) => (
-										<div className="col">
+										<div
+											className="col"
+											key={data?.metadata.modelId + "expressionData"}
+										>
 											<p>
 												{data?.molecularData.some(
 													(mData: IMolecularData) =>
@@ -378,7 +430,10 @@ const Compare: NextPage = () => {
 										</p>
 									</div>
 									{allModelsData.map(({ data }) => (
-										<div className="col">
+										<div
+											className="col"
+											key={data?.metadata.modelId + "cnaData"}
+										>
 											<p>
 												{data?.molecularData.some(
 													(mData: IMolecularData) =>
@@ -397,7 +452,10 @@ const Compare: NextPage = () => {
 										</p>
 									</div>
 									{allModelsData.map(({ data }) => (
-										<div className="col">
+										<div
+											className="col"
+											key={data?.metadata.modelId + "cytogeneticsData"}
+										>
 											<p>
 												{data?.molecularData.some(
 													(mData: IMolecularData) =>
@@ -416,7 +474,10 @@ const Compare: NextPage = () => {
 										</p>
 									</div>
 									{allModelsData.map(({ data }) => (
-										<div className="col">
+										<div
+											className="col"
+											key={data?.metadata.modelId + "treatmentData"}
+										>
 											<p>
 												{data?.patientTreatment.length > 0
 													? CHECKMARK_STRING
@@ -432,7 +493,10 @@ const Compare: NextPage = () => {
 										</p>
 									</div>
 									{allModelsData.map(({ data }) => (
-										<div className="col">
+										<div
+											className="col"
+											key={data?.metadata.modelId + "dosingData"}
+										>
 											<p>
 												{data?.drugDosing.length > 0 ? CHECKMARK_STRING : ""}
 											</p>
@@ -444,7 +508,10 @@ const Compare: NextPage = () => {
 						<div className="row">
 							<div className="col-3"></div>
 							{allModelsData.map(({ data }) => (
-								<div className="col">
+								<div
+									className="col"
+									key={data?.metadata.modelId + "viewModelButton"}
+								>
 									<Button
 										color="dark"
 										priority="primary"
