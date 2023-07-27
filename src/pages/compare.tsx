@@ -14,6 +14,7 @@ import styles from "./compare.module.scss";
 import Tooltip from "../components/Tooltip/Tooltip";
 import Button from "../components/Button/Button";
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 const Compare: NextPage = () => {
 	const CHECKMARK_STRING = "✔";
@@ -78,30 +79,44 @@ const Compare: NextPage = () => {
 							<div className="col-3"></div>
 							{allModelsData.map((model) => (
 								<div className="col" key={model.data?.metadata.modelId}>
-									<sub>
-										<Button
-											color="dark"
-											priority="secondary"
-											className="text-underline m-0 mb-1"
-											style={{ padding: ".2rem .3rem" }}
-											onClick={() =>
-												setModelsToCompare((prevModels) =>
-													prevModels.filter(
-														(prevModel) =>
-															prevModel !== model.data?.metadata.modelId
-													)
-												)
-											}
-										>
-											X
-										</Button>
-									</sub>
-									<h1 className="h3 m-0">{model.data?.metadata.modelId}</h1>
-									<h2 className="p mt-0">{model.data?.metadata.histology}</h2>
-									<QualityBadge
-										className="w-50"
-										score={model.data?.metadata.score}
-									/>
+									{/* quality badge always at baseline */}
+									<div className="d-flex flex-column h-100 justify-content-between">
+										<div>
+											<sub>
+												<Button
+													color="dark"
+													priority="secondary"
+													className="text-underline m-0 mb-1"
+													style={{ padding: ".2rem .3rem" }}
+													onClick={() =>
+														setModelsToCompare((prevModels) =>
+															prevModels.filter(
+																(prevModel) =>
+																	prevModel !== model.data?.metadata.modelId
+															)
+														)
+													}
+												>
+													X
+												</Button>
+											</sub>
+											<h1 className="h3 m-0">
+												<Link
+													href={`/data/models/${model.data?.metadata.providerId}/${model.data?.metadata.modelId}`}
+													className="text-primary-primary"
+												>
+													{model.data?.metadata.modelId}
+												</Link>
+											</h1>
+											<h2 className="p mt-0">
+												{model.data?.metadata.histology}
+											</h2>
+										</div>
+										<QualityBadge
+											className="w-50"
+											score={model.data?.metadata.score}
+										/>
+									</div>
 								</div>
 							))}
 						</div>
