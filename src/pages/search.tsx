@@ -85,8 +85,10 @@ const Search = ({ modelCount }: ISearchProps) => {
 				if (actionInitialState) return actionInitialState;
 
 				for (let key in state) {
-					newState[key].selection = [];
-					newState[key].operator = "ANY";
+					if (key !== "search_terms") {
+						newState[key].selection = [];
+						newState[key].operator = "ANY";
+					}
 				}
 			}
 
