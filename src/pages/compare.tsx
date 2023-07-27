@@ -384,8 +384,9 @@ const Compare: NextPage = () => {
 												className="col"
 												key={
 													data?.metadata.modelId +
-													data?.qualityData[0].validationTechnique +
-													data?.qualityData[0].passagesTested
+														data?.qualityData[0]?.validationTechnique ||
+													"" + data?.qualityData[0]?.passagesTested ||
+													""
 												}
 											>
 												{data?.qualityData.map(
