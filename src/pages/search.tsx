@@ -62,6 +62,7 @@ const Search = ({ modelCount }: ISearchProps) => {
 	const [hasSelection, setHasSelection] = useState<boolean>(false);
 	const [modelsToCompare, setModelsToCompare] = useState<string[]>([]);
 	const router = useRouter();
+	const ignoredFilterValues = ["page", "search_terms"];
 
 	const [searchFilterState, searchFilterDispatch] = useReducer(
 		(
@@ -163,8 +164,7 @@ const Search = ({ modelCount }: ISearchProps) => {
 					})
 				);
 
-				const extraFilters = ["search_terms", "page"];
-				extraFilters.forEach((id) => addInitialSearchFilter(id));
+				ignoredFilterValues.forEach((id) => addInitialSearchFilter(id));
 
 				searchFilterDispatch({
 					type: "init",
@@ -249,8 +249,12 @@ const Search = ({ modelCount }: ISearchProps) => {
 			}
 		}
 		if (filterValues.length) {
-			// Check if only filter is page filter, don't show clear button if so
-			if (filterValues.length === 1 && filterValues[0].includes("page")) {
+			// Check if only filter is page or search terms, don't show clear button if so
+			const onlyIgnoredFilter = ignoredFilterValues.some((value) =>
+				filterValues.every((filterValue) => filterValue.includes(value))
+			);
+
+			if (onlyIgnoredFilter) {
 				setHasSelection(false);
 			} else {
 				setHasSelection(true);
