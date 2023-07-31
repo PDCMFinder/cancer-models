@@ -64,6 +64,17 @@ const Search = ({ modelCount }: ISearchProps) => {
 	const router = useRouter();
 	const ignoredFilterValues = ["page", "search_terms"];
 
+	const changePage = (page: number) => {
+		setCurrentPage(page);
+		searchFilterDispatch({
+			type: "substitute",
+			operator: "",
+			filterId: "page",
+			selection: page.toString(),
+		});
+		window.scrollTo(0, 350);
+	};
+
 	const [searchFilterState, searchFilterDispatch] = useReducer(
 		(
 			state: any,
@@ -415,9 +426,10 @@ const Search = ({ modelCount }: ISearchProps) => {
 											id="sortBy"
 											options={sortByOptions}
 											className="w-auto mb-0"
-											onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-												setSortBy(e.target.value)
-											}
+											onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+												setSortBy(e.target.value);
+												changePage(1);
+											}}
 										/>
 									</div>
 								</div>
@@ -481,16 +493,7 @@ const Search = ({ modelCount }: ISearchProps) => {
 												: 1
 										}
 										currentPage={currentPage}
-										onPageChange={(page: number) => {
-											setCurrentPage(page);
-											searchFilterDispatch({
-												type: "substitute",
-												operator: "",
-												filterId: "page",
-												selection: page.toString(),
-											});
-											window.scrollTo(0, 350);
-										}}
+										onPageChange={(page: number) => changePage(page)}
 									/>
 								</div>
 							</div>
