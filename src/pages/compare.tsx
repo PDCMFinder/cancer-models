@@ -38,6 +38,7 @@ const Compare: NextPage = () => {
 
 	useEffect(() => {
 		if (!query.models || modelsToCompareArr.length < 2) {
+			alert("You need at least 2 models to compare");
 			router.replace({
 				pathname: "/search",
 			});
