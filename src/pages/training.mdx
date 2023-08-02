@@ -1,0 +1,138 @@
+import MdLayout from "../components/MdLayout/MdLayout";
+
+[comment]: # "Metadata"
+[comment]: # "Page title = h1 in banner"
+
+export const meta = {
+	pageTitle: "Platform training materials",
+};
+
+[comment]: # "Page content below"
+[comment]: # "Can include html tags"
+
+## Search page
+
+[Cancermodels.org/search](/search) is the main page to search for models on our database. Here you’ll be able to search and narrow your search via the usage of filters and search inputs. URL bar will be updated with query so it can be easily bookmarked and/or shared.
+
+### Search bar
+
+<img
+	className="w-100 mb-1"
+	src="/img/training/searchBar.png"
+	title="Search bar"
+	alt="Search bar"
+/>
+
+On the top search bar, you can search for cancer diagnosis. Eg. Melanoma. After typing, there’s no need for you to hit the enter key on your keyboard. The platform will search while you are typing. After typing the needed diagnosis, give the search drop down a couple of seconds for options to show. After options are shown, you can use your up and down arrows to select the desired one and hit the enter key, or select one with your mouse.
+
+This input allows you to select multiple diagnoses and shows search results for all of them. To search for multiple diagnoses, select the input again and type the next search term, selecting the one you need as you did with the previous one. Search results will update automatically, using all the terms. Eg. Cutaneous Melanoma + Breast Cancer will show both of the results as AND, not OR.
+
+There are 2 ways to remove terms from the query. You could either remove them individually clicking the “x” right beside the term (<img className="d-inline" src="/img/training/removeItem.png" title="Remove item icon" alt="Remove item icon" style={{ height: "12px" }}/>), or remove all of them (if multiple) with the yellow “x” button on the right of
+the search input (<img className="d-inline" src="/img/training/clearAll.png" title="Clear all items icon" alt="Clear all items icon" style={{ height: "17px" }}/>).
+
+### Search result filters
+
+<div className="d-flex">
+  <img
+    className="mb-1 mr-2"
+    src="/img/training/searchFilters.png"
+    title="Search filters"
+    alt="Search filters"
+    style={{ height: "1500px" }}
+  />
+  <div>
+    On the left side of the search results, you can find filters to narrow your search and get to more refined models. You can use all the filters you want, there’s no limit. This will help you get to the needed model much faster. After you’re applied one or more filters, the “Clear” button at the very top will be enabled (maroon) - you can clear your filters by clicking on it. Cancer diagnosis query (top search bar) will not be affected when clearing filters.
+
+    There are multiple ways to filter, top categories being: Model information, patient / tumour information, molecular data, treatment / drug dosing. When you click and expand these top categories, you’ll find more detailed filters for your query.
+
+    URL will update with these parameters so it’s easily bookmarked and/or shared to colleagues.
+
+  </div>
+</div>
+
+### "Sort by" selector
+
+<img
+	className="w-100 mb-1"
+	src="/img/training/sortBy.png"
+	title="Sort by selector"
+	alt="Sort by selector"
+/>
+
+With the sort by selector, you’ll be able to sort the current (filters applied or not) search results by different criteria.
+
+**Data available:** Amount of data that the model has available. As seen on right column of each result (Available data header)
+
+**Model Id:** Unique identifier for all the cancer models derived from the same tissue sample.
+
+**Metadata score:** Score based on the quality and quantity of the existing metadata of that model. A better score (fuller bar) means more richness of data.
+
+### Search result
+
+<img
+	className="w-100 mb-1"
+	src="/img/training/resultCard.png"
+	title="Search result card"
+	alt="Search result card"
+/>
+
+Filters are available for all the data shown here, except model characterisation score. Sort options are available for some of the data in the result card.
+
+<div className="row">
+  <div className="col-4">
+  **Model Id:** Unique identifier for all the cancer models derived from the same tissue sample. Clickable, navigates to the model detail page with more information. Is a sorting option.
+
+**Provider/Datasource:** Clickable, sends you to the providers page with more information and links.
+
+**Model characterisation score:** Score provided by CancerModels.Org based on the quality and quantity of the existing metadata of that model. A better score (fuller bar) means more richness of data.
+Is a sorting option.
+
+**Initial diagnosis:** Diagnosis of the patient when first diagnosed - this can be different from the diagnosis at the time of collection.
+
+  </div>
+  <div className="col-4">
+    Some tumour and patient data. Viewing the model details page contains more information.
+  </div>
+  <div className="col-4">
+    **Available data:** Blue and underlined titles mean this model includes that data.
+
+Available data titles are clickable and send you to the section where you can see that specific data.
+Is a sorting option.
+
+**Add to compare:** Clicking this checkbox adds this model to a compare query, where you can easily compare 2-4 models side by side.
+
+  </div>
+</div>
+
+### Compare query card
+
+<img
+	className="w-100 mb-1"
+	src="/img/training/compareCard.png"
+	title="Compare query card"
+	alt="Compare query card"
+/>
+
+After selecting at least 1 model to compare, this card will appear at the bottom of your screen. It includes the models you’ve chosen to compare, the maximum being 4 at a time. Besides the model id, you have the option to remove that model from the compare query. You can also clear the whole query by clicking on the most right button, “clear”. Removing all models will hide the card.
+
+After you’re ready to compare at least 2 models (selecting 4 will automatically compare), click on the yellow “compare” button. This will open a new window with the models being compared side by side. Data showed/compare in the compare page is not as detailed as the individual model details page.
+
+## Compare page
+
+<img
+	className="w-100 mb-1 bc-primary-quaternary"
+	src="/img/training/comparePage.png"
+	title="Compare page"
+	alt="Compare page"
+	style={{ border: "1px solid" }}
+/>
+
+The compare page shows from 2 to 4 models side by side. Some of the data that is shown in this page is kept concise so it doesn’t clutter the page and comparing is easier. In the case of wanting to look at the models complete data, you can click on the model id that’s on the top bar, or scroll all the way down to the “view model” button.
+
+In the top bar, which if you scroll down will stay sticky to the top, you can remove individual models from this page, always keeping at least 2 models to compare. This is helpful in case you decide any of them doesn’t fit what you’re looking for and want to eliminate options.
+
+This page’s URL includes the model ids of compared models so it can be easily bookmarked and/or shared.
+
+[comment]: # "End page content - do not edit below this line"
+
+export default ({ children }) => <MdLayout meta={meta}>{children}</MdLayout>;
