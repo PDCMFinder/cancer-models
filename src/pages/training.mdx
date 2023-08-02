@@ -1,4 +1,5 @@
 import MdLayout from "../components/MdLayout/MdLayout";
+import Image from "next/image";
 
 [comment]: # "Metadata"
 [comment]: # "Page title = h1 in banner"
@@ -16,11 +17,14 @@ export const meta = {
 
 ### Search bar
 
-<img
-	className="w-100 mb-1"
+<Image
+	className="w-100 mb-1 h-auto"
 	src="/img/training/searchBar.png"
 	title="Search bar"
 	alt="Search bar"
+	height="0"
+	width="0"
+	sizes="90vw"
 />
 
 On the top search bar, you can search for cancer diagnosis. Eg. Melanoma. After typing, there’s no need for you to hit the enter key on your keyboard. The platform will search while you are typing. After typing the needed diagnosis, give the search drop down a couple of seconds for options to show. After options are shown, you can use your up and down arrows to select the desired one and hit the enter key, or select one with your mouse.
@@ -33,12 +37,15 @@ the search input (<img className="d-inline" src="/img/training/clearAll.png" tit
 ### Search result filters
 
 <div className="d-flex">
-  <img
-    className="mb-1 mr-2"
+  <Image
     src="/img/training/searchFilters.png"
     title="Search filters"
     alt="Search filters"
+    className="w-100 mb-1 h-auto bc-primary-quaternary"
     style={{ height: "1500px" }}
+    height="0"
+    width="0"
+    sizes="90vw"
   />
   <div>
     On the left side of the search results, you can find filters to narrow your search and get to more refined models. You can use all the filters you want, there’s no limit. This will help you get to the needed model much faster. After you’re applied one or more filters, the “Clear” button at the very top will be enabled (maroon) - you can clear your filters by clicking on it. Cancer diagnosis query (top search bar) will not be affected when clearing filters.
@@ -52,11 +59,14 @@ the search input (<img className="d-inline" src="/img/training/clearAll.png" tit
 
 ### "Sort by" selector
 
-<img
-	className="w-100 mb-1"
+<Image
 	src="/img/training/sortBy.png"
 	title="Sort by selector"
 	alt="Sort by selector"
+	className="w-100 mb-1 h-auto"
+	height="0"
+	width="0"
+	sizes="90vw"
 />
 
 With the sort by selector, you’ll be able to sort the current (filters applied or not) search results by different criteria.
@@ -69,11 +79,14 @@ With the sort by selector, you’ll be able to sort the current (filters applied
 
 ### Search result
 
-<img
-	className="w-100 mb-1"
+<Image
 	src="/img/training/resultCard.png"
 	title="Search result card"
 	alt="Search result card"
+	className="w-100 mb-1 h-auto"
+	height="0"
+	width="0"
+	sizes="90vw"
 />
 
 Filters are available for all the data shown here, except model characterisation score. Sort options are available for some of the data in the result card.
@@ -106,11 +119,14 @@ Is a sorting option.
 
 ### Compare query card
 
-<img
-	className="w-100 mb-1"
+<Image
 	src="/img/training/compareCard.png"
 	title="Compare query card"
 	alt="Compare query card"
+	className="w-100 mb-1 h-auto"
+	height="0"
+	width="0"
+	sizes="90vw"
 />
 
 After selecting at least 1 model to compare, this card will appear at the bottom of your screen. It includes the models you’ve chosen to compare, the maximum being 4 at a time. Besides the model id, you have the option to remove that model from the compare query. You can also clear the whole query by clicking on the most right button, “clear”. Removing all models will hide the card.
@@ -119,12 +135,15 @@ After you’re ready to compare at least 2 models (selecting 4 will automaticall
 
 ## Compare page
 
-<img
-	className="w-100 mb-1 bc-primary-quaternary"
+<Image
 	src="/img/training/comparePage.png"
 	title="Compare page"
 	alt="Compare page"
 	style={{ border: "1px solid" }}
+	className="w-100 mb-1 h-auto bc-primary-quaternary"
+	height="0"
+	width="0"
+	sizes="90vw"
 />
 
 The compare page shows from 2 to 4 models side by side. Some of the data that is shown in this page is kept concise so it doesn’t clutter the page and comparing is easier. In the case of wanting to look at the models complete data, you can click on the model id that’s on the top bar, or scroll all the way down to the “view model” button.
@@ -135,12 +154,15 @@ This page’s URL includes the model ids of compared models so it can be easily 
 
 ## Overview page
 
-<img
-	className="w-100 mb-1 bc-primary-quaternary"
+<Image
 	src="/img/training/overviewPage.png"
 	title="Overview page"
 	alt="Overview page"
 	style={{ border: "1px solid" }}
+	className="w-100 mb-1 h-auto bc-primary-quaternary"
+	height="0"
+	width="0"
+	sizes="90vw"
 />
 
 Here you’ll find general data for CancerModels.org’s model database.
