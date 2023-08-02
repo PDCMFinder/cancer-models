@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { getAllModelData } from "../apis/ModelDetails.api";
 import { useQueries } from "react-query";
 import Head from "next/head";
@@ -13,16 +13,16 @@ import {
 import styles from "./compare.module.scss";
 import Tooltip from "../components/Tooltip/Tooltip";
 import Button from "../components/Button/Button";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 const Compare: NextPage = () => {
 	const CHECKMARK_STRING = "✔";
 	const { query } = useRouter();
 	const router = useRouter();
-	const [modelsToCompare, setModelsToCompare] = useState(
-		typeof query.models === "string" ? query.models.split(" ") : []
-	);
+	const modelsToCompareArr =
+		typeof query.models === "string" ? query.models.split(" ") : [];
+	const [modelsToCompare, setModelsToCompare] = useState(modelsToCompareArr);
 
 	const allModelsData = useQueries(
 		modelsToCompare.map((model: string) => {
@@ -37,9 +37,12 @@ const Compare: NextPage = () => {
 	);
 
 	useEffect(() => {
-		setModelsToCompare(
-			typeof query.models === "string" ? query.models.split(" ") : []
-		);
+		if (!query.models || modelsToCompareArr.length < 2) {
+			router.replace({
+				pathname: "/search",
+			});
+		}
+		setModelsToCompare(modelsToCompareArr);
 	}, []);
 
 	useEffect(() => {
@@ -88,14 +91,20 @@ const Compare: NextPage = () => {
 													priority="secondary"
 													className="text-underline m-0 mb-1"
 													style={{ padding: ".2rem .3rem" }}
-													onClick={() =>
-														setModelsToCompare((prevModels) =>
-															prevModels.filter(
-																(prevModel) =>
-																	prevModel !== model.data?.metadata.modelId
-															)
-														)
-													}
+													onClick={() => {
+														if (modelsToCompare.length > 2) {
+															setModelsToCompare((prevModels) =>
+																prevModels.filter(
+																	(prevModel) =>
+																		prevModel !== model.data?.metadata.modelId
+																)
+															);
+														} else {
+															alert(
+																"Can't remove model, you need at least 2 models to compare"
+															);
+														}
+													}}
 												>
 													X
 												</Button>
