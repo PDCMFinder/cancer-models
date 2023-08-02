@@ -287,7 +287,13 @@ const Search = ({ modelCount }: ISearchProps) => {
 		if (modelsToCompare.includes(id)) {
 			setModelsToCompare((prev) => prev.filter((model) => model !== id));
 		} else {
-			setModelsToCompare((prev) => [...prev, id]);
+			if (modelsToCompare.length === 4) {
+				alert(
+					"You've reached the maximum amount of models to compare. Remove a model to add another."
+				);
+			} else {
+				setModelsToCompare((prev) => [...prev, id]);
+			}
 		}
 	};
 
@@ -301,13 +307,6 @@ const Search = ({ modelCount }: ISearchProps) => {
 			alert("Please select at least 2 models to compare");
 		}
 	};
-
-	useEffect(() => {
-		if (modelsToCompare.length === 4) {
-			// Open compare page with both models
-			compareModels();
-		}
-	}, [modelsToCompare]);
 
 	let totalResults = searchResultsQuery.data ? searchResultsQuery.data[0] : 1;
 
