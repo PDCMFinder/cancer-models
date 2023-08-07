@@ -16,12 +16,3 @@ Primary.args = {
 	color: "dark",
 	arrow: true,
 };
-
-export const Secondary = Template.bind({});
-Secondary.args = {
-	priority: "secondary",
-	color: "light",
-	htmlTag: "a",
-	href: "/about",
-	arrow: true,
-};
