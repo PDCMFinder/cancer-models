@@ -1,0 +1,12 @@
+@import "../../styles/mixins";
+
+.QualityBadge {
+	&_toolTip {
+		&_p {
+			text-transform: none;
+			@include mediaOver("sm") {
+				width: 300px;
+			}
+		}
+	}
+}
