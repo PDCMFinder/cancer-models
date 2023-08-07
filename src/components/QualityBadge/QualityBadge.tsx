@@ -1,5 +1,6 @@
 import { CSSProperties } from "react";
 import Tooltip from "../Tooltip/Tooltip";
+import styles from "./QualityBadge.module.scss";
 
 interface IQualityBadgeProps {
 	className?: string;
@@ -11,7 +12,19 @@ interface IQualityBadgeProps {
 const QualityBadge = (props: IQualityBadgeProps) => {
 	return (
 		<div className={props.containerClassName}>
-			<Tooltip content={<span className="text-small">{props.score}</span>}>
+			<Tooltip
+				content={
+					<>
+						<span className="text-bold">{props.score}%</span>
+						<p
+							className={`text-small mb-0 mt-1 ${styles.QualityBadge_toolTip_p}`}
+						>
+							Score related to the amount of information available about the
+							model, not the quality of the model.
+						</p>
+					</>
+				}
+			>
 				<meter
 					className={props.className}
 					min={0}
