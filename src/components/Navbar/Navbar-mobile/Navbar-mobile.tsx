@@ -16,11 +16,6 @@ const ADD = "add",
 const NavMobile = (props: INavProps) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const router = useRouter();
-
-	let releaseInfo = useQuery("releaseInfo", () => {
-		return getDataReleaseInformation();
-	});
-
 	// Close menu when changing page
 	useEffect(() => {
 		if (isMenuOpen) {
@@ -101,22 +96,6 @@ const NavMobile = (props: INavProps) => {
 										}
 									})}
 								</ul>
-							</div>
-						</div>
-						<div className="row">
-							<div className="col">
-								{/* Placeholder, change for API information */}
-								<p className="text-small">
-									© 2017-
-									{new Date(releaseInfo.data?.date).getFullYear() || 2023}
-									<br />
-									{releaseInfo.data
-										? `Data Release ${releaseInfo.data.name
-												.replace("dr.", "")
-												.replace("dr", "")} | 
-								${new Date(releaseInfo.data.date).toISOString().substring(0, 10)}`
-										: null}
-								</p>
 							</div>
 						</div>
 					</div>
