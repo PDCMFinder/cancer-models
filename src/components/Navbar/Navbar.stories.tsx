@@ -2,10 +2,10 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Navbar from "./Navbar";
 
 export default {
-	title: "Nav/Navbar/Main",
+	title: "Nav/Navbar",
 	component: Navbar,
 } as ComponentMeta<typeof Navbar>;
 
 const Template: ComponentStory<typeof Navbar> = () => <Navbar />;
 
-export const main = Template.bind({});
+export const Responsive = Template.bind({});

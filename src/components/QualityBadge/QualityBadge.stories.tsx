@@ -10,7 +10,7 @@ const Template: ComponentStory<typeof QualityBadge> = (args) => (
 	<QualityBadge {...args} />
 );
 
-export const Primary = Template.bind({});
-Primary.args = {
+export const Component = Template.bind({});
+Component.args = {
 	score: 90,
 };

@@ -10,8 +10,8 @@ const Template: ComponentStory<typeof Accordion> = (args) => (
 	<Accordion {...args} />
 );
 
-export const Primary = Template.bind({});
-Primary.args = {
+export const Component = Template.bind({});
+Component.args = {
 	id: "Accordion id",
 	content: <p>This is the content for the accordion</p>,
 	buttonClassName: "bg-gray",

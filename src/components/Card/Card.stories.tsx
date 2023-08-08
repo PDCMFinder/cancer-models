@@ -23,8 +23,8 @@ const Template: ComponentStory<typeof Card> = (args) => (
 	</Card>
 );
 
-export const Primary = Template.bind({});
-Primary.args = {
+export const Component = Template.bind({});
+Component.args = {
 	header: <p className="m-0">Header title</p>,
 	footer: <p className="m-0">Footer information</p>,
 };

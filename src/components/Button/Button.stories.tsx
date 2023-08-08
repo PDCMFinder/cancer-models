@@ -10,8 +10,8 @@ const Template: ComponentStory<typeof Button> = (args) => (
 	<Button {...args}>Button</Button>
 );
 
-export const Primary = Template.bind({});
-Primary.args = {
+export const Component = Template.bind({});
+Component.args = {
 	priority: "primary",
 	color: "dark",
 	arrow: true,
