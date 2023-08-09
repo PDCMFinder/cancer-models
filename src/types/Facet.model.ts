@@ -1,5 +1,5 @@
 export interface IFacetSidebarProps {
-	facetSections?: Array<IFacetSectionProps>;
+	facetSections?: IFacetSectionProps[];
 	sidebarSelection?: IFacetSidebarSelection;
 	sidebarOperators?: IFacetSidebarOperators;
 	loading?: boolean;
@@ -28,7 +28,7 @@ export interface IFacetSectionSelection {
 export interface IFacetSectionProps {
 	key: string;
 	name: string;
-	facets: Array<IFacetProps>;
+	facets: IFacetProps[];
 	sectionSelection?: IFacetSectionSelection;
 	sectionOperators?: { [facet: string]: string };
 	onSelectionChange?(
@@ -47,7 +47,7 @@ export interface IFacetProps {
 	operator?: string;
 	loading?: boolean;
 	displayOperators?: boolean;
-	placeholder?: string;
+	placeholder?: string | null;
 	onSelectionChange?(selection: string[], operator: string): void;
 }
 
