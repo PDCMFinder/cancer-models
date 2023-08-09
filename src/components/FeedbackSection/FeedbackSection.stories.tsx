@@ -11,3 +11,6 @@ const Template: ComponentStory<typeof FeedbackSection> = (args) => (
 );
 
 export const Component = Template.bind({});
+Component.args = {
+	backgroundColor: "light",
+};

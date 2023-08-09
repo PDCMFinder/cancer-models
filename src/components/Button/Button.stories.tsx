@@ -14,5 +14,5 @@ export const Component = Template.bind({});
 Component.args = {
 	priority: "primary",
 	color: "dark",
-	arrow: true,
+	arrow: false,
 };

@@ -1,6 +1,5 @@
 import SearchResult from "./SearchResult/SearchResult";
 import { SearchResult as SearchResultType } from "../../types/Search.model";
-import { ChangeEvent, useEffect, useState } from "react";
 
 interface ISearchResultsProps {
 	compareModel: (id: string) => void;
