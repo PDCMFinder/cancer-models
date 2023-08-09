@@ -1,7 +1,7 @@
 import Card from "../../Card/Card";
 import styles from "./SearchResult.module.scss";
 import Link from "next/link";
-import { SearchResult } from "../../../types/Search.model";
+import { SearchResult as SearchResultType } from "../../../types/Search.model";
 import QualityBadge from "../../QualityBadge/QualityBadge";
 import useWindowDimensions from "../../../hooks/useWindowDimensions";
 import breakPoints from "../../../utils/breakpoints";
@@ -44,7 +44,7 @@ const dataTypes = [
 
 interface ISearchResultProps {
 	className?: string;
-	data: SearchResult;
+	data: SearchResultType;
 	addModelToCompare: (
 		e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
 	) => void;

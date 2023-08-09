@@ -10,7 +10,7 @@ const SearchResultsLoader = (props: ISearchResultsLoaderProps) => {
 	const results = [];
 
 	let i = 0;
-	while (i <= props.amount) {
+	while (i < props.amount) {
 		results.push(
 			<Card
 				key={i}

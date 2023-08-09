@@ -8,13 +8,8 @@ export interface SearchResult {
 	collectionSite: string;
 	modelType: string;
 	tumourType: string;
-	dataAvailable?: Array<string>;
+	dataAvailable?: string[];
 	patientSex?: string;
-	patientAge?: number;
+	patientAge?: string;
 	score: number;
-}
-
-export interface ResultCol {
-	displayName: string;
-	key: string;
 }
