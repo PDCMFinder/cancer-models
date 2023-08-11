@@ -5,6 +5,7 @@ import Form from "../components/Form/Form";
 import InputAndLabel from "../components/Input/InputAndLabel";
 import { createTicket } from "../apis/Contact.api";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { hj_event } from "../utils/hotjar";
 
 const Contact: NextPage = () => {
 	const { executeRecaptcha } = useGoogleReCaptcha();
@@ -85,7 +86,12 @@ const Contact: NextPage = () => {
 									required={true}
 								/>
 								<div className="text-right">
-									<Button type="submit" priority="primary" color="dark">
+									<Button
+										type="submit"
+										priority="primary"
+										color="dark"
+										onClick={() => hj_event("click_contactSubmit")}
+									>
 										Submit
 									</Button>
 								</div>
