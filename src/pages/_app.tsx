@@ -129,10 +129,10 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 					}
 				`}</style>
 				<GoogleReCaptchaProvider reCaptchaKey="6LepEiwjAAAAAN9QFU8RpeY0QXCFoRRVVis2B-iF">
-					{!isProductionEnvironment() && (
+					{isProductionEnvironment() && (
 						<>
 							{/* Hotjar Tracking Code for Cancer Models Org */}
-							<Script id="hotjar">
+							<Script id="hotjar" strategy="beforeInteractive">
 								{`(function(h,o,t,j,a,r){
                   h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
                   h._hjSettings={hjid:${HJ_ID},hjsv:6};
@@ -144,10 +144,10 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 							</Script>
 							{/* Google Analytics code */}
 							<Script
-								strategy="afterInteractive"
+								strategy="beforeInteractive"
 								src="https://www.googletagmanager.com/gtag/js?id=G-34S5KH94SX"
 							/>
-							<Script id="google-analytics" strategy="afterInteractive">
+							<Script id="google-analytics" strategy="beforeInteractive">
 								{`window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);}
                   gtag('js', new Date());
