@@ -56,7 +56,6 @@ const Button = (props: IButtonProps) => {
 
 	if (props.htmlTag === "a" && href) {
 		if (href.includes("https://") || href.includes("http://")) {
-			LinkTag = "a";
 			externalLinkProps = {
 				target: "_blank",
 				rel: "noopener noreferrer",
@@ -64,7 +63,7 @@ const Button = (props: IButtonProps) => {
 		}
 
 		return (
-			<LinkTag
+			<Link
 				style={props.style}
 				className={classNames}
 				href={href}
@@ -74,7 +73,7 @@ const Button = (props: IButtonProps) => {
 					{children}
 					{showArrow && <ArrowIcon direction={arrowDirection} />}
 				</>
-			</LinkTag>
+			</Link>
 		);
 	}
 
