@@ -147,7 +147,6 @@ const SearchResult = (props: ISearchResultProps) => {
 							{dataTypes.map((dt, idx) => {
 								const hasData = dataAvailable?.includes(dt.key),
 									name = dt.name;
-								const isOdd = idx % 2 !== 0;
 
 								return (
 									<div key={dt.key} className="col-6 h-fit">
