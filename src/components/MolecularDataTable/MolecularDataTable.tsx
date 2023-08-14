@@ -9,6 +9,7 @@ import Loader from "../Loader/Loader";
 import Pagination from "../Pagination/Pagination";
 import { useState } from "react";
 import InputAndLabel from "../Input/InputAndLabel";
+import { hj_event } from "../../utils/hotjar";
 
 interface IMolecularDataTableProps {
 	data: IMolecularData;
@@ -154,7 +155,10 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 					priority="primary"
 					color="dark"
 					className="m-0"
-					onClick={() => props.handleDownload(data)}
+					onClick={() => {
+						props.handleDownload(data);
+						hj_event("click_downloadData-modal");
+					}}
 				>
 					Download Data
 				</Button>

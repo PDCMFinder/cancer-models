@@ -6,7 +6,7 @@ import styles from "./Footer.module.scss";
 import Link from "next/link";
 import { useQuery } from "react-query";
 import { getDataReleaseInformation } from "../../apis/AggregatedData.api";
-
+import { hj_event } from "../../utils/hotjar";
 interface IFooterProps {
 	cookieConsentHeight: number;
 }
@@ -122,6 +122,7 @@ const Footer = (props: IFooterProps) => {
 							<a
 								href="mailto:info@cancermodels.org"
 								className="link-text-light mt-2"
+								onClick={() => hj_event("click_footerEmail")}
 							>
 								info@cancermodels.org
 							</a>

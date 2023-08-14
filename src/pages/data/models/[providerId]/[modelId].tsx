@@ -22,6 +22,7 @@ import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
 import { useQueries, useQuery } from "react-query";
 import Head from "next/head";
 import { getAllModelData } from "../../../../apis/ModelDetails.api";
+import { hj_event } from "../../../../utils/hotjar";
 
 interface IModelDetailsProps {
 	metadata: Metadata;
@@ -266,6 +267,9 @@ const ModelDetails = ({
 										href={extLinks.sourceDatabaseUrl}
 										target="_blank"
 										rel="noopener noreferrer"
+										onClick={() =>
+											hj_event(`click_providerViewData-${metadata.providerId}}`)
+										}
 									>
 										View data at {metadata.providerId || "provider"}
 									</Link>
@@ -276,6 +280,9 @@ const ModelDetails = ({
 									htmlTag="a"
 									href={extLinks.contactLink}
 									className="mb-0 ml-lg-3 align-self-end"
+									onClick={() =>
+										hj_event(`click_providerContact-${metadata.providerId}}`)
+									}
 								>
 									<>Contact {metadata.providerId || "provider"}</>
 								</Button>
@@ -596,15 +603,19 @@ const ModelDetails = ({
 																			<>
 																				<button
 																					className="text-left link-text mr-3 mr-md-0 mb-md-1 mr-xxx-3"
-																					onClick={() =>
-																						setSelectedMolecularData(data)
-																					}
+																					onClick={() => {
+																						setSelectedMolecularData(data);
+																						hj_event("click_viewData");
+																					}}
 																				>
 																					VIEW DATA
 																				</button>
 																				<button
 																					className="text-left link-text mr-3 mr-md-0 mb-md-1 mr-xxx-3"
-																					onClick={() => getDownloadData(data)}
+																					onClick={() => {
+																						getDownloadData(data);
+																						hj_event("click_downloadData");
+																					}}
 																				>
 																					DOWNLOAD DATA
 																				</button>
@@ -614,6 +625,9 @@ const ModelDetails = ({
 																				href={extLinks.contactLink || ""}
 																				target="_blank"
 																				rel="noreferrer noopener"
+																				onClick={() =>
+																					hj_event("click_requestData")
+																				}
 																			>
 																				REQUEST DATA
 																			</Link>
