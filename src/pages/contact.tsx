@@ -50,6 +50,7 @@ const Contact: NextPage = () => {
 				message: "Thank you for your message! We will be in touch soon.",
 			});
 		} else if (response.error) {
+			// Logging the error so Hotjar can show it in analytics
 			console.log("Error_code: CFER");
 			setFormStatus({
 				status: "error",
