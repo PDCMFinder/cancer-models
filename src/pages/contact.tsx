@@ -1,19 +1,31 @@
 import type { NextPage } from "next";
-import { FormEvent, useRef } from "react";
+import { FormEvent, useRef, useState } from "react";
 import Button from "../components/Button/Button";
 import Form from "../components/Form/Form";
 import InputAndLabel from "../components/Input/InputAndLabel";
 import { createTicket } from "../apis/Contact.api";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { hj_event } from "../utils/hotjar";
+import Loader from "../components/Loader/Loader";
+
+interface IFormStatus {
+	status: "success" | "error" | "loading" | "";
+	message: string;
+}
 
 const Contact: NextPage = () => {
 	const { executeRecaptcha } = useGoogleReCaptcha();
 	const nameRef = useRef<HTMLInputElement>(null);
 	const emailRef = useRef<HTMLInputElement>(null);
 	const messageRef = useRef<HTMLInputElement>(null);
+	const [formStatus, setFormStatus] = useState<IFormStatus>({
+		status: "",
+		message: "",
+	});
 
 	const handleFormOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
+		setFormStatus({ status: "loading", message: "" });
+
 		if (!executeRecaptcha) {
 			return;
 		}
@@ -33,6 +45,17 @@ const Contact: NextPage = () => {
 			if (nameRef.current) nameRef.current.value = "";
 			if (emailRef.current) emailRef.current.value = "";
 			if (messageRef.current) messageRef.current.value = "";
+			setFormStatus({
+				status: "success",
+				message: "Thank you for your message! We will be in touch soon.",
+			});
+		} else if (response.error) {
+			console.log("Error_code: CFER");
+			setFormStatus({
+				status: "error",
+				message:
+					"There has been an error sending the form. Try again or email info@cancermodels.org instead, thank you!",
+			});
 		}
 	};
 
@@ -96,6 +119,26 @@ const Contact: NextPage = () => {
 									</Button>
 								</div>
 							</Form>
+							{formStatus.status && (
+								<div
+									style={{
+										border: "1px solid",
+										padding: "1rem",
+										borderColor:
+											formStatus.status !== "loading"
+												? formStatus.status === "success"
+													? "lightGreen"
+													: "red"
+												: "transparent",
+									}}
+								>
+									{formStatus.status === "loading" ? (
+										<Loader />
+									) : (
+										<p className="m-0">{formStatus.message}</p>
+									)}
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
