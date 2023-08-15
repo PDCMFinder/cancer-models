@@ -268,7 +268,7 @@ const ModelDetails = ({
 										target="_blank"
 										rel="noopener noreferrer"
 										onClick={() =>
-											hj_event(`click_providerViewData-${metadata.providerId}}`)
+											hj_event(`click_providerViewData-${metadata.providerId}`)
 										}
 									>
 										View data at {metadata.providerId || "provider"}
@@ -281,7 +281,7 @@ const ModelDetails = ({
 									href={extLinks.contactLink}
 									className="mb-0 ml-lg-3 align-self-end"
 									onClick={() =>
-										hj_event(`click_providerContact-${metadata.providerId}}`)
+										hj_event(`click_providerContact-${metadata.providerId}`)
 									}
 								>
 									<>Contact {metadata.providerId || "provider"}</>
