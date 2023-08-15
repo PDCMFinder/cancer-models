@@ -15,28 +15,27 @@ const Modal = ({
 	useEffect(() => {
 		document.body.classList.add("overflow-hidden");
 
+		// Press esc to close
+		document.body.addEventListener("keydown", (e: KeyboardEvent) => {
+			if (e.key === "Escape") {
+				handleClose();
+			}
+		});
 		return () => {
+			document.body.removeEventListener("keydown", (e: KeyboardEvent) => {
+				if (e.key === "Escape") {
+					handleClose();
+				}
+			});
 			document.body.classList.remove("overflow-hidden");
 		};
 	}, []);
-
-	// Press esc to close
-	document.body.addEventListener("keydown", (e: KeyboardEvent) => {
-		if (e.key === "Escape") {
-			handleClose();
-		}
-	});
-
-	// Click backdrop to close
-	const handleBackdropClick = () => {
-		handleClose();
-	};
 
 	return (
 		<>
 			<div
 				className={`${styles.Modal_backdrop} h-100 w-100 top-0 position-fixed`}
-				onClick={handleBackdropClick}
+				onClick={handleClose}
 			></div>
 			<div className={`${styles.Modal}  position-fixed top-0 w-100`}>
 				<div

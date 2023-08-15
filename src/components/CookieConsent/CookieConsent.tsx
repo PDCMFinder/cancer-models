@@ -39,7 +39,6 @@ const CookieConsent = (props: ICookieConsentProps) => {
 					onClick={() =>
 						setCookie("CookieConsent", "false", {
 							sameSite: "lax",
-							maxAge: 900000,
 						})
 					}
 				>
@@ -52,7 +51,6 @@ const CookieConsent = (props: ICookieConsentProps) => {
 					onClick={() =>
 						setCookie("CookieConsent", "true", {
 							sameSite: "lax",
-							maxAge: 900000,
 						})
 					}
 				>

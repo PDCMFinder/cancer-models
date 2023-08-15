@@ -348,7 +348,7 @@ const Search = ({ modelCount }: ISearchProps) => {
 	const ModalSearchFiltersComponent = (
 		<Modal verticalAlign="top" handleClose={() => setShowFilters(false)}>
 			<Card
-				style={{ backgroundColor: "white" }}
+				className="bg-white"
 				header={
 					<div className="d-flex justify-content-between align-center">
 						{ClearFilterButtonComponent}

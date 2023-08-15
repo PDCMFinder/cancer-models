@@ -2,6 +2,7 @@
 
 .Modal_backdrop {
 	background-color: rgba(0, 0, 0, 0.75);
+	z-index: 9999999999;
 }
 .Modal {
 	z-index: 9999999999;
