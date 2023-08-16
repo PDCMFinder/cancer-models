@@ -346,7 +346,11 @@ const Search = ({ modelCount }: ISearchProps) => {
 		<Loader style={{ height: "auto !important" }} />
 	);
 	const ModalSearchFiltersComponent = (
-		<Modal verticalAlign="top" handleClose={() => setShowFilters(false)}>
+		<Modal
+			modalWidth="100"
+			verticalAlign="top"
+			handleClose={() => setShowFilters(false)}
+		>
 			<Card
 				className="bg-white"
 				header={
