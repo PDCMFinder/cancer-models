@@ -797,6 +797,7 @@ const ModelDetails = ({
 			{selectedMolecularData && (
 				<Modal
 					verticalAlign="top"
+					modalWidth="100"
 					handleClose={() => setSelectedMolecularData(undefined)}
 				>
 					<Card

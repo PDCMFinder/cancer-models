@@ -39,6 +39,7 @@ const CookieConsent = (props: ICookieConsentProps) => {
 					onClick={() =>
 						setCookie("CookieConsent", "false", {
 							sameSite: "lax",
+							path: "/",
 						})
 					}
 				>
@@ -51,6 +52,7 @@ const CookieConsent = (props: ICookieConsentProps) => {
 					onClick={() =>
 						setCookie("CookieConsent", "true", {
 							sameSite: "lax",
+							path: "/",
 						})
 					}
 				>

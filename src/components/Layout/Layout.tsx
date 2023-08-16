@@ -30,31 +30,43 @@ const Layout = (props: ILayoutProps) => {
 			{!cookies["CookieConsent"] && (
 				<CookieConsent setCookieConsentHeight={setCookieConsentHeight} />
 			)}
-			<FloatingWidget link={surveyHref}>
+			<FloatingWidget
+				link={surveyHref}
+				onClick={() =>
+					setCookie("CookieFeedback", "true", {
+						sameSite: "lax",
+						maxAge: 2592000,
+						path: "/",
+					})
+				}
+			>
 				Help us improve - take our user survey
 			</FloatingWidget>
 			<Footer cookieConsentHeight={cookieConsentHeight} />
 			{!cookies["CookieFeedback"] && (
 				<Modal
-					verticalAlign="center"
+					style={{ maxWidth: "500px" }}
+					modalWidth="100"
 					handleClose={() =>
 						setCookie("CookieFeedback", "true", {
 							sameSite: "lax",
+							maxAge: 259200,
+							path: "/",
 						})
 					}
 				>
 					<Card
 						className="bg-white"
-						style={{
-							width: "clamp(420px, 40%, 50vw)",
-						}}
+						headerClassName="py-0 px-1 bg-white"
 						header={
-							<header className="d-flex justify-content-between">
+							<header className="text-right">
 								<CloseIcon
 									color="dark"
 									onClick={() =>
 										setCookie("CookieFeedback", "true", {
 											sameSite: "lax",
+											maxAge: 259200,
+											path: "/",
 										})
 									}
 								/>
@@ -62,15 +74,22 @@ const Layout = (props: ILayoutProps) => {
 						}
 					>
 						<div className="text-center">
-							<p>Help us improve - take our user survey</p>
+							<h1 className="h2 mt-0">Help us improve</h1>
+							<p>
+								Please <b>help us improve</b> by filling our short user survey
+							</p>
+							<p>Thank you!</p>
 							<Button
 								htmlTag="a"
 								href={surveyHref}
 								color="dark"
 								priority="primary"
+								className="mb-5"
 								onClick={() =>
 									setCookie("CookieFeedback", "true", {
 										sameSite: "lax",
+										maxAge: 2592000,
+										path: "/",
 									})
 								}
 							>

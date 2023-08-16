@@ -1,16 +1,20 @@
 import styles from "./Modal.module.scss";
-import { useEffect } from "react";
+import { CSSProperties, useEffect } from "react";
 
 interface IModalProps {
 	children: string | JSX.Element;
+	modalWidth?: "100" | "50" | "auto";
 	verticalAlign?: "center" | "top";
 	handleClose: () => void;
+	style?: CSSProperties;
 }
 
 const Modal = ({
 	children,
+	modalWidth = "auto",
 	verticalAlign = "center",
 	handleClose,
+	style,
 }: IModalProps) => {
 	useEffect(() => {
 		document.body.classList.add("overflow-hidden");
@@ -37,12 +41,13 @@ const Modal = ({
 				className={`${styles.Modal_backdrop} h-100 w-100 top-0 position-fixed`}
 				onClick={handleClose}
 			></div>
-			<div className={`${styles.Modal}  position-fixed top-0 w-100`}>
-				<div
-					className={`position-relative ${
-						styles[`Modal_content-${verticalAlign}`]
-					} ${styles.Modal_content}`}
-				>
+			<div
+				className={`${styles.Modal} ${
+					styles[`Modal-${verticalAlign}`]
+				} position-fixed w-${modalWidth}`}
+				style={style}
+			>
+				<div className={`position-relative ${styles.Modal_content}`}>
 					{children}
 				</div>
 			</div>
