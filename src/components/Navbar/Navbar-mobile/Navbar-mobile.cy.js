@@ -1,6 +1,8 @@
 context("Mobile navbar", () => {
 	beforeEach(() => {
 		cy.visit("");
+		cy.setCookie("CookieFeedback", "true");
+		cy.reload();
 	});
 
 	it("should open and close menu tray", () => {

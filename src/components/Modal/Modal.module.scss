@@ -2,6 +2,7 @@
 
 .Modal_backdrop {
 	background-color: rgba(0, 0, 0, 0.75);
+	z-index: 9999999999;
 }
 .Modal {
 	z-index: 9999999999;
@@ -10,13 +11,22 @@
 	min-height: min-content;
 	height: auto;
 	max-height: 100%;
+	top: $spacing-2;
+	left: 50%;
+	transform: translateX(-50%);
+	&-center {
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		.Modal_content {
+			max-width: unset;
+			width: auto;
+			left: 0;
+		}
+	}
 	&_content {
 		max-width: calc(100% - $spacing-2 * 2);
-		left: 50%;
-	}
-	&_content-center {
-		top: 50%;
-		transform: translate(-50%, -50%);
+		left: $spacing-2;
 	}
 	&_content-top {
 		padding: $spacing-2 0;
