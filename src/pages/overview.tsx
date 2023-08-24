@@ -131,7 +131,7 @@ const Overview: NextPage = () => {
 				<div className="container">
 					<div className="row mb-5 align-center">
 						<div className="col-12 col-lg-6 mb-5">
-							<h2>Portal features</h2>
+							<h2>CancerModels.Org portal features</h2>
 							<ul>
 								<li>Detailed annotations including Tissue and Cancer type</li>{" "}
 								<li>Advanced filters for model selection</li>
