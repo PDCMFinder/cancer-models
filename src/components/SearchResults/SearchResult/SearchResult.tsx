@@ -171,7 +171,7 @@ const SearchResult = (props: ISearchResultProps) => {
 								);
 							})}
 						</div>
-						{/* <ShowHide showOver={bpLarge} windowWidth={windowWidth}>
+						<ShowHide showOver={bpLarge} windowWidth={windowWidth}>
 							<InputAndLabel
 								name={pdcmId}
 								type="checkbox"
@@ -180,7 +180,7 @@ const SearchResult = (props: ISearchResultProps) => {
 								onChange={props.addModelToCompare}
 								checked={props.compareCheck}
 							/>
-						</ShowHide> */}
+						</ShowHide>
 					</div>
 				</div>
 			</div>

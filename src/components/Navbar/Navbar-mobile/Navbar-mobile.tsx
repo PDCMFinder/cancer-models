@@ -7,8 +7,6 @@ import { INavProps, IRoute } from "../../../../globalTypes";
 import ActiveLink from "../../ActiveLink/ActiveLink";
 import Link from "next/link";
 import styles from "./Navbar-mobile.module.scss";
-import { useQuery } from "react-query";
-import { getDataReleaseInformation } from "../../../apis/AggregatedData.api";
 
 const ADD = "add",
 	REMOVE = "remove";

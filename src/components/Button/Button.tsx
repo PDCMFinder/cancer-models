@@ -31,7 +31,6 @@ const Button = (props: IButtonProps) => {
 	let href = props.href,
 		children = props.children,
 		showArrow = props.arrow,
-		LinkTag: typeof Link | string = Link,
 		propsClassName = props.className,
 		classNames = `
       ${styles.Button}
@@ -67,6 +66,7 @@ const Button = (props: IButtonProps) => {
 				style={props.style}
 				className={classNames}
 				href={href}
+				onClick={handleOnClick}
 				{...externalLinkProps}
 			>
 				<>

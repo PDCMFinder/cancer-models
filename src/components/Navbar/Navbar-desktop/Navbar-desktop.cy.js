@@ -1,6 +1,8 @@
 context("Desktop navbar", () => {
 	beforeEach(() => {
 		cy.visit("");
+		cy.setCookie("CookieFeedback", "true");
+		cy.reload();
 	});
 
 	it("should create dropdowns for parent/children elements", () => {

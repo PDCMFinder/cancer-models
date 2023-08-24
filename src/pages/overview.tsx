@@ -131,14 +131,21 @@ const Overview: NextPage = () => {
 				<div className="container">
 					<div className="row mb-5 align-center">
 						<div className="col-12 col-lg-6 mb-5">
-							<h2>Discover Models</h2>
+							<h2>CancerModels.Org portal features</h2>
 							<ul>
 								<li>Detailed annotations including Tissue and Cancer type</li>{" "}
 								<li>Advanced filters for model selection</li>
 								<li>Links to originating model source</li>
 							</ul>
 							<div className="text-center">
-								<Link href="/search">Browse all models</Link>
+								<Button
+									htmlTag="a"
+									href="/search"
+									priority="primary"
+									color="dark"
+								>
+									Discover all models
+								</Button>
 							</div>
 						</div>
 						<div className="col-12 col-lg-5 mb-5">
