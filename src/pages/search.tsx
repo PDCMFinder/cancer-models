@@ -35,29 +35,21 @@ export interface onFilterChangeType {
 }
 
 const sortByOptions = [
-		// {
-		// 	value:
-		// 		"scores->>data_score.desc.nullslast,scores->>pdx_metadata_score.desc.nullslast",
-		// 	text: "Data available",
-		// },
-		// { value: "external_model_id.asc.nullslast", text: "Model Id: A to Z" },
-		// { value: "external_model_id.desc.nullslast", text: "Model Id: Z to A" },
-		// {
-		// 	value: "scores->>pdx_metadata_score.asc.nullslast",
-		// 	text: "Metadata: Ascending",
-		// },
-		// {
-		// 	value: "scores->>pdx_metadata_score.desc.nullslast",
-		// 	text: "Metadata: Descending",
-		// },
 		{
-			value: "model_dataset_type_count.desc.nullslast",
+			value:
+				"scores->>data_score.desc.nullslast,scores->>pdx_metadata_score.desc.nullslast",
 			text: "Data available",
 		},
 		{ value: "external_model_id.asc.nullslast", text: "Model Id: A to Z" },
 		{ value: "external_model_id.desc.nullslast", text: "Model Id: Z to A" },
-		{ value: "score.asc.nullslast", text: "Metadata: Ascending" },
-		{ value: "score.desc.nullslast", text: "Metadata: Descending" },
+		{
+			value: "scores->>pdx_metadata_score.asc.nullslast",
+			text: "Metadata: Ascending",
+		},
+		{
+			value: "scores->>pdx_metadata_score.desc.nullslast",
+			text: "Metadata: Descending",
+		},
 	],
 	resultsPerPage = 10;
 
