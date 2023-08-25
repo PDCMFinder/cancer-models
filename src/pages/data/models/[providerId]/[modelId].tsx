@@ -829,30 +829,9 @@ const ModelDetails = ({
 export default ModelDetails;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-	const getAllParamOptions = async () => {
-		let response = await fetch(
-			`${process.env.NEXT_PUBLIC_API_URL}/search_index?select=external_model_id,data_source`
-		);
-		if (!response.ok) {
-			throw new Error("Network response was not ok");
-		}
-
-		// new object with common key names and param structure
-		return response.json().then((d) =>
-			d.map((pair: { data_source: string; external_model_id: string }) => {
-				return {
-					params: {
-						providerId: pair["data_source"],
-						modelId: pair["external_model_id"],
-					},
-				};
-			})
-		);
-	};
-
 	return {
-		paths: await getAllParamOptions(),
-		fallback: false,
+		paths: [],
+		fallback: "blocking",
 	};
 };
 
@@ -882,5 +861,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			patientTreatment,
 			qualityData,
 		},
+		revalidate: 600,
 	};
 };
