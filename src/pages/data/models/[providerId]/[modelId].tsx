@@ -315,13 +315,18 @@ const ModelDetails = ({
 									<p className="h4">Data available</p>
 									<ul className="ul-noStyle">
 										<li className="mb-2">
-											<Link href="#metadata" className="text-primary-primary">
+											<Link
+												replace
+												href="#metadata"
+												className="text-primary-primary"
+											>
 												Patient/Tumour Metadata
 											</Link>
 										</li>
 										<li className="mb-2">
 											{metadata.modelType === "PDX" && engraftments?.length ? (
 												<Link
+													replace
 													href="#engraftments"
 													className="text-primary-primary"
 												>
@@ -334,6 +339,7 @@ const ModelDetails = ({
 										<li className="mb-2">
 											{qualityData.length ? (
 												<Link
+													replace
 													href="#quality-control"
 													className="text-primary-primary"
 												>
@@ -346,6 +352,7 @@ const ModelDetails = ({
 										<li className="mb-2">
 											{molecularData.length ? (
 												<Link
+													replace
 													href="#molecular-data"
 													className="text-primary-primary"
 												>
@@ -358,6 +365,7 @@ const ModelDetails = ({
 										<li className="mb-2">
 											{drugDosing.length ? (
 												<Link
+													replace
 													href="#dosing-studies"
 													className="text-primary-primary"
 												>
@@ -370,6 +378,7 @@ const ModelDetails = ({
 										<li className="mb-2">
 											{patientTreatment.length ? (
 												<Link
+													replace
 													href="#patient-treatment"
 													className="text-primary-primary"
 												>
@@ -382,6 +391,7 @@ const ModelDetails = ({
 										<li className="mb-2">
 											{publications.length ? (
 												<Link
+													replace
 													href="#publications"
 													className="text-primary-primary"
 												>
