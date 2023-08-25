@@ -230,6 +230,7 @@ const Overview: NextPage = () => {
 								<li>Number of models: {modelCount.data ?? 7091}</li>
 								<li>Number of providers: {providerCount.data ?? 33}</li>
 							</ul>
+							<Link href="/about/releases">Release log</Link>
 						</div>
 					</div>
 					<div className="row">

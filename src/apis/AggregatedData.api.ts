@@ -184,6 +184,18 @@ export async function getDataReleaseInformation() {
 	return response.json().then((d: Array<any>) => d[0]);
 }
 
+export async function getReleaseChangeLog() {
+	let response = await fetch(
+		"https://api.github.com/repos/PDCMFinder/pdxfinder/releases?per_page=10"
+	);
+
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response.json();
+}
+
 export async function getModelCount() {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/search_index`,
