@@ -2,55 +2,43 @@ import type { NextPage } from "next";
 import { getReleaseChangeLog } from "../../../apis/AggregatedData.api";
 import { useQuery } from "react-query";
 import Loader from "../../../components/Loader/Loader";
+import matter from "gray-matter";
+import { remark } from "remark";
+import remarkHtml from "remark-html";
+import { useEffect, useState } from "react";
+import React from "react";
 
-export interface Release {
-	url: string;
-	assets_url: string;
-	upload_url: string;
-	html_url: string;
-	id: number;
-	author: Author;
-	node_id: string;
-	tag_name: string;
-	target_commitish: string;
-	name: string;
-	draft: boolean;
-	prerelease: boolean;
-	created_at: string;
-	published_at: string;
-	assets: any[];
-	tarball_url: string;
-	zipball_url: string;
-	body: string;
-}
-
-export interface Author {
-	login: string;
-	id: number;
-	node_id: string;
-	avatar_url: string;
-	gravatar_id: string;
-	url: string;
-	html_url: string;
-	followers_url: string;
-	following_url: string;
-	gists_url: string;
-	starred_url: string;
-	subscriptions_url: string;
-	organizations_url: string;
-	repos_url: string;
-	events_url: string;
-	received_events_url: string;
-	type: string;
-	site_admin: boolean;
+interface Release {
+	title: string;
+	content: string;
 }
 
 interface IReleasesProps {}
 
 const Releases: NextPage<IReleasesProps> = () => {
-	let releaseChangeLog = useQuery("releaseChangeLog", () => {
-		return getReleaseChangeLog();
-	});
+	const [parsedReleases, setParsedReleases] = useState<
+		{ title: string; content: string }[]
+	>([]);
+
+	const parseReleaseContent = async (content: string) => {
+		const processedContent = await remark()
+			.use(remarkHtml, { sanitize: true })
+			.process(content);
+		return processedContent.toString();
+	};
+
+	let releaseChangeLog = useQuery(
+		"releaseChangeLog",
+		() => getReleaseChangeLog(),
+		{
+			onSuccess(data) {
+				data.forEach(async (release) => {
+					release.content = await parseReleaseContent(release.content);
+				});
+				setParsedReleases(data);
+			},
+		}
+	);
 
 	return (
 		<>
@@ -67,13 +55,13 @@ const Releases: NextPage<IReleasesProps> = () => {
 				<div className="container">
 					<div className="row">
 						<div className="col-12">
-							{releaseChangeLog.data ? (
-								releaseChangeLog.data.map((data: Release) => {
+							{parsedReleases.length > 0 ? (
+								parsedReleases.map((data: Release) => {
 									return (
-										<>
-											<h2>{data.name}</h2>
-											<p style={{ whiteSpace: "pre-wrap" }}>{data.body}</p>
-										</>
+										<React.Fragment key={data.title}>
+											<h1>{data.title}</h1>
+											<div dangerouslySetInnerHTML={{ __html: data.content }} />
+										</React.Fragment>
 									);
 								})
 							) : (
