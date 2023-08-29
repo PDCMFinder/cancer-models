@@ -767,6 +767,8 @@ const ModelDetails = ({
 															<li className="mr-md-3">
 																<Link
 																	href={`https://europepmc.org/article/MED/${publication.pmid}`}
+																	target="_blank"
+																	rel="noreferrer noopener"
 																>
 																	View at EuropePMC
 																</Link>
@@ -776,6 +778,8 @@ const ModelDetails = ({
 															<li className="mr-md-3">
 																<Link
 																	href={`https://doi.org/${publication.doi}`}
+																	target="_blank"
+																	rel="noreferrer noopener"
 																>
 																	DOI:{publication.doi}
 																</Link>
@@ -785,6 +789,8 @@ const ModelDetails = ({
 															<li>
 																<Link
 																	href={`https://pubmed.ncbi.nlm.nih.gov/${publication.pmid}`}
+																	target="_blank"
+																	rel="noreferrer noopener"
 																>
 																	PubMed
 																</Link>
