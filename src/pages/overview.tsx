@@ -149,7 +149,7 @@ const Overview: NextPage = () => {
 							</div>
 						</div>
 						<div className="col-12 col-lg-5 mb-5">
-							{modelsByPrimarySite.data && (
+							{modelsByPrimarySite.data && modelsByPrimarySite.data.length > 0 && (
 								<div style={{ height: "600px", width: "100%" }}>
 									<DonutChart
 										keyId="primary_site"
@@ -170,7 +170,7 @@ const Overview: NextPage = () => {
 							</ul>
 						</div>
 						<div className="col-12 col-lg-6 mb-5">
-							{modelsByMutatedGene.data && (
+							{modelsByMutatedGene.data && modelsByMutatedGene.data.length > 0 && (
 								<div style={{ height: "600px" }}>
 									<BarChart
 										chartTitle="Models by top mutated gene"
@@ -230,6 +230,7 @@ const Overview: NextPage = () => {
 								<li>Number of models: {modelCount.data ?? 7091}</li>
 								<li>Number of providers: {providerCount.data ?? 33}</li>
 							</ul>
+							<Link href="/about/releases">Release log</Link>
 						</div>
 					</div>
 					<div className="row">
@@ -238,39 +239,40 @@ const Overview: NextPage = () => {
 						</div>
 					</div>
 					<div className="row">
-						{modelsByPatientEthnicity.data && (
-							<div className="col-12 col-md-6">
-								<div className="text-center">
-									<h3>Models by reported ethnicity</h3>
+						{modelsByPatientEthnicity.data &&
+							modelsByPatientEthnicity.data.length > 0 && (
+								<div className="col-12 col-md-6">
+									<div className="text-center">
+										<h3>Models by reported ethnicity</h3>
+									</div>
+									<div style={{ height: "600px" }}>
+										<BarChart
+											chartTitle="Models by top mutated gene"
+											onBarClick={onGraphClick}
+											rotateTicks={true}
+											data={
+												countEthnicity(modelsByPatientEthnicity.data).sort(
+													(
+														a: { patient_ethnicity: string; count: number },
+														b: { patient_ethnicity: string; count: number }
+													) => b.count - a.count
+												)
+												// .filter(
+												// 	(ethnicity: {
+												// 		patient_ethnicity: string;
+												// 		count: number;
+												// 	}) =>
+												// 		!notValidCategories.includes(
+												// 			ethnicity.patient_ethnicity.toLowerCase()
+												// 		)
+												// )
+											}
+											indexKey="patient_ethnicity"
+										/>
+									</div>
 								</div>
-								<div style={{ height: "600px" }}>
-									<BarChart
-										chartTitle="Models by top mutated gene"
-										onBarClick={onGraphClick}
-										rotateTicks={true}
-										data={
-											countEthnicity(modelsByPatientEthnicity.data).sort(
-												(
-													a: { patient_ethnicity: string; count: number },
-													b: { patient_ethnicity: string; count: number }
-												) => b.count - a.count
-											)
-											// .filter(
-											// 	(ethnicity: {
-											// 		patient_ethnicity: string;
-											// 		count: number;
-											// 	}) =>
-											// 		!notValidCategories.includes(
-											// 			ethnicity.patient_ethnicity.toLowerCase()
-											// 		)
-											// )
-										}
-										indexKey="patient_ethnicity"
-									/>
-								</div>
-							</div>
-						)}
-						{modelsByPatientAge.data && (
+							)}
+						{modelsByPatientAge.data && modelsByPatientAge.data.length > 0 && (
 							<div className="col-12 col-md-6">
 								<div className="text-center">
 									<h3>Models by patient age</h3>
@@ -286,21 +288,22 @@ const Overview: NextPage = () => {
 						)}
 					</div>
 					<div className="row">
-						{modelsByPatientGender.data && (
-							<div className="col-12 col-md-6">
-								<div className="text-center">
-									<h3>Models by patient gender</h3>
+						{modelsByPatientGender.data &&
+							modelsByPatientGender.data.length > 0 && (
+								<div className="col-12 col-md-6">
+									<div className="text-center">
+										<h3>Models by patient gender</h3>
+									</div>
+									<div style={{ height: "600px" }}>
+										<DonutChart
+											onSliceClick={onGraphClick}
+											keyId="patient_sex"
+											data={modelsByPatientGender.data}
+										/>
+									</div>
 								</div>
-								<div style={{ height: "600px" }}>
-									<DonutChart
-										onSliceClick={onGraphClick}
-										keyId="patient_sex"
-										data={modelsByPatientGender.data}
-									/>
-								</div>
-							</div>
-						)}
-						{modelsByTumourType.data && (
+							)}
+						{modelsByTumourType.data && modelsByTumourType.data.length > 0 && (
 							<div className="col-12 col-md-6">
 								<div className="text-center">
 									<h3>Models by tumour type</h3>
@@ -316,24 +319,25 @@ const Overview: NextPage = () => {
 						)}
 					</div>
 					<div className="row">
-						{modelsByCancerHierarchy.data && (
-							<div className="col-12 col-md-12">
-								<div className="text-center">
-									<h3>Models by anatomical system & diagnosis</h3>
+						{modelsByCancerHierarchy.data &&
+							modelsByCancerHierarchy.data.length > 0 && (
+								<div className="col-12 col-md-12">
+									<div className="text-center">
+										<h3>Models by anatomical system & diagnosis</h3>
+									</div>
+									<div style={{ height: "800px" }}>
+										<SunBurstChart
+											keyId="search_terms"
+											data={modelsByCancerHierarchy.data}
+											onSliceClick={onGraphClick}
+										/>
+									</div>
 								</div>
-								<div style={{ height: "800px" }}>
-									<SunBurstChart
-										keyId="search_terms"
-										data={modelsByCancerHierarchy.data}
-										onSliceClick={onGraphClick}
-									/>
-								</div>
-							</div>
-						)}
+							)}
 					</div>
 
 					<div className="row">
-						{modelsByTreatment.data && (
+						{modelsByTreatment.data && modelsByTreatment.data.length > 0 && (
 							<div className="col-12 col-md-12">
 								<div className="text-center">
 									<h3>Most used drugs</h3>

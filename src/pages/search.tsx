@@ -1,4 +1,3 @@
-import type { GetStaticProps } from "next";
 import SearchResults from "../components/SearchResults/SearchResults";
 import Select from "../components/Input/Select";
 import React, { ChangeEvent, useEffect, useReducer, useState } from "react";
@@ -25,10 +24,7 @@ import ShowHide from "../components/ShowHide/ShowHide";
 import { createPortal } from "react-dom";
 import Card from "../components/Card/Card";
 import CloseIcon from "../components/CloseIcon/CloseIcon";
-
-interface ISearchProps {
-	modelCount: string;
-}
+import { NextPage } from "next/types";
 
 export interface onFilterChangeType {
 	type: "add" | "remove" | "clear" | "toggleOperator" | "init" | "substitute";
@@ -53,7 +49,7 @@ const sortByOptions = [
 	],
 	resultsPerPage = 10;
 
-const Search = ({ modelCount }: ISearchProps) => {
+const Search: NextPage = () => {
 	const { windowWidth = 0 } = useWindowDimensions();
 	const bpLarge = breakPoints.large;
 	const [showFilters, setShowFilters] = useState<boolean>(false);
@@ -372,6 +368,10 @@ const Search = ({ modelCount }: ISearchProps) => {
 		</Modal>
 	);
 
+	let modelCount = useQuery("modelCount", () => {
+		return getModelCount();
+	});
+
 	return (
 		<>
 			<header className={`py-5 ${styles.Search_header}`}>
@@ -379,10 +379,10 @@ const Search = ({ modelCount }: ISearchProps) => {
 					<div className="row">
 						<div className="col-12">
 							<h1 className="h2 text-white text-center mt-0">
-								Search over{" "}
-								{
-									modelCount ? parseFloat(modelCount).toLocaleString() : "7,091" // fallback placeholder
-								}{" "}
+								Search{" "}
+								{modelCount && modelCount.data
+									? `over ${parseFloat(modelCount.data!).toLocaleString()}`
+									: ""}{" "}
 								cancer models
 							</h1>
 						</div>
@@ -587,13 +587,3 @@ const Search = ({ modelCount }: ISearchProps) => {
 };
 
 export default Search;
-
-export const getStaticProps: GetStaticProps = async () => {
-	let modelCount = await getModelCount();
-
-	return {
-		props: {
-			modelCount,
-		},
-	};
-};
