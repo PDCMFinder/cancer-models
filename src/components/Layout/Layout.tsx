@@ -43,7 +43,7 @@ const Layout = (props: ILayoutProps) => {
 				Help us improve - take our user survey
 			</FloatingWidget>
 			<Footer cookieConsentHeight={cookieConsentHeight} />
-			{/* {!cookies["CookieFeedback"] && (
+			{!cookies["CookieFeedback"] && (
 				<Modal
 					style={{ maxWidth: "500px" }}
 					modalWidth="100"
@@ -98,7 +98,7 @@ const Layout = (props: ILayoutProps) => {
 						</div>
 					</Card>
 				</Modal>
-			)} */}
+			)}
 		</>
 	);
 };
