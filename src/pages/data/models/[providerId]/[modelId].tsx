@@ -23,6 +23,7 @@ import { useQueries, useQuery } from "react-query";
 import Head from "next/head";
 import { getAllModelData } from "../../../../apis/ModelDetails.api";
 import { hj_event } from "../../../../utils/hotjar";
+import TiffImageConverter from "../../../../components/TiffImageConverter/TiffImageConverter";
 
 interface IModelDetailsProps {
 	metadata: Metadata;
@@ -306,6 +307,7 @@ const ModelDetails = ({
 					</div>
 				</div>
 			</header>
+			<TiffImageConverter imgUrl="/img/J000077451170412111321.tiff" />
 			<section>
 				<div className="container">
 					<div className="row">
