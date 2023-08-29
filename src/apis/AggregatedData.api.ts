@@ -197,7 +197,11 @@ export async function getReleaseChangeLog() {
 		// Simplify release content
 		var i;
 		for (i = 0; i < d.length; i++) {
-			d[i] = { title: d[i].name, content: d[i].body };
+			d[i] = {
+				title: d[i].name,
+				content: d[i].body,
+				publishedAt: d[i].published_at,
+			};
 		}
 
 		return d;

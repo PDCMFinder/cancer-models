@@ -2,23 +2,22 @@ import type { NextPage } from "next";
 import { getReleaseChangeLog } from "../../../apis/AggregatedData.api";
 import { useQuery } from "react-query";
 import Loader from "../../../components/Loader/Loader";
-import matter from "gray-matter";
 import { remark } from "remark";
 import remarkHtml from "remark-html";
-import { useEffect, useState } from "react";
-import React from "react";
+import { useState } from "react";
+import Card from "../../../components/Card/Card";
+import styles from "./index.module.scss";
 
-interface Release {
+interface IRelease {
 	title: string;
 	content: string;
+	publishedAt: string;
 }
 
 interface IReleasesProps {}
 
 const Releases: NextPage<IReleasesProps> = () => {
-	const [parsedReleases, setParsedReleases] = useState<
-		{ title: string; content: string }[]
-	>([]);
+	const [parsedReleases, setParsedReleases] = useState<IRelease[]>([]);
 
 	const parseReleaseContent = async (content: string) => {
 		const processedContent = await remark()
@@ -53,24 +52,35 @@ const Releases: NextPage<IReleasesProps> = () => {
 			</header>
 			<section>
 				<div className="container">
-					<div className="row">
-						<div className="col-12">
-							{parsedReleases.length > 0 ? (
-								parsedReleases.map((data: Release) => {
-									return (
-										<React.Fragment key={data.title}>
-											<h1>{data.title}</h1>
-											<div dangerouslySetInnerHTML={{ __html: data.content }} />
-										</React.Fragment>
-									);
-								})
-							) : (
-								<div style={{ height: "300px" }}>
-									<Loader />
+					{parsedReleases.length > 0 ? (
+						parsedReleases.map((data: IRelease) => {
+							return (
+								<div className="row mb-5" key={data.title}>
+									<div className="col-12 col-lg-8 offset-lg-2">
+										<Card
+											header={
+												<div className="d-lg-flex align-center justify-content-between">
+													<h1 className="m-0">{data.title}</h1>
+													<p className="mb-0 text-muted text-small">
+														{data.publishedAt.split("T")[0]}
+													</p>
+												</div>
+											}
+										>
+											<div
+												className={styles.Releases_release_content}
+												dangerouslySetInnerHTML={{ __html: data.content }}
+											/>
+										</Card>
+									</div>
 								</div>
-							)}
+							);
+						})
+					) : (
+						<div style={{ height: "300px" }}>
+							<Loader />
 						</div>
-					</div>
+					)}
 				</div>
 			</section>
 		</>
