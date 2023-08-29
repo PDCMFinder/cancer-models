@@ -1,3 +1,5 @@
+import { CSSProperties } from "react";
+
 const inputTypes = [
 	"button",
 	"checkbox",
@@ -41,6 +43,7 @@ export interface ILabelProps {
 	label: string;
 	name: string;
 	className?: string;
+	style?: CSSProperties;
 }
 
 export interface IInputProps {
