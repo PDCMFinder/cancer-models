@@ -141,6 +141,10 @@ const Footer = (props: IFooterProps) => {
 										.replace("dr", "")} | 
 								${new Date(releaseInfo.data.date).toISOString().substring(0, 10)}`
 								: null}
+							<br />
+							<Link href="/about/releases" className="link-text-light">
+								Release log
+							</Link>
 						</p>
 						<p className="text-center">
 							All model and data submissions are made available under{" "}

@@ -184,6 +184,30 @@ export async function getDataReleaseInformation() {
 	return response.json().then((d: Array<any>) => d[0]);
 }
 
+export async function getReleaseChangeLog() {
+	let response = await fetch(
+		"https://api.github.com/repos/PDCMFinder/cancer-models/releases?per_page=10"
+	);
+
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response.json().then((d: any[]) => {
+		// Simplify release content
+		var i;
+		for (i = 0; i < d.length; i++) {
+			d[i] = {
+				title: d[i].name,
+				content: d[i].body,
+				publishedAt: d[i].published_at,
+			};
+		}
+
+		return d;
+	});
+}
+
 export async function getModelCount() {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/search_index`,
