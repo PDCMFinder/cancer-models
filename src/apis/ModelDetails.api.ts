@@ -406,7 +406,7 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 			collectionSite: metadata.collectionSite,
 			licenseName: metadata.licenseName ?? "",
 			licenseUrl: metadata.licenseUrl ?? "",
-			score: metadata.score ?? 0,
+			score: metadata.scores.pdx_metadata_score ?? 0,
 			pdcmModelId,
 			modelId,
 			providerId: modelProviderId,
