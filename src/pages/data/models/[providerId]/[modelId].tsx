@@ -592,10 +592,18 @@ const ModelDetails = ({
 															const sampleType = data.xenograftSampleId
 																? "Engrafted Tumour"
 																: "Patient Tumour";
-															const rawDataExternalLink =
-																data.externalDbLinks?.find(
-																	(data) => data.column === "raw_data_url"
-																)?.link;
+															const hasExternalDbLinks =
+																data.externalDbLinks?.length > 0;
+															let rawDataExternalLinks: ExternalDbLinks[] = [];
+															if (hasExternalDbLinks) {
+																data.externalDbLinks
+																	?.filter(
+																		(data) => data.column === "raw_data_url"
+																	)
+																	.forEach((obj) =>
+																		rawDataExternalLinks.push(obj)
+																	);
+															}
 
 															return (
 																<tr key={data.id}>
@@ -645,17 +653,22 @@ const ModelDetails = ({
 																	</td>
 																	<td>{data.platformName}</td>
 																	<td>
-																		{data.rawDataUrl ? (
-																			<a
-																				href={rawDataExternalLink}
-																				target="_blank"
-																				rel="noopener noreferrer"
-																			>
-																				{data.rawDataUrl.split(",")[0]}
-																			</a>
-																		) : (
-																			"Not available"
-																		)}
+																		{hasExternalDbLinks
+																			? rawDataExternalLinks?.map(
+																					(externalResource) => (
+																						<>
+																							<Link
+																								href={externalResource.link}
+																								target="_blank"
+																								rel="noopener noreferrer"
+																							>
+																								{externalResource.resource}
+																							</Link>
+																							<br />
+																						</>
+																					)
+																			  )
+																			: "Not available"}
 																	</td>
 																</tr>
 															);
