@@ -2,7 +2,7 @@
 
 .Tooltip {
 	$--content-bgColor: $color-primary-secondary;
-	--content-separation: calc(100% + 10px);
+	--content-separation: 100%;
 	&_content {
 		color: $color-white;
 		position: absolute;
@@ -13,6 +13,7 @@
 		transform: translateY(-50%);
 		background-color: $--content-bgColor;
 		line-height: 1;
+		z-index: 9998;
 	}
 	&_arrow {
 		--arrow-width: 0.7rem;
