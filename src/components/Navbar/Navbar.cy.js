@@ -8,6 +8,6 @@ context("Navbar", () => {
 
 		cy.viewport("iphone-8");
 		cy.get(".Navbar-desktop_Navbar-desktop__KOH09").should("not.exist");
-		cy.get(".Navbar-mobile_Navbar-mobile__DT0br").should("exist");
+		cy.get(".Navbar-mobile_Navbar-mobile__1mR5D").should("exist");
 	});
 });
