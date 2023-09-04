@@ -15,6 +15,7 @@ const NavDesktop = (props: INavProps) => {
 						<Link
 							href="/"
 							className={`${styles["Navbar-desktop_logotype-link"]}`}
+							aria-label="CancerModels.Org Logo"
 						>
 							<Logotype color="dark" />
 						</Link>
