@@ -10,6 +10,8 @@ import Fragment from "../Fragment/Fragment";
 import { useRouter } from "next/router";
 
 interface ISearchBarProps {
+	id: string;
+	name: string;
 	isMulti?: boolean;
 	selection?: IFacetSidebarSelection;
 	onFilterChange?: (
@@ -58,8 +60,12 @@ const SearchBar = (props: ISearchBarProps) => {
 				Search by cancer diagnosis
 			</p>
 			<Select
+				instanceId={props.id}
+				id={props.id}
+				inputId={props.id}
+				name={props.name}
 				aria-label="Search by cancer diagnosis"
-				aria-labelledby="searchBar-label"
+				aria-labelledby={props.id}
 				className="lh-1"
 				closeMenuOnSelect={props.isMulti}
 				blurInputOnSelect={props.isMulti}

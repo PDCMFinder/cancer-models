@@ -173,7 +173,9 @@ const SearchResult = (props: ISearchResultProps) => {
 						</div>
 						<ShowHide showOver={bpLarge} windowWidth={windowWidth}>
 							<InputAndLabel
-								name={pdcmId}
+								forId={pdcmId}
+								id={pdcmId}
+								name={`${pdcmId}-name`}
 								type="checkbox"
 								label="Add to compare"
 								className="text-smaller mt-2"

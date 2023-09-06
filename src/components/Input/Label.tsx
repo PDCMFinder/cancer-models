@@ -3,7 +3,11 @@ import { ILabelProps } from "../../../globalTypes";
 
 const Label = (props: ILabelProps) => {
 	return (
-		<label style={props.style} htmlFor={props.name} className={props.className}>
+		<label
+			style={props.style}
+			htmlFor={props.forId}
+			className={props.className}
+		>
 			{props.label}
 		</label>
 	);

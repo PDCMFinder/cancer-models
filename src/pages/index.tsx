@@ -61,7 +61,8 @@ const Home: NextPage = () => {
 					></div>
 					<div className={`${styles.header_search} py-5`}>
 						<Label
-							name="search"
+							name="searchBar"
+							forId="searchBar-id"
 							className="h3 text-white"
 							label={`Search ${
 								modelCount && modelCount.data
@@ -69,7 +70,7 @@ const Home: NextPage = () => {
 									: ""
 							} cancer models`}
 						/>
-						<SearchBar />
+						<SearchBar id="searchBar-id" name="searchBar-name" />
 					</div>
 				</div>
 			</header>

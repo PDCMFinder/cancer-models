@@ -390,6 +390,8 @@ const Search: NextPage = () => {
 					<div className="row">
 						<div className="col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-3">
 							<SearchBar
+								id="searchBar"
+								name="searchBar-name"
 								isMulti
 								selection={searchFilterState}
 								onFilterChange={(filterId, selection, operator, type) => {
@@ -424,7 +426,12 @@ const Search: NextPage = () => {
 								</div>
 								<div className="col-12 col-md-6">
 									<div className="d-flex align-center justify-content-md-end">
-										<Label label="Sort by:" name="sortBy" className="mr-1" />
+										<Label
+											label="Sort by:"
+											forId="sortBy"
+											name="sortBy-name"
+											className="mr-1"
+										/>
 										<Select
 											id="sortBy"
 											options={sortByOptions}

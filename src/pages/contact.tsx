@@ -87,13 +87,17 @@ const Contact: NextPage = () => {
 						<div className="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
 							<Form onSubmit={handleFormOnSubmit}>
 								<InputAndLabel
-									name="name"
+									forId="name"
+									id="name"
+									name="name-name"
 									type="text"
 									label="Your name"
 									inputRef={nameRef}
 								/>
 								<InputAndLabel
-									name="email"
+									forId="email"
+									id="email"
+									name="email-name"
 									type="email"
 									label="Email address"
 									inputClassName="mb-0"
@@ -103,7 +107,9 @@ const Contact: NextPage = () => {
 									We&apos;ll never share your email with anyone else.
 								</p>
 								<InputAndLabel
-									name="message"
+									forId="message"
+									id="message"
+									name="message-name"
 									type="textarea"
 									label="Your message *"
 									inputRef={messageRef}

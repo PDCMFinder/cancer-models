@@ -70,11 +70,9 @@ const Provider: NextPage<IProviderProps> = ({
 export default Provider;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-	const paths = getAllProvidersId();
-
 	return {
-		paths,
-		fallback: false,
+		paths: [],
+		fallback: "blocking",
 	};
 };
 
@@ -84,6 +82,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 	return {
 		props: {
 			providerData,
+			revalidate: 600,
 		},
 	};
 };

@@ -619,24 +619,28 @@ const ModelDetails = ({
 																		{!restrictedTypes.includes(data.dataType) &&
 																		data.dataAvailability === "TRUE" ? (
 																			<>
-																				<button
-																					className="text-left link-text mr-3 mr-md-0 mb-md-1 mr-xxx-3"
+																				<Button
+																					color="dark"
+																					priority="secondary"
+																					className="text-left link-text mt-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
 																					onClick={() => {
 																						setSelectedMolecularData(data);
 																						hj_event("click_viewData");
 																					}}
 																				>
 																					VIEW DATA
-																				</button>
-																				<button
-																					className="text-left link-text mr-3 mr-md-0 mb-md-1 mr-xxx-3"
+																				</Button>
+																				<Button
+																					color="dark"
+																					priority="secondary"
+																					className="text-left link-text mt-0 m-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
 																					onClick={() => {
 																						getDownloadData(data);
 																						hj_event("click_downloadData");
 																					}}
 																				>
 																					DOWNLOAD DATA
-																				</button>
+																				</Button>
 																			</>
 																		) : (
 																			<Link
