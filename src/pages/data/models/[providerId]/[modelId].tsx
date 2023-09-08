@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import Button from "../../../../components/Button/Button";
 import Link from "next/link";
@@ -6,8 +6,6 @@ import ShowHide from "../../../../components/ShowHide/ShowHide";
 import breakPoints from "../../../../utils/breakpoints";
 import useWindowDimensions from "../../../../hooks/useWindowDimensions";
 import styles from "./Model.module.scss";
-import { useState, useRef } from "react";
-import Modal from "../../../../components/Modal/Modal";
 import Card from "../../../../components/Card/Card";
 import MolecularDataTable from "../../../../components/MolecularDataTable/MolecularDataTable";
 import {
@@ -23,6 +21,15 @@ import { useQueries, useQuery } from "react-query";
 import Head from "next/head";
 import { getAllModelData } from "../../../../apis/ModelDetails.api";
 import { hj_event } from "../../../../utils/hotjar";
+import dynamic from "next/dynamic";
+import Loader from "../../../../components/Loader/Loader";
+
+const DynamicModal = dynamic(
+	() => import("../../../../components/Modal/Modal"),
+	{
+		loading: () => <Loader />,
+	}
+);
 
 interface IModelDetailsProps {
 	metadata: Metadata;
@@ -828,7 +835,7 @@ const ModelDetails = ({
 				</div>
 			</section>
 			{selectedMolecularData && (
-				<Modal
+				<DynamicModal
 					verticalAlign="top"
 					modalWidth="100"
 					handleClose={() => setSelectedMolecularData(undefined)}
@@ -853,7 +860,7 @@ const ModelDetails = ({
 							handleDownload={getDownloadData}
 						/>
 					</Card>
-				</Modal>
+				</DynamicModal>
 			)}
 		</>
 	);

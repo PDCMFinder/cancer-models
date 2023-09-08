@@ -7,8 +7,6 @@ import { Space_Mono } from "@next/font/google";
 import Layout from "../components/Layout/Layout";
 import Head from "next/head";
 import handleBodyClass from "../utils/handleBodyClass";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
 import { Cookies, CookiesProvider } from "react-cookie";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import Script from "next/script";
@@ -64,15 +62,6 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 		};
 	}, []);
 
-	const queryClient = new QueryClient({
-		defaultOptions: {
-			queries: {
-				staleTime: Infinity,
-				refetchOnWindowFocus: true,
-			},
-		},
-	});
-
 	const isProductionEnvironment = () => {
 		if (process.env.NEXT_PUBLIC_APP_ENV === "production") {
 			return true;
@@ -82,58 +71,42 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 
 	return (
 		<>
-			<QueryClientProvider client={queryClient}>
-				<Head>
-					<title>
-						CancerModels.Org - Find PDX, organoid and cell line cancer models
-					</title>
-					<meta
-						name="description"
-						content="The largest open catalog of harmonised patient-derived cancer models. Find the right PDX, organoid and cell line patient-derived cancer model for your next project."
-					/>
-					<meta
-						name="viewport"
-						content="width=device-width, initial-scale=1.0"
-					/>
-					<meta property="og:image" content="/ogimage.png" />
+			<Head>
+				<title>
+					CancerModels.Org - Find PDX, organoid and cell line cancer models
+				</title>
+				<meta
+					name="description"
+					content="The largest open catalog of harmonised patient-derived cancer models. Find the right PDX, organoid and cell line patient-derived cancer model for your next project."
+				/>
+				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+				<meta property="og:image" content="/ogimage.png" />
 
-					{/* Generics */}
-					<link rel="icon" href="/favicon-32.png" sizes="32x32" />
-					<link rel="icon" href="/favicon-128.png" sizes="128x128" />
-					<link rel="icon" href="/favicon-192.png" sizes="192x192" />
+				{/* Generics */}
+				<link rel="icon" href="/favicon-32.png" sizes="32x32" />
+				<link rel="icon" href="/favicon-128.png" sizes="128x128" />
+				<link rel="icon" href="/favicon-192.png" sizes="192x192" />
 
-					{/* Android */}
-					<link rel="shortcut icon" href="/favicon-196.png" sizes="196x196" />
+				{/* Android */}
+				<link rel="shortcut icon" href="/favicon-196.png" sizes="196x196" />
 
-					{/* iOS */}
-					<link
-						rel="apple-touch-icon"
-						href="/favicon-152.png"
-						sizes="152x152"
-					/>
-					<link
-						rel="apple-touch-icon"
-						href="/favicon-152.png"
-						sizes="167x167"
-					/>
-					<link
-						rel="apple-touch-icon"
-						href="/favicon-180.png"
-						sizes="180x180"
-					/>
-				</Head>
-				<style jsx global>{`
-					:root {
-						--type-primary: ${merriweather.style.fontFamily}, serif;
-						--type-secondary: ${spaceMono.style.fontFamily}, monospace;
-					}
-				`}</style>
-				<GoogleReCaptchaProvider reCaptchaKey="6LepEiwjAAAAAN9QFU8RpeY0QXCFoRRVVis2B-iF">
-					{isProductionEnvironment() && (
-						<>
-							{/* Hotjar Tracking Code for Cancer Models Org */}
-							<Script id="hotjar" strategy="beforeInteractive">
-								{`(function(h,o,t,j,a,r){
+				{/* iOS */}
+				<link rel="apple-touch-icon" href="/favicon-152.png" sizes="152x152" />
+				<link rel="apple-touch-icon" href="/favicon-152.png" sizes="167x167" />
+				<link rel="apple-touch-icon" href="/favicon-180.png" sizes="180x180" />
+			</Head>
+			<style jsx global>{`
+				:root {
+					--type-primary: ${merriweather.style.fontFamily}, serif;
+					--type-secondary: ${spaceMono.style.fontFamily}, monospace;
+				}
+			`}</style>
+			<GoogleReCaptchaProvider reCaptchaKey="6LepEiwjAAAAAN9QFU8RpeY0QXCFoRRVVis2B-iF">
+				{isProductionEnvironment() && (
+					<>
+						{/* Hotjar Tracking Code for Cancer Models Org */}
+						<Script id="hotjar" strategy="afterInteractive">
+							{`(function(h,o,t,j,a,r){
                   h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
                   h._hjSettings={hjid:${HJ_ID},hjsv:6};
                   a=o.getElementsByTagName('head')[0];
@@ -141,34 +114,31 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
                   r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
                   a.appendChild(r);
               })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
-							</Script>
-							{/* Google Analytics code */}
-							<Script
-								strategy="beforeInteractive"
-								src="https://www.googletagmanager.com/gtag/js?id=G-34S5KH94SX"
-							/>
-							<Script id="google-analytics" strategy="beforeInteractive">
-								{`window.dataLayer = window.dataLayer || [];
+						</Script>
+						{/* Google Analytics code */}
+						<Script
+							strategy="afterInteractive"
+							src="https://www.googletagmanager.com/gtag/js?id=G-34S5KH94SX"
+						/>
+						<Script id="google-analytics" strategy="afterInteractive">
+							{`window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);}
                   gtag('js', new Date());
                   gtag('config', 'G-34S5KH94SX', {
                       page_path: window.location.pathname,
                   });`}
-							</Script>
-						</>
-					)}
-					<CookiesProvider
-						cookies={isBrowser ? undefined : new Cookies(cookies)}
-					>
-						<Layout>
-							<>
-								<ReactQueryDevtools initialIsOpen={false} />
-								<Component {...pageProps} />
-							</>
-						</Layout>
-					</CookiesProvider>
-				</GoogleReCaptchaProvider>
-			</QueryClientProvider>
+						</Script>
+					</>
+				)}
+				<CookiesProvider
+					cookies={isBrowser ? undefined : new Cookies(cookies)}
+					defaultSetOptions={{ path: "/" }}
+				>
+					<Layout>
+						<Component {...pageProps} />
+					</Layout>
+				</CookiesProvider>
+			</GoogleReCaptchaProvider>
 		</>
 	);
 }

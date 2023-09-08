@@ -8,6 +8,7 @@ import { onFilterChangeType } from "../../pages/search";
 import { IFacetSidebarSelection } from "../../types/Facet.model";
 import Fragment from "../Fragment/Fragment";
 import { useRouter } from "next/router";
+import Label from "../Input/Label";
 
 interface ISearchBarProps {
 	id: string;
@@ -56,9 +57,12 @@ const SearchBar = (props: ISearchBarProps) => {
 
 	return (
 		<>
-			<p className="mb-0 text-white" id="searchBar-label">
-				Search by cancer diagnosis
-			</p>
+			<Label
+				className="mb-0 text-white"
+				label="Search by cancer diagnosis"
+				forId={props.id}
+				name={props.name}
+			/>
 			<Select
 				instanceId={props.id}
 				id={props.id}
