@@ -177,7 +177,7 @@ const Overview: NextPage = () => {
 										onBarClick={onGraphClick}
 										data={modelsByMutatedGene.data}
 										rotateTicks={true}
-										indexKey="makers_with_mutation_data"
+										indexKey="markers_with_mutation_data"
 									/>
 								</div>
 							)}
