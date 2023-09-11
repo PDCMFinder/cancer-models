@@ -8,7 +8,7 @@ import Card from "../../Card/Card";
 
 const NavDesktop = (props: INavProps) => {
 	return (
-		<nav className={styles["Navbar-desktop"]}>
+		<nav className={styles["Navbar-desktop"]} data-test="navbar-desktop">
 			<div className="container">
 				<div className="row align-center">
 					<div className="col-3">
@@ -20,9 +20,7 @@ const NavDesktop = (props: INavProps) => {
 						</Link>
 					</div>
 					<div className="col-9 col-xl-7 offset-xl-2">
-						<ul
-							className={`ul-noStyle align-center justify-content-between m-0 ${styles["Navbar-desktop_item-primary"]}`}
-						>
+						<ul className="ul-noStyle align-center justify-content-between m-0">
 							{props.routes.map((route: IRoute) => {
 								let link = null,
 									children = route.children,
@@ -61,7 +59,11 @@ const NavDesktop = (props: INavProps) => {
 									});
 
 									return (
-										<li key={path || name} className="dropdownParent">
+										<li
+											key={path || name}
+											className="dropdownParent"
+											data-test="navbar-desktop-dropdownParent"
+										>
 											<Button
 												color="light"
 												priority="secondary"
@@ -74,6 +76,7 @@ const NavDesktop = (props: INavProps) => {
 											<Card
 												className="dropdownChildren dropdownChildren-flushRight"
 												contentClassName="p-0"
+												data-test="navbar-desktop-dropdownChildren"
 											>
 												<ul className={`${styles.Navbar_dropdown} ul-noStyle`}>
 													{childrenItems}

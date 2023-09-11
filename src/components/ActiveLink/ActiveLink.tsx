@@ -14,7 +14,9 @@ const ActiveLink = ({
 	...props
 }: PropsWithChildren<ActiveLinkProps>) => {
 	const { asPath, isReady } = useRouter();
-	const [computedClassName, setComputedClassName] = useState(className);
+	const [computedClassName, setComputedClassName] =
+		useState<string | undefined>(className);
+	const [isActive, setIsActive] = useState<boolean>(false);
 
 	useEffect(() => {
 		// Check if the router fields are updated client-side
@@ -28,6 +30,8 @@ const ActiveLink = ({
 
 			// Using URL().pathname to get rid of query and hash
 			const activePathname = new URL(asPath, location.href).pathname;
+
+			setIsActive(linkPathname === activePathname);
 
 			const newClassName =
 				linkPathname === activePathname
@@ -49,7 +53,11 @@ const ActiveLink = ({
 	]);
 
 	return (
-		<Link className={computedClassName} {...props}>
+		<Link
+			className={computedClassName}
+			{...props}
+			data-test={isActive ? "activeLink-active" : undefined}
+		>
 			{children}
 		</Link>
 	);
