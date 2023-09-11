@@ -217,8 +217,8 @@ const Search: NextPage = () => {
 			}
 		});
 
-	const searchResultsQuery = useQuery(
-		[
+	const searchResultsQuery = useQuery({
+		queryKey: [
 			"search-results",
 			{
 				searchValues: [],
@@ -227,8 +227,11 @@ const Search: NextPage = () => {
 				sortBy,
 			},
 		],
-		async () => getSearchResults([], searchFilterState, resultsPerPage, sortBy)
-	);
+		queryFn: async () =>
+			getSearchResults([], searchFilterState, resultsPerPage, sortBy),
+		refetchOnWindowFocus: true,
+		cacheTime: 100,
+	});
 
 	useEffect(() => {
 		if (searchFilterState === null) return;
