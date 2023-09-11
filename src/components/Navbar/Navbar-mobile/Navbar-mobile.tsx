@@ -32,7 +32,7 @@ const NavMobile = (props: INavProps) => {
 	};
 
 	return (
-		<nav className={styles["Navbar-mobile"]}>
+		<nav className={styles["Navbar-mobile"]} data-test="navbar-mobile">
 			<div className={`container text-white ${styles["Navbar-mobile_topBar"]}`}>
 				<div className="row align-center">
 					<div className="col-8">
@@ -53,7 +53,10 @@ const NavMobile = (props: INavProps) => {
 			</div>
 			{/* Container with menu items */}
 			{isMenuOpen && (
-				<div className={`text-white ${styles["Navbar-mobile_menu"]}`}>
+				<div
+					className={`text-white ${styles["Navbar-mobile_menu"]}`}
+					data-test="navbar-mobile-menu"
+				>
 					<div className="container d-flex flex-column justify-content-between h-100 text-center">
 						<div className="row">
 							<div className="col">
