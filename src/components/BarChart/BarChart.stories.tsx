@@ -18,5 +18,5 @@ Component.args = {
 	chartTitle: "Models by mutation data",
 	data: mockData,
 	onBarClick: () => alert("Click"),
-	indexKey: "makers_with_mutation_data",
+	indexKey: "markers_with_mutation_data",
 };

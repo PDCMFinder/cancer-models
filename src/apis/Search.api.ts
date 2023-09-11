@@ -122,8 +122,8 @@ export async function getSearchResults(
 				"breast_cancer_biomarkers",
 				"treatment_list",
 				"model_treatment_list",
-				"makers_with_cna_data",
-				"makers_with_mutation_data",
+				"markers_with_cna_data",
+				"markers_with_mutation_data",
 				"makers_with_expression_data",
 				"makers_with_cytogenetics_data",
 			];
@@ -196,8 +196,8 @@ export async function getSearchResults(
 function mapApiFacet(apiFacet: any): IFacetProps {
 	const autocompleteFacets = ["external_model_id"];
 	const multiValuedFacets = [
-		"makers_with_mutation_data",
-		"makers_with_cna_data",
+		"markers_with_mutation_data",
+		"markers_with_cna_data",
 		"makers_with_expression_data",
 		"makers_with_cytogenetics_data",
 		"treatment_list",

@@ -102,7 +102,7 @@ export async function getModelsByMutatedGene() {
 	return response.json().then((d: Array<any>) => {
 		var i;
 		for (i = 0; i < d.length; i++) {
-			d[i]["makers_with_mutation_data"] = d[i]["mutated_gene"];
+			d[i]["markers_with_mutation_data"] = d[i]["mutated_gene"];
 			delete d[i]["mutated_gene"];
 		}
 
