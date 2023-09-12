@@ -148,5 +148,11 @@ export default CancerModels;
 CancerModels.getInitialProps = async (appContext: AppContext) => {
 	const appProps = await App.getInitialProps(appContext);
 
+	// bfcache ; ssr caching
+	appContext.ctx.res?.setHeader(
+		"Cache-Control",
+		"public, s-maxage=10, stale-while-revalidate=59"
+	);
+
 	return { ...appProps, cookies: appContext.ctx.req?.headers?.cookie };
 };
