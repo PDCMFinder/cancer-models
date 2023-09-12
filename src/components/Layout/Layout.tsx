@@ -10,29 +10,29 @@ import Loader from "../Loader/Loader";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
-const DynamicModal = dynamic(() => import("../Modal/Modal"), {
+const DynamicModal = dynamic(import("../Modal/Modal"), {
 	loading: () => (
 		<div style={{ height: "300px" }}>
 			<Loader />
 		</div>
 	),
+	ssr: false,
 });
-const DynamicCookieConsent = dynamic(
-	() => import("../CookieConsent/CookieConsent"),
-	{
-		loading: () => (
-			<div style={{ height: "100px" }}>
-				<Loader />
-			</div>
-		),
-	}
-);
+const DynamicCookieConsent = dynamic(import("../CookieConsent/CookieConsent"), {
+	loading: () => (
+		<div style={{ height: "100px" }}>
+			<Loader />
+		</div>
+	),
+	ssr: false,
+});
 const DynamicFooter = dynamic(() => import("../Footer/Footer"), {
 	loading: () => (
 		<div style={{ height: "300px" }}>
 			<Loader />
 		</div>
 	),
+	ssr: false,
 });
 
 interface ILayoutProps {

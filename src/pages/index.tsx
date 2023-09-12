@@ -14,6 +14,30 @@ import { getCancerHierarchy, getModelCount } from "../apis/AggregatedData.api";
 import { useRouter } from "next/router";
 import Loader from "../components/Loader/Loader";
 import SearchBar from "../components/SearchBar/SearchBar";
+import dynamic from "next/dynamic";
+
+const DynamicDataCountCard = dynamic(
+	import("../components/DataCountCard/DataCountCard"),
+	{
+		loading: () => (
+			<div style={{ height: "300px" }}>
+				<Loader />
+			</div>
+		),
+		ssr: false,
+	}
+);
+const DynamicCirclePacking = dynamic(
+	import("../components/CirclePacking/CirclePacking"),
+	{
+		loading: () => (
+			<div style={{ height: "300px" }}>
+				<Loader />
+			</div>
+		),
+		ssr: false,
+	}
+);
 
 const Home: NextPage = () => {
 	const { windowWidth } = useWindowDimensions();
@@ -91,7 +115,7 @@ const Home: NextPage = () => {
 								>
 									{!cancerHierarchyQuery.isLoading &&
 									cancerHierarchyQuery.data ? (
-										<CirclePacking
+										<DynamicCirclePacking
 											data={cancerHierarchyQuery.data}
 											onCircleClick={(circleId, circleDepth) => {
 												const searchPrefix =
@@ -143,7 +167,7 @@ const Home: NextPage = () => {
 					<section className="pt-0">
 						<div className="container">
 							<div className="row">
-								<DataCountCard />
+								<DynamicDataCountCard />
 							</div>
 						</div>
 					</section>
@@ -171,7 +195,7 @@ const Home: NextPage = () => {
 							</div>
 							<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
 								<div className="col-12 col-lg-3 col-xl-2 offset-lg-1 offset-xl-1">
-									<DataCountCard />
+									<DynamicDataCountCard />
 								</div>
 							</ShowHide>
 						</div>

@@ -8,7 +8,6 @@ import Layout from "../components/Layout/Layout";
 import Head from "next/head";
 import handleBodyClass from "../utils/handleBodyClass";
 import { Cookies, CookiesProvider } from "react-cookie";
-import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import Script from "next/script";
 import { HJ_ID } from "../utils/hotjar";
 
@@ -101,12 +100,11 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 					--type-secondary: ${spaceMono.style.fontFamily}, monospace;
 				}
 			`}</style>
-			<GoogleReCaptchaProvider reCaptchaKey="6LepEiwjAAAAAN9QFU8RpeY0QXCFoRRVVis2B-iF">
-				{isProductionEnvironment() && (
-					<>
-						{/* Hotjar Tracking Code for Cancer Models Org */}
-						<Script id="hotjar" strategy="afterInteractive">
-							{`(function(h,o,t,j,a,r){
+			{isProductionEnvironment() && (
+				<>
+					{/* Hotjar Tracking Code for Cancer Models Org */}
+					<Script id="hotjar" strategy="afterInteractive">
+						{`(function(h,o,t,j,a,r){
                   h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
                   h._hjSettings={hjid:${HJ_ID},hjsv:6};
                   a=o.getElementsByTagName('head')[0];
@@ -114,31 +112,30 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
                   r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
                   a.appendChild(r);
               })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
-						</Script>
-						{/* Google Analytics code */}
-						<Script
-							strategy="afterInteractive"
-							src="https://www.googletagmanager.com/gtag/js?id=G-34S5KH94SX"
-						/>
-						<Script id="google-analytics" strategy="afterInteractive">
-							{`window.dataLayer = window.dataLayer || [];
+					</Script>
+					{/* Google Analytics code */}
+					<Script
+						strategy="afterInteractive"
+						src="https://www.googletagmanager.com/gtag/js?id=G-34S5KH94SX"
+					/>
+					<Script id="google-analytics" strategy="afterInteractive">
+						{`window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);}
                   gtag('js', new Date());
                   gtag('config', 'G-34S5KH94SX', {
                       page_path: window.location.pathname,
                   });`}
-						</Script>
-					</>
-				)}
-				<CookiesProvider
-					cookies={isBrowser ? undefined : new Cookies(cookies)}
-					defaultSetOptions={{ path: "/" }}
-				>
-					<Layout>
-						<Component {...pageProps} />
-					</Layout>
-				</CookiesProvider>
-			</GoogleReCaptchaProvider>
+					</Script>
+				</>
+			)}
+			<CookiesProvider
+				cookies={isBrowser ? undefined : new Cookies(cookies)}
+				defaultSetOptions={{ path: "/" }}
+			>
+				<Layout>
+					<Component {...pageProps} />
+				</Layout>
+			</CookiesProvider>
 		</>
 	);
 }
@@ -151,7 +148,7 @@ CancerModels.getInitialProps = async (appContext: AppContext) => {
 	// bfcache ; ssr caching
 	appContext.ctx.res?.setHeader(
 		"Cache-Control",
-		"public, s-maxage=10, stale-while-revalidate=59"
+		"public, s-maxage=100, stale-while-revalidate=590"
 	);
 
 	return { ...appProps, cookies: appContext.ctx.req?.headers?.cookie };
