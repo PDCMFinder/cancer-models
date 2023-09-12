@@ -10,6 +10,7 @@ interface ICardProps {
 	footer?: JSX.Element;
 	footerClassName?: string;
 	style?: CSSProperties;
+	"data-test"?: string;
 }
 
 const Card = (props: ICardProps) => {
@@ -24,6 +25,7 @@ const Card = (props: ICardProps) => {
 		<div
 			className={`${styles.Card} ${cardClassName ? cardClassName : ""}`.trim()}
 			style={props.style}
+			data-test={props["data-test"]}
 		>
 			{header && (
 				<div className={`${styles.Card_header} ${headerClassName}`.trim()}>

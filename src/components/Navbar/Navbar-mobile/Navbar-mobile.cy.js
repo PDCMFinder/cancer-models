@@ -7,10 +7,10 @@ context("Mobile navbar", () => {
 
 	it("should open and close menu tray", () => {
 		cy.viewport("iphone-8");
-		cy.get(".Navbar-mobile_Navbar-mobile__1mR5D button")
+		cy.get("[data-test='navbar-mobile'] button")
 			.should("contain", "Menu")
 			.click();
-		cy.get(".Navbar-mobile_Navbar-mobile_menu__UL_M7").should("exist");
-		cy.get(".Navbar-mobile_Navbar-mobile__1mR5D button").realTouch();
+		cy.get("[data-test='navbar-mobile-menu']").should("exist");
+		cy.get("[data-test='navbar-mobile'] button").realTouch();
 	});
 });

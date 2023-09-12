@@ -1,12 +1,14 @@
+const path = "/submit";
+
 context("ActiveLink", () => {
 	beforeEach(() => {
-		cy.visit("/");
+		cy.visit(path);
 	});
 
 	it("should set current page nav link class", () => {
-		cy.get('a[href="/"]').should(
-			"have.class",
-			"Navbar-desktop_Navbar_item_link-active__jAem_"
-		);
+		// same path as beforeEach visit so it's current page user is in
+		cy.get(`a[href="${path}"]`)
+			.should("have.attr", "data-test")
+			.and("equals", "activeLink-active");
 	});
 });

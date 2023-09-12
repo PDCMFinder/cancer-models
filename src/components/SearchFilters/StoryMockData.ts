@@ -123,7 +123,7 @@ export const mockData = [
 				loading: true,
 			},
 			{
-				facetId: "makers_with_cna_data",
+				facetId: "markers_with_cna_data",
 				name: "Copy Number Alteration",
 				type: "multivalued",
 				options: [],
@@ -131,7 +131,7 @@ export const mockData = [
 				loading: true,
 			},
 			{
-				facetId: "makers_with_mutation_data",
+				facetId: "markers_with_mutation_data",
 				name: "Gene mutation",
 				type: "multivalued",
 				options: [],

@@ -102,7 +102,7 @@ export async function getModelsByMutatedGene() {
 	return response.json().then((d: Array<any>) => {
 		var i;
 		for (i = 0; i < d.length; i++) {
-			d[i]["makers_with_mutation_data"] = d[i]["mutated_gene"];
+			d[i]["markers_with_mutation_data"] = d[i]["mutated_gene"];
 			delete d[i]["mutated_gene"];
 		}
 
@@ -209,21 +209,19 @@ export async function getReleaseChangeLog() {
 }
 
 export async function getModelCount() {
-	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/search_index`,
-		{
-			headers: {
-				"Range-Unit": "items",
-				Range: "0-24",
-				Prefer: "count=exact",
-			},
-		}
-	);
+	let response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/info`);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.headers.get("Content-range")?.split("/")[1];
+	return response
+		.json()
+		.then(
+			(d) =>
+				d.filter(
+					(el: { value: string; key: string }) => el.key === "total_models"
+				)[0].value
+		);
 }
 
 export async function getProviderCount() {
