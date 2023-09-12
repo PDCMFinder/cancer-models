@@ -10,7 +10,7 @@ interface ICardProps {
 	footer?: JSX.Element;
 	footerClassName?: string;
 	style?: CSSProperties;
-	"data-test": string;
+	"data-test"?: string;
 }
 
 const Card = (props: ICardProps) => {
