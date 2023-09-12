@@ -134,55 +134,55 @@ const Search: NextPage = () => {
 
 			return newState;
 		},
-		null
+		{}
 	);
 
-	const searchFacetSectionsQuery = useQuery(
-		"search-facet-sections",
-		() => getSearchFacets(),
-		{
-			onSuccess(data) {
-				const initialSearchFilterState: any = {};
-				const stateFromUrl: any = {};
-				const filters = router.query["filters"]
-					? (router.query["filters"] as string).split(" AND ")
-					: [];
-				filters.forEach((filterStr) => {
-					const filterOperatorStr = filterStr.split(":")[0];
-					const filterId = filterOperatorStr.split(".")[0];
-					const operator =
-						filterOperatorStr.split(".").length > 1 ? "ALL" : "ANY";
-					const selection = filterStr.split(":")[1].split(",");
-					stateFromUrl[filterId] = { operator, selection };
-				});
+	const searchFacetSectionsQuery = useQuery({
+		queryKey: "search-facet-sections",
+		queryFn: () => getSearchFacets(),
+		onSuccess(data) {
+			const initialSearchFilterState: any = {};
+			const stateFromUrl: any = {};
+			const filters = router.query["filters"]
+				? (router.query["filters"] as string).split(" AND ")
+				: [];
+			filters.forEach((filterStr) => {
+				const filterOperatorStr = filterStr.split(":")[0];
+				const filterId = filterOperatorStr.split(".")[0];
+				const operator =
+					filterOperatorStr.split(".").length > 1 ? "ALL" : "ANY";
+				const selection = filterStr.split(":")[1].split(",");
+				stateFromUrl[filterId] = { operator, selection };
+			});
 
-				const addInitialSearchFilter = (id: string) => {
-					initialSearchFilterState[id] = stateFromUrl[id]
-						? stateFromUrl[id]
-						: {
-								operator: "ANY",
-								selection: [],
-						  };
-				};
+			const addInitialSearchFilter = (id: string) => {
+				initialSearchFilterState[id] = stateFromUrl[id]
+					? stateFromUrl[id]
+					: {
+							operator: "ANY",
+							selection: [],
+					  };
+			};
 
-				data?.forEach((section) =>
-					section.facets.forEach((facet) => {
-						addInitialSearchFilter(facet.facetId);
-					})
-				);
+			data?.forEach((section) =>
+				section.facets.forEach((facet) => {
+					addInitialSearchFilter(facet.facetId);
+				})
+			);
 
-				ignoredFilterValues.forEach((id) => addInitialSearchFilter(id));
+			ignoredFilterValues.forEach((id) => addInitialSearchFilter(id));
 
-				searchFilterDispatch({
-					type: "init",
-					initialState: initialSearchFilterState,
-					selection: "",
-					filterId: "",
-					operator: "",
-				});
-			},
-		}
-	);
+			searchFilterDispatch({
+				type: "init",
+				initialState: initialSearchFilterState,
+				selection: "",
+				filterId: "",
+				operator: "",
+			});
+		},
+		refetchOnWindowFocus: true,
+		cacheTime: 1000,
+	});
 	const searchFacetSections = searchFacetSectionsQuery.data;
 
 	const searchFacetQueries = useQueries(
@@ -229,8 +229,6 @@ const Search: NextPage = () => {
 		],
 		queryFn: async () =>
 			getSearchResults([], searchFilterState, resultsPerPage, sortBy),
-		refetchOnWindowFocus: true,
-		cacheTime: 100,
 	});
 
 	useEffect(() => {
