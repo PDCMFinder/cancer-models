@@ -41,11 +41,11 @@ Component.args = {
 			operator: "ANY",
 			selection: [],
 		},
-		makers_with_cytogenetics_data: {
+		markers_with_cytogenetics_data: {
 			operator: "ANY",
 			selection: [],
 		},
-		makers_with_expression_data: {
+		markers_with_expression_data: {
 			operator: "ANY",
 			selection: [],
 		},
