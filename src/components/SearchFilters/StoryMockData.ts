@@ -107,7 +107,7 @@ export const mockData = [
 				loading: true,
 			},
 			{
-				facetId: "makers_with_cytogenetics_data",
+				facetId: "markers_with_cytogenetics_data",
 				name: "Cytogenetics",
 				type: "multivalued",
 				options: [],
@@ -115,7 +115,7 @@ export const mockData = [
 				loading: true,
 			},
 			{
-				facetId: "makers_with_expression_data",
+				facetId: "markers_with_expression_data",
 				name: "Gene Expression",
 				type: "multivalued",
 				options: [],
