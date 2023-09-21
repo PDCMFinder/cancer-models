@@ -19,12 +19,20 @@ import Button from "../components/Button/Button";
 import SearchBar from "../components/SearchBar/SearchBar";
 import breakPoints from "../utils/breakpoints";
 import useWindowDimensions from "../hooks/useWindowDimensions";
-import Modal from "../components/Modal/Modal";
 import ShowHide from "../components/ShowHide/ShowHide";
-import { createPortal } from "react-dom";
 import Card from "../components/Card/Card";
 import CloseIcon from "../components/CloseIcon/CloseIcon";
 import { NextPage } from "next/types";
+import dynamic from "next/dynamic";
+
+const DynamicModal = dynamic(import("../components/Modal/Modal"), {
+	loading: () => (
+		<div style={{ height: "300px" }}>
+			<Loader />
+		</div>
+	),
+	ssr: false,
+});
 
 export interface onFilterChangeType {
 	type: "add" | "remove" | "clear" | "toggleOperator" | "init" | "substitute";
@@ -181,6 +189,7 @@ const Search: NextPage = () => {
 			});
 		},
 		refetchOnWindowFocus: true,
+		// staleTime: 120000,
 		cacheTime: 1000,
 	});
 	const searchFacetSections = searchFacetSectionsQuery.data;
@@ -343,7 +352,7 @@ const Search: NextPage = () => {
 		<Loader style={{ height: "auto !important" }} />
 	);
 	const ModalSearchFiltersComponent = (
-		<Modal
+		<DynamicModal
 			modalWidth="100"
 			verticalAlign="top"
 			handleClose={() => setShowFilters(false)}
@@ -366,7 +375,7 @@ const Search: NextPage = () => {
 			>
 				{SearchFiltersComponent}
 			</Card>
-		</Modal>
+		</DynamicModal>
 	);
 
 	let modelCount = useQuery("modelCount", () => {
@@ -479,8 +488,7 @@ const Search: NextPage = () => {
 								</ShowHide>
 							</div>
 							{windowWidth < bpLarge
-								? showFilters &&
-								  createPortal(ModalSearchFiltersComponent, document.body)
+								? showFilters && ModalSearchFiltersComponent
 								: SearchFiltersComponent}
 						</div>
 						<div className="col-12 col-lg-9">
@@ -510,84 +518,81 @@ const Search: NextPage = () => {
 							</div>
 						</div>
 					</div>
-					{modelsToCompare[0]
-						? createPortal(
-								<div className="row position-sticky bottom-0">
-									<div className="col-10 offset-1">
-										<Card
-											className="bg-primary-quaternary mb-2"
-											contentClassName="py-2"
-										>
-											<div className="d-flex align-center justify-content-between">
-												<p className="m-0">
-													<b>Compare up to 4 models: </b>
-													{modelsToCompare.map((model, idx) => {
-														const clearX = (
-															<sup>
-																<Button
-																	color="dark"
-																	priority="secondary"
-																	className="text-underline m-0 ml-1"
-																	style={{ padding: ".2rem .3rem" }}
-																	onClick={() =>
-																		setModelsToCompare((prev) =>
-																			prev.filter(
-																				(prevModel) => prevModel !== model
-																			)
-																		)
-																	}
-																>
-																	X
-																</Button>
-															</sup>
-														);
+					{modelsToCompare[0] ? (
+						<div className="row position-sticky bottom-0 mt-5">
+							<div className="col-10 offset-1">
+								<Card
+									className="bg-primary-quaternary mb-2"
+									contentClassName="py-2"
+								>
+									<div className="d-flex align-center justify-content-between">
+										<p className="m-0">
+											<b>Compare up to 4 models: </b>
+											{modelsToCompare.map((model, idx) => {
+												const clearX = (
+													<sup>
+														<Button
+															color="dark"
+															priority="secondary"
+															className="text-underline m-0 ml-1"
+															style={{ padding: ".2rem .3rem" }}
+															onClick={() =>
+																setModelsToCompare((prev) =>
+																	prev.filter(
+																		(prevModel) => prevModel !== model
+																	)
+																)
+															}
+														>
+															X
+														</Button>
+													</sup>
+												);
 
-														if (idx === 0) {
-															return (
-																<React.Fragment key={model}>
-																	{model}
-																	{clearX}
-																</React.Fragment>
-															);
-														}
+												if (idx === 0) {
+													return (
+														<React.Fragment key={model}>
+															{model}
+															{clearX}
+														</React.Fragment>
+													);
+												}
 
-														return (
-															<React.Fragment key={model}>
-																{" "}
-																<span className="text-primary-tertiary">
-																	+
-																</span>{" "}
-																{model}
-																{clearX}
-															</React.Fragment>
-														);
-													})}
-												</p>
-												<div className="d-flex">
-													<Button
-														color="dark"
-														priority="primary"
-														className="my-1 py-1"
-														onClick={() => compareModels()}
-													>
-														Compare
-													</Button>
-													<Button
-														color="dark"
-														priority="secondary"
-														className="my-1 ml-1 py-1"
-														onClick={() => setModelsToCompare([])}
-													>
-														Clear
-													</Button>
-												</div>
-											</div>
-										</Card>
+												return (
+													<React.Fragment key={model}>
+														{" "}
+														<span className="text-primary-tertiary">
+															+
+														</span>{" "}
+														{model}
+														{clearX}
+													</React.Fragment>
+												);
+											})}
+										</p>
+										<div className="d-flex">
+											<Button
+												color="dark"
+												priority="primary"
+												className="my-1 py-1"
+												onClick={() => compareModels()}
+											>
+												Compare
+											</Button>
+											<Button
+												color="dark"
+												priority="secondary"
+												className="my-1 ml-1 py-1"
+												onClick={() => setModelsToCompare([])}
+											>
+												Clear
+											</Button>
+										</div>
 									</div>
-								</div>,
-								document.getElementsByTagName("main")[0] as HTMLElement
-						  )
-						: null}
+								</Card>
+							</div>
+						</div>
+					) : null}
 				</div>
 			</section>
 		</>
