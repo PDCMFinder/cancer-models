@@ -153,6 +153,9 @@ a {
 	transition: 0.3s;
 	&:hover {
 		transition: 0.3s;
+	}
+	&:not([class^="Button"]):hover {
+		transition: 0.3s;
 		color: lighten($color-secondary-primary, 1%) !important;
 	}
 }
