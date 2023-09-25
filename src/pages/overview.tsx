@@ -3,7 +3,6 @@ import BarChart from "../components/BarChart/BarChart";
 import DonutChart from "../components/DonutChart/DonutChart";
 import SunBurstChart from "../components/SunBurstChart/SunBurstChart";
 import Button from "../components/Button/Button";
-import breakPoints from "../utils/breakpoints";
 import { useQuery } from "react-query";
 import {
 	getCancerHierarchy,
@@ -21,23 +20,6 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { countEthnicity } from "../utils/collapseEthnicity";
-import ShowHide from "../components/ShowHide/ShowHide";
-import Loader from "../components/Loader/Loader";
-import dynamic from "next/dynamic";
-import useWindowDimensions from "../hooks/useWindowDimensions";
-import styles from "./overview.module.scss";
-
-const DynamicCirclePacking = dynamic(
-	import("../components/CirclePacking/CirclePacking"),
-	{
-		loading: () => (
-			<div style={{ height: "300px" }}>
-				<Loader />
-			</div>
-		),
-		ssr: false,
-	}
-);
 
 function collapseAgeGroup(
 	ageGroupList: { patient_age: string; count: number }[]
@@ -80,12 +62,6 @@ function collapseAgeGroup(
 }
 
 const Overview: NextPage = () => {
-	const { windowWidth } = useWindowDimensions();
-	let bpLarge = breakPoints.large;
-
-	let cancerHierarchyQuery = useQuery("cancerHierarchy", () => {
-		return getCancerHierarchy();
-	});
 	let modelsByCancerHierarchy = useQuery("modelsByCancerHierarchy", () => {
 		return getCancerHierarchy();
 	});
@@ -171,44 +147,6 @@ const Overview: NextPage = () => {
 							</div>
 						</div>
 						<div className="col-12 col-lg-5 mb-5">
-							<ShowHide windowWidth={windowWidth || 0} showOver={bpLarge}>
-								<div
-									className={`col-12 col-md-10 col-lg-5 offset-md-1 offset-lg-0 ${styles.circlePacking_col}`}
-								>
-									{/* Graph */}
-									<div
-										style={{
-											backgroundColor: "#085154",
-											aspectRatio: "1",
-											borderRadius: "500%",
-										}}
-									>
-										{!cancerHierarchyQuery.isLoading &&
-										cancerHierarchyQuery.data ? (
-											<DynamicCirclePacking
-												data={cancerHierarchyQuery.data}
-												onCircleClick={(circleId, circleDepth) => {
-													const searchPrefix =
-														circleDepth === 1
-															? `?filters=cancer_system:`
-															: `?filters=search_terms:`;
-													const termSuffix = circleDepth === 1 ? "Cancer" : "";
-													const search = `${searchPrefix}${encodeURIComponent(
-														circleId + termSuffix
-													)}`;
-
-													router.push({
-														pathname: "/search",
-														search,
-													});
-												}}
-											/>
-										) : (
-											<Loader />
-										)}
-									</div>
-								</div>
-							</ShowHide>
 							{modelsByPrimarySite.data && modelsByPrimarySite.data.length > 0 && (
 								<div style={{ height: "600px", width: "100%" }}>
 									<DonutChart
