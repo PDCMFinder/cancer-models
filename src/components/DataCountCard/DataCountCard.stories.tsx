@@ -8,7 +8,7 @@ export default {
 
 const Template: ComponentStory<typeof DataCountCard> = (args) => (
 	<div style={{ width: "300px" }}>
-		<DataCountCard />
+		<DataCountCard layout="horizontal" />
 	</div>
 );
 
