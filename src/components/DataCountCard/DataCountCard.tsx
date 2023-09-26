@@ -6,7 +6,11 @@ import { useQuery } from "react-query";
 import { capitalizeFirstLetter } from "../../utils/dataUtils";
 import Loader from "../Loader/Loader";
 
-const DataCountCard = () => {
+interface IDataCountCardProps {
+	layout: "vertical" | "horizontal";
+}
+
+const DataCountCard = ({ layout }: IDataCountCardProps) => {
 	let modelsByTypeCountsQuery = useQuery("modelsByTypeCounts", () => {
 		return getModelsByType();
 	});
@@ -18,7 +22,9 @@ const DataCountCard = () => {
 					?.filter((d) => d.modelType !== "other")
 					.map((d) => (
 						<div
-							className={`${styles.DataCountCard_item} col-6 col-lg-12`}
+							className={`${styles.DataCountCard_item} col-6 ${
+								layout === "vertical" ? "col-lg-12" : "col-lg-4"
+							}`}
 							key={d.modelType}
 						>
 							<Link
