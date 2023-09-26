@@ -66,73 +66,58 @@ const Home: NextPage = () => {
 					</div>
 				</div>
 			</header>
-			<section>
+			<section className="pt-1">
 				<div className="container">
-					<div className="row justify-content-center">
-						<div className="col-10">
+					<div className="row justify-content-center mb-5">
+						<div className="col-10 col-lg-8 col-xxx-6">
 							<DataCountCard layout="horizontal" />
 						</div>
 					</div>
-					<div className="row align-center">
-						<div className="col-12 col-lg-6 offset-lg-1">
-							<h2>
-								We can collect and display your data making you more
-								discoverable and visible for end-users.
-							</h2>
-							<p>
-								All submitted models adhere to the PDX-MI standard making it
-								easy for researchers to search and compare models of interest.
-							</p>
-							<div className="text-center text-lg-left">
-								<Button
-									priority="primary"
-									color="dark"
-									href="/submit"
-									htmlTag="a"
-								>
-									Submit data
-								</Button>
-							</div>
+					<div className="row justify-content-center">
+						<div className="col-12 col-lg-8 text-center">
+							<h1 className="h2 my-5">
+								Find the right PDX, organoid and cell line patient-derived
+								cancer model for your next project.
+							</h1>
+							<h2 className="h3">Explore and analyse the data.</h2>
+							<h2 className="h3">Connect with model providers.</h2>
+							<h2 className="h3">All in one platform.</h2>
+							<Button
+								color="dark"
+								priority="primary"
+								htmlTag="a"
+								href="/overview"
+								className="mb-0 mt-5"
+							>
+								Explore data overview
+							</Button>
 						</div>
 					</div>
 				</div>
 			</section>
 			<section className="pb-0">
-				<ShowHide hideOver={bpLarge} windowWidth={windowWidth || 0}>
-					<section className="pt-0">
-						<div className="container">
-							<div className="row">
-								<DataCountCard layout="vertical" />
-							</div>
-						</div>
-					</section>
-				</ShowHide>
 				<section className="bg-primary-tertiary">
-					<div className="container">
-						<div className="row align-center">
-							<div className="col-12 col-lg-8 offset-lg- text-center text-white">
-								<h1 className="h2 mb-5">
-									Find the right PDX, organoid and cell line patient-derived
-									cancer model for your next project.
-								</h1>
-								<h2 className="h3">Explore and analyse the data.</h2>
-								<h2 className="h3">Connect with model providers.</h2>
-								<h2 className="h3">All in one platform.</h2>
+					<div className="container my-4">
+						<div className="row justify-content-center">
+							<div className="col-12 col-lg-6 text-center text-white">
+								<h2 className="mt-0">
+									We can collect and display your data making you more
+									discoverable and visible for end-users.
+								</h2>
+								<p className="mb-2">
+									All submitted models adhere to the PDX-MI standard making it
+									easy for researchers to search and compare models of interest.
+								</p>
 								<Button
-									color="white"
 									priority="primary"
+									color="dark"
+									href="/submit"
 									htmlTag="a"
-									href="/overview"
-									className="mt-5"
+									className="mb-0 mt-5"
 								>
-									Explore data overview
+									Submit data
 								</Button>
 							</div>
-							<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
-								<div className="col-12 col-lg-3 col-xl-2 offset-lg-1 offset-xl-1">
-									<DataCountCard layout="vertical" />
-								</div>
-							</ShowHide>
 						</div>
 					</div>
 				</section>

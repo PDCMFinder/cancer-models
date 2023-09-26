@@ -163,45 +163,40 @@ const Overview: NextPage = () => {
 								</Button>
 							</div>
 						</div>
-
-						<ShowHide windowWidth={windowWidth || 0} showOver={bpLarge}>
+						<div className={`col-12 col-lg-5 mb-5 ${styles.circlePacking_col}`}>
+							{/* Graph */}
 							<div
-								className={`col-12 col-lg-5 mb-5 ${styles.circlePacking_col}`}
+								style={{
+									backgroundColor: "#085154",
+									aspectRatio: "1",
+									borderRadius: "500%",
+								}}
 							>
-								{/* Graph */}
-								<div
-									style={{
-										backgroundColor: "#085154",
-										aspectRatio: "1",
-										borderRadius: "500%",
-									}}
-								>
-									{!cancerHierarchyQuery.isLoading &&
-									cancerHierarchyQuery.data ? (
-										<DynamicCirclePacking
-											data={cancerHierarchyQuery.data}
-											onCircleClick={(circleId, circleDepth) => {
-												const searchPrefix =
-													circleDepth === 1
-														? `?filters=cancer_system:`
-														: `?filters=search_terms:`;
-												const termSuffix = circleDepth === 1 ? "Cancer" : "";
-												const search = `${searchPrefix}${encodeURIComponent(
-													circleId + termSuffix
-												)}`;
+								{!cancerHierarchyQuery.isLoading &&
+								cancerHierarchyQuery.data ? (
+									<DynamicCirclePacking
+										data={cancerHierarchyQuery.data}
+										onCircleClick={(circleId, circleDepth) => {
+											const searchPrefix =
+												circleDepth === 1
+													? `?filters=cancer_system:`
+													: `?filters=search_terms:`;
+											const termSuffix = circleDepth === 1 ? "Cancer" : "";
+											const search = `${searchPrefix}${encodeURIComponent(
+												circleId + termSuffix
+											)}`;
 
-												router.push({
-													pathname: "/search",
-													search,
-												});
-											}}
-										/>
-									) : (
-										<Loader />
-									)}
-								</div>
+											router.push({
+												pathname: "/search",
+												search,
+											});
+										}}
+									/>
+								) : (
+									<Loader />
+								)}
 							</div>
-						</ShowHide>
+						</div>
 					</div>
 					<div className="row mb-5 align-center">
 						<div className="col-12 col-lg-6 order-lg-1 mb-5">

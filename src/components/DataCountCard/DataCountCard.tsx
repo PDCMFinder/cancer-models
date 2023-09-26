@@ -10,21 +10,24 @@ interface IDataCountCardProps {
 	layout: "vertical" | "horizontal";
 }
 
-const DataCountCard = ({ layout }: IDataCountCardProps) => {
+const DataCountCard = (props: IDataCountCardProps) => {
+	const isVertical = props.layout === "vertical";
 	let modelsByTypeCountsQuery = useQuery("modelsByTypeCounts", () => {
 		return getModelsByType();
 	});
 
 	return modelsByTypeCountsQuery.data ? (
 		<Card className="bg-primary-quaternary">
-			<div className="row text-center justify-content-center">
+			<div
+				className={`row text-center justify-content-center row-cols-1 ${
+					isVertical ? "" : "row-cols-lg-3"
+				}`}
+			>
 				{modelsByTypeCountsQuery.data
 					?.filter((d) => d.modelType !== "other")
 					.map((d) => (
 						<div
-							className={`${styles.DataCountCard_item} col-6 ${
-								layout === "vertical" ? "col-lg-12" : "col-lg-4"
-							}`}
+							className={`my-3 col ${isVertical ? "" : "my-lg-0"}`}
 							key={d.modelType}
 						>
 							<Link
@@ -34,7 +37,11 @@ const DataCountCard = ({ layout }: IDataCountCardProps) => {
 								<p className="h2 mb-0">
 									{parseFloat(d.count).toLocaleString()}
 								</p>
-								<p className="text-underline">
+								<p
+									className={`text-underline ${
+										isVertical ? "" : "mb-0"
+									}`.trim()}
+								>
 									{capitalizeFirstLetter(d.modelType)} models
 								</p>
 							</Link>
