@@ -81,109 +81,105 @@ const SearchResult = (props: ISearchResultProps) => {
 	const modelLink = `/data/models/${sourceId}/${pdcmId}`;
 
 	return (
-		<Card className={styles.SearchResult}>
-			<div className="container w-100">
-				<div className="row">
-					<div className="col-12 col-md-6 col-lg-4 d-lg-flex flex-column justify-content-between">
-						<div>
-							<h2 className="h3 m-0">
-								<Link href={modelLink}>{pdcmId}</Link>
-							</h2>
-							<p className="text-capitalize mb-0">
-								<Link href={`/about/providers/${sourceId?.toLowerCase()}`}>
-									{`${providerName?.substring(0, 50)}${
-										providerName?.length > 50 ? "..." : ""
-									}`}
-								</Link>
-							</p>
-						</div>
-						<ShowHide showOver={bpLarge} windowWidth={windowWidth}>
-							{score > 0 && (
-								<QualityBadge
-									score={score}
-									containerClassName="text-muted"
-									className="w-50"
-								/>
-							)}
-						</ShowHide>
-						<p>{histology}</p>
-						<ShowHide hideOver={bpLarge} windowWidth={windowWidth}>
-							{score > 0 && (
-								<QualityBadge
-									score={score}
-									containerClassName="text-muted"
-									className="w-50"
-								/>
-							)}
-						</ShowHide>
-					</div>
-					<div className="col-12 col-md-6 col-lg-4 mt-3 mt-md-0">
-						<div className={`row ${styles.SearchResult_metadata}`}>
-							{metadata.map((data) => {
-								data.data =
-									typeof data.data === "string"
-										? data.data.replace("/", " / ")
-										: data.data ?? "NA";
-
-								return (
-									<div className="col-6" key={data.name}>
-										<p className="text-capitalize">
-											<span>{data.name}</span>
-											<br />
-											{data.data}
-										</p>
-									</div>
-								);
-							})}
-						</div>
-					</div>
-					<div className="col-12 col-md-12 col-lg-4 mt-3 mt-lg-0 d-flex flex-column">
-						<p
-							className={`text-center ${styles.SearchResult_availableData_title}`}
-						>
-							Available data
+		<Card className={`${styles.SearchResult}`}>
+			<div className="row">
+				<div className="col-12 col-md-6 col-lg-4 d-lg-flex flex-column justify-content-between">
+					<div>
+						<h2 className="h3 m-0">
+							<Link href={modelLink}>{pdcmId}</Link>
+						</h2>
+						<p className="text-capitalize mb-0">
+							<Link href={`/about/providers/${sourceId?.toLowerCase()}`}>
+								{`${providerName?.substring(0, 50)}${
+									providerName?.length > 50 ? "..." : ""
+								}`}
+							</Link>
 						</p>
-						<div className={`row ${styles.dataAvailable_grid}`}>
-							{dataTypes.map((dt, idx) => {
-								const hasData = dataAvailable?.includes(dt.key),
-									name = dt.name;
-
-								return (
-									<div key={dt.key} className="col-6 h-fit">
-										<p
-											className={`mb-0 ${!hasData ? "text-muted" : ""}`.trim()}
-										>
-											{hasData ? (
-												<Link
-													href={`${modelLink}#${
-														dt.sectionLink
-															? dt.sectionLink
-															: dt.key.replace(" ", "-")
-													}`}
-												>
-													{name}
-												</Link>
-											) : (
-												name
-											)}
-										</p>
-									</div>
-								);
-							})}
-						</div>
-						<ShowHide showOver={bpLarge} windowWidth={windowWidth}>
-							<InputAndLabel
-								forId={pdcmId}
-								id={pdcmId}
-								name={`${pdcmId}-name`}
-								type="checkbox"
-								label="Add to compare"
-								className="text-smaller mt-2"
-								onChange={props.addModelToCompare}
-								checked={props.compareCheck}
-							/>
-						</ShowHide>
 					</div>
+					<ShowHide showOver={bpLarge} windowWidth={windowWidth}>
+						{score > 0 && (
+							<QualityBadge
+								score={score}
+								containerClassName="text-muted"
+								className="w-50"
+							/>
+						)}
+					</ShowHide>
+					<p>{histology}</p>
+					<ShowHide hideOver={bpLarge} windowWidth={windowWidth}>
+						{score > 0 && (
+							<QualityBadge
+								score={score}
+								containerClassName="text-muted"
+								className="w-50"
+							/>
+						)}
+					</ShowHide>
+				</div>
+				<div className="col-12 col-md-6 col-lg-4 mt-3 mt-md-0">
+					<div className={`row ${styles.SearchResult_metadata}`}>
+						{metadata.map((data) => {
+							data.data =
+								typeof data.data === "string"
+									? data.data.replace("/", " / ")
+									: data.data ?? "NA";
+
+							return (
+								<div className="col-6" key={data.name}>
+									<p className="text-capitalize">
+										<span>{data.name}</span>
+										<br />
+										{data.data}
+									</p>
+								</div>
+							);
+						})}
+					</div>
+				</div>
+				<div className="col-12 col-md-12 col-lg-4 mt-3 mt-lg-0 d-flex flex-column">
+					<p
+						className={`text-center ${styles.SearchResult_availableData_title}`}
+					>
+						Available data
+					</p>
+					<div className={`row ${styles.dataAvailable_grid}`}>
+						{dataTypes.map((dt, idx) => {
+							const hasData = dataAvailable?.includes(dt.key),
+								name = dt.name;
+
+							return (
+								<div key={dt.key} className="col-6 h-fit">
+									<p className={`mb-0 ${!hasData ? "text-muted" : ""}`.trim()}>
+										{hasData ? (
+											<Link
+												href={`${modelLink}#${
+													dt.sectionLink
+														? dt.sectionLink
+														: dt.key.replace(" ", "-")
+												}`}
+											>
+												{name}
+											</Link>
+										) : (
+											name
+										)}
+									</p>
+								</div>
+							);
+						})}
+					</div>
+					<ShowHide showOver={bpLarge} windowWidth={windowWidth}>
+						<InputAndLabel
+							forId={pdcmId}
+							id={pdcmId}
+							name={`${pdcmId}-name`}
+							type="checkbox"
+							label="Add to compare"
+							className="text-smaller mt-2"
+							onChange={props.addModelToCompare}
+							checked={props.compareCheck}
+						/>
+					</ShowHide>
 				</div>
 			</div>
 		</Card>

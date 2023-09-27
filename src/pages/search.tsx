@@ -492,30 +492,26 @@ const Search: NextPage = () => {
 								: SearchFiltersComponent}
 						</div>
 						<div className="col-12 col-lg-9">
-							<div className="row">
-								<div className="col-12">
-									{searchResultsQuery.data ? (
-										<SearchResults
-											compareModel={compareModel}
-											modelsToCompare={modelsToCompare}
-											data={searchResultsQuery.data[1]}
-										/>
-									) : (
-										<SearchResultsLoader amount={resultsPerPage} />
-									)}
-								</div>
-								<div className="col-12">
-									<Pagination
-										totalPages={
-											totalResults !== 0
-												? Math.ceil(totalResults / resultsPerPage)
-												: 1
-										}
-										currentPage={currentPage}
-										onPageChange={(page: number) => changePage(page)}
-									/>
-								</div>
-							</div>
+							{searchResultsQuery.data ? (
+								<SearchResults
+									compareModel={compareModel}
+									modelsToCompare={modelsToCompare}
+									data={searchResultsQuery.data[1]}
+								/>
+							) : (
+								<SearchResultsLoader amount={resultsPerPage} />
+							)}
+						</div>
+						<div className="col-12 col-lg-9 offset-lg-3">
+							<Pagination
+								totalPages={
+									totalResults !== 0
+										? Math.ceil(totalResults / resultsPerPage)
+										: 1
+								}
+								currentPage={currentPage}
+								onPageChange={(page: number) => changePage(page)}
+							/>
 						</div>
 					</div>
 					{modelsToCompare[0] ? (
