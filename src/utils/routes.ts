@@ -6,7 +6,7 @@ export const routes = [
 	{ path: "/submit", name: "Submit" },
 	{ path: "/overview", name: "Overview" },
 	{
-		name: "About",
+		name: "More",
 		children: [
 			{
 				path: "/about",
