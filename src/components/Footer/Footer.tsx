@@ -7,9 +7,7 @@ import Link from "next/link";
 import { useQuery } from "react-query";
 import { getDataReleaseInformation } from "../../apis/AggregatedData.api";
 import { hj_event } from "../../utils/hotjar";
-interface IFooterProps {
-	cookieConsentHeight: number;
-}
+
 interface IFooterProps {
 	cookieConsentHeight: number;
 }
