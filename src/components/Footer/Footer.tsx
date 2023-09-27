@@ -58,7 +58,7 @@ const Footer = (props: IFooterProps) => {
 									{routes.map((route) => {
 										let children = route.children;
 
-										if (route.name === "About" && children) {
+										if (route.name === "More" && children) {
 											return children.map((child) => (
 												<li key={child.path}>
 													<ActiveLink
