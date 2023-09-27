@@ -142,7 +142,7 @@ const Search: NextPage = () => {
 
 			return newState;
 		},
-		{}
+		null
 	);
 
 	const searchFacetSectionsQuery = useQuery({
