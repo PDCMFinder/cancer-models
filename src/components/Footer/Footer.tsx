@@ -7,9 +7,7 @@ import Link from "next/link";
 import { useQuery } from "react-query";
 import { getDataReleaseInformation } from "../../apis/AggregatedData.api";
 import { hj_event } from "../../utils/hotjar";
-interface IFooterProps {
-	cookieConsentHeight: number;
-}
+
 interface IFooterProps {
 	cookieConsentHeight: number;
 }
@@ -64,7 +62,7 @@ const Footer = (props: IFooterProps) => {
 									{routes.map((route) => {
 										let children = route.children;
 
-										if (route.name === "About" && children) {
+										if (route.name === "More" && children) {
 											return children.map((child) => (
 												<li key={child.path}>
 													<ActiveLink
