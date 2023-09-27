@@ -54,12 +54,12 @@ const Button = (props: IButtonProps) => {
 	};
 
 	if (props.htmlTag === "a" && href) {
-		if (href.includes("https://") || href.includes("http://")) {
-			externalLinkProps = {
-				target: "_blank",
-				rel: "noopener noreferrer",
-			};
-		}
+		const externalLinkProps = href.includes("http")
+			? {
+					target: "_blank",
+					rel: "noopener noreferrer",
+			  }
+			: null;
 
 		return (
 			<Link

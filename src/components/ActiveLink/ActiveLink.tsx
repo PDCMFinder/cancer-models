@@ -17,6 +17,12 @@ const ActiveLink = ({
 	const [computedClassName, setComputedClassName] =
 		useState<string | undefined>(className);
 	const [isActive, setIsActive] = useState<boolean>(false);
+	const externalLinkProps = props.href.toString().includes("http")
+		? {
+				target: "_blank",
+				rel: "noopener noreferrer",
+		  }
+		: null;
 
 	useEffect(() => {
 		// Check if the router fields are updated client-side
@@ -56,6 +62,7 @@ const ActiveLink = ({
 		<Link
 			className={computedClassName}
 			{...props}
+			{...externalLinkProps}
 			data-test={isActive ? "activeLink-active" : undefined}
 		>
 			{children}
