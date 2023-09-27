@@ -82,7 +82,7 @@ const Button = (props: IButtonProps) => {
 			disabled={props.disabled}
 			style={props.style}
 			aria-controls={props["aria-controls"]}
-			type={props.type}
+			type={props.type ?? "button"}
 			className={classNames}
 			onClick={handleOnClick}
 		>

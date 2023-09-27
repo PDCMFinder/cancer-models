@@ -480,7 +480,7 @@ const Search: NextPage = () => {
 								</ShowHide>
 								<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
 									<div className="col-6 col-md-8 col-lg-6">
-										<h3 className="m-0">Filters</h3>
+										<h2 className="m-0 h3">Filters</h2>
 									</div>
 									<div className="col-6 col-md-4 col-lg-6 d-flex justify-content-end">
 										{ClearFilterButtonComponent}
