@@ -110,7 +110,7 @@ const Home: NextPage = () => {
 				</div>
 			</section>
 			<section className="pb-0">
-				<section className="bg-primary-tertiary">
+				<section className="bg-primary-secondary">
 					<div className="container my-4">
 						<div className="row justify-content-center">
 							<div className="col-12 col-lg-6 text-center text-white">
