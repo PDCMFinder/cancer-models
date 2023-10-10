@@ -101,6 +101,16 @@ interface Metadata {
 	licenseUrl: string;
 	score: number;
 	pdcmModelId: number;
+	modelImages: IModelImage[];
+}
+
+export interface IModelImage {
+	url: string;
+	description: string;
+	sample_type: string;
+	passage: string;
+	magnification: string;
+	staining: string;
 }
 
 export interface ExtLinks {

@@ -1,8 +1,63 @@
 import {
 	ExtLinks,
 	IPublication,
+	IModelImage,
 } from "../pages/data/models/[providerId]/[modelId]";
 import { camelCase } from "../utils/dataUtils";
+import fs from "fs";
+import fetch from "node-fetch";
+import zlib from "zlib";
+
+// export const fetchAndConvertImage = async (imgUrl: string) => {
+// 	let convertedImageUrl = "";
+
+// 	try {
+// 		const response = await fetch(imgUrl);
+// 		const blob = await response.blob();
+
+// 		const reader = new FileReader();
+// 		reader.onload = () => {
+// 			const base64data = reader.result?.toString()?.split(",")[1]; // Extract base64 data
+// 			convertedImageUrl = base64data || "";
+// 		};
+
+// 		reader.readAsDataURL(blob);
+// 	} catch (error) {
+// 		console.error("Error fetching or converting image:", error);
+// 	}
+// };
+
+async function fetchAndConvertTiffImage(url: string) {
+	try {
+		const response = await fetch(url);
+
+		if (!response.ok) {
+			throw new Error(`Failed to fetch image: ${response.statusText}`);
+		}
+
+		const buffer = await response.arrayBuffer();
+		const base64String = Buffer.from(buffer).toString("base64");
+
+		const base64Array = base64String.split(",");
+
+		// if (base64Array.length < 2) {
+		// 	throw new Error("Invalid base64 data");
+		// }
+		console.log(base64String);
+		return `data:image/tiff;base64,${base64Array[1]}`; // Return the second element
+	} catch (error) {
+		console.error("Error fetching and converting image:", error);
+		throw error;
+	}
+}
+
+// export const fetchAndConvertImage = async (imgUrl: string) => {
+// 	fs.readFile(imgUrl, function (err, data) {
+// 		if (err) throw err;
+// 		console.log(data);
+// 	});
+// 	return `data:image/tiff;base64,${imgUrl}`;
+// };
 
 export async function getModelDetailsMetadata(
 	modelId: string,
@@ -14,7 +69,16 @@ export async function getModelDetailsMetadata(
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json().then((d) => camelCase(d[0]));
+	return response.json().then((d) => {
+		let newArr = camelCase(d[0]);
+		newArr.modelImages?.forEach(async (imageObj: IModelImage, idx: number) => {
+			// let convertedUrl = await fetchAndConvertTiffImage(imageObj.url);
+			console.log(newArr.modelImages[idx].url);
+			// newArr.modelImages[idx].url = convertedUrl;
+		});
+
+		return newArr;
+	});
 }
 
 export async function getProviderId(modelId: string) {
@@ -407,6 +471,7 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 			licenseName: metadata.licenseName ?? "",
 			licenseUrl: metadata.licenseUrl ?? "",
 			score: metadata.score ?? 0,
+			modelImages: metadata.modelImages,
 			pdcmModelId,
 			modelId,
 			providerId: modelProviderId,

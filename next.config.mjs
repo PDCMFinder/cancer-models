@@ -22,6 +22,14 @@ const nextConfig = {
 			},
 		],
 	},
+	async rewrites() {
+		return [
+			{
+				source: "/api/:path*",
+				destination: "https://www.ebi.ac.uk/:path*",
+			},
+		];
+	},
 };
 
 export default withMDX(nextConfig);
