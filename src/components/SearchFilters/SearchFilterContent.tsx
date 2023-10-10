@@ -234,9 +234,8 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 
 				return (
 					<div className="w-100 text-capitalize" key={facetName}>
-						<h3 className="mb-1 p text-bold">
-							{facetName} <InformationIcon information="this is the tooltip" />
-						</h3>
+						<h3 className="mb-0 p text-bold d-inlineBlock">{facetName}</h3>
+						<InformationIcon information="Patient Ethnic group. Can be derived from self-assement or genetic analysis." />
 						<hr />
 						{facetContent}
 					</div>
