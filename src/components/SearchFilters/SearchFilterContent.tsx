@@ -9,6 +9,7 @@ import typeaheadStyles from "../../utils/typeaheadStyles";
 import { onFilterChangeType } from "../../pages/search";
 import Fragment from "../Fragment/Fragment";
 import { ethnicityCategories } from "../../utils/collapseEthnicity";
+import InformationIcon from "../InformationIcon/InformationIcon";
 
 interface ISearchFilterContentProps {
 	data: IFacetProps[];
@@ -233,7 +234,9 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 
 				return (
 					<div className="w-100 text-capitalize" key={facetName}>
-						<h3 className="mb-1 p text-bold">{facetName}</h3>
+						<h3 className="mb-1 p text-bold">
+							{facetName} <InformationIcon information="this is the tooltip" />
+						</h3>
 						<hr />
 						{facetContent}
 					</div>

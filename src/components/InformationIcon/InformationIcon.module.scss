@@ -1,0 +1,16 @@
+@import "../../styles/vars";
+
+.InformationIcon {
+	font-size: 1.5rem;
+	&_Icon {
+		$size: 2.4;
+		border: 2px solid $color-primary-primary;
+		border-radius: 500%;
+		display: inline-block;
+		width: $size * 1rem;
+		height: $size * 1rem;
+		padding: 0 calc($size * 1rem / 4);
+		text-transform: lowercase;
+		line-height: $size / 2;
+	}
+}
