@@ -19,7 +19,11 @@ const InformationIcon = (props: IInformationIconProps) => {
 	return (
 		<Tooltip
 			className={`d-inline ${styles.InformationIcon}`}
-			content={props.information}
+			content={
+				<p className={`text-small m-0 ${styles.InformationIcon_p}`}>
+					{props.information}
+				</p>
+			}
 		>
 			<svg
 				className="d-inline"

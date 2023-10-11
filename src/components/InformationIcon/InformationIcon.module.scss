@@ -1,8 +1,15 @@
 @import "../../styles/vars";
+@import "../../styles/mixins";
 
 .InformationIcon {
 	margin-left: 0.5rem;
+	&_p {
+		text-transform: none;
+		@include mediaOver("sm") {
+			width: 300px;
+		}
+	}
 	path {
-		fill: $color-primary-tertiary;
+		fill: $color-primary-secondary;
 	}
 }
