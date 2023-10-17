@@ -154,14 +154,14 @@ export async function getModelMolecularDataColumns(
 	molecularCharacterizationId: number,
 	dataType: string
 ) {
-	if (!molecularCharacterizationId || dataType === "cytogenetics") {
+	if (!molecularCharacterizationId || dataType === "biomarker") {
 		return [];
 	}
 	const typeEndpointMap: any = {
 		mutation: "mutation_data_table_columns",
 		expression: "expression_data_table_columns",
 		"copy number alteration": "cna_data_table_columns",
-		cytogenetics: "cytogenetics_data_table_columns",
+		biomarker: "biomarker_data_table_columns",
 	};
 	const endpoint = typeEndpointMap[dataType];
 	let response = await fetch(
@@ -210,7 +210,7 @@ export async function getModelMolecularDataDetails(
 		mutation: "mutation_data_table",
 		expression: "expression_data_table",
 		"copy number alteration": "cna_data_table",
-		cytogenetics: "cytogenetics_data_table",
+		biomarker: "biomarker_data_table",
 	};
 	const endpoint = typeEndpointMap[dataType];
 	let request = `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?molecular_characterization_id=eq.${molecularCharacterizationId}`;
@@ -251,7 +251,7 @@ export async function getMolecularDataDownload(
 		mutation: "mutation_data_table",
 		expression: "expression_data_table",
 		"copy number alteration": "cna_data_table",
-		cytogenetics: "cytogenetics_data_table",
+		biomarker: "biomarker_data_table",
 	};
 	const endpoint = typeEndpointMap[dataType];
 	let request = `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?molecular_characterization_id=eq.${molecularCharacterization.id}`;

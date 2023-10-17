@@ -130,14 +130,14 @@ export interface TypesMap {
 	expression_molecular_data: string;
 	cna_molecular_data: string;
 	mutation_measurement_data: string;
-	cytogenetics_molecular_data: string;
+	biomarker_molecular_data: string;
 }
 
 const typesMap: TypesMap = {
 	expression_molecular_data: "expression",
 	cna_molecular_data: "copy number alteration",
 	mutation_measurement_data: "mutation",
-	cytogenetics_molecular_data: "cytogenetics",
+	biomarker_molecular_data: "biomarker",
 };
 
 const ModelDetails = ({
@@ -656,7 +656,9 @@ const ModelDetails = ({
 																		{hasExternalDbLinks
 																			? rawDataExternalLinks?.map(
 																					(externalResource) => (
-																						<>
+																						<React.Fragment
+																							key={externalResource.resource}
+																						>
 																							<Link
 																								href={externalResource.link}
 																								target="_blank"
@@ -665,7 +667,7 @@ const ModelDetails = ({
 																								{externalResource.resource}
 																							</Link>
 																							<br />
-																						</>
+																						</React.Fragment>
 																					)
 																			  )
 																			: "Not available"}

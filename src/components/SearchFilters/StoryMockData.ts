@@ -67,7 +67,7 @@ export const mockData = [
 				type: "check",
 				options: [
 					"copy number alteration",
-					"cytogenetics",
+					"biomarker",
 					"dosing studies",
 					"expression",
 					"mutation",
@@ -107,8 +107,8 @@ export const mockData = [
 				loading: true,
 			},
 			{
-				facetId: "markers_with_cytogenetics_data",
-				name: "Cytogenetics",
+				facetId: "markers_with_biomarker_data",
+				name: "Biomarker",
 				type: "multivalued",
 				options: [],
 				placeholder: "ESR1",
