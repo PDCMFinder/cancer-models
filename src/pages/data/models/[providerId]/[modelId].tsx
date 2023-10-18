@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import Button from "../../../../components/Button/Button";
 import Link from "next/link";
