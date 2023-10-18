@@ -10,6 +10,7 @@ import Pagination from "../Pagination/Pagination";
 import { useState } from "react";
 import InputAndLabel from "../Input/InputAndLabel";
 import { hj_event } from "../../utils/hotjar";
+import Link from "next/link";
 
 interface IMolecularDataTableProps {
 	data: IMolecularData;
@@ -119,11 +120,11 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 					{ key: "alt_allele", name: "Alt. Allele" },
 				].filter((column) => columns.includes(column.key));
 				break;
-			case "cytogenetics":
+			case "biomarker":
 				columnsToDisplay = [
-					{ key: "hgnc_symbol", name: "HGNC Symbol" },
+					{ key: "biomarker", name: "Biomarker" },
 					{ key: "result", name: "Result" },
-				];
+				].filter((column) => columns.includes(column.key));
 				break;
 		}
 	}
@@ -222,13 +223,13 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 															{columnLinks?.length
 																? columnLinks.map((l, k) => (
 																		<span key={k}>
-																			<a
+																			<Link
 																				href={l.link}
 																				target="_blank"
 																				rel="noopener noreferrer"
 																			>
 																				{l.resource}
-																			</a>{" "}
+																			</Link>{" "}
 																		</span>
 																  ))
 																: null}

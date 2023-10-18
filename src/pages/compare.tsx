@@ -524,18 +524,18 @@ const Compare: NextPage = () => {
 								<div className={`row ${styles.Compare_row}`}>
 									<div className="col-3">
 										<p className="text-uppercase">
-											<b>Cytogenetics</b>
+											<b>Biomarker</b>
 										</p>
 									</div>
 									{allModelsData.map(({ data }) => (
 										<div
 											className="col"
-											key={data?.metadata.modelId + "cytogeneticsData"}
+											key={data?.metadata.modelId + "biomarkerData"}
 										>
 											<p>
 												{data?.molecularData.some(
 													(mData: IMolecularData) =>
-														mData.dataType === "cytogenetics"
+														mData.dataType === "biomarker"
 												)
 													? CHECKMARK_STRING
 													: ""}

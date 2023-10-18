@@ -41,7 +41,7 @@ Component.args = {
 			operator: "ANY",
 			selection: [],
 		},
-		markers_with_cytogenetics_data: {
+		markers_with_biomarker_data: {
 			operator: "ANY",
 			selection: [],
 		},

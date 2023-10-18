@@ -125,7 +125,7 @@ export async function getSearchResults(
 				"markers_with_cna_data",
 				"markers_with_mutation_data",
 				"markers_with_expression_data",
-				"markers_with_cytogenetics_data",
+				"markers_with_biomarker_data",
 			];
 			let options: string[] = searchFilterSelection[filterId].selection.map(
 				(d: string) => `"${d}"`
@@ -199,7 +199,7 @@ function mapApiFacet(apiFacet: any): IFacetProps {
 		"markers_with_mutation_data",
 		"markers_with_cna_data",
 		"markers_with_expression_data",
-		"markers_with_cytogenetics_data",
+		"markers_with_biomarker_data",
 		"treatment_list",
 		"model_treatment_list",
 	];
