@@ -40,13 +40,13 @@ const Providers: NextPage<IProvidersProps> = ({
 						{allProvidersBasics?.map((provider) => (
 							<div className="col-12 mb-3" key={provider.id}>
 								<div className="row">
-									<div className="col-12 col-md-2">
+									<div className="col-12 col-md-2 text-center">
 										<Image
 											src={`/${provider.logo}`}
 											alt={`${provider.name} logo`}
 											width={150}
 											height={150}
-											className={`ml-md-auto mb-2 w-auto h-auto ${styles.Providers_logo}`}
+											className={`mx-auto mb-2 w-auto h-auto ${styles.Providers_logo}`}
 										/>
 									</div>
 									<div className="col-12 col-md-9 mb-5">
