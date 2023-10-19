@@ -69,6 +69,7 @@ $spacers-map: (
 	3: $spacing-3,
 	4: $spacing-4,
 	5: $spacing-5,
+	auto: auto,
 );
 @mixin spacing() {
 	@for $j from 1 through length($bp-names) {
