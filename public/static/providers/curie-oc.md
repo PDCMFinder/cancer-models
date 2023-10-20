@@ -1,5 +1,5 @@
 ---
-name: Pre-clinical Investigation Laboratory - ovarian cancer
+name: Institut Curie - LIP - Ovarian Cancer
 abbreviation: Curie-OC
 logo: img/providers/Curie-OC.png
 ---
