@@ -593,7 +593,7 @@ const ModelDetails = ({
 															} else if (data.patientSampleId) {
 																sampleType = "Patient Tumour";
 																sampleId = data.patientSampleId;
-															} else if (data.cellSampleId) {
+															} else {
 																sampleType = "Tumour Cells";
 																sampleId = data.cellSampleId;
 															}
