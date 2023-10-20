@@ -14,4 +14,4 @@ Researchers at the Princess Margaret (PM) Cancer Centre (Toronto, Canada) have c
 - Organoid models are accessible to internal/external researchers (view available models)
 - OMICS profiling
 
-[... Read more](https://www.livingbiobank.ca/)
+[... Read more](https://pmlivingbiobank.uhnresearch.ca/)
