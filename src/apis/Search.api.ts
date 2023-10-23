@@ -126,6 +126,7 @@ export async function getSearchResults(
 				"markers_with_mutation_data",
 				"markers_with_expression_data",
 				"markers_with_biomarker_data",
+				"custom_treatment_type_list",
 			];
 			let options: string[] = searchFilterSelection[filterId].selection.map(
 				(d: string) => `"${d}"`

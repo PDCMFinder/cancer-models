@@ -592,13 +592,19 @@ const ModelDetails = ({
 												<tbody>
 													{molecularData &&
 														molecularData.map((data) => {
-															const sampleId =
-																data.xenograftSampleId ||
-																data.patientSampleId ||
-																data.cellSampleId;
-															const sampleType = data.xenograftSampleId
-																? "Engrafted Tumour"
-																: "Patient Tumour";
+															let sampleId, sampleType;
+
+															if (data.xenograftSampleId) {
+																sampleType = "Engrafted Tumour";
+																sampleId = data.xenograftSampleId;
+															} else if (data.patientSampleId) {
+																sampleType = "Patient Tumour";
+																sampleId = data.patientSampleId;
+															} else {
+																sampleType = "Tumour Cells";
+																sampleId = data.cellSampleId;
+															}
+
 															const hasExternalDbLinks =
 																data.externalDbLinks?.length > 0;
 															let rawDataExternalLinks: ExternalDbLinks[] = [];

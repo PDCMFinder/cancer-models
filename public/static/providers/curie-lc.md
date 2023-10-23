@@ -1,5 +1,5 @@
 ---
-name: Pre-clinical Investigation Laboratory - lung cancer
+name: Institut Curie - LIP - Lung Cancer
 abbreviation: Curie-LC
 logo: img/providers/Curie-LC.png
 ---

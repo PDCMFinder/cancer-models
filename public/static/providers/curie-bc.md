@@ -1,5 +1,5 @@
 ---
-name: Pre-clinical Investigation Laboratory - breast cancer
+name: Institut Curie - LIP - Breast Cancer
 abbreviation: Curie-BC
 logo: img/providers/Curie-BC.png
 ---
