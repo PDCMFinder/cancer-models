@@ -37,29 +37,23 @@ const FeedbackSection = (props: IFeedbackSectionProps) => {
 								<Form onSubmit={() => console.log("Feedback submit")}>
 									<div className="row">
 										<InputAndLabel
-											forId="name"
-											id="name"
 											label="Name"
-											name="name-name"
+											name="name"
 											type="text"
 											placeholder="Your complete name"
 											className="col-xl-6"
 										/>
 										<InputAndLabel
-											forId="email"
-											id="email"
 											label="E-mail"
-											name="email-name"
+											name="email"
 											type="email"
 											placeholder="Your email address"
 											className="col-xl-6"
 										/>
 									</div>
 									<InputAndLabel
-										forId="message"
-										id="message"
 										label="Message"
-										name="message-name"
+										name="message"
 										type="textarea"
 										placeholder="Your feedback"
 									/>

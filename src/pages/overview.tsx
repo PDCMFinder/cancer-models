@@ -13,6 +13,7 @@ import {
 	getModelsByPatientAge,
 	getModelsByPatientEthnicity,
 	getModelsByPatientGender,
+	getModelsByPrimarySite,
 	getModelsByTreatment,
 	getModelsByTumourType,
 	getProviderCount,
@@ -20,6 +21,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { countEthnicity } from "../utils/collapseEthnicity";
+import ShowHide from "../components/ShowHide/ShowHide";
 import Loader from "../components/Loader/Loader";
 import dynamic from "next/dynamic";
 import useWindowDimensions from "../hooks/useWindowDimensions";

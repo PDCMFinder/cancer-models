@@ -4,10 +4,9 @@ import Button from "../components/Button/Button";
 import Form from "../components/Form/Form";
 import InputAndLabel from "../components/Input/InputAndLabel";
 import { createTicket } from "../apis/Contact.api";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { hj_event } from "../utils/hotjar";
 import Loader from "../components/Loader/Loader";
-import Link from "next/link";
-import ReCAPTCHA from "react-google-recaptcha";
 
 interface IFormStatus {
 	status: "success" | "error" | "loading" | "";
@@ -15,7 +14,7 @@ interface IFormStatus {
 }
 
 const Contact: NextPage = () => {
-	const recaptchaRef = useRef<any>(null);
+	const { executeRecaptcha } = useGoogleReCaptcha();
 	const nameRef = useRef<HTMLInputElement>(null);
 	const emailRef = useRef<HTMLInputElement>(null);
 	const messageRef = useRef<HTMLInputElement>(null);
@@ -27,14 +26,14 @@ const Contact: NextPage = () => {
 	const handleFormOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		setFormStatus({ status: "loading", message: "" });
 
-		if (!recaptchaRef.current.executeAsync) {
+		if (!executeRecaptcha) {
 			return;
 		}
 
 		let { value: nameValue } = nameRef.current!;
 		let { value: emailValue } = emailRef.current!;
 		let { value: messageValue } = messageRef.current!;
-		const token = await recaptchaRef.current.executeAsync();
+		const token = await executeRecaptcha("feedback");
 		const response = await createTicket(
 			nameValue,
 			emailValue,
@@ -88,17 +87,13 @@ const Contact: NextPage = () => {
 						<div className="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
 							<Form onSubmit={handleFormOnSubmit}>
 								<InputAndLabel
-									forId="name"
-									id="name"
-									name="name-name"
+									name="name"
 									type="text"
 									label="Your name"
 									inputRef={nameRef}
 								/>
 								<InputAndLabel
-									forId="email"
-									id="email"
-									name="email-name"
+									name="email"
 									type="email"
 									label="Email address"
 									inputClassName="mb-0"
@@ -108,33 +103,12 @@ const Contact: NextPage = () => {
 									We&apos;ll never share your email with anyone else.
 								</p>
 								<InputAndLabel
-									forId="message"
-									id="message"
-									name="message-name"
+									name="message"
 									type="textarea"
 									label="Your message *"
 									inputRef={messageRef}
 									required={true}
 								/>
-								<p className="text-muted text-small">
-									This site is protected by reCAPTCHA and the Google{" "}
-									<Link
-										href="https://policies.google.com/privacy"
-										target="_blank"
-										rel="noopener noreferrer"
-									>
-										Privacy Policy
-									</Link>{" "}
-									and{" "}
-									<Link
-										href="https://policies.google.com/terms"
-										target="_blank"
-										rel="noopener noreferrer"
-									>
-										Terms of Service
-									</Link>{" "}
-									apply.
-								</p>
 								<div className="text-right">
 									<Button
 										type="submit"
@@ -145,11 +119,6 @@ const Contact: NextPage = () => {
 										Submit
 									</Button>
 								</div>
-								<ReCAPTCHA
-									ref={recaptchaRef}
-									size="invisible"
-									sitekey="6LepEiwjAAAAAN9QFU8RpeY0QXCFoRRVVis2B-iF"
-								/>
 							</Form>
 							{formStatus.status && (
 								<div

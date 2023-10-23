@@ -25,11 +25,7 @@ const Footer = (props: IFooterProps) => {
 			<div className="container">
 				<div className={`row ${styles["Footer_row-main"]}`}>
 					<div className="col-12 col-lg-2">
-						<Link
-							href="/"
-							className={styles.Footer_Logotype}
-							aria-label="CancerModels.Org Logo"
-						>
+						<Link href="/" className={styles.Footer_Logotype}>
 							<Logotype color="white" />
 						</Link>
 					</div>

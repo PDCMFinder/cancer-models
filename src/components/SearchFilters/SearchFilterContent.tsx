@@ -122,7 +122,6 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 								<fieldset className="d-flex border-none m-0">
 									<legend className="hideElement-accessible">Contains:</legend>
 									<InputAndLabel
-										forId={`any-${facet.facetId}`}
 										className="mr-3"
 										type="radio"
 										name={`operator-${facet.facetId}`}
@@ -142,7 +141,6 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 									<InputAndLabel
 										type="radio"
 										name={`operator-${facet.facetId}`}
-										forId={`all-${facet.facetId}`}
 										id={`all-${facet.facetId}`}
 										label="And"
 										value="all"
@@ -207,9 +205,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 							{facetOptions?.map((option) => (
 								<li key={option}>
 									<InputAndLabel
-										forId={option}
-										id={option}
-										name={`${option}-name`}
+										name={option}
 										type="checkbox"
 										label={option}
 										checked={selection?.includes(option)}

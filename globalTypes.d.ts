@@ -41,7 +41,6 @@ export interface IRoute {
 
 export interface ILabelProps {
 	label: string;
-	forId: string;
 	name: string;
 	className?: string;
 	style?: CSSProperties;

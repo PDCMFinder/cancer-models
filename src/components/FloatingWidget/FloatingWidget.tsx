@@ -1,3 +1,4 @@
+import { useCookies } from "react-cookie";
 import Button from "../Button/Button";
 import styles from "./FloatingWidget.module.scss";
 
@@ -8,6 +9,8 @@ interface IFloatingWidgetProps {
 }
 
 const FloatingWidget = (props: IFloatingWidgetProps) => {
+	const [cookies, setCookie] = useCookies();
+
 	return (
 		<Button
 			href={props.link}

@@ -14,10 +14,6 @@ const nextConfig = {
 	pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
 	swcMinify: true,
 	output: "standalone",
-	i18n: {
-		locales: ["en"],
-		defaultLocale: "en",
-	},
 };
 
 export default withMDX(nextConfig);
