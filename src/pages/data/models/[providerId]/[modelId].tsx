@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import Button from "../../../../components/Button/Button";
 import Link from "next/link";
@@ -6,8 +6,6 @@ import ShowHide from "../../../../components/ShowHide/ShowHide";
 import breakPoints from "../../../../utils/breakpoints";
 import useWindowDimensions from "../../../../hooks/useWindowDimensions";
 import styles from "./Model.module.scss";
-import { useState, useRef } from "react";
-import Modal from "../../../../components/Modal/Modal";
 import Card from "../../../../components/Card/Card";
 import MolecularDataTable from "../../../../components/MolecularDataTable/MolecularDataTable";
 import {
@@ -23,6 +21,15 @@ import { useQueries, useQuery } from "react-query";
 import Head from "next/head";
 import { getAllModelData } from "../../../../apis/ModelDetails.api";
 import { hj_event } from "../../../../utils/hotjar";
+import dynamic from "next/dynamic";
+import Loader from "../../../../components/Loader/Loader";
+
+const DynamicModal = dynamic(
+	() => import("../../../../components/Modal/Modal"),
+	{
+		loading: () => <Loader />,
+	}
+);
 
 interface IModelDetailsProps {
 	metadata: Metadata;
@@ -625,24 +632,28 @@ const ModelDetails = ({
 																		{!restrictedTypes.includes(data.dataType) &&
 																		data.dataAvailability === "TRUE" ? (
 																			<>
-																				<button
-																					className="text-left link-text mr-3 mr-md-0 mb-md-1 mr-xxx-3"
+																				<Button
+																					color="dark"
+																					priority="secondary"
+																					className="text-left link-text mt-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
 																					onClick={() => {
 																						setSelectedMolecularData(data);
 																						hj_event("click_viewData");
 																					}}
 																				>
 																					VIEW DATA
-																				</button>
-																				<button
-																					className="text-left link-text mr-3 mr-md-0 mb-md-1 mr-xxx-3"
+																				</Button>
+																				<Button
+																					color="dark"
+																					priority="secondary"
+																					className="text-left link-text mt-0 m-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
 																					onClick={() => {
 																						getDownloadData(data);
 																						hj_event("click_downloadData");
 																					}}
 																				>
 																					DOWNLOAD DATA
-																				</button>
+																				</Button>
 																			</>
 																		) : (
 																			<Link
@@ -832,7 +843,7 @@ const ModelDetails = ({
 				</div>
 			</section>
 			{selectedMolecularData && (
-				<Modal
+				<DynamicModal
 					verticalAlign="top"
 					modalWidth="100"
 					handleClose={() => setSelectedMolecularData(undefined)}
@@ -857,7 +868,7 @@ const ModelDetails = ({
 							handleDownload={getDownloadData}
 						/>
 					</Card>
-				</Modal>
+				</DynamicModal>
 			)}
 		</>
 	);

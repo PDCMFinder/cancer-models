@@ -19,12 +19,20 @@ import Button from "../components/Button/Button";
 import SearchBar from "../components/SearchBar/SearchBar";
 import breakPoints from "../utils/breakpoints";
 import useWindowDimensions from "../hooks/useWindowDimensions";
-import Modal from "../components/Modal/Modal";
 import ShowHide from "../components/ShowHide/ShowHide";
-import { createPortal } from "react-dom";
 import Card from "../components/Card/Card";
 import CloseIcon from "../components/CloseIcon/CloseIcon";
 import { NextPage } from "next/types";
+import dynamic from "next/dynamic";
+
+const DynamicModal = dynamic(import("../components/Modal/Modal"), {
+	loading: () => (
+		<div style={{ height: "300px" }}>
+			<Loader />
+		</div>
+	),
+	ssr: false,
+});
 
 export interface onFilterChangeType {
 	type: "add" | "remove" | "clear" | "toggleOperator" | "init" | "substitute";
@@ -137,52 +145,53 @@ const Search: NextPage = () => {
 		null
 	);
 
-	const searchFacetSectionsQuery = useQuery(
-		"search-facet-sections",
-		() => getSearchFacets(),
-		{
-			onSuccess(data) {
-				const initialSearchFilterState: any = {};
-				const stateFromUrl: any = {};
-				const filters = router.query["filters"]
-					? (router.query["filters"] as string).split(" AND ")
-					: [];
-				filters.forEach((filterStr) => {
-					const filterOperatorStr = filterStr.split(":")[0];
-					const filterId = filterOperatorStr.split(".")[0];
-					const operator =
-						filterOperatorStr.split(".").length > 1 ? "ALL" : "ANY";
-					const selection = filterStr.split(":")[1].split(",");
-					stateFromUrl[filterId] = { operator, selection };
-				});
+	const searchFacetSectionsQuery = useQuery({
+		queryKey: "search-facet-sections",
+		queryFn: () => getSearchFacets(),
+		onSuccess(data) {
+			const initialSearchFilterState: any = {};
+			const stateFromUrl: any = {};
+			const filters = router.query["filters"]
+				? (router.query["filters"] as string).split(" AND ")
+				: [];
+			filters.forEach((filterStr) => {
+				const filterOperatorStr = filterStr.split(":")[0];
+				const filterId = filterOperatorStr.split(".")[0];
+				const operator =
+					filterOperatorStr.split(".").length > 1 ? "ALL" : "ANY";
+				const selection = filterStr.split(":")[1].split(",");
+				stateFromUrl[filterId] = { operator, selection };
+			});
 
-				const addInitialSearchFilter = (id: string) => {
-					initialSearchFilterState[id] = stateFromUrl[id]
-						? stateFromUrl[id]
-						: {
-								operator: "ANY",
-								selection: [],
-						  };
-				};
+			const addInitialSearchFilter = (id: string) => {
+				initialSearchFilterState[id] = stateFromUrl[id]
+					? stateFromUrl[id]
+					: {
+							operator: "ANY",
+							selection: [],
+					  };
+			};
 
-				data?.forEach((section) =>
-					section.facets.forEach((facet) => {
-						addInitialSearchFilter(facet.facetId);
-					})
-				);
+			data?.forEach((section) =>
+				section.facets.forEach((facet) => {
+					addInitialSearchFilter(facet.facetId);
+				})
+			);
 
-				ignoredFilterValues.forEach((id) => addInitialSearchFilter(id));
+			ignoredFilterValues.forEach((id) => addInitialSearchFilter(id));
 
-				searchFilterDispatch({
-					type: "init",
-					initialState: initialSearchFilterState,
-					selection: "",
-					filterId: "",
-					operator: "",
-				});
-			},
-		}
-	);
+			searchFilterDispatch({
+				type: "init",
+				initialState: initialSearchFilterState,
+				selection: "",
+				filterId: "",
+				operator: "",
+			});
+		},
+		refetchOnWindowFocus: true,
+		// staleTime: 120000,
+		cacheTime: 1000,
+	});
 	const searchFacetSections = searchFacetSectionsQuery.data;
 
 	const searchFacetQueries = useQueries(
@@ -217,8 +226,8 @@ const Search: NextPage = () => {
 			}
 		});
 
-	const searchResultsQuery = useQuery(
-		[
+	const searchResultsQuery = useQuery({
+		queryKey: [
 			"search-results",
 			{
 				searchValues: [],
@@ -227,8 +236,9 @@ const Search: NextPage = () => {
 				sortBy,
 			},
 		],
-		async () => getSearchResults([], searchFilterState, resultsPerPage, sortBy)
-	);
+		queryFn: async () =>
+			getSearchResults([], searchFilterState, resultsPerPage, sortBy),
+	});
 
 	useEffect(() => {
 		if (searchFilterState === null) return;
@@ -342,7 +352,7 @@ const Search: NextPage = () => {
 		<Loader style={{ height: "auto !important" }} />
 	);
 	const ModalSearchFiltersComponent = (
-		<Modal
+		<DynamicModal
 			modalWidth="100"
 			verticalAlign="top"
 			handleClose={() => setShowFilters(false)}
@@ -365,7 +375,7 @@ const Search: NextPage = () => {
 			>
 				{SearchFiltersComponent}
 			</Card>
-		</Modal>
+		</DynamicModal>
 	);
 
 	let modelCount = useQuery("modelCount", () => {
@@ -390,6 +400,8 @@ const Search: NextPage = () => {
 					<div className="row">
 						<div className="col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-3">
 							<SearchBar
+								id="searchBar"
+								name="searchBar-name"
 								isMulti
 								selection={searchFilterState}
 								onFilterChange={(filterId, selection, operator, type) => {
@@ -424,7 +436,12 @@ const Search: NextPage = () => {
 								</div>
 								<div className="col-12 col-md-6">
 									<div className="d-flex align-center justify-content-md-end">
-										<Label label="Sort by:" name="sortBy" className="mr-1" />
+										<Label
+											label="Sort by:"
+											forId="sortBy"
+											name="sortBy-name"
+											className="mr-1"
+										/>
 										<Select
 											id="sortBy"
 											options={sortByOptions}
@@ -463,7 +480,7 @@ const Search: NextPage = () => {
 								</ShowHide>
 								<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
 									<div className="col-6 col-md-8 col-lg-6">
-										<h3 className="m-0">Filters</h3>
+										<h2 className="m-0 h3">Filters</h2>
 									</div>
 									<div className="col-6 col-md-4 col-lg-6 d-flex justify-content-end">
 										{ClearFilterButtonComponent}
@@ -471,115 +488,107 @@ const Search: NextPage = () => {
 								</ShowHide>
 							</div>
 							{windowWidth < bpLarge
-								? showFilters &&
-								  createPortal(ModalSearchFiltersComponent, document.body)
+								? showFilters && ModalSearchFiltersComponent
 								: SearchFiltersComponent}
 						</div>
 						<div className="col-12 col-lg-9">
-							<div className="row">
-								<div className="col-12">
-									{searchResultsQuery.data ? (
-										<SearchResults
-											compareModel={compareModel}
-											modelsToCompare={modelsToCompare}
-											data={searchResultsQuery.data[1]}
-										/>
-									) : (
-										<SearchResultsLoader amount={resultsPerPage} />
-									)}
-								</div>
-								<div className="col-12">
-									<Pagination
-										totalPages={
-											totalResults !== 0
-												? Math.ceil(totalResults / resultsPerPage)
-												: 1
-										}
-										currentPage={currentPage}
-										onPageChange={(page: number) => changePage(page)}
-									/>
-								</div>
-							</div>
+							{searchResultsQuery.data ? (
+								<SearchResults
+									compareModel={compareModel}
+									modelsToCompare={modelsToCompare}
+									data={searchResultsQuery.data[1]}
+								/>
+							) : (
+								<SearchResultsLoader amount={resultsPerPage} />
+							)}
+						</div>
+						<div className="col-12 col-lg-9 offset-lg-3">
+							<Pagination
+								totalPages={
+									totalResults !== 0
+										? Math.ceil(totalResults / resultsPerPage)
+										: 1
+								}
+								currentPage={currentPage}
+								onPageChange={(page: number) => changePage(page)}
+							/>
 						</div>
 					</div>
-					{modelsToCompare[0]
-						? createPortal(
-								<div className="row position-sticky bottom-0">
-									<div className="col-10 offset-1">
-										<Card
-											className="bg-primary-quaternary mb-2"
-											contentClassName="py-2"
-										>
-											<div className="d-flex align-center justify-content-between">
-												<p className="m-0">
-													<b>Compare up to 4 models: </b>
-													{modelsToCompare.map((model, idx) => {
-														const clearX = (
-															<sup>
-																<Button
-																	color="dark"
-																	priority="secondary"
-																	className="text-underline m-0 ml-1"
-																	style={{ padding: ".2rem .3rem" }}
-																	onClick={() =>
-																		setModelsToCompare((prev) =>
-																			prev.filter(
-																				(prevModel) => prevModel !== model
-																			)
-																		)
-																	}
-																>
-																	X
-																</Button>
-															</sup>
-														);
+					{modelsToCompare[0] ? (
+						<div className="row position-sticky bottom-0 mt-5">
+							<div className="col-10 offset-1">
+								<Card
+									className="bg-primary-quaternary mb-2"
+									contentClassName="py-2"
+								>
+									<div className="d-flex align-center justify-content-between">
+										<p className="m-0">
+											<b>Compare up to 4 models: </b>
+											{modelsToCompare.map((model, idx) => {
+												const clearX = (
+													<sup>
+														<Button
+															color="dark"
+															priority="secondary"
+															className="text-underline m-0 ml-1"
+															style={{ padding: ".2rem .3rem" }}
+															onClick={() =>
+																setModelsToCompare((prev) =>
+																	prev.filter(
+																		(prevModel) => prevModel !== model
+																	)
+																)
+															}
+														>
+															X
+														</Button>
+													</sup>
+												);
 
-														if (idx === 0) {
-															return (
-																<React.Fragment key={model}>
-																	{model}
-																	{clearX}
-																</React.Fragment>
-															);
-														}
+												if (idx === 0) {
+													return (
+														<React.Fragment key={model}>
+															{model}
+															{clearX}
+														</React.Fragment>
+													);
+												}
 
-														return (
-															<React.Fragment key={model}>
-																{" "}
-																<span className="text-primary-tertiary">
-																	+
-																</span>{" "}
-																{model}
-																{clearX}
-															</React.Fragment>
-														);
-													})}
-												</p>
-												<div className="d-flex">
-													<Button
-														color="dark"
-														priority="primary"
-														className="my-1 py-1"
-														onClick={() => compareModels()}
-													>
-														Compare
-													</Button>
-													<Button
-														color="dark"
-														priority="secondary"
-														className="my-1 ml-1 py-1"
-														onClick={() => setModelsToCompare([])}
-													>
-														Clear
-													</Button>
-												</div>
-											</div>
-										</Card>
+												return (
+													<React.Fragment key={model}>
+														{" "}
+														<span className="text-primary-tertiary">
+															+
+														</span>{" "}
+														{model}
+														{clearX}
+													</React.Fragment>
+												);
+											})}
+										</p>
+										<div className="d-flex">
+											<Button
+												color="dark"
+												priority="primary"
+												className="my-1 py-1"
+												onClick={() => compareModels()}
+											>
+												Compare
+											</Button>
+											<Button
+												color="dark"
+												priority="secondary"
+												className="my-1 ml-1 py-1"
+												onClick={() => setModelsToCompare([])}
+											>
+												Clear
+											</Button>
+										</div>
 									</div>
-								</div>,
-								document.getElementsByTagName("main")[0] as HTMLElement
-						  )
-						: null}
+								</Card>
+							</div>
+						</div>
+					) : null}
 				</div>
 			</section>
 		</>

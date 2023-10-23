@@ -27,7 +27,8 @@ const InputAndLabel = (props: IInputAndLabel) => {
 	return (
 		<div className={`${isAlternateLayout} ${className}`.trim()}>
 			<Label
-				name={props.id ?? name}
+				forId={props.id ?? name}
+				name={props.name}
 				label={props.label}
 				className={props.labelClassName}
 			/>
