@@ -1,3 +1,4 @@
+import React, { FC } from "react";
 import styles from "./CloseIcon.module.scss";
 
 interface ICloseIconProps {
@@ -14,7 +15,6 @@ const CloseIcon = (props: ICloseIconProps) => {
 		<button
 			className={`${styles.CloseIcon} ${styles[`CloseIcon-${props.color}`]}`}
 			onClick={props.onClick}
-			aria-label="Close"
 		>
 			<span></span>
 			<span></span>

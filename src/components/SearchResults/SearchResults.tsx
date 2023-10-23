@@ -15,11 +15,13 @@ const SearchResults = (props: ISearchResultsProps) => {
 
 				return (
 					<div className="row mb-3 mb-md-2" key={id + result.histology}>
-						<SearchResult
-							addModelToCompare={(e) => props.compareModel(id)}
-							compareCheck={props.modelsToCompare.includes(id)}
-							data={result}
-						/>
+						<div className="col-12">
+							<SearchResult
+								addModelToCompare={(e) => props.compareModel(id)}
+								compareCheck={props.modelsToCompare.includes(id)}
+								data={result}
+							/>
+						</div>
 					</div>
 				);
 			})}

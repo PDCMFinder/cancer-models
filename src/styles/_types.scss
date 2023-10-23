@@ -77,12 +77,6 @@ a,
 	&-white {
 		color: $color-white !important;
 	}
-	&-link {
-		color: $color-textLink !important;
-		&:hover {
-			color: lighten($color-secondary-primary, 1%) !important;
-		}
-	}
 	&-primary-primary {
 		color: $color-primary-primary !important;
 	}
@@ -148,14 +142,5 @@ a {
 	line-height: 2.4rem;
 }
 a {
-	color: $color-textLink;
 	text-decoration: underline;
-	transition: 0.3s;
-	&:hover {
-		transition: 0.3s;
-	}
-	&:not([class^="Button"]):hover {
-		transition: 0.3s;
-		color: lighten($color-secondary-primary, 1%) !important;
-	}
 }

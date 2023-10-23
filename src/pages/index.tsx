@@ -7,23 +7,10 @@ import useWindowDimensions from "../hooks/useWindowDimensions";
 import breakPoints from "../utils/breakpoints";
 import styles from "./index.module.scss";
 import Label from "../components/Input/Label";
+import DataCountCard from "../components/DataCountCard/DataCountCard";
 import { useQuery } from "react-query";
 import { getModelCount } from "../apis/AggregatedData.api";
 import SearchBar from "../components/SearchBar/SearchBar";
-import dynamic from "next/dynamic";
-import Loader from "../components/Loader/Loader";
-
-const DynamicDataCountCard = dynamic(
-	import("../components/DataCountCard/DataCountCard"),
-	{
-		loading: () => (
-			<div style={{ height: "300px" }}>
-				<Loader />
-			</div>
-		),
-		ssr: false,
-	}
-);
 
 const Home: NextPage = () => {
 	const { windowWidth } = useWindowDimensions();
@@ -67,8 +54,7 @@ const Home: NextPage = () => {
 					></div>
 					<div className={`${styles.header_search} py-5`}>
 						<Label
-							name="searchBar"
-							forId="searchBar-label"
+							name="search"
 							className="h3 text-white"
 							label={`Search ${
 								modelCount && modelCount.data
@@ -76,7 +62,7 @@ const Home: NextPage = () => {
 									: ""
 							} cancer models`}
 						/>
-						<SearchBar id="searchBar-search-id" name="searchBar-name" />
+						<SearchBar />
 					</div>
 				</div>
 			</header>
@@ -84,7 +70,7 @@ const Home: NextPage = () => {
 				<div className="container">
 					<div className="row justify-content-center mb-5">
 						<div className="col-10 col-lg-8 col-xxx-6">
-							<DynamicDataCountCard layout="horizontal" />
+							<DataCountCard layout="horizontal" />
 						</div>
 					</div>
 					<div className="row justify-content-center">
@@ -110,7 +96,7 @@ const Home: NextPage = () => {
 				</div>
 			</section>
 			<section className="pb-0">
-				<section className="bg-primary-secondary">
+				<section className="bg-primary-tertiary">
 					<div className="container my-4">
 						<div className="row justify-content-center">
 							<div className="col-12 col-lg-6 text-center text-white">

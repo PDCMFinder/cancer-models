@@ -68,7 +68,7 @@ export async function getModelsByTreatment() {
 
 export async function getModelsByType() {
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/models_by_type?order=count.desc`
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_type?order=count.desc&limit=20`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");

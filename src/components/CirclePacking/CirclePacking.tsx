@@ -1,4 +1,5 @@
 import { ResponsiveCirclePacking } from "@nivo/circle-packing";
+import { FunctionComponent } from "react";
 import styles from "./CirclePacking.module.scss";
 
 interface CirclePackingProps {
@@ -6,7 +7,10 @@ interface CirclePackingProps {
 	onCircleClick: (circleId: string, circleDepth: number) => void;
 }
 
-const CirclePacking = ({ data, onCircleClick }: CirclePackingProps) => {
+const CirclePacking: FunctionComponent<CirclePackingProps> = ({
+	data,
+	onCircleClick,
+}) => {
 	return (
 		<ResponsiveCirclePacking
 			data={data}
