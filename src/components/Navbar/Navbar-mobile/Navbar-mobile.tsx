@@ -36,7 +36,7 @@ const NavMobile = (props: INavProps) => {
 			<div className={`container text-white ${styles["Navbar-mobile_topBar"]}`}>
 				<div className="row align-center">
 					<div className="col-8">
-						<Link href="/">
+						<Link href="/" aria-label="CancerModels.Org logo">
 							<Logotype color="white" />
 						</Link>
 					</div>

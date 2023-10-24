@@ -390,6 +390,8 @@ const Search: NextPage = () => {
 					<div className="row">
 						<div className="col-12 col-md-10 col-lg-6 offset-md-1 offset-lg-3">
 							<SearchBar
+								id="searchBar"
+								name="searchBar-name"
 								isMulti
 								selection={searchFilterState}
 								onFilterChange={(filterId, selection, operator, type) => {
@@ -424,7 +426,12 @@ const Search: NextPage = () => {
 								</div>
 								<div className="col-12 col-md-6">
 									<div className="d-flex align-center justify-content-md-end">
-										<Label label="Sort by:" name="sortBy" className="mr-1" />
+										<Label
+											label="Sort by:"
+											forId="sortBy"
+											name="sortBy-name"
+											className="mr-1"
+										/>
 										<Select
 											id="sortBy"
 											options={sortByOptions}
@@ -463,7 +470,7 @@ const Search: NextPage = () => {
 								</ShowHide>
 								<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
 									<div className="col-6 col-md-8 col-lg-6">
-										<h3 className="m-0">Filters</h3>
+										<h2 className="h3 m-0">Filters</h2>
 									</div>
 									<div className="col-6 col-md-4 col-lg-6 d-flex justify-content-end">
 										{ClearFilterButtonComponent}
