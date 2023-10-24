@@ -144,7 +144,8 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 		<>
 			<div className="d-flex flex-column-reverse flex-md-row justify-content-between mb-3 align-center">
 				<InputAndLabel
-					name="filterData"
+					forId="filterData"
+					name="filterData-input"
 					type="text"
 					label="Filter"
 					labelClassName="mb-0 mr-1"
