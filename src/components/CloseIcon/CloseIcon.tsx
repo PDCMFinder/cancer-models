@@ -1,4 +1,3 @@
-import React, { FC } from "react";
 import styles from "./CloseIcon.module.scss";
 
 interface ICloseIconProps {
