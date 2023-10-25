@@ -145,11 +145,11 @@ export default CancerModels;
 CancerModels.getInitialProps = async (appContext: AppContext) => {
 	const appProps = await App.getInitialProps(appContext);
 
-	// bfcache ; ssr caching
-	appContext.ctx.res?.setHeader(
-		"Cache-Control",
-		"public, s-maxage=100, stale-while-revalidate=590"
-	);
+	// bfcache ; ssr caching. Commented because its sending double headers in modelid page, doesn't affect lighthouse much
+	// appContext.ctx.res?.setHeader(
+	// 	"Cache-Control",
+	// 	"public, s-maxage=100, stale-while-revalidate=590"
+	// );
 
 	return { ...appProps, cookies: appContext.ctx.req?.headers?.cookie };
 };
