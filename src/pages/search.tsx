@@ -190,7 +190,7 @@ const Search: NextPage = () => {
 		},
 		refetchOnWindowFocus: true,
 		// staleTime: 120000,
-		cacheTime: 1000,
+		cacheTime: 100,
 	});
 	const searchFacetSections = searchFacetSectionsQuery.data;
 
