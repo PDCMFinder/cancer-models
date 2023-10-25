@@ -66,7 +66,7 @@ const SearchBar = (props: ISearchBarProps) => {
 			<Select
 				instanceId={props.id}
 				id={props.id}
-				inputId={props.id}
+				inputId={props.id + "select"}
 				name={props.name}
 				aria-label="Search by cancer diagnosis"
 				aria-labelledby={props.id}

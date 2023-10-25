@@ -143,7 +143,7 @@ const SearchResult = (props: ISearchResultProps) => {
 						Available data
 					</p>
 					<div className={`row ${styles.dataAvailable_grid}`}>
-						{dataTypes.map((dt, idx) => {
+						{dataTypes.map((dt) => {
 							const hasData = dataAvailable?.includes(dt.key),
 								name = dt.name;
 
@@ -167,19 +167,19 @@ const SearchResult = (props: ISearchResultProps) => {
 								</div>
 							);
 						})}
+						<ShowHide showOver={bpLarge} windowWidth={windowWidth}>
+							<InputAndLabel
+								forId={pdcmId}
+								id={pdcmId}
+								name={`${pdcmId}-name`}
+								type="checkbox"
+								label="Add to compare"
+								className="text-smaller mt-2"
+								onChange={props.addModelToCompare}
+								checked={props.compareCheck}
+							/>
+						</ShowHide>
 					</div>
-					<ShowHide showOver={bpLarge} windowWidth={windowWidth}>
-						<InputAndLabel
-							forId={pdcmId}
-							id={pdcmId}
-							name={`${pdcmId}-name`}
-							type="checkbox"
-							label="Add to compare"
-							className="text-smaller mt-2"
-							onChange={props.addModelToCompare}
-							checked={props.compareCheck}
-						/>
-					</ShowHide>
 				</div>
 			</div>
 		</Card>

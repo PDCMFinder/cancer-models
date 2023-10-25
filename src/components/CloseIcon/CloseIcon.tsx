@@ -14,7 +14,7 @@ const CloseIcon = (props: ICloseIconProps) => {
 		<button
 			className={`${styles.CloseIcon} ${styles[`CloseIcon-${props.color}`]}`}
 			onClick={props.onClick}
-			aria-label="Close"
+			aria-label="Close icon"
 		>
 			<span></span>
 			<span></span>

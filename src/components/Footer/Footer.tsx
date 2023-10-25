@@ -28,7 +28,7 @@ const Footer = (props: IFooterProps) => {
 						<Link
 							href="/"
 							className={styles.Footer_Logotype}
-							aria-label="CancerModels.Org Logo"
+							aria-label="CancerModels.Org logo"
 						>
 							<Logotype color="white" />
 						</Link>
