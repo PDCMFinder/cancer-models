@@ -7,7 +7,7 @@ import Button from "../components/Button/Button";
 import { useQuery } from "react-query";
 import {
 	getCancerHierarchy,
-	getDataReleaseInformation,
+	getLatestDataReleaseInformation,
 	getModelCount,
 	getModelsByMutatedGene,
 	getModelsByPatientAge,
@@ -107,8 +107,8 @@ const Overview: NextPage = () => {
 	let modelCount = useQuery("modelCount", () => {
 		return getModelCount();
 	});
-	let releaseInfo = useQuery("releaseInfo", () => {
-		return getDataReleaseInformation();
+	let latestDataReleaseInfo = useQuery("latestDataReleaseInfo", () => {
+		return getLatestDataReleaseInformation();
 	});
 
 	const router = useRouter();
@@ -249,16 +249,18 @@ const Overview: NextPage = () => {
 						<div className="col-12">
 							<h2>Current data release</h2>
 							<ul>
-								{releaseInfo.data ? (
+								{latestDataReleaseInfo.data ? (
 									<li>
 										Data release version:{" "}
-										{releaseInfo.data.name.replace("dr.", "").replace("dr", "")}
+										{latestDataReleaseInfo.data.name
+											.replace("dr.", "")
+											.replace("dr", "")}
 									</li>
 								) : null}
-								{releaseInfo.data ? (
+								{latestDataReleaseInfo.data ? (
 									<li>
 										Date of publication:{" "}
-										{new Date(releaseInfo.data.date)
+										{new Date(latestDataReleaseInfo.data.date)
 											.toISOString()
 											.substring(0, 10)}
 									</li>

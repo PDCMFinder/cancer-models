@@ -184,7 +184,24 @@ export async function getDataReleaseInformation() {
 	return response.json().then((d: Array<any>) => d[0]);
 }
 
-export async function getReleaseChangeLog() {
+export async function getLatestDataReleaseInformation() {
+	// pdxfinder-data repo
+	let response = await fetch(
+		"https://gitlab.ebi.ac.uk/api/v4/projects/1629/releases?per_page=1",
+		{
+			headers: {
+				"PRIVATE-TOKEN": "glpat-m8C7CryLp49hN1QQXFyF",
+			},
+		}
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+	return response.json().then((d: Array<any>) => d[0]);
+}
+
+export async function getUIReleaseInformation() {
+	// cancer-models
 	let response = await fetch(
 		"https://api.github.com/repos/PDCMFinder/cancer-models/releases?per_page=10"
 	);

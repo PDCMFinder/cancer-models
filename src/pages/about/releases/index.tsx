@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { getReleaseChangeLog } from "../../../apis/AggregatedData.api";
+import { getUIReleaseInformation } from "../../../apis/AggregatedData.api";
 import { useQuery } from "react-query";
 import Loader from "../../../components/Loader/Loader";
 import { remark } from "remark";
@@ -28,7 +28,7 @@ const Releases: NextPage<IReleasesProps> = () => {
 
 	let releaseChangeLog = useQuery(
 		"releaseChangeLog",
-		() => getReleaseChangeLog(),
+		() => getUIReleaseInformation(),
 		{
 			onSuccess(data) {
 				data.forEach(async (release) => {

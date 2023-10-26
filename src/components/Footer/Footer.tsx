@@ -5,7 +5,7 @@ import ActiveLink from "../ActiveLink/ActiveLink";
 import styles from "./Footer.module.scss";
 import Link from "next/link";
 import { useQuery } from "react-query";
-import { getDataReleaseInformation } from "../../apis/AggregatedData.api";
+import { getLatestDataReleaseInformation } from "../../apis/AggregatedData.api";
 import { hj_event } from "../../utils/hotjar";
 
 interface IFooterProps {
@@ -13,8 +13,8 @@ interface IFooterProps {
 }
 
 const Footer = (props: IFooterProps) => {
-	let releaseInfo = useQuery("releaseInfo", () => {
-		return getDataReleaseInformation();
+	let latestDataReleaseInfo = useQuery("latestDataReleaseInfo", () => {
+		return getLatestDataReleaseInformation();
 	});
 
 	return (
@@ -135,15 +135,16 @@ const Footer = (props: IFooterProps) => {
 					<div className="col">
 						{/* Placeholder, change for API information */}
 						<p className="text-small text-center">
-							© 2017-{new Date(releaseInfo.data?.date).getFullYear() || 2023}
+							{latestDataReleaseInfo.data?.created_at}© 2017-
+							{/* {new Date(latestReleaseInfo.data?.date).getFullYear() || 2023}
 							<br />
-							{releaseInfo.data
-								? `Data Release ${releaseInfo.data.name
+							{latestReleaseInfo.data
+								? `Data Release ${latestReleaseInfo.data.name
 										.replace("dr.", "")
 										.replace("dr", "")} | 
-								${new Date(releaseInfo.data.date).toISOString().substring(0, 10)}`
+								${new Date(latestReleaseInfo.data.date).toISOString().substring(0, 10)}`
 								: null}
-							<br />
+							<br /> */}
 							<Link href="/about/releases" className="link-text-light">
 								Release log
 							</Link>
