@@ -190,7 +190,7 @@ export async function getLatestDataReleaseInformation() {
 		"https://gitlab.ebi.ac.uk/api/v4/projects/1629/releases?per_page=1",
 		{
 			headers: {
-				"PRIVATE-TOKEN": "glpat-m8C7CryLp49hN1QQXFyF",
+				"PRIVATE-TOKEN": "glpat-gbQzKFxHTWyp_jZhP5gE",
 			},
 		}
 	);

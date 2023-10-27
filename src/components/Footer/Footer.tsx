@@ -133,18 +133,21 @@ const Footer = (props: IFooterProps) => {
 				</div>
 				<div className="row">
 					<div className="col">
-						{/* Placeholder, change for API information */}
 						<p className="text-small text-center">
-							{latestDataReleaseInfo.data?.created_at}© 2017-
-							{/* {new Date(latestReleaseInfo.data?.date).getFullYear() || 2023}
+							© 2017-
+							{/* get latest data release year */}
+							{latestDataReleaseInfo.data?.created_at.split("-")[0] ?? 2023}
 							<br />
-							{latestReleaseInfo.data
+							{`Data Release ${
+								latestDataReleaseInfo.data?.tag_name.split("_")[2]
+							} | ${latestDataReleaseInfo.data?.created_at.split("T")[0]}`}
+							{/* {latestReleaseInfo.data
 								? `Data Release ${latestReleaseInfo.data.name
 										.replace("dr.", "")
 										.replace("dr", "")} | 
 								${new Date(latestReleaseInfo.data.date).toISOString().substring(0, 10)}`
-								: null}
-							<br /> */}
+								: null} */}
+							<br />
 							<Link href="/about/releases" className="link-text-light">
 								Release log
 							</Link>
