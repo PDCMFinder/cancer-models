@@ -1,6 +1,6 @@
 import Logotype from "../Logotype/Logotype";
 import { routes } from "../../utils/routes";
-import { IRoute } from "../../../globalTypes";
+import { IRoute } from "../../../types/globalTypes";
 import ActiveLink from "../ActiveLink/ActiveLink";
 import styles from "./Footer.module.scss";
 import Link from "next/link";
@@ -141,12 +141,6 @@ const Footer = (props: IFooterProps) => {
 							{`Data Release ${
 								latestDataReleaseInfo.data?.tag_name.split("_")[2]
 							} | ${latestDataReleaseInfo.data?.created_at.split("T")[0]}`}
-							{/* {latestReleaseInfo.data
-								? `Data Release ${latestReleaseInfo.data.name
-										.replace("dr.", "")
-										.replace("dr", "")} | 
-								${new Date(latestReleaseInfo.data.date).toISOString().substring(0, 10)}`
-								: null} */}
 							<br />
 							<Link href="/about/releases" className="link-text-light">
 								Release log

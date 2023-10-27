@@ -1,5 +1,5 @@
 import React from "react";
-import { ILabelProps } from "../../../globalTypes";
+import { ILabelProps } from "../../../types/globalTypes";
 
 const Label = (props: ILabelProps) => {
 	return (

@@ -1,4 +1,4 @@
-import { IInputProps } from "../../../globalTypes";
+import { IInputProps } from "../../../types/globalTypes";
 import { ChangeEvent } from "react";
 
 const Input = (props: IInputProps) => {

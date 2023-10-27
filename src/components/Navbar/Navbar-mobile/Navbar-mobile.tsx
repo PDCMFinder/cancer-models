@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import CloseIcon from "../../CloseIcon/CloseIcon";
 import Logotype from "../../Logotype/Logotype";
 import handleBodyClass from "../../../utils/handleBodyClass";
-import { INavProps, IRoute } from "../../../../globalTypes";
+import { INavProps, IRoute } from "../../../../types/globalTypes";
 import ActiveLink from "../../ActiveLink/ActiveLink";
 import Link from "next/link";
 import styles from "./Navbar-mobile.module.scss";
