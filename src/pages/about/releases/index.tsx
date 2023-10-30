@@ -31,7 +31,7 @@ const Releases: NextPage<IReleasesProps> = () => {
 			new RegExp(regEscape(searchTxt), "ig")
 		);
 
-		release.created_at = release.created_at.split("T")[0];
+		release.released_at = release.released_at.split("T")[0];
 		release.tag_name = `v${strArr[strArr.length - 1]}`;
 		const parsedDescription = await remark()
 			.use(remarkHtml, { sanitize: true })
@@ -95,11 +95,11 @@ const Releases: NextPage<IReleasesProps> = () => {
 								<div className="row mb-5" key={data.released_at}>
 									<div className="col-12 col-lg-8 offset-lg-2">
 										<Card
-											headerClassName="pb-0"
+											headerClassName="py-1"
 											header={
 												<div className="d-flex align-center justify-content-between">
-													<h2 className="p-0 mt-0">{data.tag_name}</h2>
-													<p>{data.created_at}</p>
+													<h2 className="p-0 m-0">{data.tag_name}</h2>
+													<p className="h3 m-0">{data.released_at}</p>
 												</div>
 											}
 											contentClassName="py-2"
