@@ -1,5 +1,6 @@
 export interface IGitlabRelease {
 	name: string;
+	repository?: "Data" | "UI";
 	tag_name: string;
 	description: string;
 	created_at: string;

@@ -15,7 +15,6 @@ import { IGitlabRelease } from "../../../../types/releaseTypes";
 interface IReleasesProps {}
 
 const Releases: NextPage<IReleasesProps> = () => {
-	const [parsedReleases, setParsedReleases] = useState<IGitlabRelease[]>([]);
 	const [parsedDataReleases, setParsedDataReleases] = useState<
 		IGitlabRelease[]
 	>([]);
@@ -23,20 +22,25 @@ const Releases: NextPage<IReleasesProps> = () => {
 		[]
 	);
 
-	const parseReleaseContent = async (release: IGitlabRelease) => {
+	const parseReleaseContent = async (
+		release: IGitlabRelease,
+		repository: "Data" | "UI"
+	) => {
 		const searchTxt = "v";
 		const regEscape = (v: string) =>
 			v.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 		const strArr = release.tag_name.split(
 			new RegExp(regEscape(searchTxt), "ig")
 		);
-
-		release.released_at = release.released_at.split("T")[0];
-		release.tag_name = `v${strArr[strArr.length - 1]}`;
 		const parsedDescription = await remark()
 			.use(remarkHtml, { sanitize: true })
 			.process(release.description);
+
+		release.released_at = release.released_at.split("T")[0];
+		release.tag_name = `v${strArr[strArr.length - 1]}`;
 		release.description = parsedDescription.toString();
+		release.repository = repository;
+
 		return release;
 	};
 
@@ -48,7 +52,7 @@ const Releases: NextPage<IReleasesProps> = () => {
 		{
 			onSuccess(data) {
 				data.forEach(async (release: IGitlabRelease) => {
-					release = await parseReleaseContent(release);
+					release = await parseReleaseContent(release, "Data");
 				});
 
 				setParsedDataReleases(data);
@@ -63,7 +67,7 @@ const Releases: NextPage<IReleasesProps> = () => {
 		{
 			onSuccess(data) {
 				data.forEach(async (release: IGitlabRelease) => {
-					release = await parseReleaseContent(release);
+					release = await parseReleaseContent(release, "UI");
 				});
 
 				setParsedUIReleases(data);
@@ -98,8 +102,11 @@ const Releases: NextPage<IReleasesProps> = () => {
 											headerClassName="py-1"
 											header={
 												<div className="d-flex align-center justify-content-between">
-													<h2 className="p-0 m-0">{data.tag_name}</h2>
-													<p className="h3 m-0">{data.released_at}</p>
+													<h2 className="p-0 m-0 h3">
+														{data.repository}:{" "}
+														<span className="text-bold">{data.tag_name}</span>
+													</h2>
+													<p className="h4 m-0">{data.released_at}</p>
 												</div>
 											}
 											contentClassName="py-2"
