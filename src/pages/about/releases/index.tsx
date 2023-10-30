@@ -7,7 +7,7 @@ import { useQuery } from "react-query";
 import Loader from "../../../components/Loader/Loader";
 import { remark } from "remark";
 import remarkHtml from "remark-html";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "../../../components/Card/Card";
 import styles from "./index.module.scss";
 import { IGitlabRelease } from "../../../../types/releaseTypes";
@@ -23,25 +23,22 @@ const Releases: NextPage<IReleasesProps> = () => {
 		[]
 	);
 
-	const parseReleaseContent = async (content: string) => {
-		const processedContent = await remark()
-			.use(remarkHtml, { sanitize: true })
-			.process(content);
-		return processedContent.toString();
-	};
+	const parseReleaseContent = async (release: IGitlabRelease) => {
+		const searchTxt = "v";
+		const regEscape = (v: string) =>
+			v.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+		const strArr = release.tag_name.split(
+			new RegExp(regEscape(searchTxt), "ig")
+		);
 
-	// let releaseChangeLog = useQuery(
-	// 	"releaseChangeLog",
-	// 	() => getUIReleaseInformation(),
-	// 	{
-	// 		onSuccess(data) {
-	// 			data.forEach(async (release) => {
-	// 				release.content = await parseReleaseContent(release.content);
-	// 			});
-	// 			setParsedReleases(data);
-	// 		},
-	// 	}
-	// );
+		release.created_at = release.created_at.split("T")[0];
+		release.tag_name = `v${strArr[strArr.length - 1]}`;
+		const parsedDescription = await remark()
+			.use(remarkHtml, { sanitize: true })
+			.process(release.description);
+		release.description = parsedDescription.toString();
+		return release;
+	};
 
 	let dataReleaseInfo = useQuery(
 		"dataReleaseInfo",
@@ -51,19 +48,10 @@ const Releases: NextPage<IReleasesProps> = () => {
 		{
 			onSuccess(data) {
 				data.forEach(async (release: IGitlabRelease) => {
-					const searchTxt = "v";
-					const regEscape = (v: string) =>
-						v.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-					const strArr = release.tag_name.split(
-						new RegExp(regEscape(searchTxt), "ig")
-					);
-
-					release.created_at = release.created_at.split("T")[0];
-					release.tag_name = `v${strArr[strArr.length - 1]}`;
-					release.description = await parseReleaseContent(release.description);
+					release = await parseReleaseContent(release);
 				});
 
-				setParsedReleases(data);
+				setParsedDataReleases(data);
 			},
 		}
 	);
@@ -75,7 +63,7 @@ const Releases: NextPage<IReleasesProps> = () => {
 		{
 			onSuccess(data) {
 				data.forEach(async (release: IGitlabRelease) => {
-					release.description = await parseReleaseContent(release.description);
+					release = await parseReleaseContent(release);
 				});
 
 				setParsedUIReleases(data);
@@ -96,29 +84,35 @@ const Releases: NextPage<IReleasesProps> = () => {
 			</header>
 			<section>
 				<div className="container">
-					{parsedReleases.length > 0 ? (
-						parsedReleases.map((data: IGitlabRelease) => (
-							<div className="row mb-5" key={data.created_at}>
-								<div className="col-12 col-lg-8 offset-lg-2">
-									<Card
-										headerClassName="pb-0"
-										header={
-											<div className="d-flex align-center justify-content-between">
-												<h2 className="p-0 mt-0">{data.tag_name}</h2>
-												<p>{data.created_at}</p>
-											</div>
-										}
-										contentClassName="py-2"
-									>
-										<div
-											className={styles.Releases_release_content}
-											// we trust gitlab and github, dont we? Nothing dangerous here
-											dangerouslySetInnerHTML={{ __html: data.description }}
-										/>
-									</Card>
+					{parsedUIReleases.length > 0 || parsedDataReleases.length > 0 ? (
+						[...parsedDataReleases, ...parsedUIReleases]
+							.sort(
+								(a, b) =>
+									new Date(b.released_at).getTime() -
+									new Date(a.released_at).getTime()
+							)
+							.map((data: IGitlabRelease) => (
+								<div className="row mb-5" key={data.released_at}>
+									<div className="col-12 col-lg-8 offset-lg-2">
+										<Card
+											headerClassName="pb-0"
+											header={
+												<div className="d-flex align-center justify-content-between">
+													<h2 className="p-0 mt-0">{data.tag_name}</h2>
+													<p>{data.created_at}</p>
+												</div>
+											}
+											contentClassName="py-2"
+										>
+											<div
+												className={styles.Releases_release_content}
+												// we trust gitlab and github, dont we? Nothing dangerous here
+												dangerouslySetInnerHTML={{ __html: data.description }}
+											/>
+										</Card>
+									</div>
 								</div>
-							</div>
-						))
+							))
 					) : (
 						<div style={{ height: "300px" }}>
 							<Loader />
