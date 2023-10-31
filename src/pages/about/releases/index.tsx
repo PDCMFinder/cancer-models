@@ -5,8 +5,6 @@ import {
 } from "../../../apis/AggregatedData.api";
 import { useQuery } from "react-query";
 import Loader from "../../../components/Loader/Loader";
-import { remark } from "remark";
-import remarkHtml from "remark-html";
 import { useEffect, useState } from "react";
 import Card from "../../../components/Card/Card";
 import styles from "./index.module.scss";
@@ -16,16 +14,6 @@ import InputAndLabel from "../../../components/Input/InputAndLabel";
 interface IReleasesProps {}
 
 const Releases: NextPage<IReleasesProps> = () => {
-	const [parsedDataReleases, setParsedDataReleases] = useState<
-		IGitlabRelease[]
-	>([]);
-	const [showDataReleases, setShowDataReleases] = useState<boolean>(true);
-	const [parsedUIReleases, setParsedUIReleases] = useState<IGitlabRelease[]>(
-		[]
-	);
-	const [showUIReleases, setShowUIReleases] = useState<boolean>(true);
-	const [parsedReleases, setParsedReleases] = useState<IGitlabRelease[]>([]);
-
 	let dataReleaseInfo = useQuery(
 		"dataReleaseInfo",
 		() => {
@@ -33,7 +21,7 @@ const Releases: NextPage<IReleasesProps> = () => {
 		},
 		{
 			onSuccess(data) {
-				setParsedDataReleases(data);
+				setDataReleases(data);
 			},
 		}
 	);
@@ -44,10 +32,20 @@ const Releases: NextPage<IReleasesProps> = () => {
 		},
 		{
 			onSuccess(data) {
-				setParsedUIReleases(data);
+				setUIReleases(data);
 			},
 		}
 	);
+
+	const [dataReleases, setDataReleases] = useState<IGitlabRelease[]>(
+		dataReleaseInfo.data || []
+	);
+	const [showDataReleases, setShowDataReleases] = useState<boolean>(true);
+	const [uiReleases, setUIReleases] = useState<IGitlabRelease[]>(
+		uiReleaseInfo.data || []
+	);
+	const [showUIReleases, setShowUIReleases] = useState<boolean>(true);
+	const [allReleases, setReleases] = useState<IGitlabRelease[]>([]);
 
 	const sortReleases = (x: IGitlabRelease[], y: IGitlabRelease[]) => {
 		return [...x, ...y].sort(
@@ -57,27 +55,25 @@ const Releases: NextPage<IReleasesProps> = () => {
 	};
 
 	useEffect(() => {
-		setParsedReleases(sortReleases(parsedDataReleases, parsedUIReleases));
-	}, [parsedDataReleases, parsedUIReleases]);
+		setReleases(sortReleases(dataReleases, uiReleases));
+	}, [dataReleases, uiReleases]);
 
 	const handleFilter = (filter?: string) => {
-		let data: [] | IGitlabRelease[] = showDataReleases
-			? parsedDataReleases
-			: [];
-		let ui: [] | IGitlabRelease[] = showUIReleases ? parsedUIReleases : [];
+		let data: [] | IGitlabRelease[] = showDataReleases ? dataReleases : [];
+		let ui: [] | IGitlabRelease[] = showUIReleases ? uiReleases : [];
 
 		if (filter === "data") {
 			let showDataStatus = !showDataReleases;
-			data = showDataStatus ? parsedDataReleases : [];
+			data = showDataStatus ? dataReleases : [];
 			setShowDataReleases(showDataStatus);
 		}
 		if (filter === "ui") {
 			let showUIStatus = !showUIReleases;
-			ui = showUIStatus ? parsedUIReleases : [];
+			ui = showUIStatus ? uiReleases : [];
 			setShowUIReleases(showUIStatus);
 		}
 
-		setParsedReleases(sortReleases(data, ui));
+		setReleases(sortReleases(data, ui));
 	};
 
 	return (
@@ -118,8 +114,8 @@ const Releases: NextPage<IReleasesProps> = () => {
 							</div>
 						</div>
 					</div>
-					{parsedUIReleases.length > 0 || parsedDataReleases.length > 0 ? (
-						parsedReleases.map((data: IGitlabRelease) => (
+					{uiReleases.length > 0 || dataReleases.length > 0 ? (
+						allReleases.map((data: IGitlabRelease) => (
 							<div className="row mb-5" key={data.released_at + data.tag_name}>
 								<div className="col-12 col-lg-8 offset-lg-2">
 									<Card
