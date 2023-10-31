@@ -1,6 +1,6 @@
 import Input from "./Input";
 import Label from "./Label";
-import { IInputProps, ILabelProps } from "../../../globalTypes";
+import { IInputProps, ILabelProps } from "../../../types/globalTypes";
 import styles from "./InputAndLabel.module.scss";
 import { RefObject } from "react";
 

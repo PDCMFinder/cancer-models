@@ -126,6 +126,9 @@ img {
 	}
 }
 .justify-content {
+	&-around {
+		justify-content: space-around;
+	}
 	&-between {
 		justify-content: space-between;
 	}
@@ -294,6 +297,11 @@ select {
 textarea {
 	min-height: calc(4em + 2rem);
 	min-width: 100%;
+}
+.br {
+	&-common {
+		border-radius: $br-common;
+	}
 }
 .bg {
 	&-transparent {

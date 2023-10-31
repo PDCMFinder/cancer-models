@@ -1,5 +1,5 @@
 import Logotype from "../../Logotype/Logotype";
-import { INavProps, IRoute } from "../../../../globalTypes";
+import { INavProps, IRoute } from "../../../../types/globalTypes";
 import Link from "next/link";
 import ActiveLink from "../../ActiveLink/ActiveLink";
 import styles from "./Navbar-desktop.module.scss";
