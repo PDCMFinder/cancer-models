@@ -1,5 +1,8 @@
 import { camelCase } from "../utils/dataUtils";
-import { IGitlabRelease, IGithubRelease } from "../../types/releaseTypes";
+import { IGitlabRelease } from "../../types/releaseTypes";
+import { remark } from "remark";
+import remarkHtml from "remark-html";
+import parseRelease from "../utils/parseRelease";
 
 export async function getCancerHierarchy(): Promise<any> {
 	let response = await fetch(
@@ -187,7 +190,13 @@ export async function getDataReleaseInformation() {
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json();
+	return response.json().then((d) => {
+		d.forEach(async (release: IGitlabRelease) => {
+			release = await parseRelease(release, "Data");
+		});
+
+		return d;
+	});
 }
 
 export async function getLatestDataReleaseInformation() {
@@ -203,7 +212,7 @@ export async function getLatestDataReleaseInformation() {
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json().then((d: IGitlabRelease[]) => d[0]);
+	return response.json().then((d: IGitlabRelease[]) => parseRelease(d[0]));
 }
 
 export async function getUIReleaseInformation() {
@@ -221,7 +230,13 @@ export async function getUIReleaseInformation() {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json();
+	return response.json().then((d) => {
+		d.forEach(async (release: IGitlabRelease) => {
+			release = await parseRelease(release, "UI");
+		});
+
+		return d;
+	});
 }
 
 export async function getModelCount() {

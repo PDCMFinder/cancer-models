@@ -135,12 +135,15 @@ const Footer = (props: IFooterProps) => {
 					<div className="col">
 						<p className="text-small text-center">
 							© 2017-
-							{/* get latest data release year */}
-							{latestDataReleaseInfo.data?.created_at.split("-")[0] ?? 2023}
+							{new Date(
+								latestDataReleaseInfo.data?.released_at || Date.now()
+							).getFullYear()}
 							<br />
 							{`Data Release ${
-								latestDataReleaseInfo.data?.tag_name.split("_")[2]
-							} | ${latestDataReleaseInfo.data?.created_at.split("T")[0]}`}
+								latestDataReleaseInfo.data?.tag_name
+							} | ${new Date(
+								latestDataReleaseInfo.data?.released_at || Date.now()
+							).getFullYear()}`}
 							<br />
 							<Link href="/about/releases" className="link-text-light">
 								Release log

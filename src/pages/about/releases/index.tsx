@@ -26,28 +26,6 @@ const Releases: NextPage<IReleasesProps> = () => {
 	const [showUIReleases, setShowUIReleases] = useState<boolean>(true);
 	const [parsedReleases, setParsedReleases] = useState<IGitlabRelease[]>([]);
 
-	const parseReleaseContent = async (
-		release: IGitlabRelease,
-		repository: "Data" | "UI"
-	) => {
-		const searchTxt = "v";
-		const regEscape = (v: string) =>
-			v.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-		const strArr = release.tag_name.split(
-			new RegExp(regEscape(searchTxt), "ig")
-		);
-		const parsedDescription = await remark()
-			.use(remarkHtml, { sanitize: true })
-			.process(release.description);
-
-		release.released_at = release.released_at.split("T")[0];
-		release.tag_name = `v${strArr[strArr.length - 1]}`;
-		release.description = parsedDescription.toString();
-		release.repository = repository;
-
-		return release;
-	};
-
 	let dataReleaseInfo = useQuery(
 		"dataReleaseInfo",
 		() => {
@@ -55,10 +33,6 @@ const Releases: NextPage<IReleasesProps> = () => {
 		},
 		{
 			onSuccess(data) {
-				data.forEach(async (release: IGitlabRelease) => {
-					release = await parseReleaseContent(release, "Data");
-				});
-
 				setParsedDataReleases(data);
 			},
 		}
@@ -70,10 +44,6 @@ const Releases: NextPage<IReleasesProps> = () => {
 		},
 		{
 			onSuccess(data) {
-				data.forEach(async (release: IGitlabRelease) => {
-					release = await parseReleaseContent(release, "UI");
-				});
-
 				setParsedUIReleases(data);
 			},
 		}

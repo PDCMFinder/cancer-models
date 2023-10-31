@@ -74,8 +74,6 @@ function collapseAgeGroup(
 
 const Overview: NextPage = () => {
 	const notValidCategories = ["not provided", "not collected"];
-	const { windowWidth } = useWindowDimensions();
-	let bpLarge = breakPoints.large;
 
 	let cancerHierarchyQuery = useQuery("cancerHierarchy", () => {
 		return getCancerHierarchy();
@@ -260,7 +258,7 @@ const Overview: NextPage = () => {
 								{latestDataReleaseInfo.data ? (
 									<li>
 										Date of publication:{" "}
-										{new Date(latestDataReleaseInfo.data.date)
+										{new Date(latestDataReleaseInfo.data.released_at)
 											.toISOString()
 											.substring(0, 10)}
 									</li>
