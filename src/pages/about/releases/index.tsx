@@ -93,7 +93,7 @@ const Releases: NextPage<IReleasesProps> = () => {
 						<div className="col-12 col-lg-8 offset-lg-2">
 							<div className="bg-lightGray p-2 br-common">
 								<div className="d-flex align-center justify-content-around">
-									<h2 className="m-0">Show:</h2>
+									<h2 className="m-0 h3">Show:</h2>
 									<InputAndLabel
 										forId="filter-dataReleases"
 										label="Data releases"
