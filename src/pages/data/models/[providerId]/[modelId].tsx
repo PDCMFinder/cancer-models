@@ -671,7 +671,7 @@ const ModelDetails = ({
 																	);
 																}
 															} else {
-																dataAvailableContent = "No data";
+																dataAvailableContent = "Pending";
 															}
 
 															return (
