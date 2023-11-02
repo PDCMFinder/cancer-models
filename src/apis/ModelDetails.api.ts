@@ -138,7 +138,7 @@ export async function getMolecularDataRestrictions(dataSource: string) {
 		return [];
 	}
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/molecular_data_restriction?data_source=eq.${dataSource}`
+		`${process.env.NEXT_PUBLIC_API_URL}/model_molecular_metadata?model_id=eq.${dataSource}`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
@@ -380,9 +380,7 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 		modelProviderId,
 		pdcmModelId
 	);
-	const molecularDataRestrictions = await getMolecularDataRestrictions(
-		modelProviderId
-	);
+	const molecularDataRestrictions = await getMolecularDataRestrictions(modelId);
 	const modelType = metadata.modelType;
 	const engraftments = await getModelEngraftments(pdcmModelId, modelType);
 	const drugDosing = await getModelDrugDosing(pdcmModelId, modelType);

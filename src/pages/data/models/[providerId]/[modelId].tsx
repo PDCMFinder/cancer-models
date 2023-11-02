@@ -46,8 +46,18 @@ interface IModelDetailsProps {
 }
 
 export interface MolecularDataRestrictions {
+	modelId: string;
 	dataSource: string;
-	molecularDataTable: string;
+	source: string;
+	sampleId: string;
+	xenograftPassage: string;
+	rawDataUrl: any;
+	dataType: string;
+	platformName: string;
+	dataExists: string;
+	dataRestricted: string;
+	molecularCharacterizationId: number;
+	externalDbLinks: any;
 }
 
 interface PatientTreatment {
@@ -140,13 +150,6 @@ export interface TypesMap {
 	biomarker_molecular_data: string;
 }
 
-const typesMap: TypesMap = {
-	expression_molecular_data: "expression",
-	cna_molecular_data: "copy number alteration",
-	mutation_measurement_data: "mutation",
-	biomarker_molecular_data: "biomarker",
-};
-
 const ModelDetails = ({
 	metadata,
 	extLinks,
@@ -183,9 +186,6 @@ const ModelDetails = ({
 		{ label: "Primary Site", value: metadata.primarySite },
 		{ label: "Collection Site", value: metadata.collectionSite },
 	];
-	const restrictedTypes = molecularDataRestrictions.map(
-		(d) => typesMap[d.molecularDataTable as keyof TypesMap]
-	);
 
 	useEffect(() => {
 		if (!isInitialLoad && downloadBtnRef.current) {
@@ -592,7 +592,10 @@ const ModelDetails = ({
 												<tbody>
 													{molecularData &&
 														molecularData.map((data) => {
-															let sampleId, sampleType;
+															let sampleId,
+																sampleType,
+																rawDataExternalLinks: ExternalDbLinks[] = [],
+																dataAvailableContent;
 
 															if (data.xenograftSampleId) {
 																sampleType = "Engrafted Tumour";
@@ -607,7 +610,6 @@ const ModelDetails = ({
 
 															const hasExternalDbLinks =
 																data.externalDbLinks?.length > 0;
-															let rawDataExternalLinks: ExternalDbLinks[] = [];
 															if (hasExternalDbLinks) {
 																data.externalDbLinks
 																	?.filter(
@@ -616,6 +618,60 @@ const ModelDetails = ({
 																	.forEach((obj) =>
 																		rawDataExternalLinks.push(obj)
 																	);
+															}
+															const dataRestrictions =
+																molecularDataRestrictions.find(
+																	(row) =>
+																		row.molecularCharacterizationId === data.id
+																);
+															const dataRestricted =
+																	dataRestrictions?.dataRestricted,
+																dataExists = dataRestrictions?.dataExists;
+
+															if (dataExists === "TRUE") {
+																if (dataRestricted === "TRUE") {
+																	dataAvailableContent = (
+																		<Link
+																			href={extLinks.contactLink || ""}
+																			target="_blank"
+																			rel="noreferrer noopener"
+																			onClick={() =>
+																				hj_event("click_requestData")
+																			}
+																		>
+																			REQUEST DATA
+																		</Link>
+																	);
+																} else {
+																	dataAvailableContent = (
+																		<>
+																			<Button
+																				color="dark"
+																				priority="secondary"
+																				className="text-left link-text mt-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
+																				onClick={() => {
+																					setSelectedMolecularData(data);
+																					hj_event("click_viewData");
+																				}}
+																			>
+																				VIEW DATA
+																			</Button>
+																			<Button
+																				color="dark"
+																				priority="secondary"
+																				className="text-left link-text mt-0 m-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
+																				onClick={() => {
+																					getDownloadData(data);
+																					hj_event("click_downloadData");
+																				}}
+																			>
+																				DOWNLOAD DATA
+																			</Button>
+																		</>
+																	);
+																}
+															} else {
+																dataAvailableContent = "No data";
 															}
 
 															return (
@@ -628,46 +684,7 @@ const ModelDetails = ({
 																	<td className="text-capitalize">
 																		{data.dataType}
 																	</td>
-																	<td>
-																		{!restrictedTypes.includes(data.dataType) &&
-																		data.dataAvailability === "TRUE" ? (
-																			<>
-																				<Button
-																					color="dark"
-																					priority="secondary"
-																					className="text-left link-text mt-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
-																					onClick={() => {
-																						setSelectedMolecularData(data);
-																						hj_event("click_viewData");
-																					}}
-																				>
-																					VIEW DATA
-																				</Button>
-																				<Button
-																					color="dark"
-																					priority="secondary"
-																					className="text-left link-text mt-0 m-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
-																					onClick={() => {
-																						getDownloadData(data);
-																						hj_event("click_downloadData");
-																					}}
-																				>
-																					DOWNLOAD DATA
-																				</Button>
-																			</>
-																		) : (
-																			<Link
-																				href={extLinks.contactLink || ""}
-																				target="_blank"
-																				rel="noreferrer noopener"
-																				onClick={() =>
-																					hj_event("click_requestData")
-																				}
-																			>
-																				REQUEST DATA
-																			</Link>
-																		)}
-																	</td>
+																	<td>{dataAvailableContent}</td>
 																	<td>{data.platformName}</td>
 																	<td>
 																		{hasExternalDbLinks
