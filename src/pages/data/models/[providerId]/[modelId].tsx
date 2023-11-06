@@ -441,7 +441,7 @@ const ModelDetails = ({
 								<div id="engraftments" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">PDX model engraftment</h2>
-										<div className="overflow-scroll showScrollbar-vertical">
+										<div className="overflow-auto showScrollbar-vertical">
 											<table>
 												<caption>PDX model engraftment</caption>
 												<thead>
@@ -537,7 +537,7 @@ const ModelDetails = ({
 								<div id="quality-control" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Model quality control</h2>
-										<div className="overflow-scroll showScrollbar-vertical">
+										<div className="overflow-auto showScrollbar-vertical">
 											<table>
 												<caption>Model quality control</caption>
 												<thead>
@@ -575,7 +575,7 @@ const ModelDetails = ({
 								<div id="molecular-data" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Molecular data</h2>
-										<div className="overflow-scroll showScrollbar-vertical">
+										<div className="overflow-auto showScrollbar-vertical">
 											<table>
 												<caption>Molecular data</caption>
 												<thead>
@@ -725,7 +725,7 @@ const ModelDetails = ({
 								<div id="dosing-studies" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Dosing studies</h2>
-										<div className="overflow-scroll showScrollbar-vertical">
+										<div className="overflow-auto showScrollbar-vertical">
 											<table>
 												<caption>Dosing studies</caption>
 												<thead>
@@ -759,7 +759,7 @@ const ModelDetails = ({
 								<div id="patient-treatment" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Patient treatment</h2>
-										<div className="overflow-scroll showScrollbar-vertical">
+										<div className="overflow-auto showScrollbar-vertical">
 											<table>
 												<caption>Patient treatment</caption>
 												<thead>
