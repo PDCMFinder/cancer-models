@@ -85,6 +85,7 @@ const Layout = (props: ILayoutProps) => {
 				<DynamicFooter cookieConsentHeight={cookieConsentHeight} />
 				{!cookies["cm_feedback"] && (
 					<DynamicModal
+						className="overflow-hidden"
 						style={{ maxWidth: "500px" }}
 						modalWidth="100"
 						handleClose={() =>
