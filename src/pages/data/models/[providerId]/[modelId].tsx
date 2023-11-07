@@ -201,7 +201,7 @@ const ModelDetails = ({
 					data: d,
 					filename: `CancerModelsOrg_${data.dataType ?? ""}_${
 						data.patientSampleId ?? data.xenograftModelId ?? ""
-					}_${data.platformName ?? ""}.csv`,
+					}_${data.platformName ?? ""}.tsv`,
 				});
 			})
 			.catch((error) => {});
@@ -718,6 +718,7 @@ const ModelDetails = ({
 										filename={downloadData.filename}
 										className="hideElement-accessible"
 										ref={downloadBtnRef}
+										separator={"\t"}
 									/>
 								</div>
 							)}
