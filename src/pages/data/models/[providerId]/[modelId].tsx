@@ -671,7 +671,19 @@ const ModelDetails = ({
 																	);
 																}
 															} else {
-																dataAvailableContent = "No data";
+																dataAvailableContent = (
+																	<Tooltip
+																		content={
+																			<>
+																				<p className={`text-small my-0`}>
+																					Available on next release
+																				</p>
+																			</>
+																		}
+																	>
+																		Pending
+																	</Tooltip>
+																);
 															}
 
 															return (
