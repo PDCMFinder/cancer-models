@@ -1,14 +1,11 @@
-import {
-	ExtLinks,
-	IPublication,
-} from "../pages/data/models/[providerId]/[modelId]";
+import { IExtLinks, IPublication, IMetadata } from "../types/Model.model";
 import { camelCase } from "../utils/dataUtils";
 
 export async function getModelDetailsMetadata(
 	modelId: string,
 	providerId: string
-): Promise<any> {
-	let response = await fetch(
+): Promise<IMetadata> {
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&data_source=eq.${providerId}`
 	);
 	if (!response.ok) {
@@ -18,7 +15,7 @@ export async function getModelDetailsMetadata(
 }
 
 export async function getProviderId(modelId: string) {
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&select=data_source`
 	);
 	if (!response.ok) {
@@ -30,8 +27,8 @@ export async function getProviderId(modelId: string) {
 export async function getModelPubmedIds(
 	modelId: string = "",
 	providerId: string
-): Promise<any> {
-	let response = await fetch(
+): Promise<string[]> {
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/model_information?external_model_id=eq.${modelId}&data_source=eq.${providerId}&select=publication_group(pubmed_ids)`
 	);
 	if (!response.ok) {
@@ -48,7 +45,7 @@ export async function getModelPubmedIds(
 
 export async function getPublicationData(pubmedId: string) {
 	if (pubmedId !== "") {
-		let response = await fetch(
+		const response = await fetch(
 			`https://www.ebi.ac.uk/europepmc/webservices/rest/article/MED/${pubmedId.replace(
 				"PMID:",
 				""
@@ -72,22 +69,22 @@ export async function getPublicationData(pubmedId: string) {
 export async function getModelExtLinks(
 	pdcmModelId: number,
 	modelId: string
-): Promise<ExtLinks> {
+): Promise<IExtLinks> {
 	if (pdcmModelId !== 0 && !pdcmModelId) {
 		return {};
 	}
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/model_information?id=eq.${pdcmModelId}&select=id,contact_people(name_list,email_list),contact_form(form_url),source_database(database_url)`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
-		let extLinks = camelCase(d[0]);
-		for (let d in extLinks) {
+		const extLinks = camelCase(d[0]);
+		for (const d in extLinks) {
 			extLinks[d] = camelCase(extLinks[d]);
 		}
-		let modelExtLinks: ExtLinks = {
+		const modelExtLinks: IExtLinks = {
 			contactLink: extLinks.contactForm.formUrl
 				? extLinks.contactForm.formUrl
 				: createMailToLink(extLinks.contactPeople.emailList, modelId),
@@ -101,7 +98,7 @@ export async function getModelQualityData(pdcmModelId: number) {
 	if (pdcmModelId !== 0 && !pdcmModelId) {
 		return [];
 	}
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/quality_assurance?model_id=eq.${pdcmModelId}`
 	);
 	if (!response.ok) {
@@ -119,7 +116,7 @@ export async function getModelMolecularData(
 	if (pdcmModelId !== 0 && !pdcmModelId) {
 		return [];
 	}
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/details_molecular_data?or=(patient_model_id.eq.${pdcmModelId},xenograft_model_id.eq.${pdcmModelId},cell_model_id.eq.${pdcmModelId})`,
 		{ headers: { Prefer: "count=exact" } }
 	);
@@ -137,7 +134,7 @@ export async function getMolecularDataRestrictions(modelId: string) {
 	if (!modelId) {
 		return [];
 	}
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/model_molecular_metadata?model_id=eq.${modelId}`
 	);
 	if (!response.ok) {
@@ -164,7 +161,7 @@ export async function getModelMolecularDataColumns(
 		biomarker: "biomarker_data_table_columns",
 	};
 	const endpoint = typeEndpointMap[dataType];
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?molecular_characterization_id=eq.${molecularCharacterizationId}`
 	);
 	if (!response.ok) {
@@ -183,7 +180,7 @@ export async function getAvailableDataColumns(
 		molecularCharacterizationType == "copy number alteration"
 			? "cna"
 			: molecularCharacterizationType;
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/available_molecular_data_columns?data_source=eq.${dataSource}&molecular_characterization_type=eq.${molecularCharacterizationType}`
 	);
 	if (!response.ok) {
@@ -224,7 +221,7 @@ export async function getModelMolecularDataDetails(
 			request += `.${sortDirection}`;
 		}
 	}
-	let response = await fetch(request, { headers: { Prefer: "count=exact" } });
+	const response = await fetch(request, { headers: { Prefer: "count=exact" } });
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
@@ -254,8 +251,8 @@ export async function getMolecularDataDownload(
 		biomarker: "biomarker_data_table",
 	};
 	const endpoint = typeEndpointMap[dataType];
-	let request = `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?molecular_characterization_id=eq.${molecularCharacterization.id}`;
-	let response = await fetch(request, { headers: { Prefer: "count=exact" } });
+	const request = `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?molecular_characterization_id=eq.${molecularCharacterization.id}`;
+	const response = await fetch(request, { headers: { Prefer: "count=exact" } });
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
@@ -279,7 +276,7 @@ export async function getModelEngraftments(
 	if ((pdcmModelId !== 0 && !pdcmModelId) || modelType !== "PDX") {
 		return [];
 	}
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/xenograft_model_specimen?model_id=eq.${pdcmModelId}&select=host_strain(name, nomenclature),engraftment_site(name),engraftment_type(name),engraftment_sample_type(name),engraftment_sample_state(name),passage_number`
 	);
 	if (!response.ok) {
@@ -307,7 +304,7 @@ export async function getPatientTreatment(pdcmModelId: number) {
 	if (pdcmModelId !== 0 && !pdcmModelId) {
 		return [];
 	}
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/patient_treatment?model_id=eq.${pdcmModelId}&select=*`
 	);
 	if (!response.ok) {
@@ -316,7 +313,7 @@ export async function getPatientTreatment(pdcmModelId: number) {
 	return response.json().then((d) =>
 		d.map((item: any) => {
 			const itemCamelCase: any = camelCase(item);
-			let treatment = {
+			const treatment = {
 				treatmentName: itemCamelCase.treatment.replaceAll(" And ", ", "),
 				treatmentDose: itemCamelCase.dose,
 				treatmentResponse: itemCamelCase.response,
@@ -333,7 +330,7 @@ export async function getModelDrugDosing(
 	if ((pdcmModelId !== 0 && !pdcmModelId) || modelType !== "PDX") {
 		return [];
 	}
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/dosing_studies?model_id=eq.${pdcmModelId}&select=*`
 	);
 	if (!response.ok) {
@@ -342,7 +339,7 @@ export async function getModelDrugDosing(
 	return response.json().then((d) => {
 		return d.map((item: any) => {
 			const itemCamelCase: any = camelCase(item);
-			let treatment = {
+			const treatment = {
 				treatmentName: itemCamelCase.treatment,
 				treatmentDose: itemCamelCase.dose,
 				treatmentResponse: itemCamelCase.response,
@@ -355,11 +352,11 @@ export async function getModelDrugDosing(
 export async function getExpressionHeatmap(
 	molecularCharacterizationId: number,
 	dataType: string
-): Promise<Array<any>> {
+): Promise<any[]> {
 	if (!molecularCharacterizationId || dataType !== "expression") {
 		return [];
 	}
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.PUBLIC_URL}/static/expression_heatmap.json`
 	);
 	if (!response.ok) {

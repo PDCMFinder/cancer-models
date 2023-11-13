@@ -3,7 +3,7 @@ import { useTheme, ValueFormat, useValueFormatter } from "@nivo/core";
 
 export interface BasicTooltipProps {
 	id: ReactNode;
-	providers: Array<any>;
+	providers: any[];
 	format?: ValueFormat<number | string | Date>;
 	color?: string;
 	enableChip?: boolean;

@@ -12,7 +12,7 @@ interface IDataCountCardProps {
 
 const DataCountCard = (props: IDataCountCardProps) => {
 	const isVertical = props.layout === "vertical";
-	let modelsByTypeCountsQuery = useQuery("modelsByTypeCounts", () => {
+	const modelsByTypeCountsQuery = useQuery("modelsByTypeCounts", () => {
 		return getModelsByType();
 	});
 

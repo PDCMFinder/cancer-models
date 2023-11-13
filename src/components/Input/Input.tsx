@@ -2,7 +2,7 @@ import { IInputProps } from "../../../types/globalTypes";
 import { ChangeEvent } from "react";
 
 const Input = (props: IInputProps) => {
-	let commonInputArgs = {
+	const commonInputArgs = {
 			name: props.name,
 			id: props.id ?? props.name,
 			placeholder: props.placeholder,

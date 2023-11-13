@@ -1,0 +1,314 @@
+
+/Users/mrios/Documents/cancer-models/src/apis/AggregatedData.api.ts
+    5:53  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   13:20  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   15:8   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   19:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   48:13  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   48:43  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   60:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   78:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   78:54  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  102:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  168:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  169:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/mrios/Documents/cancer-models/src/apis/Contact.api.ts
+  8:12  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/mrios/Documents/cancer-models/src/apis/ModelDetails.api.ts
+  108:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  127:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  144:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  157:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  206:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  231:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  241:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  247:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  260:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  286:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  314:16  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  315:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  340:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  341:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  355:12  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  366:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/mrios/Documents/cancer-models/src/apis/Search.api.ts
+   18:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   20:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   24:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   38:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   65:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   78:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   92:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  101:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  173:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  176:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  197:32  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  228:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  229:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  288:24  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  294:24  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  305:2   error  'facetsByKey' is defined but never used   @typescript-eslint/no-unused-vars
+  305:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  320:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/mrios/Documents/cancer-models/src/components/Accordion/Accordion.tsx
+  10:11  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/mrios/Documents/cancer-models/src/components/ActiveLink/ActiveLink.cy.js
+   3:1  error  'context' is not defined     no-undef
+   4:2  error  'beforeEach' is not defined  no-undef
+   5:3  error  'cy' is not defined          no-undef
+   8:2  error  'it' is not defined          no-undef
+  10:3  error  'cy' is not defined          no-undef
+
+/Users/mrios/Documents/cancer-models/src/components/ActiveLink/ActiveLink.tsx
+  24:2  error  Mixed spaces and tabs  no-mixed-spaces-and-tabs
+
+/Users/mrios/Documents/cancer-models/src/components/BarChart/BarChart.tsx
+   6:8   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   8:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  47:20  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/mrios/Documents/cancer-models/src/components/Blog/BlogPreview.tsx
+  7:22  error  'props' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/mrios/Documents/cancer-models/src/components/Button/Button.tsx
+  41:3  error  'externalLinkProps' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  61:3  error  Mixed spaces and tabs                                   no-mixed-spaces-and-tabs
+
+/Users/mrios/Documents/cancer-models/src/components/CirclePacking/CirclePacking.tsx
+  5:8  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/mrios/Documents/cancer-models/src/components/CookieConsent/CookieConsent.tsx
+  12:9  error  'cookie' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/mrios/Documents/cancer-models/src/components/DataCountCard/DataCountCard.stories.tsx
+  9:57  error  'args' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/mrios/Documents/cancer-models/src/components/DataCountCard/DataCountCard.tsx
+  1:8  error  'styles' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/mrios/Documents/cancer-models/src/components/DonutChart/DonutChart.tsx
+   5:8   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   6:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  15:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  36:20  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/mrios/Documents/cancer-models/src/components/Form/Form.tsx
+  7:12  error  Don't use `Function` as a type. The `Function` type accepts any function-like value.
+It provides no type safety when calling the function, which can be a common source of bugs.
+It also accepts things like class declarations, which will throw at runtime as they will not be called with `new`.
+If you are expecting the function to accept certain arguments, you should explicitly define the function shape  @typescript-eslint/ban-types
+
+/Users/mrios/Documents/cancer-models/src/components/MolecularDataTable/MolecularDataTable.tsx
+   32:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  234:16  error  Mixed spaces and tabs                     no-mixed-spaces-and-tabs
+
+/Users/mrios/Documents/cancer-models/src/components/Navbar/Navbar-desktop/Navbar-desktop.cy.js
+   1:1  error  'context' is not defined     no-undef
+   2:2  error  'beforeEach' is not defined  no-undef
+   3:3  error  'cy' is not defined          no-undef
+   4:3  error  'cy' is not defined          no-undef
+   5:3  error  'cy' is not defined          no-undef
+   8:2  error  'it' is not defined          no-undef
+  10:7  error  'cy' is not defined          no-undef
+  11:4  error  'cy' is not defined          no-undef
+  12:4  error  'cy' is not defined          no-undef
+  17:4  error  'cy' is not defined          no-undef
+
+/Users/mrios/Documents/cancer-models/src/components/Navbar/Navbar-desktop/Navbar-desktop.tsx
+  29:9  error  'children' is never reassigned. Use 'const' instead  prefer-const
+  30:9  error  'path' is never reassigned. Use 'const' instead      prefer-const
+  31:9  error  'name' is never reassigned. Use 'const' instead      prefer-const
+
+/Users/mrios/Documents/cancer-models/src/components/Navbar/Navbar-mobile/Navbar-mobile.cy.js
+   1:1  error  'context' is not defined     no-undef
+   2:2  error  'beforeEach' is not defined  no-undef
+   3:3  error  'cy' is not defined          no-undef
+   4:3  error  'cy' is not defined          no-undef
+   5:3  error  'cy' is not defined          no-undef
+   8:2  error  'it' is not defined          no-undef
+   9:3  error  'cy' is not defined          no-undef
+  10:3  error  'cy' is not defined          no-undef
+  13:3  error  'cy' is not defined          no-undef
+  14:3  error  'cy' is not defined          no-undef
+
+/Users/mrios/Documents/cancer-models/src/components/Navbar/Navbar.cy.js
+   1:1  error  'context' is not defined     no-undef
+   2:2  error  'beforeEach' is not defined  no-undef
+   3:3  error  'cy' is not defined          no-undef
+   6:2  error  'it' is not defined          no-undef
+   7:3  error  'cy' is not defined          no-undef
+   9:3  error  'cy' is not defined          no-undef
+  10:3  error  'cy' is not defined          no-undef
+  11:3  error  'cy' is not defined          no-undef
+
+/Users/mrios/Documents/cancer-models/src/components/ProviderMapChart/GeoMapFeature.tsx
+  1:1  error  Do not use "@ts-nocheck" because it alters compilation errors  @typescript-eslint/ban-ts-comment
+
+/Users/mrios/Documents/cancer-models/src/components/ProviderMapChart/GeoMapWithMarkers.tsx
+    1:1   error  Do not use "@ts-nocheck" because it alters compilation errors  @typescript-eslint/ban-ts-comment
+   21:3   error  'projectionType' is assigned a value but never used            @typescript-eslint/no-unused-vars
+   36:5   error  Unexpected any. Specify a different type                       @typescript-eslint/no-explicit-any
+   65:13  error  Unexpected any. Specify a different type                       @typescript-eslint/no-explicit-any
+   65:25  error  Unexpected any. Specify a different type                       @typescript-eslint/no-explicit-any
+   70:13  error  Unexpected any. Specify a different type                       @typescript-eslint/no-explicit-any
+   70:25  error  Unexpected any. Specify a different type                       @typescript-eslint/no-explicit-any
+   77:13  error  Unexpected any. Specify a different type                       @typescript-eslint/no-explicit-any
+   77:25  error  Unexpected any. Specify a different type                       @typescript-eslint/no-explicit-any
+  147:25  error  'e' is defined but never used                                  @typescript-eslint/no-unused-vars
+  150:26  error  'e' is defined but never used                                  @typescript-eslint/no-unused-vars
+
+/Users/mrios/Documents/cancer-models/src/components/ProviderMapChart/MapMarkerTooltip.tsx
+   6:13  error  Unexpected any. Specify a different type          @typescript-eslint/no-explicit-any
+  17:28  error  'enableChip' is assigned a value but never used   @typescript-eslint/no-unused-vars
+  17:48  error  'color' is defined but never used                 @typescript-eslint/no-unused-vars
+  17:55  error  'renderContent' is defined but never used         @typescript-eslint/no-unused-vars
+  19:9   error  'formatValue' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/mrios/Documents/cancer-models/src/components/ProviderMapChart/MapToolTip.tsx
+  4:50  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/mrios/Documents/cancer-models/src/components/ProviderMapChart/ProviderMapChart.tsx
+  2:10  error  'memo' is defined but never used              @typescript-eslint/no-unused-vars
+  4:10  error  'BasicTooltip' is defined but never used      @typescript-eslint/no-unused-vars
+  5:10  error  'MapMarkerTooltip' is defined but never used  @typescript-eslint/no-unused-vars
+  8:44  error  Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+
+/Users/mrios/Documents/cancer-models/src/components/SearchBar/SearchBar.tsx
+  95:8  error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+
+/Users/mrios/Documents/cancer-models/src/components/SearchFilters/SearchFilterContent.tsx
+  16:9  error  Unexpected any. Specify a different type                     @typescript-eslint/no-explicit-any
+  65:6  error  'facetName' is never reassigned. Use 'const' instead         prefer-const
+  66:6  error  'facetType' is never reassigned. Use 'const' instead         prefer-const
+  67:6  error  'facetOptions' is never reassigned. Use 'const' instead      prefer-const
+  68:6  error  'selectedFacetObj' is never reassigned. Use 'const' instead  prefer-const
+  70:6  error  'selection' is never reassigned. Use 'const' instead         prefer-const
+  71:6  error  'operator' is never reassigned. Use 'const' instead          prefer-const
+
+/Users/mrios/Documents/cancer-models/src/components/SearchFilters/SearchFilters.tsx
+  25:47  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/mrios/Documents/cancer-models/src/components/SearchResults/SearchResults.tsx
+  19:28  error  'e' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/mrios/Documents/cancer-models/src/components/ShowHide/ShowHide.tsx
+  2:12  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/mrios/Documents/cancer-models/src/components/SunBurstChart/SunBurstChart.tsx
+  5:8   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  6:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/mrios/Documents/cancer-models/src/components/Tooltip/Tooltip.tsx
+  6:11  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  7:12  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/mrios/Documents/cancer-models/src/pages/_app.tsx
+  37:1  error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+
+/Users/mrios/Documents/cancer-models/src/pages/about/providers/[id].tsx
+  3:10  error  'getAllProvidersId' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/mrios/Documents/cancer-models/src/pages/contact.tsx
+  18:30  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  27:36  error  'e' is defined but never used             @typescript-eslint/no-unused-vars
+
+/Users/mrios/Documents/cancer-models/src/pages/data/models/[providerId]/[modelId].tsx
+   94:12  error  'error' is defined but never used                                @typescript-eslint/no-unused-vars
+  484:17  error  'rawDataExternalLinks' is never reassigned. Use 'const' instead  prefer-const
+  593:19  error  Mixed spaces and tabs                                            no-mixed-spaces-and-tabs
+
+/Users/mrios/Documents/cancer-models/src/pages/overview.tsx
+   47:25  error  Unexpected any. Specify a different type                 @typescript-eslint/no-explicit-any
+   74:8   error  'notValidCategories' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  113:9   error  Unexpected any. Specify a different type                 @typescript-eslint/no-explicit-any
+
+/Users/mrios/Documents/cancer-models/src/pages/search.tsx
+   84:11  error  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+   90:20  error  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  113:6   error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+  152:36  error  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  153:24  error  Unexpected any. Specify a different type                                                                             @typescript-eslint/no-explicit-any
+  172:5   error  Mixed spaces and tabs                                                                                                no-mixed-spaces-and-tabs
+
+/Users/mrios/Documents/cancer-models/src/types/Facet.model.ts
+  11:5  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/mrios/Documents/cancer-models/src/types/Model.model.ts
+    6:14  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   21:14  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   27:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  118:11  error  'ITypesMap' is defined but never used     @typescript-eslint/no-unused-vars
+
+/Users/mrios/Documents/cancer-models/src/utils/dataUtils.ts
+  1:32  error  Unexpected any. Specify a different type                                   @typescript-eslint/no-explicit-any
+  2:16  error  Unexpected any. Specify a different type                                   @typescript-eslint/no-explicit-any
+  4:11  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+
+/Users/mrios/Documents/cancer-models/src/utils/hotjar.ts
+  5:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  6:21  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  8:14  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/mrios/Documents/cancer-models/src/utils/sortArrBy.ts
+   2:11  error  Unexpected any. Specify a different type                                   @typescript-eslint/no-explicit-any
+  11:27  error  Do not access Object.prototype method 'hasOwnProperty' from target object  no-prototype-builtins
+
+/Users/mrios/Documents/cancer-models/src/utils/typeaheadStyles.ts
+   2:24  error  Don't use `{}` as a type. `{}` actually means "any non-nullish value".
+- If you want a type meaning "any object", you probably want `object` instead.
+- If you want a type meaning "any value", you probably want `unknown` instead.
+- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.
+- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead  @typescript-eslint/ban-types
+  15:22  error  Don't use `{}` as a type. `{}` actually means "any non-nullish value".
+- If you want a type meaning "any object", you probably want `object` instead.
+- If you want a type meaning "any value", you probably want `unknown` instead.
+- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.
+- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead  @typescript-eslint/ban-types
+  20:32  error  Don't use `{}` as a type. `{}` actually means "any non-nullish value".
+- If you want a type meaning "any object", you probably want `object` instead.
+- If you want a type meaning "any value", you probably want `unknown` instead.
+- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.
+- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead  @typescript-eslint/ban-types
+  27:33  error  Don't use `{}` as a type. `{}` actually means "any non-nullish value".
+- If you want a type meaning "any object", you probably want `object` instead.
+- If you want a type meaning "any value", you probably want `unknown` instead.
+- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.
+- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead  @typescript-eslint/ban-types
+  40:31  error  Don't use `{}` as a type. `{}` actually means "any non-nullish value".
+- If you want a type meaning "any object", you probably want `object` instead.
+- If you want a type meaning "any value", you probably want `unknown` instead.
+- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.
+- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead  @typescript-eslint/ban-types
+  45:35  error  Don't use `{}` as a type. `{}` actually means "any non-nullish value".
+- If you want a type meaning "any object", you probably want `object` instead.
+- If you want a type meaning "any value", you probably want `unknown` instead.
+- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.
+- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead  @typescript-eslint/ban-types
+  50:36  error  Don't use `{}` as a type. `{}` actually means "any non-nullish value".
+- If you want a type meaning "any object", you probably want `object` instead.
+- If you want a type meaning "any value", you probably want `unknown` instead.
+- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.
+- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead  @typescript-eslint/ban-types
+  59:34  error  Don't use `{}` as a type. `{}` actually means "any non-nullish value".
+- If you want a type meaning "any object", you probably want `object` instead.
+- If you want a type meaning "any value", you probably want `unknown` instead.
+- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.
+- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead  @typescript-eslint/ban-types
+  70:31  error  Don't use `{}` as a type. `{}` actually means "any non-nullish value".
+- If you want a type meaning "any object", you probably want `object` instead.
+- If you want a type meaning "any value", you probably want `unknown` instead.
+- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.
+- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead  @typescript-eslint/ban-types
+  81:23  error  Don't use `{}` as a type. `{}` actually means "any non-nullish value".
+- If you want a type meaning "any object", you probably want `object` instead.
+- If you want a type meaning "any value", you probably want `unknown` instead.
+- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.
+- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead  @typescript-eslint/ban-types
+
+✖ 178 problems (178 errors, 0 warnings)
+

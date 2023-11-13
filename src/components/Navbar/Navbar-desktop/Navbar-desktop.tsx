@@ -45,8 +45,8 @@ const NavDesktop = (props: INavProps) => {
 							}
 
 							if (children) {
-								let childrenItems = children.map((child) => {
-									let childPath = child.path;
+								const childrenItems = children.map((child) => {
+									const childPath = child.path;
 
 									return (
 										<li key={childPath}>

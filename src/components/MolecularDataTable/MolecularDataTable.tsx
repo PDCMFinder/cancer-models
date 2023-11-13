@@ -1,4 +1,3 @@
-import { IMolecularData } from "../../pages/data/models/[providerId]/[modelId]";
 import Button from "../Button/Button";
 import { useQuery } from "react-query";
 import {
@@ -11,6 +10,7 @@ import { useState } from "react";
 import InputAndLabel from "../Input/InputAndLabel";
 import { hj_event } from "../../utils/hotjar";
 import Link from "next/link";
+import { IMolecularData } from "../../types/Model.model";
 
 interface IMolecularDataTableProps {
 	data: IMolecularData;

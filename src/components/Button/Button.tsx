@@ -28,7 +28,7 @@ const Button = (props: IButtonProps) => {
 		IArrowIconProps["direction"]
 	>(props.arrowDirection ?? DOWN);
 
-	let href = props.href,
+	const href = props.href,
 		children = props.children,
 		showArrow = props.arrow,
 		propsClassName = props.className,

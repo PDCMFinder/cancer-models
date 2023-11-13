@@ -14,7 +14,7 @@ interface IInputAndLabel extends IInputProps, ILabelProps {
 }
 
 const InputAndLabel = (props: IInputAndLabel) => {
-	let name = props.name,
+	const name = props.name,
 		type = props.type,
 		isAlternateLayout =
 			type === "radio" || type === "checkbox"

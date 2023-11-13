@@ -11,14 +11,14 @@ import { ethnicityCategories } from "../utils/collapseEthnicity";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getSearchOptions() {
-	let response = await fetch(`${API_URL}/search_facet?facet_section=eq.search`);
+	const response = await fetch(`${API_URL}/search_facet?facet_section=eq.search`);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d: any) => {
 		return d[0].facet_options
 			.filter((option: any) => option !== "")
-			.sort((a: String, b: String) =>
+			.sort((a: string, b: string) =>
 				a.toLocaleLowerCase().trim() > b.toLocaleLowerCase().trim() ? 1 : -1
 			)
 			.map((option: any) => {
@@ -31,7 +31,7 @@ export async function getSearchOptions() {
 }
 
 export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
-	let response = await fetch(
+	const response = await fetch(
 		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example`
 	);
 
@@ -62,7 +62,7 @@ export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json().then((d: Array<any>) => {
+	return response.json().then((d: any[]) => {
 		d.forEach((element) => {
 			const section = sections[element.facet_section];
 			if (section) section.facets.push(mapApiFacet(element));
@@ -72,10 +72,10 @@ export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
 }
 
 export async function getFacetOptions(facetColumn: string) {
-	let response = await fetch(
+	const response = await fetch(
 		`${API_URL}/search_facet?facet_column=eq.${facetColumn}`
 	);
-	return response.json().then((d: Array<any>) => {
+	return response.json().then((d: any[]) => {
 		const mappedFacet = mapApiFacet(d[0]);
 		return mappedFacet.options;
 	});
@@ -86,10 +86,10 @@ export async function autoCompleteFacetOptions(
 	text: string
 ) {
 	const ilikeClause = text.length > 0 ? `, option.ilike."*${text}*"` : "";
-	let response = await fetch(
+	const response = await fetch(
 		`${API_URL}/search_facet_options?and=(facet_column.eq.${facetColumn}${ilikeClause})&limit=20&order=option.asc`
 	);
-	return response.json().then((d: Array<any>) => {
+	return response.json().then((d: any[]) => {
 		return d.map(({ option }) => {
 			return { label: option, value: option };
 		});
@@ -97,7 +97,7 @@ export async function autoCompleteFacetOptions(
 }
 
 export async function getSearchResults(
-	searchValues: Array<string> = [],
+	searchValues: string[] = [],
 	searchFilterSelection: any,
 	pageSize: number = 10,
 	sortBy: string
@@ -134,7 +134,7 @@ export async function getSearchResults(
 
 			// Handle filtering of subcategories while selecting top category
 			if (filterId === "patient_ethnicity") {
-				for (let key in ethnicityCategories) {
+				for (const key in ethnicityCategories) {
 					if (searchFilterSelection[filterId].selection.includes(key)) {
 						options = ethnicityCategories[key].map((d: string) => `"${d}"`);
 					}
@@ -152,7 +152,7 @@ export async function getSearchResults(
 			if (searchFilterSelection[filterId].operator === "ALL")
 				apiOperator = "cs";
 
-			let optionsQuery =
+			const optionsQuery =
 				apiOperator === "in"
 					? `(${options.join(",").replaceAll(";", "%3B")})`
 					: `{${options.join(",").replaceAll(";", "%3B")}}`;
@@ -161,7 +161,7 @@ export async function getSearchResults(
 		}
 	}
 
-	let response = await fetch(
+	const response = await fetch(
 		`${API_URL}/search_index?${query}&limit=${pageSize}&offset=${
 			(searchFilterSelection["page"].selection[0] - 1) * pageSize
 		}&select=provider_name,patient_age,patient_sex,external_model_id,model_type,data_source,histology,primary_site,collection_site,tumour_type,dataset_available,scores->>pdx_metadata_score&order=${sortBy}`,
@@ -224,7 +224,7 @@ function mapApiFacet(apiFacet: any): IFacetProps {
 }
 
 export function getSearchParams(
-	searchValues: Array<string>,
+	searchValues: string[],
 	facetSelection: any,
 	facetOperators: any
 ) {
@@ -275,7 +275,7 @@ export function getSearchParams(
 // the query string for you.
 export function useQueryParams() {
 	const { query } = useRouter();
-	let searchTermValues: Array<string> = [];
+	let searchTermValues: string[] = [];
 	const queryParam = query.q as string,
 		queryFacets = query.facets as string,
 		queryFacetOperators = query["facet.operators"] as string;
@@ -285,13 +285,13 @@ export function useQueryParams() {
 			?.split('","')
 			.map((o) => o.replace(/["]+/g, ""));
 	}
-	let facetSelection: any = {};
+	const facetSelection: any = {};
 	const facets = queryFacets?.split(" AND ") || [];
 	facets.forEach((facetString) => {
 		const [key, values] = facetString.split(":");
 		facetSelection[key] = values.split(",");
 	});
-	let facetOperators: any = {};
+	const facetOperators: any = {};
 	const facetOperatorParam = queryFacetOperators?.split(" AND ") || [];
 	facetOperatorParam.forEach((facetString) => {
 		const [key, value] = facetString.split(":");
@@ -336,19 +336,19 @@ function sortOptions(facet_column: string, list: string[]) {
 		return list.sort((a: string, b: string) => {
 			if (a.includes("months")) return -1;
 			if (b.includes("specified")) return -1;
-			let aa = a.split(" - ");
-			let bb = b.split(" - ");
+			const aa = a.split(" - ");
+			const bb = b.split(" - ");
 			if (+aa[0] > +bb[0]) return 1;
 			else if (+aa[0] < +bb[0]) return -1;
 			else return 0;
 		});
 	}
-	let endList = list.filter(
+	const endList = list.filter(
 		(str) =>
 			str.toLocaleLowerCase().includes("other") ||
 			str.toLocaleLowerCase().includes("not specified")
 	);
-	let sortedList = list
+	const sortedList = list
 		.filter((str) => !endList.includes(str))
 		.sort((a, b) => a.localeCompare(b));
 	return sortedList.concat(endList);

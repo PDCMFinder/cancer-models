@@ -27,8 +27,8 @@ const DynamicDataCountCard = dynamic(
 
 const Home: NextPage = () => {
 	const { windowWidth } = useWindowDimensions();
-	let bpLarge = breakPoints.large;
-	let modelCount = useQuery("modelCount", () => {
+	const bpLarge = breakPoints.large;
+	const modelCount = useQuery("modelCount", () => {
 		return getModelCount();
 	});
 

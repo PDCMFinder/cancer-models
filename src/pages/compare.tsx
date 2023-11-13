@@ -5,16 +5,16 @@ import { useQueries } from "react-query";
 import Head from "next/head";
 import Loader from "../components/Loader/Loader";
 import QualityBadge from "../components/QualityBadge/QualityBadge";
-import {
-	IEngraftment,
-	IMolecularData,
-	QualityData,
-} from "./data/models/[providerId]/[modelId]";
 import styles from "./compare.module.scss";
 import Tooltip from "../components/Tooltip/Tooltip";
 import Button from "../components/Button/Button";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import {
+	IEngraftment,
+	IMolecularData,
+	IQualityData,
+} from "../types/Model.model";
 
 const Compare: NextPage = () => {
 	const CHECKMARK_STRING = "✔";
@@ -32,7 +32,7 @@ const Compare: NextPage = () => {
 			};
 		})
 	);
-	let allModelDataIsLoaded = allModelsData.every(
+	const allModelDataIsLoaded = allModelsData.every(
 		(data) => data.data !== undefined
 	);
 
@@ -409,7 +409,7 @@ const Compare: NextPage = () => {
 													}
 												>
 													{data?.qualityData.map(
-														(qData: QualityData, idx: number) => {
+														(qData: IQualityData, idx: number) => {
 															const isLast =
 																idx === data?.qualityData.length - 1;
 

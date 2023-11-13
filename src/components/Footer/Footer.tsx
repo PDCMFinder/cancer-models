@@ -13,7 +13,7 @@ interface IFooterProps {
 }
 
 const Footer = (props: IFooterProps) => {
-	let latestDataReleaseInfo = useQuery("latestDataReleaseInfo", () => {
+	const latestDataReleaseInfo = useQuery("latestDataReleaseInfo", () => {
 		return getLatestDataReleaseInformation();
 	});
 
@@ -38,7 +38,7 @@ const Footer = (props: IFooterProps) => {
 							<div className="col-12 col-lg-6">
 								<ul className={`ul-noStyle ${styles.Footer_nav_firstRow}`}>
 									{routes.map((route: IRoute) => {
-										let path = route.path;
+										const path = route.path;
 										if (route.children) {
 											return;
 										} else if (path) {
@@ -60,7 +60,7 @@ const Footer = (props: IFooterProps) => {
 							<div className="col-12 col-lg-6">
 								<ul className="ul-noStyle m-0">
 									{routes.map((route) => {
-										let children = route.children;
+										const children = route.children;
 
 										if (route.name === "More" && children) {
 											return children.map((child) => (

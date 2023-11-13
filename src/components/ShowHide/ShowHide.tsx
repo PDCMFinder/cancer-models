@@ -16,7 +16,7 @@ interface IHideOver extends IShowHideBasics {
 type IShowHideProps = IShowOver | IHideOver;
 
 const ShowHide = (props: IShowHideProps) => {
-	let windowWidth = props.windowWidth,
+	const windowWidth = props.windowWidth,
 		showOver = props.showOver,
 		hideOver = props.hideOver;
 

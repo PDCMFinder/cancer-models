@@ -15,7 +15,7 @@ interface IAccordionProps {
 const Accordion = (props: IAccordionProps) => {
 	const [isOpen, setIsOpen] = useState(props.open);
 
-	let ariaId = props.id.split(" ").join(""),
+	const ariaId = props.id.split(" ").join(""),
 		contentClassName = props.contentClassName ?? "",
 		buttonClassName = props.buttonClassName ?? "";
 

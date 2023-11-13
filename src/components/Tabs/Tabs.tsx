@@ -17,12 +17,12 @@ const Tabs = (props: ITabsProps) => {
 	>(props.children[0].props);
 
 	const handleTabChange = (label: string) => {
-		let openTab = props.children.find((tab) => tab.props.label === label);
+		const openTab = props.children.find((tab) => tab.props.label === label);
 
 		setShownContent(openTab?.props as ITabProps["props"]);
 	};
 
-	let packedLabels = props.packedLabels;
+	const packedLabels = props.packedLabels;
 
 	return (
 		<>
@@ -33,7 +33,7 @@ const Tabs = (props: ITabsProps) => {
 					}`.trim()}
 				>
 					{props.children.map((tab) => {
-						let label = tab.props.label,
+						const label = tab.props.label,
 							labelClassName = props.labelClassName ? props.labelClassName : "",
 							packedLabelsClassName = packedLabels ? "mr-1" : "",
 							isActiveTabClassName =

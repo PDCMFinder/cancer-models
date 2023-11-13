@@ -32,7 +32,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 	const [facetId, setfacetId] = useState("");
 	const [typeaheadData, setTypeaheadData] = useState<SelectOption[]>();
 
-	let selectOptionsQuery = useQuery(
+	const selectOptionsQuery = useQuery(
 		query,
 		() => autoCompleteFacetOptions(facetId, query),
 		{

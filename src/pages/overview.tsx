@@ -73,37 +73,37 @@ function collapseAgeGroup(
 const Overview: NextPage = () => {
 	const notValidCategories = ["not provided", "not collected"];
 
-	let cancerHierarchyQuery = useQuery("cancerHierarchy", () => {
+	const cancerHierarchyQuery = useQuery("cancerHierarchy", () => {
 		return getCancerHierarchy();
 	});
-	let modelsByCancerHierarchy = useQuery("modelsByCancerHierarchy", () => {
+	const modelsByCancerHierarchy = useQuery("modelsByCancerHierarchy", () => {
 		return getCancerHierarchy();
 	});
-	let modelsByTreatment = useQuery("modelsByTreatment", () => {
+	const modelsByTreatment = useQuery("modelsByTreatment", () => {
 		return getModelsByTreatment();
 	});
-	let modelsByMutatedGene = useQuery("modelsByMutatedGene", () => {
+	const modelsByMutatedGene = useQuery("modelsByMutatedGene", () => {
 		return getModelsByMutatedGene();
 	});
-	let modelsByPatientGender = useQuery("modelsByPatientGender", () => {
+	const modelsByPatientGender = useQuery("modelsByPatientGender", () => {
 		return getModelsByPatientGender();
 	});
-	let modelsByTumourType = useQuery("modelsByTumourType", () => {
+	const modelsByTumourType = useQuery("modelsByTumourType", () => {
 		return getModelsByTumourType();
 	});
-	let modelsByPatientEthnicity = useQuery("modelsByPatientEthnicity", () => {
+	const modelsByPatientEthnicity = useQuery("modelsByPatientEthnicity", () => {
 		return getModelsByPatientEthnicity();
 	});
-	let modelsByPatientAge = useQuery("modelsByPatientAge", () => {
+	const modelsByPatientAge = useQuery("modelsByPatientAge", () => {
 		return getModelsByPatientAge();
 	});
-	let providerCount = useQuery("providerCount", () => {
+	const providerCount = useQuery("providerCount", () => {
 		return getProviderCount();
 	});
-	let modelCount = useQuery("modelCount", () => {
+	const modelCount = useQuery("modelCount", () => {
 		return getModelCount();
 	});
-	let latestDataReleaseInfo = useQuery("latestDataReleaseInfo", () => {
+	const latestDataReleaseInfo = useQuery("latestDataReleaseInfo", () => {
 		return getLatestDataReleaseInformation();
 	});
 

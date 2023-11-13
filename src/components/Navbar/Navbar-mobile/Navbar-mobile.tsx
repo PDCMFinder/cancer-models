@@ -24,7 +24,7 @@ const NavMobile = (props: INavProps) => {
 
 	const handleToggleMenu = () => {
 		// Add or remove body class to stylize
-		let addRemoveBodyClass: typeof ADD | typeof REMOVE = !isMenuOpen
+		const addRemoveBodyClass: typeof ADD | typeof REMOVE = !isMenuOpen
 			? ADD
 			: REMOVE;
 		handleBodyClass(["overflow-hidden"], addRemoveBodyClass);
@@ -62,11 +62,11 @@ const NavMobile = (props: INavProps) => {
 							<div className="col">
 								<ul className="ul-noStyle">
 									{props.routes.map((route: IRoute) => {
-										let children = route.children;
+										const children = route.children;
 
 										if (children) {
 											return children.map((child) => {
-												let path = child.path;
+												const path = child.path;
 
 												return (
 													<li key={path}>
@@ -81,7 +81,7 @@ const NavMobile = (props: INavProps) => {
 												);
 											});
 										} else if (route.path) {
-											let path = route.path;
+											const path = route.path;
 
 											return (
 												<li key={path}>

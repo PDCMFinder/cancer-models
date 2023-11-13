@@ -1,6 +1,6 @@
 export function camelCase(obj: any) {
-	var newObj: any = {};
-	for (let d in obj) {
+	const newObj: any = {};
+	for (const d in obj) {
 		if (obj.hasOwnProperty(d)) {
 			newObj[
 				d.replace(/(_\w)/g, function (k) {

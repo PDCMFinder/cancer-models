@@ -49,7 +49,7 @@ export function countEthnicity(subethnicityCountList: IEthnicityCounter[]) {
 	const ethnictyCounts: { [key: string]: number } = {};
 
 	subethnicityCountList.forEach((subethnicity) => {
-		for (let key in ethnicityCategories) {
+		for (const key in ethnicityCategories) {
 			if (ethnicityCategories[key].includes(subethnicity.patient_ethnicity)) {
 				if (!ethnictyCounts[key]) ethnictyCounts[key] = 0;
 

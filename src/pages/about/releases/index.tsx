@@ -14,7 +14,7 @@ import InputAndLabel from "../../../components/Input/InputAndLabel";
 interface IReleasesProps {}
 
 const Releases: NextPage<IReleasesProps> = () => {
-	let dataReleaseInfo = useQuery(
+	const dataReleaseInfo = useQuery(
 		"dataReleaseInfo",
 		() => {
 			return getDataReleaseInformation();
@@ -25,7 +25,7 @@ const Releases: NextPage<IReleasesProps> = () => {
 			},
 		}
 	);
-	let uiReleaseInfo = useQuery(
+	const uiReleaseInfo = useQuery(
 		"uiReleaseInfo",
 		() => {
 			return getUIReleaseInformation();
@@ -63,12 +63,12 @@ const Releases: NextPage<IReleasesProps> = () => {
 		let ui: [] | IGitlabRelease[] = showUIReleases ? uiReleases : [];
 
 		if (filter === "data") {
-			let showDataStatus = !showDataReleases;
+			const showDataStatus = !showDataReleases;
 			data = showDataStatus ? dataReleases : [];
 			setShowDataReleases(showDataStatus);
 		}
 		if (filter === "ui") {
-			let showUIStatus = !showUIReleases;
+			const showUIStatus = !showUIReleases;
 			ui = showUIStatus ? uiReleases : [];
 			setShowUIReleases(showUIStatus);
 		}

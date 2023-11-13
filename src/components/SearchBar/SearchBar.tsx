@@ -31,7 +31,7 @@ const SearchBar = (props: ISearchBarProps) => {
 	const [typeaheadData, setTypeaheadData] = useState<SelectOption[]>();
 	const router = useRouter();
 
-	let selectOptionsQuery = useQuery(
+	const selectOptionsQuery = useQuery(
 		query,
 		() => autoCompleteFacetOptions(facetId, query),
 		{

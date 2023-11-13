@@ -6,7 +6,7 @@ interface ISelectProps {
 }
 
 const Select = (props: ISelectProps) => {
-	let options = props.options,
+	const options = props.options,
 		id = props.id;
 
 	return (
@@ -17,7 +17,7 @@ const Select = (props: ISelectProps) => {
 			onChange={props.onChange}
 		>
 			{options.map((opt) => {
-				let text = opt.text,
+				const text = opt.text,
 					value = opt.value ? opt.value : text;
 
 				return (

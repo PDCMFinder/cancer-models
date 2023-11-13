@@ -1,18 +1,16 @@
 import { camelCase } from "../utils/dataUtils";
 import { IGitlabRelease } from "../../types/releaseTypes";
-import { remark } from "remark";
-import remarkHtml from "remark-html";
 import parseRelease from "../utils/parseRelease";
 
 export async function getCancerHierarchy(): Promise<any> {
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_cancer`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
-		let hierarchy: any = {};
+		const hierarchy: any = {};
 		d.filter(
 			(i: any) =>
 				i.cancer_system !== null &&
@@ -39,7 +37,7 @@ export async function getCancerHierarchy(): Promise<any> {
 }
 
 export async function getFrequentlyMutatedGenes() {
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_mutated_gene?order=count.desc&limit=20`
 	);
 	if (!response.ok) {
@@ -51,7 +49,7 @@ export async function getFrequentlyMutatedGenes() {
 }
 
 export async function getModelsByTreatment() {
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_treatment?order=count.desc&limit=20`
 	);
 
@@ -60,7 +58,7 @@ export async function getModelsByTreatment() {
 	}
 
 	return response.json().then((d: any[]) => {
-		var i;
+		let i;
 		for (i = 0; i < d.length; i++) {
 			d[i]["treatment_list"] = d[i]["treatment"];
 			delete d[i].treatment;
@@ -71,7 +69,7 @@ export async function getModelsByTreatment() {
 }
 
 export async function getModelsByType() {
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_type?order=count.desc`
 	);
 	if (!response.ok) {
@@ -81,7 +79,7 @@ export async function getModelsByType() {
 }
 
 export async function getModelsByPrimarySite() {
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_primary_site?order=count.desc&limit=10`
 	);
 
@@ -93,7 +91,7 @@ export async function getModelsByPrimarySite() {
 }
 
 export async function getModelsByMutatedGene() {
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_mutated_gene?order=count.desc&limit=10`
 	);
 
@@ -102,7 +100,7 @@ export async function getModelsByMutatedGene() {
 	}
 
 	return response.json().then((d: any[]) => {
-		var i;
+		let i;
 		for (i = 0; i < d.length; i++) {
 			d[i]["markers_with_mutation_data"] = d[i]["mutated_gene"];
 			delete d[i]["mutated_gene"];
@@ -113,7 +111,7 @@ export async function getModelsByMutatedGene() {
 }
 
 export async function getModelsByPatientGender() {
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_sex?order=count.desc&limit=10`
 	);
 
@@ -125,7 +123,7 @@ export async function getModelsByPatientGender() {
 }
 
 export async function getModelsByTumourType() {
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_tumour_type?order=count.desc&limit=10`
 	);
 
@@ -137,7 +135,7 @@ export async function getModelsByTumourType() {
 }
 
 export async function getModelsByPatientEthnicity() {
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_ethnicity?order=count.desc`
 	);
 
@@ -149,7 +147,7 @@ export async function getModelsByPatientEthnicity() {
 }
 
 export async function getModelsByPatientAge() {
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_age?order=count.desc&limit=10`
 	);
 
@@ -161,7 +159,7 @@ export async function getModelsByPatientAge() {
 }
 
 export async function getModelsByDatasetAvailability() {
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_dataset_availability?order=count.desc`
 	);
 	if (!response.ok) {
@@ -179,7 +177,7 @@ export async function getModelsByDatasetAvailability() {
 }
 
 export async function getDataReleaseInformation() {
-	let response = await fetch(
+	const response = await fetch(
 		"https://gitlab.ebi.ac.uk/api/v4/projects/1629/releases",
 		{
 			headers: {
@@ -191,9 +189,10 @@ export async function getDataReleaseInformation() {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
-		d.forEach(async (release: IGitlabRelease) => {
-			release = await parseRelease(release, "Data");
-		});
+		d.forEach(
+			async (release: IGitlabRelease) =>
+				(release = await parseRelease(release, "Data"))
+		);
 
 		return d;
 	});
@@ -201,7 +200,7 @@ export async function getDataReleaseInformation() {
 
 export async function getLatestDataReleaseInformation() {
 	// pdxfinder-data repo (data)
-	let response = await fetch(
+	const response = await fetch(
 		"https://gitlab.ebi.ac.uk/api/v4/projects/1629/releases?per_page=1",
 		{
 			headers: {
@@ -217,7 +216,7 @@ export async function getLatestDataReleaseInformation() {
 
 export async function getUIReleaseInformation() {
 	// cancer-models repo (ui)
-	let response = await fetch(
+	const response = await fetch(
 		"https://gitlab.ebi.ac.uk/api/v4/projects/4135/releases",
 		{
 			headers: {
@@ -231,16 +230,17 @@ export async function getUIReleaseInformation() {
 	}
 
 	return response.json().then((d) => {
-		d.forEach(async (release: IGitlabRelease) => {
-			release = await parseRelease(release, "UI");
-		});
+		d.forEach(
+			async (release: IGitlabRelease) =>
+				(release = await parseRelease(release, "UI"))
+		);
 
 		return d;
 	});
 }
 
 export async function getModelCount() {
-	let response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/info`);
+	const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/info`);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
@@ -256,7 +256,7 @@ export async function getModelCount() {
 }
 
 export async function getProviderCount() {
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/provider_group?select=id`,
 		{
 			headers: {

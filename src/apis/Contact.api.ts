@@ -6,7 +6,7 @@ export async function createTicket(
 	feedback: string,
 	recaptchaToken: string
 ): Promise<any> {
-	let response = await fetch(
+	const response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/create-ticket/`,
 		{
 			method: "POST",

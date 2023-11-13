@@ -100,7 +100,7 @@ const Search: NextPage = () => {
 			if (type === "init") {
 				if (actionInitialState) return actionInitialState;
 
-				for (let key in state) {
+				for (const key in state) {
 					if (key !== "search_terms") {
 						newState[key].selection = [];
 						newState[key].operator = "ANY";
@@ -242,7 +242,7 @@ const Search: NextPage = () => {
 
 	useEffect(() => {
 		if (searchFilterState === null) return;
-		let filterValues: string[] = [];
+		const filterValues: string[] = [];
 		for (const filterId in searchFilterState) {
 			if (searchFilterState[filterId].selection.length) {
 				if (filterId === "page") {
@@ -305,7 +305,7 @@ const Search: NextPage = () => {
 
 	const compareModels = () => {
 		if (modelsToCompare.length > 1) {
-			let compareModelsQuery = modelsToCompare.join("+");
+			const compareModelsQuery = modelsToCompare.join("+");
 			window.open(`/compare?models=${compareModelsQuery}`, "_blank");
 
 			setModelsToCompare([]);
@@ -314,7 +314,7 @@ const Search: NextPage = () => {
 		}
 	};
 
-	let totalResults = searchResultsQuery.data ? searchResultsQuery.data[0] : 1;
+	const totalResults = searchResultsQuery.data ? searchResultsQuery.data[0] : 1;
 
 	const ClearFilterButtonComponent = (
 		<Button
@@ -378,7 +378,7 @@ const Search: NextPage = () => {
 		</DynamicModal>
 	);
 
-	let modelCount = useQuery("modelCount", () => {
+	const modelCount = useQuery("modelCount", () => {
 		return getModelCount();
 	});
 

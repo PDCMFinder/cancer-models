@@ -36,7 +36,7 @@ const SearchFilters = (props: ISearchFilters) => {
 			contentClassName="py-3 px-2"
 		>
 			{filterData.map((facet: IFacetSectionProps) => {
-				let facetKey = facet.key,
+				const facetKey = facet.key,
 					facets = facet.facets,
 					isModelFacet = facetKey === "model";
 

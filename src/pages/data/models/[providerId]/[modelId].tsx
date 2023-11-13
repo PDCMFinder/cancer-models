@@ -23,6 +23,12 @@ import { getAllModelData } from "../../../../apis/ModelDetails.api";
 import { hj_event } from "../../../../utils/hotjar";
 import dynamic from "next/dynamic";
 import Loader from "../../../../components/Loader/Loader";
+import {
+	IExternalDbLinks,
+	IModelDetailsProps,
+	IMolecularData,
+	IPublication,
+} from "../../../../types/Model.model";
 
 const DynamicModal = dynamic(
 	() => import("../../../../components/Modal/Modal"),
@@ -30,125 +36,6 @@ const DynamicModal = dynamic(
 		loading: () => <Loader />,
 	}
 );
-
-interface IModelDetailsProps {
-	metadata: Metadata;
-	extLinks: ExtLinks;
-	molecularData: IMolecularData[];
-	molecularDataRestrictions: MolecularDataRestrictions[];
-	drugDosing: any[];
-	patientTreatment: PatientTreatment[];
-	qualityData: QualityData[];
-	className: string;
-	modelId: string;
-	providerId: string;
-	engraftments?: IEngraftment[];
-}
-
-export interface MolecularDataRestrictions {
-	modelId: string;
-	dataSource: string;
-	source: string;
-	sampleId: string;
-	xenograftPassage: string;
-	rawDataUrl: any;
-	dataType: string;
-	platformName: string;
-	dataExists: string;
-	dataRestricted: string;
-	molecularCharacterizationId: number;
-	externalDbLinks: any;
-}
-
-interface PatientTreatment {
-	treatmentDose: string;
-	treatmentName: string;
-	treatmentResponse: string;
-}
-
-export interface IMolecularData {
-	id: number;
-	patientSampleId: string;
-	patientModelId: string;
-	xenograftSampleId: string;
-	cellSampleId: string;
-	xenograftModelId: string;
-	xenograftPassage: string;
-	rawDataUrl: string;
-	dataType: string;
-	platformId: string;
-	platformName: string;
-	dataAvailability: "TRUE" | "FALSE";
-	dataSource: string;
-	externalDbLinks: ExternalDbLinks[];
-}
-
-interface ExternalDbLinks {
-	column: string;
-	link: string;
-	resource: string;
-}
-
-export interface QualityData {
-	id: number;
-	description: string;
-	passagesTested: string;
-	validationTechnique: string;
-	validationHostStrainNomenclature: string;
-	modelId: number;
-}
-
-interface Metadata {
-	histology: string;
-	providerName: string;
-	cancerSystem: string;
-	modelType: string;
-	patientSex: string;
-	patientAge: string;
-	patientEthnicity: string;
-	modelId: string;
-	providerId: string;
-	tumourType: string;
-	cancerGrade: string;
-	cancerStage: string;
-	primarySite: string;
-	collectionSite: string;
-	licenseName: string;
-	licenseUrl: string;
-	score: number;
-	pdcmModelId: number;
-}
-
-export interface ExtLinks {
-	contactLink?: string;
-	sourceDatabaseUrl?: string;
-}
-
-export interface IPublication {
-	pmid: string;
-	doi: string;
-	pubYear: string;
-	title: string;
-	authorString: string;
-	journalTitle: string;
-}
-
-export interface IEngraftment {
-	passageNumber: string;
-	hostStrain: string;
-	engraftmentSite: string;
-	engraftmentType: string;
-	engraftmentSampleType: string;
-	engraftmentSampleState: string;
-	hostStrainNomenclature: string;
-}
-
-export interface TypesMap {
-	expression_molecular_data: string;
-	cna_molecular_data: string;
-	mutation_measurement_data: string;
-	biomarker_molecular_data: string;
-}
 
 const ModelDetails = ({
 	metadata,
@@ -594,7 +481,7 @@ const ModelDetails = ({
 														molecularData.map((data) => {
 															let sampleId,
 																sampleType,
-																rawDataExternalLinks: ExternalDbLinks[] = [],
+																rawDataExternalLinks: IExternalDbLinks[] = [],
 																dataAvailableContent;
 
 															if (data.xenograftSampleId) {

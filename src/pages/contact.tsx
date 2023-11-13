@@ -31,9 +31,9 @@ const Contact: NextPage = () => {
 			return;
 		}
 
-		let { value: nameValue } = nameRef.current!;
-		let { value: emailValue } = emailRef.current!;
-		let { value: messageValue } = messageRef.current!;
+		const { value: nameValue } = nameRef.current!;
+		const { value: emailValue } = emailRef.current!;
+		const { value: messageValue } = messageRef.current!;
 		const token = await recaptchaRef.current.executeAsync();
 		const response = await createTicket(
 			nameValue,

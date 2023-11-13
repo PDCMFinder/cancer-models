@@ -14,7 +14,7 @@ interface ICardProps {
 }
 
 const Card = (props: ICardProps) => {
-	let cardClassName = props.className,
+	const cardClassName = props.className,
 		header = props.header,
 		headerClassName = props.headerClassName ? props.headerClassName : "",
 		contentClassName = props.contentClassName ? props.contentClassName : "",
