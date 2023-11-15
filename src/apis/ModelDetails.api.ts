@@ -240,10 +240,7 @@ export async function getModelMolecularDataDetails(
 	});
 }
 
-export async function getMolecularDataDownload(
-	molecularCharacterization: any,
-	dataType: string
-) {
+export async function getMolecularDataDownload(molecularCharacterization: any) {
 	if (!molecularCharacterization.id) {
 		return [];
 	}
@@ -253,7 +250,7 @@ export async function getMolecularDataDownload(
 		"copy number alteration": "cna_data_table",
 		biomarker: "biomarker_data_table",
 	};
-	const endpoint = typeEndpointMap[dataType];
+	const endpoint = typeEndpointMap[molecularCharacterization.dataType];
 	let request = `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?molecular_characterization_id=eq.${molecularCharacterization.id}`;
 	let response = await fetch(request, { headers: { Prefer: "count=exact" } });
 	if (!response.ok) {

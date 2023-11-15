@@ -204,7 +204,7 @@ const ModelDetails = ({
 	}, [singleDataToDownload]);
 
 	const downloadData = (data: IMolecularData) => {
-		getMolecularDataDownload(data, data.dataType).then((d) =>
+		getMolecularDataDownload(data).then((d) =>
 			setSingleDataToDownload({
 				data: d,
 				filename: `CancerModelsOrg_${data.dataType ?? ""}_${
@@ -238,18 +238,19 @@ const ModelDetails = ({
 		.filter((d) => d !== undefined);
 
 	const toggleFromBatchDownload = (data: IMolecularData) => {
-		getMolecularDataDownload(data, data.dataType).then((d) => {
-			const filename: string = `CancerModelsOrg_${metadata.modelId}_${
-				data.dataType.split(" ").join("-") ?? ""
-			}_${
-				data.xenograftSampleId ??
-				data.patientSampleId ??
-				data.cellSampleId ??
-				""
-			}_${data.platformName ?? ""}.tsv`;
+		const filename: string = `CancerModelsOrg_${metadata.modelId}_${
+			data.dataType.split(" ").join("-") ?? ""
+		}_${
+			data.xenograftSampleId ?? data.patientSampleId ?? data.cellSampleId ?? ""
+		}_${data.platformName ?? ""}.tsv`;
 
-			console.log({ filename, data, d });
-			if (!batchDataToDownload.find((el) => el.filename === filename)) {
+		if (batchDataToDownload.some((el) => el.filename === filename)) {
+			setBatchDataToDownload((prev) =>
+				prev.filter((el) => el.filename !== filename)
+			);
+		} else {
+			getMolecularDataDownload(data).then((d) => {
+				console.log({ filename, data, d });
 				setBatchDataToDownload((prev) => [
 					...prev,
 					{
@@ -257,12 +258,8 @@ const ModelDetails = ({
 						filename,
 					},
 				]);
-			} else {
-				setBatchDataToDownload((prev) =>
-					prev.filter((el) => el.filename !== filename)
-				);
-			}
-		});
+			});
+		}
 	};
 
 	const batchDownload = () => {
