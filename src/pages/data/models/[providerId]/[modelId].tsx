@@ -174,7 +174,9 @@ const ModelDetails = ({
 	const [batchDataToDownload, setBatchDataToDownload] = useState<
 		IDataFileConfig[]
 	>([]);
-	const batchDownloadBtnRefs = useRef<any[]>([]);
+	const batchDownloadBtnRefs = useRef<
+		(CSVLink & HTMLAnchorElement & { link: HTMLAnchorElement })[]
+	>([]);
 	const [selectedMolecularData, setSelectedMolecularData] =
 		useState<IMolecularData>();
 	const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
@@ -237,18 +239,22 @@ const ModelDetails = ({
 
 	const toggleFromBatchDownload = (data: IMolecularData) => {
 		getMolecularDataDownload(data, data.dataType).then((d) => {
-			const filename: string = `CancerModelsOrg_${data.dataType ?? ""}_${
-				data.patientSampleId ?? data.xenograftModelId ?? ""
+			const filename: string = `CancerModelsOrg_${metadata.modelId}_${
+				data.dataType.split(" ").join("-") ?? ""
+			}_${
+				data.xenograftSampleId ??
+				data.patientSampleId ??
+				data.cellSampleId ??
+				""
 			}_${data.platformName ?? ""}.tsv`;
 
+			console.log({ filename, data, d });
 			if (!batchDataToDownload.find((el) => el.filename === filename)) {
 				setBatchDataToDownload((prev) => [
 					...prev,
 					{
 						data: d,
-						filename: `CancerModelsOrg_${data.dataType ?? ""}_${
-							data.patientSampleId ?? data.xenograftModelId ?? ""
-						}_${data.platformName ?? ""}.tsv`,
+						filename,
 					},
 				]);
 			} else {
@@ -785,7 +791,7 @@ const ModelDetails = ({
 												separator={"\t"} // Make it a tsv
 												ref={(el: any) =>
 													(batchDownloadBtnRefs.current[idx] = el)
-												}
+												} // Create refs on ref array based on batchDataToDownload elements
 											/>
 										)
 									)}
