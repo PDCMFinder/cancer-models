@@ -174,9 +174,11 @@ const ModelDetails = ({
 	const [batchDataToDownload, setBatchDataToDownload] = useState<
 		IDataFileConfig[]
 	>([]);
-	const batchDownloadBtnRefs = useRef<
+	const batchDownloadRefs = useRef<
 		(CSVLink & HTMLAnchorElement & { link: HTMLAnchorElement })[]
 	>([]);
+	const metadataDownloadRef =
+		useRef<CSVLink & HTMLAnchorElement & { link: HTMLAnchorElement }>(null);
 	const [selectedMolecularData, setSelectedMolecularData] =
 		useState<IMolecularData>();
 	const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
@@ -193,9 +195,11 @@ const ModelDetails = ({
 		{ label: "Primary Site", value: metadata.primarySite },
 		{ label: "Collection Site", value: metadata.collectionSite },
 	];
+	// New metadata object without the "score" property to use in metadata file download
+	const { score: _, ...metadataFileData } = metadata;
 
-	// download just one file ; direct download from "download data"
-	// need useEffect so we download actual data file - if not, an empty csv downloads
+	// download just one file - direct download from "download data"
+	// need useEffect so we download actual data file - if not, an empty csv downloads on the first render
 	useEffect(() => {
 		if (!isInitialLoad && singleDataToDownloadRef.current)
 			singleDataToDownloadRef.current.link.click();
@@ -243,14 +247,13 @@ const ModelDetails = ({
 		}_${
 			data.xenograftSampleId ?? data.patientSampleId ?? data.cellSampleId ?? ""
 		}_${data.platformName ?? ""}.tsv`;
-
+		console.log(filename);
 		if (batchDataToDownload.some((el) => el.filename === filename)) {
 			setBatchDataToDownload((prev) =>
 				prev.filter((el) => el.filename !== filename)
 			);
 		} else {
 			getMolecularDataDownload(data).then((d) => {
-				console.log({ filename, data, d });
 				setBatchDataToDownload((prev) => [
 					...prev,
 					{
@@ -263,12 +266,13 @@ const ModelDetails = ({
 	};
 
 	const batchDownload = () => {
-		batchDownloadBtnRefs.current.forEach((btn) => btn && btn.link.click());
+		batchDownloadRefs.current.forEach((btn) => btn && btn.link.click());
+		metadataDownloadRef.current?.link.click();
 	};
 
 	return (
 		<>
-			{/* metadata */}
+			{/* page metadata */}
 			<Head>
 				<title>
 					{`CancerModels.Org - ${metadata.modelId} - ${metadata.histology} - ${metadata.modelType}`}
@@ -472,6 +476,27 @@ const ModelDetails = ({
 										})}
 									</ul>
 								</div>
+								<div className="col-12">
+									<Button
+										color="dark"
+										priority="secondary"
+										onClick={() => metadataDownloadRef.current?.link.click()}
+									>
+										Download model metadata
+									</Button>
+									<CSVLink
+										data={[
+											{
+												...metadataFileData,
+												pdxModelPublications: pubmedIds,
+											},
+										]} // data needs to be an array
+										filename={`CancerModelsOrg_${metadata.modelId}-metadata.tsv`}
+										className="hideElement-accessible"
+										separator={"\t"} // Make it a tsv
+										ref={metadataDownloadRef}
+									/>
+								</div>
 							</div>
 							{engraftments && engraftments?.length > 0 && (
 								<div id="engraftments" className="row mb-5 pt-3">
@@ -628,11 +653,11 @@ const ModelDetails = ({
 												<tbody>
 													{molecularData &&
 														molecularData.map((data) => {
-															let sampleId,
-																sampleType,
+															let sampleId: string,
+																sampleType: string,
 																rawDataExternalLinks: ExternalDbLinks[] = [],
-																dataAvailableContent,
-																showAddToBatchDownload;
+																dataAvailableContent: JSX.Element,
+																showAddToBatchDownload: boolean = false;
 
 															if (data.xenograftSampleId) {
 																sampleType = "Engrafted Tumour";
@@ -786,9 +811,7 @@ const ModelDetails = ({
 												filename={fileObj.filename}
 												className="hideElement-accessible"
 												separator={"\t"} // Make it a tsv
-												ref={(el: any) =>
-													(batchDownloadBtnRefs.current[idx] = el)
-												} // Create refs on ref array based on batchDataToDownload elements
+												ref={(el: any) => (batchDownloadRefs.current[idx] = el)} // Create refs on ref array based on batchDataToDownload elements
 											/>
 										)
 									)}
@@ -832,7 +855,7 @@ const ModelDetails = ({
 															treatmentDose: dose,
 															treatmentResponse: response,
 														}) => (
-															<tr key={name}>
+															<tr key={name + dose}>
 																<td>{name}</td>
 																<td>{dose}</td>
 																<td>{response}</td>

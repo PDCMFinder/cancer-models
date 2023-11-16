@@ -405,6 +405,39 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 			pdcmModelId,
 			modelId,
 			providerId: modelProviderId,
+			// Extras for metadata file
+			externalModelId: metadata.externalModelId,
+			projectName: metadata.projectName,
+			datasetAvailable: metadata.datasetAvailable,
+			cancerGradingSystem: metadata.cancerGradingSystem,
+			cancerStagingSystem: metadata.cancerStagingSystem,
+			patientHistory: metadata.patientHistory,
+			patientEthnicyAssesmentMethod: metadata.patientEthnicyAssesmentMethod
+				? JSON.parse(JSON.stringify(metadata.patientEthnicyAssesmentMethod))
+				: null,
+			patientInitialDiagnosis: metadata.patientInitialDiagnosis,
+			patientTreatmentStatus: metadata.patientTreatmentStatus,
+			patientAgeAtInitialDiagnosis: metadata.patientAgeAtInitialDiagnosis,
+			patientSampleId: metadata.patientSampleId,
+			patientSampleCollectionDate: metadata.patientSampleCollectionDate,
+			patientSampleCollectionEvent: metadata.patientSampleCollectionEvent,
+			patientSampleMonthsSinceCollection:
+				metadata.patientSampleMonthsSinceCollection
+					? JSON.parse(
+							JSON.stringify(metadata.patientSampleMonthsSinceCollection)
+					  )
+					: null,
+			patientSampleVirologyStatus: metadata.patientSampleVirologyStatus,
+			patientSampleShareable: metadata.patientSampleShareable
+				? JSON.parse(JSON.stringify(metadata.patientSampleShareable))
+				: null,
+			patientSampleTreatedAtCollection:
+				metadata.patientSampleTreatedAtCollection,
+			patientSampleTreatedPriorToCollection:
+				metadata.patientSampleTreatedPriorToCollection,
+			pdxModelPublications: metadata.pdxModelPublications,
+			...metadata.qualityAssurance[0],
+			...metadata.xenograftModelSpecimens[0],
 		},
 		extLinks,
 		molecularData,
