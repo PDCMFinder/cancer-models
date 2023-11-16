@@ -216,6 +216,9 @@ const ModelDetails = ({
 				}_${data.platformName ?? ""}.tsv`,
 			})
 		);
+
+		// Always download metadata file
+		metadataDownloadRef.current?.link.click();
 	};
 
 	const pubmedIdsQuery = useQuery(
@@ -247,7 +250,7 @@ const ModelDetails = ({
 		}_${
 			data.xenograftSampleId ?? data.patientSampleId ?? data.cellSampleId ?? ""
 		}_${data.platformName ?? ""}.tsv`;
-		console.log(filename);
+
 		if (batchDataToDownload.some((el) => el.filename === filename)) {
 			setBatchDataToDownload((prev) =>
 				prev.filter((el) => el.filename !== filename)
@@ -267,6 +270,7 @@ const ModelDetails = ({
 
 	const batchDownload = () => {
 		batchDownloadRefs.current.forEach((btn) => btn && btn.link.click());
+		// Always download metadata file
 		metadataDownloadRef.current?.link.click();
 	};
 
@@ -656,8 +660,7 @@ const ModelDetails = ({
 															let sampleId: string,
 																sampleType: string,
 																rawDataExternalLinks: ExternalDbLinks[] = [],
-																dataAvailableContent: JSX.Element,
-																showAddToBatchDownload: boolean = false;
+																dataAvailableContent: JSX.Element;
 
 															if (data.xenograftSampleId) {
 																sampleType = "Engrafted Tumour";
@@ -729,9 +732,18 @@ const ModelDetails = ({
 																			>
 																				DOWNLOAD DATA
 																			</Button>
+																			<InputAndLabel
+																				label="Add to batch download"
+																				name={`add-to-download-${sampleId}-${data.dataType}-${data.platformName}`}
+																				type="checkbox"
+																				forId={`add-to-download-id-${sampleId}-${data.dataType}-${data.platformName}`}
+																				onChange={() =>
+																					toggleFromBatchDownload(data)
+																				}
+																				className="text-smaller mt-1"
+																			/>
 																		</>
 																	);
-																	showAddToBatchDownload = true;
 																}
 															} else {
 																dataAvailableContent = (
@@ -759,21 +771,7 @@ const ModelDetails = ({
 																	<td className="text-capitalize">
 																		{data.dataType}
 																	</td>
-																	<td>
-																		{dataAvailableContent}
-																		{showAddToBatchDownload ? (
-																			<InputAndLabel
-																				label="Add to batch download"
-																				name={`add-to-download-${sampleId}-${data.dataType}`}
-																				type="checkbox"
-																				forId={`add-to-download-id-${sampleId}-${data.dataType}`}
-																				onChange={() =>
-																					toggleFromBatchDownload(data)
-																				}
-																				className="text-smaller mt-1"
-																			/>
-																		) : null}
-																	</td>
+																	<td>{dataAvailableContent}</td>
 																	<td>{data.platformName}</td>
 																	<td>
 																		{hasExternalDbLinks
