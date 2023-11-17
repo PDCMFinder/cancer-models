@@ -485,6 +485,7 @@ const ModelDetails = ({
 										color="dark"
 										priority="secondary"
 										onClick={() => metadataDownloadRef.current?.link.click()}
+										className="mt-0"
 									>
 										Download model metadata
 									</Button>
@@ -738,6 +739,22 @@ const ModelDetails = ({
 																				name={`add-to-download-${sampleId}-${data.dataType}-${data.platformName}`}
 																				type="checkbox"
 																				forId={`add-to-download-id-${sampleId}-${data.dataType}-${data.platformName}`}
+																				checked={batchDataToDownload.some(
+																					(batchData) =>
+																						batchData.filename ===
+																						`CancerModelsOrg_${
+																							metadata.modelId
+																						}_${
+																							data.dataType
+																								.split(" ")
+																								.join("-") ?? ""
+																						}_${
+																							data.xenograftSampleId ??
+																							data.patientSampleId ??
+																							data.cellSampleId ??
+																							""
+																						}_${data.platformName ?? ""}.tsv`
+																				)}
 																				onChange={() =>
 																					toggleFromBatchDownload(data)
 																				}
