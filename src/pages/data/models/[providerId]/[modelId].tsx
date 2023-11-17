@@ -195,7 +195,7 @@ const ModelDetails = ({
 		{ label: "Primary Site", value: metadata.primarySite },
 		{ label: "Collection Site", value: metadata.collectionSite },
 	];
-	// New metadata object without the "score" property to use in metadata file download
+	// New metadata object without the "score" property to use in metadata file download; take out modelId to rearrange
 	const { score: _, modelId: metadataModelId, ...metadataFileData } = metadata;
 
 	// download just one file - direct download from "download data"
@@ -526,11 +526,11 @@ const ModelDetails = ({
 															engraftment.hostStrainNomenclature
 																.split(" ")
 																.map((h) => {
-																	const regExp = /(.*)<sup>(.*)<\/sup>(.*)/gm;
-																	const matches = regExp.exec(h) || [];
-																	const strainPrefix = matches[1] || "";
-																	const strainSup = matches[2] || "";
-																	const strainSuffix = matches[3] || "";
+																	const regExp = /(.*)<sup>(.*)<\/sup>(.*)/gm,
+																		matches = regExp.exec(h) || [],
+																		strainPrefix = matches[1] || "",
+																		strainSup = matches[2] || "",
+																		strainSuffix = matches[3] || "";
 
 																	return {
 																		strainPrefix,
@@ -827,8 +827,11 @@ const ModelDetails = ({
 											priority="secondary"
 											color="dark"
 											onClick={() => batchDownload()}
+											disabled={batchDataToDownload.length === 0}
 										>
-											Download selected data
+											{batchDataToDownload.length === 0
+												? "Select data to download"
+												: "Download selected data"}
 										</Button>
 									</div>
 								</div>
