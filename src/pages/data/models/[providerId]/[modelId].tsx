@@ -196,7 +196,7 @@ const ModelDetails = ({
 		{ label: "Collection Site", value: metadata.collectionSite },
 	];
 	// New metadata object without the "score" property to use in metadata file download
-	const { score: _, ...metadataFileData } = metadata;
+	const { score: _, modelId: metadataModelId, ...metadataFileData } = metadata;
 
 	// download just one file - direct download from "download data"
 	// need useEffect so we download actual data file - if not, an empty csv downloads on the first render
@@ -491,6 +491,7 @@ const ModelDetails = ({
 									<CSVLink
 										data={[
 											{
+												modelId: metadataModelId,
 												...metadataFileData,
 												pdxModelPublications: pubmedIds,
 											},
