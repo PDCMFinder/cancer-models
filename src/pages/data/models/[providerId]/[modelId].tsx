@@ -974,6 +974,85 @@ const ModelDetails = ({
 					</div>
 				</div>
 			</section>
+
+			{batchDataToDownload[0] ? (
+				<div className="row position-sticky bottom-0 mt-5">
+					<div className="col-10 offset-1">
+						<Card
+							className="bg-primary-quaternary mb-2"
+							contentClassName="py-2"
+						>
+							<div className="d-flex align-center justify-content-between">
+								<p className="m-0">
+									<b>Download selected data: </b>
+									{batchDataToDownload.map((data, idx) => {
+										const cleanFilename = data.filename
+												.split("_")
+												.slice(1)
+												.join("_")
+												.split(".")[0],
+											clearX = (
+												<sup>
+													<Button
+														color="dark"
+														priority="secondary"
+														className="text-underline m-0 ml-1"
+														style={{ padding: ".2rem .3rem" }}
+														onClick={() =>
+															setBatchDataToDownload((prev) =>
+																prev.filter(
+																	(el) => el.filename !== data.filename
+																)
+															)
+														}
+													>
+														X
+													</Button>
+												</sup>
+											);
+
+										if (idx === 0) {
+											return (
+												<React.Fragment>
+													{cleanFilename}
+													{clearX}
+												</React.Fragment>
+											);
+										}
+
+										return (
+											<React.Fragment>
+												{" "}
+												<span className="text-primary-tertiary">+</span>{" "}
+												{cleanFilename}
+												{clearX}
+											</React.Fragment>
+										);
+									})}
+								</p>
+								<div className="d-flex">
+									<Button
+										color="dark"
+										priority="primary"
+										className="my-1 py-1"
+										onClick={() => batchDownload()}
+									>
+										Compare
+									</Button>
+									<Button
+										color="dark"
+										priority="secondary"
+										className="my-1 ml-1 py-1"
+										onClick={() => setBatchDataToDownload([])}
+									>
+										Clear
+									</Button>
+								</div>
+							</div>
+						</Card>
+					</div>
+				</div>
+			) : null}
 			{selectedMolecularData && (
 				<DynamicModal
 					verticalAlign="top"
