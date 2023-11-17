@@ -1013,7 +1013,7 @@ const ModelDetails = ({
 
 										if (idx === 0) {
 											return (
-												<React.Fragment>
+												<React.Fragment key={cleanFilename}>
 													{cleanFilename}
 													{clearX}
 												</React.Fragment>
@@ -1021,7 +1021,7 @@ const ModelDetails = ({
 										}
 
 										return (
-											<React.Fragment>
+											<React.Fragment key={cleanFilename}>
 												{" "}
 												<span className="text-primary-tertiary">+</span>{" "}
 												{cleanFilename}
@@ -1037,7 +1037,7 @@ const ModelDetails = ({
 										className="my-1 py-1"
 										onClick={() => batchDownload()}
 									>
-										Compare
+										Download
 									</Button>
 									<Button
 										color="dark"
