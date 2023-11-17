@@ -211,9 +211,14 @@ const ModelDetails = ({
 		getMolecularDataDownload(data).then((d) =>
 			setSingleDataToDownload({
 				data: d,
-				filename: `CancerModelsOrg_${data.dataType ?? ""}_${
-					data.patientSampleId ?? data.xenograftModelId ?? ""
-				}_${data.platformName ?? ""}.tsv`,
+				filename: `CancerModelsOrg_${metadata.modelId}_${
+					data.dataType.split(" ").join("-") ?? ""
+				}_${
+					data.xenograftSampleId ??
+					data.patientSampleId ??
+					data.cellSampleId ??
+					""
+				}_${data.platformName ?? ""}.tsv`, // if it changes, update in checkbox checked state
 			})
 		);
 
@@ -249,7 +254,7 @@ const ModelDetails = ({
 			data.dataType.split(" ").join("-") ?? ""
 		}_${
 			data.xenograftSampleId ?? data.patientSampleId ?? data.cellSampleId ?? ""
-		}_${data.platformName ?? ""}.tsv`;
+		}_${data.platformName ?? ""}.tsv`; // if it changes, update in checkbox checked state
 
 		if (batchDataToDownload.some((el) => el.filename === filename)) {
 			setBatchDataToDownload((prev) =>
@@ -980,6 +985,7 @@ const ModelDetails = ({
 				</div>
 			</section>
 
+			{/* floating card */}
 			{batchDataToDownload[0] ? (
 				<div className="row position-sticky bottom-0 mt-5">
 					<div className="col-10 offset-1">
@@ -993,7 +999,7 @@ const ModelDetails = ({
 									{batchDataToDownload.map((data, idx) => {
 										const cleanFilename = data.filename
 												.split("_")
-												.slice(1)
+												.slice(2)
 												.join("_")
 												.split(".")[0],
 											clearX = (
@@ -1058,6 +1064,7 @@ const ModelDetails = ({
 					</div>
 				</div>
 			) : null}
+			{/* data modal */}
 			{selectedMolecularData && (
 				<DynamicModal
 					verticalAlign="top"
