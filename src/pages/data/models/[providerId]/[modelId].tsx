@@ -822,18 +822,6 @@ const ModelDetails = ({
 										separator={"\t"} // Make it a tsv
 										ref={singleDataToDownloadRef}
 									/>
-									<div className="col-12 mb-1 text-center">
-										<Button
-											priority="secondary"
-											color="dark"
-											onClick={() => batchDownload()}
-											disabled={batchDataToDownload.length === 0}
-										>
-											{batchDataToDownload.length === 0
-												? "Select data to download"
-												: "Download selected data"}
-										</Button>
-									</div>
 								</div>
 							)}
 							{drugDosing.length > 0 && (
