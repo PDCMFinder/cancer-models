@@ -218,7 +218,7 @@ const ModelDetails = ({
 					data.patientSampleId ??
 					data.cellSampleId ??
 					""
-				}_${data.platformName ?? ""}.tsv`, // if it changes, update in checkbox checked state
+				}_${data.platformName.split(" ").join("-") ?? ""}.tsv`, // if it changes, update in checkbox checked state
 			})
 		);
 
@@ -254,7 +254,7 @@ const ModelDetails = ({
 			data.dataType.split(" ").join("-") ?? ""
 		}_${
 			data.xenograftSampleId ?? data.patientSampleId ?? data.cellSampleId ?? ""
-		}_${data.platformName ?? ""}.tsv`; // if it changes, update in checkbox checked state
+		}_${data.platformName.split(" ").join("-") ?? ""}.tsv`; // if it changes, update in checkbox checked state
 
 		if (batchDataToDownload.some((el) => el.filename === filename)) {
 			setBatchDataToDownload((prev) =>
