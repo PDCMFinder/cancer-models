@@ -112,28 +112,7 @@ export async function getModelQualityData(pdcmModelId: number) {
 	});
 }
 
-export async function getModelMolecularData(
-	providerId: string,
-	pdcmModelId: number
-) {
-	if (pdcmModelId !== 0 && !pdcmModelId) {
-		return [];
-	}
-	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/details_molecular_data?or=(patient_model_id.eq.${pdcmModelId},xenograft_model_id.eq.${pdcmModelId},cell_model_id.eq.${pdcmModelId})`,
-		{ headers: { Prefer: "count=exact" } }
-	);
-	if (!response.ok) {
-		throw new Error("Network response was not ok");
-	}
-	return response.json().then((d) => {
-		return d.map((item: any) => {
-			return { ...camelCase(item), dataSource: providerId };
-		});
-	});
-}
-
-export async function getMolecularDataRestrictions(modelId: string) {
+export async function getMolecularData(modelId: string) {
 	if (!modelId) {
 		return [];
 	}
@@ -330,7 +309,7 @@ export async function getModelDrugDosing(
 	pdcmModelId: number,
 	modelType: string
 ) {
-	if ((pdcmModelId !== 0 && !pdcmModelId) || modelType !== "PDX") {
+	if (!pdcmModelId || modelType !== "PDX") {
 		return [];
 	}
 	let response = await fetch(
@@ -376,11 +355,7 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 	const metadata = await getModelDetailsMetadata(modelId, modelProviderId);
 	const pdcmModelId: number = metadata.pdcmModelId;
 	const extLinks = await getModelExtLinks(pdcmModelId, modelId);
-	const molecularData = await getModelMolecularData(
-		modelProviderId,
-		pdcmModelId
-	);
-	const molecularDataRestrictions = await getMolecularDataRestrictions(modelId);
+	const molecularData = await getMolecularData(modelId);
 	const modelType = metadata.modelType;
 	const engraftments = await getModelEngraftments(pdcmModelId, modelType);
 	const drugDosing = await getModelDrugDosing(pdcmModelId, modelType);
@@ -411,7 +386,6 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 		},
 		extLinks,
 		molecularData,
-		molecularDataRestrictions,
 		engraftments,
 		drugDosing,
 		patientTreatment,

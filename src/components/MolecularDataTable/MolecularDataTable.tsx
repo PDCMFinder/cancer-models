@@ -48,7 +48,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 	const { data: dataDetails, isLoading } = useQuery(
 		[
 			"get-molecular-data-detail",
-			data.id,
+			data.molecularCharacterizationId,
 			data.dataType,
 			filter,
 			currentPage,
@@ -58,7 +58,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 		],
 		() =>
 			getModelMolecularDataDetails(
-				data.id,
+				data.molecularCharacterizationId,
 				data.dataType,
 				filter,
 				currentPage,
