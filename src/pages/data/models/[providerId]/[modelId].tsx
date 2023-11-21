@@ -35,7 +35,6 @@ interface IModelDetailsProps {
 	metadata: Metadata;
 	extLinks: ExtLinks;
 	molecularData: IMolecularData[];
-	molecularDataRestrictions: MolecularDataRestrictions[];
 	drugDosing: any[];
 	patientTreatment: PatientTreatment[];
 	qualityData: QualityData[];
@@ -45,7 +44,7 @@ interface IModelDetailsProps {
 	engraftments?: IEngraftment[];
 }
 
-export interface MolecularDataRestrictions {
+export interface IMolecularData {
 	modelId: string;
 	dataSource: string;
 	source: string;
@@ -57,30 +56,13 @@ export interface MolecularDataRestrictions {
 	dataExists: string;
 	dataRestricted: string;
 	molecularCharacterizationId: number;
-	externalDbLinks: any;
+	externalDbLinks: ExternalDbLinks[];
 }
 
 interface PatientTreatment {
 	treatmentDose: string;
 	treatmentName: string;
 	treatmentResponse: string;
-}
-
-export interface IMolecularData {
-	id: number;
-	patientSampleId: string;
-	patientModelId: string;
-	xenograftSampleId: string;
-	cellSampleId: string;
-	xenograftModelId: string;
-	xenograftPassage: string;
-	rawDataUrl: string;
-	dataType: string;
-	platformId: string;
-	platformName: string;
-	dataAvailability: "TRUE" | "FALSE";
-	dataSource: string;
-	externalDbLinks: ExternalDbLinks[];
 }
 
 interface ExternalDbLinks {
@@ -154,7 +136,6 @@ const ModelDetails = ({
 	metadata,
 	extLinks,
 	molecularData,
-	molecularDataRestrictions,
 	drugDosing,
 	patientTreatment,
 	qualityData,
@@ -200,7 +181,7 @@ const ModelDetails = ({
 				setDownloadData({
 					data: d,
 					filename: `CancerModelsOrg_${data.dataType ?? ""}_${
-						data.patientSampleId ?? data.xenograftModelId ?? ""
+						data.sampleId ?? ""
 					}_${data.platformName ?? ""}.tsv`,
 				});
 			})
@@ -592,20 +573,19 @@ const ModelDetails = ({
 												<tbody>
 													{molecularData &&
 														molecularData.map((data) => {
-															let sampleId,
-																sampleType,
+															let sampleType,
 																rawDataExternalLinks: ExternalDbLinks[] = [],
 																dataAvailableContent;
 
-															if (data.xenograftSampleId) {
-																sampleType = "Engrafted Tumour";
-																sampleId = data.xenograftSampleId;
-															} else if (data.patientSampleId) {
-																sampleType = "Patient Tumour";
-																sampleId = data.patientSampleId;
-															} else {
-																sampleType = "Tumour Cells";
-																sampleId = data.cellSampleId;
+															switch (data.source) {
+																case "xenograft":
+																	sampleType = "Engrafted Tumour";
+																	break;
+																case "patient":
+																	sampleType = "Patient Tumour";
+																	break;
+																default:
+																	sampleType = "Tumour Cells";
 															}
 
 															const hasExternalDbLinks =
@@ -619,17 +599,9 @@ const ModelDetails = ({
 																		rawDataExternalLinks.push(obj)
 																	);
 															}
-															const dataRestrictions =
-																molecularDataRestrictions.find(
-																	(row) =>
-																		row.molecularCharacterizationId === data.id
-																);
-															const dataRestricted =
-																	dataRestrictions?.dataRestricted,
-																dataExists = dataRestrictions?.dataExists;
 
-															if (dataExists === "TRUE") {
-																if (dataRestricted === "TRUE") {
+															if (data.dataExists === "TRUE") {
+																if (data.dataRestricted === "TRUE") {
 																	dataAvailableContent = (
 																		<Link
 																			href={extLinks.contactLink || ""}
@@ -687,9 +659,9 @@ const ModelDetails = ({
 															}
 
 															return (
-																<tr key={data.id}>
+																<tr key={data.molecularCharacterizationId}>
 																	<td className="white-space-nowrap">
-																		{sampleId}
+																		{data.sampleId}
 																	</td>
 																	<td>{sampleType}</td>
 																	<td>{data.xenograftPassage || NA_STRING}</td>
@@ -918,7 +890,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		metadata,
 		extLinks,
 		molecularData,
-		molecularDataRestrictions,
 		engraftments,
 		drugDosing,
 		patientTreatment,
@@ -933,7 +904,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			metadata,
 			extLinks,
 			molecularData,
-			molecularDataRestrictions,
 			engraftments: JSON.parse(JSON.stringify(engraftments)),
 			drugDosing,
 			patientTreatment,
