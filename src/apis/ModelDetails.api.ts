@@ -1,6 +1,7 @@
 import {
 	ExtLinks,
 	IPublication,
+	IImmuneMarkers,
 } from "../pages/data/models/[providerId]/[modelId]";
 import { camelCase } from "../utils/dataUtils";
 
@@ -356,18 +357,34 @@ async function getModelImmuneMarkers(modelId: string) {
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json().then((d) => {
-		return d.map((item: any) => {
-			// leaner return
-			let marker = {
-				sampleId: item.sample_id,
-				name: item.marker_name,
-				value: item.marker_value,
-				details: item.essential_or_additional_details,
-			};
 
-			return marker;
-		});
+	return response.json().then((d) => {
+		return d.reduce((result: any, current: any) => {
+			const existingItem = result.find(
+				(item: any) => item.sampleId === current.sample_id
+			);
+
+			if (existingItem) {
+				existingItem.markers.push({
+					details: current.essential_or_additional_details,
+					name: current.marker_name,
+					value: current.marker_value,
+				});
+			} else {
+				result.push({
+					sampleId: current.sample_id,
+					markers: [
+						{
+							details: current.essential_or_additional_details,
+							name: current.marker_name,
+							value: current.marker_value,
+						},
+					],
+				});
+			}
+
+			return result;
+		}, []);
 	});
 }
 

@@ -34,6 +34,7 @@ const DynamicModal = dynamic(
 interface IModelDetailsProps {
 	metadata: Metadata;
 	extLinks: ExtLinks;
+	immuneMarkers: IImmuneMarkers[];
 	molecularData: IMolecularData[];
 	drugDosing: any[];
 	patientTreatment: PatientTreatment[];
@@ -42,6 +43,13 @@ interface IModelDetailsProps {
 	modelId: string;
 	providerId: string;
 	engraftments?: IEngraftment[];
+}
+
+export interface IImmuneMarkers {
+	sampleId: string;
+	name: string;
+	value: string;
+	details: null | string;
 }
 
 export interface IMolecularData {
@@ -135,6 +143,7 @@ export interface TypesMap {
 const ModelDetails = ({
 	metadata,
 	extLinks,
+	immuneMarkers,
 	molecularData,
 	drugDosing,
 	patientTreatment,
@@ -351,8 +360,7 @@ const ModelDetails = ({
 											)}
 										</li>
 										<li className="mb-2">
-											{/* TODO add conditional for link */}
-											{molecularData.length ? (
+											{immuneMarkers.length ? (
 												<Link
 													replace
 													href="#immune-markers"
@@ -720,7 +728,7 @@ const ModelDetails = ({
 									/>
 								</div>
 							)}
-							{molecularData.length > 0 && (
+							{immuneMarkers.length > 0 && (
 								<div id="immune-markers" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Immune markers</h2>
