@@ -349,10 +349,33 @@ export async function getExpressionHeatmap(
 	});
 }
 
+async function getModelImmuneMarkers(modelId: string) {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/immunemarker_data_extended?model_id=eq.${modelId}`
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+	return response.json().then((d) => {
+		return d.map((item: any) => {
+			// leaner return
+			let marker = {
+				sampleId: item.sample_id,
+				name: item.marker_name,
+				value: item.marker_value,
+				details: item.essential_or_additional_details,
+			};
+
+			return marker;
+		});
+	});
+}
+
 export const getAllModelData = async (modelId: string, providerId?: string) => {
 	const modelProviderId =
 		providerId ?? (await getProviderId(modelId))[0].data_source;
 	const metadata = await getModelDetailsMetadata(modelId, modelProviderId);
+	const immuneMarkers = await getModelImmuneMarkers(modelId);
 	const pdcmModelId: number = metadata.pdcmModelId;
 	const extLinks = await getModelExtLinks(pdcmModelId, modelId);
 	const molecularData = await getMolecularData(modelId);
@@ -386,6 +409,7 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 		},
 		extLinks,
 		molecularData,
+		immuneMarkers,
 		engraftments,
 		drugDosing,
 		patientTreatment,

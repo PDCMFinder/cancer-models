@@ -351,6 +351,20 @@ const ModelDetails = ({
 											)}
 										</li>
 										<li className="mb-2">
+											{/* TODO add conditional for link */}
+											{molecularData.length ? (
+												<Link
+													replace
+													href="#immune-markers"
+													className="text-primary-primary"
+												>
+													Immune markers
+												</Link>
+											) : (
+												"Immune markers"
+											)}
+										</li>
+										<li className="mb-2">
 											{drugDosing.length ? (
 												<Link
 													replace
@@ -706,6 +720,58 @@ const ModelDetails = ({
 									/>
 								</div>
 							)}
+							{molecularData.length > 0 && (
+								<div id="immune-markers" className="row mb-5 pt-3">
+									<div className="col-12 mb-1">
+										<h2 className="mt-0">Immune markers</h2>
+										<div className="overflow-auto showScrollbar-vertical">
+											<table>
+												<caption>Immune markers</caption>
+												<thead>
+													<tr>
+														<th>SAMPLE ID</th>
+														<th>TMB</th>
+														<th>MMR</th>
+														<th>PLOIDY (WES)</th>
+														<th>MUTATIONS PER MB</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>SJCCS030167_02</td>
+														<td>8.08</td>
+														<td>MSI-S</td>
+														<td>2.072</td>
+														<td>157.24</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div className="overflow-auto showScrollbar-vertical">
+											<h3>HLA</h3>
+											<table>
+												<caption>HLA</caption>
+												<thead>
+													<tr>
+														<th>SAMPLE ID</th>
+														<th>SAMPLE TYPE</th>
+														<th>ENGRAFTED TUMOUR PASSAGE</th>
+														<th>DATA TYPE</th>
+														<th>DATA AVAILABLE</th>
+														<th>PLATFORM USED</th>
+														<th>RAW DATA</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>SJCC</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							)}
 							{drugDosing.length > 0 && (
 								<div id="dosing-studies" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
@@ -890,6 +956,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		metadata,
 		extLinks,
 		molecularData,
+		immuneMarkers,
 		engraftments,
 		drugDosing,
 		patientTreatment,
@@ -904,6 +971,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			metadata,
 			extLinks,
 			molecularData,
+			immuneMarkers,
 			engraftments: JSON.parse(JSON.stringify(engraftments)),
 			drugDosing,
 			patientTreatment,
