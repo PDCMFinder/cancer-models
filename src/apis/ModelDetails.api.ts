@@ -5,6 +5,16 @@ import {
 } from "../pages/data/models/[providerId]/[modelId]";
 import { camelCase } from "../utils/dataUtils";
 
+interface IImmuneMarkerAPI {
+	model_id: string;
+	data_source: string;
+	source: string;
+	sample_id: string;
+	marker_name: string;
+	marker_value: string;
+	essential_or_additional_details: string;
+}
+
 export async function getModelDetailsMetadata(
 	modelId: string,
 	providerId: string
@@ -359,9 +369,9 @@ async function getModelImmuneMarkers(modelId: string) {
 	}
 
 	return response.json().then((d) => {
-		return d.reduce((result: any, current: any) => {
+		return d.reduce((result: IImmuneMarkers[], current: IImmuneMarkerAPI) => {
 			const existingItem = result.find(
-				(item: any) => item.sampleId === current.sample_id
+				(item: IImmuneMarkers) => item.sampleId === current.sample_id
 			);
 
 			if (existingItem) {

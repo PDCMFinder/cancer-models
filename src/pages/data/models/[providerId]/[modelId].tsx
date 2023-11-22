@@ -47,9 +47,7 @@ interface IModelDetailsProps {
 
 export interface IImmuneMarkers {
 	sampleId: string;
-	name: string;
-	value: string;
-	details: null | string;
+	markers: { name: string; value: string; details: null | string }[];
 }
 
 export interface IMolecularData {
@@ -738,19 +736,25 @@ const ModelDetails = ({
 												<thead>
 													<tr>
 														<th>SAMPLE ID</th>
-														<th>TMB</th>
-														<th>MMR</th>
-														<th>PLOIDY (WES)</th>
-														<th>MUTATIONS PER MB</th>
+														{immuneMarkers.map((markerRow) => {
+															return markerRow.markers.map((marker) => (
+																<th>{marker.name}</th>
+															));
+														})}
 													</tr>
 												</thead>
 												<tbody>
 													<tr>
-														<td>SJCCS030167_02</td>
-														<td>8.08</td>
-														<td>MSI-S</td>
-														<td>2.072</td>
-														<td>157.24</td>
+														{immuneMarkers.map((markerRow) => {
+															return (
+																<>
+																	<td>{markerRow.sampleId}</td>
+																	{markerRow.markers.map((marker) => (
+																		<td>{marker.value}</td>
+																	))}
+																</>
+															);
+														})}
 													</tr>
 												</tbody>
 											</table>
