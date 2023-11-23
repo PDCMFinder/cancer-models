@@ -47,7 +47,14 @@ interface IModelDetailsProps {
 
 export interface IImmuneMarkers {
 	sampleId: string;
-	markers: { name: string; value: string; details: null | string }[];
+	type: "HLA type" | "Model Genomics";
+	markers: IImmuneMarker[];
+}
+
+export interface IImmuneMarker {
+	name: string;
+	value: string[] | null;
+	details: string | null;
 }
 
 export interface IMolecularData {
@@ -148,7 +155,10 @@ const ModelDetails = ({
 	qualityData,
 	engraftments,
 }: IModelDetailsProps) => {
-	const NA_STRING = "N/A";
+	const NA_STRING = "N/A",
+		MODEL_GENOMICS_STRING = "Model Genomics",
+		HLA_TYPE_STRING = "HLA type";
+
 	const [downloadData, setDownloadData] = useState<{
 		data: IMolecularData[];
 		filename: string;
@@ -730,57 +740,101 @@ const ModelDetails = ({
 								<div id="immune-markers" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Immune markers</h2>
-										<div className="overflow-auto showScrollbar-vertical">
-											<table>
-												<caption>Immune markers</caption>
-												<thead>
-													<tr>
-														<th>SAMPLE ID</th>
+										{immuneMarkers.some(
+											(markerRow) => markerRow.type === MODEL_GENOMICS_STRING
+										) && (
+											<div className="overflow-auto showScrollbar-vertical">
+												<table>
+													<caption>Immune markers</caption>
+													<thead>
+														<tr>
+															<th>SAMPLE ID</th>
+															{immuneMarkers.map((markerRow) => {
+																if (markerRow.type === MODEL_GENOMICS_STRING) {
+																	return markerRow.markers.map((marker) => (
+																		<th key={marker.name}>{marker.name}</th>
+																	));
+																}
+															})}
+														</tr>
+													</thead>
+													<tbody>
 														{immuneMarkers.map((markerRow) => {
-															return markerRow.markers.map((marker) => (
-																<th>{marker.name}</th>
-															));
+															if (markerRow.type === MODEL_GENOMICS_STRING) {
+																return (
+																	<tr key={markerRow.sampleId}>
+																		<td className="white-space-nowrap">
+																			{markerRow.sampleId}
+																		</td>
+																		{markerRow.markers.map((marker) => (
+																			<td
+																				key={marker.name + marker.value}
+																				className="white-space-nowrap"
+																			>
+																				{marker.value?.map((value) => (
+																					<React.Fragment key={value}>
+																						{value}
+																						<br />
+																					</React.Fragment>
+																				))}
+																			</td>
+																		))}
+																	</tr>
+																);
+															}
 														})}
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
+													</tbody>
+												</table>
+											</div>
+										)}
+										{immuneMarkers.some(
+											(markerRow) => markerRow.type === HLA_TYPE_STRING
+										) && (
+											<div className="overflow-auto showScrollbar-vertical">
+												<h3>HLA</h3>
+												<table>
+													<caption>HLA</caption>
+													<thead>
+														<tr>
+															<th>SAMPLE ID</th>
+															{immuneMarkers.map((markerRow) => {
+																if (markerRow.type === HLA_TYPE_STRING) {
+																	return markerRow.markers.map((marker) => (
+																		<th key={marker.name}>{marker.name}</th>
+																	));
+																}
+															})}
+														</tr>
+													</thead>
+													<tbody>
 														{immuneMarkers.map((markerRow) => {
-															return (
-																<>
-																	<td>{markerRow.sampleId}</td>
-																	{markerRow.markers.map((marker) => (
-																		<td>{marker.value}</td>
-																	))}
-																</>
-															);
+															if (markerRow.type === HLA_TYPE_STRING) {
+																return (
+																	<tr key={markerRow.sampleId}>
+																		<td className="white-space-nowrap">
+																			{markerRow.sampleId}
+																		</td>
+																		{markerRow.markers.map((marker) => (
+																			<td
+																				key={marker.name + marker.value}
+																				className="white-space-nowrap"
+																			>
+																				{marker.value?.map((value) => (
+																					<React.Fragment key={value}>
+																						{value}
+																						<br />
+																					</React.Fragment>
+																				))}
+																			</td>
+																		))}
+																	</tr>
+																);
+															}
 														})}
-													</tr>
-												</tbody>
-											</table>
-										</div>
-										<div className="overflow-auto showScrollbar-vertical">
-											<h3>HLA</h3>
-											<table>
-												<caption>HLA</caption>
-												<thead>
-													<tr>
-														<th>SAMPLE ID</th>
-														<th>SAMPLE TYPE</th>
-														<th>ENGRAFTED TUMOUR PASSAGE</th>
-														<th>DATA TYPE</th>
-														<th>DATA AVAILABLE</th>
-														<th>PLATFORM USED</th>
-														<th>RAW DATA</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td>SJCC</td>
-													</tr>
-												</tbody>
-											</table>
-										</div>
+													</tbody>
+												</table>
+											</div>
+										)}
 									</div>
 								</div>
 							)}
