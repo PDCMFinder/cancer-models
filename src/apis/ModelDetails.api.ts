@@ -17,139 +17,6 @@ interface IImmuneMarkerAPI {
 	essential_or_additional_details: string;
 }
 
-const mockData = [
-	{
-		model_id: "CRL-2499",
-		data_source: "CRL",
-		source: "xenograft",
-		sample_id: "Oncotest-R0103",
-		marker_type: "HLA type",
-		marker_name: "HLA-B",
-		marker_value: "HLA-B*7:2, HLA-B*8:20",
-		essential_or_additional_details: null,
-	},
-	{
-		model_id: "CRL-2499",
-		data_source: "CRL",
-		source: "xenograft",
-		sample_id: "Oncotest-R0103",
-		marker_type: "HLA type",
-		marker_name: "HLA-C",
-		marker_value: "HLA-C*7:2, HLA-C*1:2",
-		essential_or_additional_details: null,
-	},
-	{
-		model_id: "CRL-2499",
-		data_source: "CRL",
-		source: "xenograft",
-		sample_id: "2499",
-		marker_type: "HLA type",
-		marker_name: "HLA-B",
-		marker_value: "HLA-B*7:2, HLA-B*8:20",
-		essential_or_additional_details: null,
-	},
-	{
-		model_id: "CRL-2499",
-		data_source: "CRL",
-		source: "xenograft",
-		sample_id: "2499",
-		marker_type: "HLA type",
-		marker_name: "HLA-C",
-		marker_value: "HLA-C*7:2, HLA-C*1:2",
-		essential_or_additional_details: null,
-	},
-	{
-		model_id: "CRL-2499",
-		data_source: "CRL",
-		source: "xenograft",
-		sample_id: "2499",
-		marker_type: "HLA type",
-		marker_name: "HLA-A",
-		marker_value: "HLA-A*24:2, HLA-A*3:1",
-		essential_or_additional_details: null,
-	},
-	{
-		model_id: "CRL-2499",
-		data_source: "CRL",
-		source: "xenograft",
-		sample_id: "A2355-02",
-		marker_type: "HLA type",
-		marker_name: "HLA-A",
-		marker_value: "HLA-A*24:2, HLA-A*3:1",
-		essential_or_additional_details: null,
-	},
-	{
-		model_id: "CRL-2499",
-		data_source: "CRL",
-		source: "xenograft",
-		sample_id: "A2355-02",
-		marker_type: "HLA type",
-		marker_name: "HLA-B",
-		marker_value: "HLA-B*7:2, HLA-B*8:20",
-		essential_or_additional_details: null,
-	},
-	{
-		model_id: "CRL-2499",
-		data_source: "CRL",
-		source: "xenograft",
-		sample_id: "A2355-02",
-		marker_type: "HLA type",
-		marker_name: "HLA-C",
-		marker_value: "HLA-C*7:2, HLA-C*1:2",
-		essential_or_additional_details: null,
-	},
-	{
-		model_id: "CRL-2499",
-		data_source: "CRL",
-		source: "xenograft",
-		sample_id: "Oncotest-2001",
-		marker_type: "HLA type",
-		marker_name: "HLA-B",
-		marker_value: "HLA-B*7:2, HLA-B*8:20",
-		essential_or_additional_details: null,
-	},
-	{
-		model_id: "CRL-2499",
-		data_source: "CRL",
-		source: "xenograft",
-		sample_id: "Oncotest-2001",
-		marker_type: "HLA type",
-		marker_name: "HLA-A",
-		marker_value: "HLA-A*24:2, HLA-A*3:1",
-		essential_or_additional_details: null,
-	},
-	{
-		model_id: "CRL-2499",
-		data_source: "CRL",
-		source: "xenograft",
-		sample_id: "Oncotest-2001",
-		marker_type: "HLA type",
-		marker_name: "HLA-A",
-		marker_value: "HLA-A*7:2, HLA-A*1:2",
-		essential_or_additional_details: null,
-	},
-	{
-		model_id: "CRL-2499",
-		data_source: "CRL",
-		source: "xenograft",
-		sample_id: "A2671-33",
-		marker_type: "HLA type",
-		marker_name: "HLA-C",
-		marker_value: "HLA-C*7:2, HLA-C*1:2",
-		essential_or_additional_details: null,
-	},
-	{
-		model_id: "CRL-2499",
-		data_source: "CRL",
-		source: "xenograft",
-		sample_id: "A2671-33",
-		marker_type: "HLA type",
-		marker_name: "HLA-A",
-		marker_value: "HLA-A*24:2, HLA-A*3:1",
-		essential_or_additional_details: null,
-	},
-];
-
 export async function getModelDetailsMetadata(
 	modelId: string,
 	providerId: string
@@ -503,17 +370,17 @@ async function getModelImmuneMarkers(modelId: string) {
 		throw new Error("Network response was not ok");
 	}
 
-	// TODO Parse code to new structure
 	return response.json().then((d) => {
-		const uniqueNames: string[] = [
-			...new Set<string>(d.map((item: IImmuneMarkerAPI) => item.marker_name)),
-		];
-
 		const parsedImmuneMarkers: IImmuneMarkers[] = d.reduce(
 			(result: IImmuneMarkers[], current: IImmuneMarkerAPI) => {
 				const existingSampleId = result.find(
 					(item: IImmuneMarkers) => item.sampleId === current.sample_id
 				);
+				const marker = {
+					details: current.essential_or_additional_details,
+					name: current.marker_name,
+					value: [current.marker_value],
+				};
 
 				if (existingSampleId) {
 					// Check if column exists in sample id
@@ -526,23 +393,13 @@ async function getModelImmuneMarkers(modelId: string) {
 						existingName.value.push(current.marker_value);
 					} else {
 						// new name (marker)
-						existingSampleId.markers.push({
-							details: current.essential_or_additional_details,
-							name: current.marker_name,
-							value: [current.marker_value],
-						});
+						existingSampleId.markers.push(marker);
 					}
 				} else {
 					result.push({
 						sampleId: current.sample_id,
 						type: current.marker_type,
-						markers: [
-							{
-								details: current.essential_or_additional_details, // tooltip
-								name: current.marker_name,
-								value: [current.marker_value],
-							},
-						],
+						markers: [marker],
 					});
 				}
 
@@ -551,16 +408,17 @@ async function getModelImmuneMarkers(modelId: string) {
 			[]
 		);
 
+		const uniqueNames: string[] = [
+			...new Set<string>(d.map((item: IImmuneMarkerAPI) => item.marker_name)),
+		];
 		// Add all missing names for table structure
 		uniqueNames.forEach((uniqueName: string) => {
 			parsedImmuneMarkers.forEach((immuneMarker: IImmuneMarkers) => {
 				if (
-					immuneMarker.markers.some(
+					!immuneMarker.markers.some(
 						(marker: IImmuneMarker) => marker.name === uniqueName
 					)
 				) {
-					// if it already includes the marker, don't add it again
-				} else {
 					immuneMarker.markers.push({
 						details: null,
 						name: uniqueName,

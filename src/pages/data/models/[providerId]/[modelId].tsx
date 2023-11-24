@@ -228,6 +228,13 @@ const ModelDetails = ({
 		.map((q) => q.data as IPublication)
 		.filter((d) => d !== undefined);
 
+	const modelGenomicsImmuneMarkers = immuneMarkers.filter(
+		(markerRow) => markerRow.type === MODEL_GENOMICS_STRING
+	);
+	const hlaImmuneMarkers = immuneMarkers.filter(
+		(markerRow) => markerRow.type === HLA_TYPE_STRING
+	);
+
 	return (
 		<>
 			{/* metadata */}
@@ -740,56 +747,48 @@ const ModelDetails = ({
 								<div id="immune-markers" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Immune markers</h2>
-										{immuneMarkers.some(
-											(markerRow) => markerRow.type === MODEL_GENOMICS_STRING
-										) && (
+										{modelGenomicsImmuneMarkers.length > 0 ? (
 											<div className="overflow-auto showScrollbar-vertical">
 												<table>
 													<caption>Immune markers</caption>
 													<thead>
 														<tr>
 															<th>SAMPLE ID</th>
-															{immuneMarkers.map((markerRow) => {
-																if (markerRow.type === MODEL_GENOMICS_STRING) {
-																	return markerRow.markers.map((marker) => (
+															{/* we can go through one marker as they all have same columns */}
+															{modelGenomicsImmuneMarkers.length > 0 &&
+																modelGenomicsImmuneMarkers[0].markers.map(
+																	(marker) => (
 																		<th key={marker.name}>{marker.name}</th>
-																	));
-																}
-															})}
+																	)
+																)}
 														</tr>
 													</thead>
 													<tbody>
-														{immuneMarkers.map((markerRow) => {
-															if (markerRow.type === MODEL_GENOMICS_STRING) {
-																return (
-																	<tr key={markerRow.sampleId}>
-																		<td className="white-space-nowrap">
-																			{markerRow.sampleId}
-																		</td>
-																		{markerRow.markers.map((marker) => (
-																			<td
-																				key={marker.name + marker.value}
-																				className="white-space-nowrap"
-																			>
-																				{marker.value?.map((value) => (
-																					<React.Fragment key={value}>
-																						{value}
-																						<br />
-																					</React.Fragment>
-																				))}
-																			</td>
+														{modelGenomicsImmuneMarkers.map((markerRow) => (
+															<tr key={markerRow.sampleId}>
+																<td className="white-space-nowrap">
+																	{markerRow.sampleId}
+																</td>
+																{markerRow.markers.map((marker) => (
+																	<td
+																		key={marker.name + marker.value}
+																		className="white-space-nowrap"
+																	>
+																		{marker.value?.map((value) => (
+																			<React.Fragment key={value}>
+																				{value}
+																				<br />
+																			</React.Fragment>
 																		))}
-																	</tr>
-																);
-															}
-														})}
+																	</td>
+																))}
+															</tr>
+														))}
 													</tbody>
 												</table>
 											</div>
-										)}
-										{immuneMarkers.some(
-											(markerRow) => markerRow.type === HLA_TYPE_STRING
-										) && (
+										) : null}
+										{hlaImmuneMarkers.length > 0 ? (
 											<div className="overflow-auto showScrollbar-vertical">
 												<h3>HLA</h3>
 												<table>
@@ -797,13 +796,10 @@ const ModelDetails = ({
 													<thead>
 														<tr>
 															<th>SAMPLE ID</th>
-															{immuneMarkers.map((markerRow) => {
-																if (markerRow.type === HLA_TYPE_STRING) {
-																	return markerRow.markers.map((marker) => (
-																		<th key={marker.name}>{marker.name}</th>
-																	));
-																}
-															})}
+															{hlaImmuneMarkers.length > 0 &&
+																hlaImmuneMarkers[0].markers.map((marker) => (
+																	<th key={marker.name}>{marker.name}</th>
+																))}
 														</tr>
 													</thead>
 													<tbody>
@@ -834,7 +830,7 @@ const ModelDetails = ({
 													</tbody>
 												</table>
 											</div>
-										)}
+										) : null}
 									</div>
 								</div>
 							)}
