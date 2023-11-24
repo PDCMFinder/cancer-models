@@ -774,12 +774,25 @@ const ModelDetails = ({
 																		key={marker.name + marker.value}
 																		className="white-space-nowrap"
 																	>
-																		{marker.value?.map((value) => (
-																			<React.Fragment key={value}>
-																				{value}
-																				<br />
-																			</React.Fragment>
-																		))}
+																		{marker.details ? (
+																			<Tooltip content={marker.details}>
+																				<span className="text-uppercase">
+																					{marker.value?.map((value) => (
+																						<React.Fragment key={value}>
+																							{value}
+																							<br />
+																						</React.Fragment>
+																					))}
+																				</span>
+																			</Tooltip>
+																		) : (
+																			marker.value?.map((value) => (
+																				<React.Fragment key={value}>
+																					{value}
+																					<br />
+																				</React.Fragment>
+																			))
+																		)}
 																	</td>
 																))}
 															</tr>
@@ -815,12 +828,25 @@ const ModelDetails = ({
 																				key={marker.name + marker.value}
 																				className="white-space-nowrap"
 																			>
-																				{marker.value?.map((value) => (
-																					<React.Fragment key={value}>
-																						{value}
-																						<br />
-																					</React.Fragment>
-																				))}
+																				{marker.details ? (
+																					<Tooltip content={marker.details}>
+																						<span className="text-uppercase">
+																							{marker.value?.map((value) => (
+																								<React.Fragment key={value}>
+																									{value}
+																									<br />
+																								</React.Fragment>
+																							))}
+																						</span>
+																					</Tooltip>
+																				) : (
+																					marker.value?.map((value) => (
+																						<React.Fragment key={value}>
+																							{value}
+																							<br />
+																						</React.Fragment>
+																					))
+																				)}
 																			</td>
 																		))}
 																	</tr>
