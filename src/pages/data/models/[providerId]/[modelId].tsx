@@ -42,6 +42,16 @@ interface IModelDetailsProps {
 	modelId: string;
 	providerId: string;
 	engraftments?: IEngraftment[];
+	modelImages: IModelImage[];
+}
+
+export interface IModelImage {
+	id: number;
+	description: string;
+	passages_tested: string;
+	validation_technique: string;
+	validation_host_strain_nomenclature: string;
+	model_id: number;
 }
 
 export interface IMolecularData {
@@ -140,6 +150,7 @@ const ModelDetails = ({
 	patientTreatment,
 	qualityData,
 	engraftments,
+	modelImages,
 }: IModelDetailsProps) => {
 	const NA_STRING = "N/A";
 	const [downloadData, setDownloadData] = useState<{
@@ -894,6 +905,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		drugDosing,
 		patientTreatment,
 		qualityData,
+		modelImages,
 	} = await getAllModelData(
 		params!.modelId as string,
 		params!.providerId as string
@@ -908,6 +920,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			drugDosing,
 			patientTreatment,
 			qualityData,
+			modelImages,
 		},
 		revalidate: 600,
 	};
