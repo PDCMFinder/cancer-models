@@ -36,9 +36,13 @@ export async function getModelImages(modelId: string): Promise<IModelImage[]> {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
-		return d[0].model_images.map((imageObj: IModelImage) =>
-			camelCase(imageObj)
-		);
+		if (d[0].model_images?.length) {
+			return d[0].model_images.map((imageObj: IModelImage) =>
+				camelCase(imageObj)
+			);
+		} else {
+			return [];
+		}
 	});
 }
 

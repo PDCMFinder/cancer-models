@@ -23,6 +23,7 @@ import { getAllModelData } from "../../../../apis/ModelDetails.api";
 import { hj_event } from "../../../../utils/hotjar";
 import dynamic from "next/dynamic";
 import Loader from "../../../../components/Loader/Loader";
+import Image from "next/image";
 
 const DynamicModal = dynamic(
 	() => import("../../../../components/Modal/Modal"),
@@ -46,12 +47,12 @@ interface IModelDetailsProps {
 }
 
 export interface IModelImage {
-	id: number;
+	url: string;
 	description: string;
-	passages_tested: string;
-	validation_technique: string;
-	validation_host_strain_nomenclature: string;
-	model_id: number;
+	sampleType: string;
+	passage: string;
+	magnification: string;
+	staining: string;
 }
 
 export interface IMolecularData {
@@ -385,6 +386,19 @@ const ModelDetails = ({
 												</Link>
 											) : (
 												"Patient treatment"
+											)}
+										</li>
+										<li className="mb-2">
+											{modelImages.length ? (
+												<Link
+													replace
+													href="#histology-images"
+													className="text-primary-primary"
+												>
+													Histology images
+												</Link>
+											) : (
+												"Histology images"
 											)}
 										</li>
 										<li className="mb-2">
@@ -738,7 +752,7 @@ const ModelDetails = ({
 															treatmentDose: dose,
 															treatmentResponse: response,
 														}) => (
-															<tr key={name}>
+															<tr key={name + dose}>
 																<td>{name}</td>
 																<td>{dose}</td>
 																<td>{response}</td>
@@ -781,6 +795,33 @@ const ModelDetails = ({
 													)}
 												</tbody>
 											</table>
+										</div>
+									</div>
+								</div>
+							)}
+							{modelImages.length > 0 && (
+								<div id="histology-images" className="row mb-5 pt-3">
+									<div className="col-12 mb-1">
+										<h2 className="mt-0">Histology images</h2>
+									</div>
+									<div className="col-12">
+										<div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-gap-3">
+											{modelImages.map(({ url, description }) => (
+												<div key={url} className="col">
+													<Link href={url} target="_blank" rel="noopener">
+														<Image
+															src={url}
+															alt={description}
+															width={500}
+															height={300}
+															className={`mb-1 ${styles.ModelDetails_modelImage}`}
+															sizes="33vw"
+															quality={10}
+														/>
+													</Link>
+													<p className="text-small mb-0">{description}</p>
+												</div>
+											))}
 										</div>
 									</div>
 								</div>
