@@ -828,7 +828,7 @@ const ModelDetails = ({
 																			>
 																				{marker.details ? (
 																					<Tooltip content={marker.details}>
-																						<span className="text-uppercase">
+																						<span>
 																							{marker.value?.map((value) => (
 																								<React.Fragment key={value}>
 																									{value}
