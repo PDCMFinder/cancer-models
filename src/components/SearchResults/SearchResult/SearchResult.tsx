@@ -21,8 +21,8 @@ const dataTypes = [
 		sectionLink: "molecular-data",
 	},
 	{
-		key: "biomarker",
-		name: "Biomarker",
+		key: "bio markers",
+		name: "Bio Markers",
 		sectionLink: "molecular-data",
 	},
 	{
