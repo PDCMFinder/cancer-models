@@ -146,7 +146,7 @@ const SearchResult = (props: ISearchResultProps) => {
 						{dataTypes.map((dt) => {
 							const hasData = dataAvailable?.includes(dt.key),
 								name = dt.name;
-							console.log(dataAvailable);
+
 							return (
 								<div key={dt.key} className="col-6 h-fit">
 									<p className={`mb-0 ${!hasData ? "text-muted" : ""}`.trim()}>
