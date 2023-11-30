@@ -382,7 +382,7 @@ async function getModelImmuneMarkers(modelId: string) {
 					value: [current.marker_value],
 				};
 
-				if (existingSampleId) {
+				if (existingSampleId && existingSampleId.type === current.marker_type) {
 					// Check if column exists in sample id
 					const existingName = existingSampleId.markers.find(
 						(item: IImmuneMarker) => item.name === current.marker_name
@@ -408,16 +408,26 @@ async function getModelImmuneMarkers(modelId: string) {
 			[]
 		);
 
-		const uniqueNames: string[] = [
-			...new Set<string>(d.map((item: IImmuneMarkerAPI) => item.marker_name)),
-		];
-		// Add all missing names for table structure
-		uniqueNames.forEach((uniqueName: string) => {
-			parsedImmuneMarkers.forEach((immuneMarker: IImmuneMarkers) => {
+		const addMissingNames = (immuneMarker: IImmuneMarkers, type: string) => {
+			// create array with only unique names across all markers of x type
+			const uniqueNames = [
+				...new Set<string>(
+					d
+						.map(
+							(item: IImmuneMarkerAPI) =>
+								item.marker_type === type && item.marker_name
+						)
+						.filter((el: string) => el) // remove empty values
+				),
+			];
+
+			// push "empty" objs so all rows have all columns
+			uniqueNames.forEach((uniqueName: string) => {
 				if (
 					!immuneMarker.markers.some(
 						(marker: IImmuneMarker) => marker.name === uniqueName
-					)
+					) &&
+					immuneMarker.type === type
 				) {
 					immuneMarker.markers.push({
 						details: null,
@@ -425,9 +435,15 @@ async function getModelImmuneMarkers(modelId: string) {
 						value: null,
 					});
 				}
-
-				immuneMarker.markers.sort((a, b) => a.name.localeCompare(b.name));
 			});
+		};
+
+		// Add all missing names for table structure
+		parsedImmuneMarkers.forEach((immuneMarker: IImmuneMarkers) => {
+			addMissingNames(immuneMarker, "HLA type");
+			addMissingNames(immuneMarker, "Model Genomics");
+
+			immuneMarker.markers.sort((a, b) => a.name.localeCompare(b.name));
 		});
 
 		return parsedImmuneMarkers;

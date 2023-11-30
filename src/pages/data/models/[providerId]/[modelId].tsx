@@ -814,43 +814,39 @@ const ModelDetails = ({
 														</tr>
 													</thead>
 													<tbody>
-														{immuneMarkers.map((markerRow) => {
-															if (markerRow.type === HLA_TYPE_STRING) {
-																return (
-																	<tr key={markerRow.sampleId}>
-																		<td className="white-space-nowrap">
-																			{markerRow.sampleId}
-																		</td>
-																		{markerRow.markers.map((marker) => (
-																			<td
-																				key={marker.name + marker.value}
-																				className="white-space-nowrap"
-																			>
-																				{marker.details ? (
-																					<Tooltip content={marker.details}>
-																						<span>
-																							{marker.value?.map((value) => (
-																								<React.Fragment key={value}>
-																									{value}
-																									<br />
-																								</React.Fragment>
-																							))}
-																						</span>
-																					</Tooltip>
-																				) : (
-																					marker.value?.map((value) => (
+														{hlaImmuneMarkers.map((markerRow) => (
+															<tr key={markerRow.sampleId}>
+																<td className="white-space-nowrap">
+																	{markerRow.sampleId}
+																</td>
+																{markerRow.markers.map((marker) => (
+																	<td
+																		key={marker.name + marker.value}
+																		className="white-space-nowrap"
+																	>
+																		{marker.details ? (
+																			<Tooltip content={marker.details}>
+																				<span>
+																					{marker.value?.map((value) => (
 																						<React.Fragment key={value}>
 																							{value}
 																							<br />
 																						</React.Fragment>
-																					))
-																				)}
-																			</td>
-																		))}
-																	</tr>
-																);
-															}
-														})}
+																					))}
+																				</span>
+																			</Tooltip>
+																		) : (
+																			marker.value?.map((value) => (
+																				<React.Fragment key={value}>
+																					{value}
+																					<br />
+																				</React.Fragment>
+																			))
+																		)}
+																	</td>
+																))}
+															</tr>
+														))}
 													</tbody>
 												</table>
 											</div>
