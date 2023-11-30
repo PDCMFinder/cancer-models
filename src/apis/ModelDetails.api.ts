@@ -410,7 +410,6 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 		drugDosing,
 		patientTreatment,
 		qualityData,
-		modelImages,
 		publications: [] as IPublication[],
 	};
 };

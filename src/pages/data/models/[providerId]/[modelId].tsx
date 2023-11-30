@@ -9,6 +9,7 @@ import styles from "./Model.module.scss";
 import Card from "../../../../components/Card/Card";
 import MolecularDataTable from "../../../../components/MolecularDataTable/MolecularDataTable";
 import {
+	getModelImages,
 	getModelPubmedIds,
 	getMolecularDataDownload,
 	getPublicationData,
@@ -43,7 +44,6 @@ interface IModelDetailsProps {
 	modelId: string;
 	providerId: string;
 	engraftments?: IEngraftment[];
-	modelImages: IModelImage[];
 }
 
 export interface IModelImage {
@@ -151,7 +151,6 @@ const ModelDetails = ({
 	patientTreatment,
 	qualityData,
 	engraftments,
-	modelImages,
 }: IModelDetailsProps) => {
 	const NA_STRING = "N/A";
 	const [downloadData, setDownloadData] = useState<{
@@ -222,6 +221,13 @@ const ModelDetails = ({
 	const publications: IPublication[] = publicationsQuery
 		.map((q) => q.data as IPublication)
 		.filter((d) => d !== undefined);
+
+	const histologyImagesQuery = useQuery(
+		["histologyImages", metadata.modelId],
+		() => {
+			return getModelImages(metadata.modelId);
+		}
+	);
 
 	return (
 		<>
@@ -389,7 +395,8 @@ const ModelDetails = ({
 											)}
 										</li>
 										<li className="mb-2">
-											{modelImages.length ? (
+											{histologyImagesQuery.data &&
+											histologyImagesQuery.data.length ? (
 												<Link
 													replace
 													href="#histology-images"
@@ -799,33 +806,36 @@ const ModelDetails = ({
 									</div>
 								</div>
 							)}
-							{modelImages.length > 0 && (
-								<div id="histology-images" className="row mb-5 pt-3">
-									<div className="col-12 mb-1">
-										<h2 className="mt-0">Histology images</h2>
-									</div>
-									<div className="col-12">
-										<div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-gap-3">
-											{modelImages.map(({ url, description }) => (
-												<div key={url} className="col">
-													<Link href={url} target="_blank" rel="noopener">
-														<Image
-															src={url}
-															alt={description}
-															width={500}
-															height={300}
-															className={`mb-1 ${styles.ModelDetails_modelImage}`}
-															sizes="33vw"
-															quality={10}
-														/>
-													</Link>
-													<p className="text-small mb-0">{description}</p>
-												</div>
-											))}
+							{histologyImagesQuery.data &&
+								histologyImagesQuery.data.length > 0 && (
+									<div id="histology-images" className="row mb-5 pt-3">
+										<div className="col-12 mb-1">
+											<h2 className="mt-0">Histology images</h2>
+										</div>
+										<div className="col-12">
+											<div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-gap-3">
+												{histologyImagesQuery.data.map(
+													({ url, description }) => (
+														<div key={url} className="col">
+															<Link href={url} target="_blank" rel="noopener">
+																<Image
+																	src={url}
+																	alt={description}
+																	width={500}
+																	height={300}
+																	className={`mb-1 ${styles.ModelDetails_modelImage}`}
+																	sizes="33vw"
+																	quality={10}
+																/>
+															</Link>
+															<p className="text-small mb-0">{description}</p>
+														</div>
+													)
+												)}
+											</div>
 										</div>
 									</div>
-								</div>
-							)}
+								)}
 							{publications.length > 0 && (
 								<div id="publications" className="row mb-5 pt-3">
 									<div className="col-12">
@@ -946,7 +956,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		drugDosing,
 		patientTreatment,
 		qualityData,
-		modelImages,
 	} = await getAllModelData(
 		params!.modelId as string,
 		params!.providerId as string
@@ -961,7 +970,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			drugDosing,
 			patientTreatment,
 			qualityData,
-			modelImages,
 		},
 		revalidate: 600,
 	};
