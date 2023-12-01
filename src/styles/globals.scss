@@ -222,6 +222,9 @@ a {
 	&-1 {
 		aspect-ratio: 1;
 	}
+	&-16-9 {
+		aspect-ratio: 16/9;
+	}
 }
 .position {
 	&-relative {

@@ -817,16 +817,25 @@ const ModelDetails = ({
 												{histologyImagesQuery.data.map(
 													({ url, description }) => (
 														<div key={url} className="col">
-															<Link href={url} target="_blank" rel="noopener">
-																<Image
-																	src={url}
-																	alt={description}
-																	width={500}
-																	height={300}
-																	className={`mb-1 ${styles.ModelDetails_modelImage}`}
-																	sizes="33vw"
-																	quality={10}
-																/>
+															<Link
+																href={url}
+																target="_blank"
+																rel="noopener"
+																className="w-100"
+															>
+																<div className="w-100 position-relative h-auto ar-16-9 overflow-hidden">
+																	<Image
+																		src={url}
+																		alt={description}
+																		className="mb-1"
+																		sizes="33vw"
+																		quality={10}
+																		fill={true}
+																		style={{
+																			objectFit: "cover",
+																		}}
+																	/>
+																</div>
 															</Link>
 															<p className="text-small mb-0">{description}</p>
 														</div>

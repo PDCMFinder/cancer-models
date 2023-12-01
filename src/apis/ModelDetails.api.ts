@@ -30,7 +30,8 @@ export async function getProviderId(modelId: string) {
 
 export async function getModelImages(modelId: string): Promise<IModelImage[]> {
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&select=model_images`
+		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&select=model_images`,
+		{ method: "GET", mode: "cors" }
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
