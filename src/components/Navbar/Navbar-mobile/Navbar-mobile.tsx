@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import CloseIcon from "../../CloseIcon/CloseIcon";
 import Logotype from "../../Logotype/Logotype";
 import handleBodyClass from "../../../utils/handleBodyClass";
-import { INavProps, IRoute } from "../../../../globalTypes";
+import { INavProps, IRoute } from "../../../../types/globalTypes";
 import ActiveLink from "../../ActiveLink/ActiveLink";
 import Link from "next/link";
 import styles from "./Navbar-mobile.module.scss";
@@ -32,11 +32,11 @@ const NavMobile = (props: INavProps) => {
 	};
 
 	return (
-		<nav className={styles["Navbar-mobile"]}>
+		<nav className={styles["Navbar-mobile"]} data-test="navbar-mobile">
 			<div className={`container text-white ${styles["Navbar-mobile_topBar"]}`}>
 				<div className="row align-center">
 					<div className="col-8">
-						<Link href="/">
+						<Link href="/" aria-label="CancerModels.Org logo">
 							<Logotype color="white" />
 						</Link>
 					</div>
@@ -53,7 +53,10 @@ const NavMobile = (props: INavProps) => {
 			</div>
 			{/* Container with menu items */}
 			{isMenuOpen && (
-				<div className={`text-white ${styles["Navbar-mobile_menu"]}`}>
+				<div
+					className={`text-white ${styles["Navbar-mobile_menu"]}`}
+					data-test="navbar-mobile-menu"
+				>
 					<div className="container d-flex flex-column justify-content-between h-100 text-center">
 						<div className="row">
 							<div className="col">

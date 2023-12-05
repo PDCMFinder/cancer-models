@@ -5,6 +5,7 @@ interface IModalProps {
 	children: string | JSX.Element;
 	modalWidth?: "100" | "50" | "auto";
 	verticalAlign?: "center" | "top";
+	className?: string;
 	handleClose: () => void;
 	style?: CSSProperties;
 }
@@ -13,6 +14,7 @@ const Modal = ({
 	children,
 	modalWidth = "auto",
 	verticalAlign = "center",
+	className,
 	handleClose,
 	style,
 }: IModalProps) => {
@@ -42,8 +44,8 @@ const Modal = ({
 				onClick={handleClose}
 			></div>
 			<div
-				className={`${styles.Modal} ${
-					styles[`Modal-${verticalAlign}`]
+				className={`${styles.Modal} ${styles[`Modal-${verticalAlign}`]} ${
+					className ?? ""
 				} position-fixed w-${modalWidth}`}
 				style={style}
 			>

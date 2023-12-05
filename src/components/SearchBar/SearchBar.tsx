@@ -8,8 +8,11 @@ import { onFilterChangeType } from "../../pages/search";
 import { IFacetSidebarSelection } from "../../types/Facet.model";
 import Fragment from "../Fragment/Fragment";
 import { useRouter } from "next/router";
+import Label from "../Input/Label";
 
 interface ISearchBarProps {
+	id: string;
+	name: string;
 	isMulti?: boolean;
 	selection?: IFacetSidebarSelection;
 	onFilterChange?: (
@@ -54,12 +57,19 @@ const SearchBar = (props: ISearchBarProps) => {
 
 	return (
 		<>
-			<p className="mb-0 text-white" id="searchBar-label">
-				Search by cancer diagnosis
-			</p>
+			<Label
+				className="mb-0 text-white"
+				label="Search by cancer diagnosis"
+				forId={props.id}
+				name={props.name}
+			/>
 			<Select
+				instanceId={props.id}
+				id={props.id}
+				inputId={props.id + "select"}
+				name={props.name}
 				aria-label="Search by cancer diagnosis"
-				aria-labelledby="searchBar-label"
+				aria-labelledby={props.id}
 				className="lh-1"
 				closeMenuOnSelect={props.isMulti}
 				blurInputOnSelect={props.isMulti}

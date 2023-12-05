@@ -67,7 +67,7 @@ export const mockData = [
 				type: "check",
 				options: [
 					"copy number alteration",
-					"cytogenetics",
+					"biomarker",
 					"dosing studies",
 					"expression",
 					"mutation",
@@ -107,15 +107,15 @@ export const mockData = [
 				loading: true,
 			},
 			{
-				facetId: "makers_with_cytogenetics_data",
-				name: "Cytogenetics",
+				facetId: "markers_with_biomarker_data",
+				name: "Biomarker",
 				type: "multivalued",
 				options: [],
 				placeholder: "ESR1",
 				loading: true,
 			},
 			{
-				facetId: "makers_with_expression_data",
+				facetId: "markers_with_expression_data",
 				name: "Gene Expression",
 				type: "multivalued",
 				options: [],
@@ -123,7 +123,7 @@ export const mockData = [
 				loading: true,
 			},
 			{
-				facetId: "makers_with_cna_data",
+				facetId: "markers_with_cna_data",
 				name: "Copy Number Alteration",
 				type: "multivalued",
 				options: [],
@@ -131,7 +131,7 @@ export const mockData = [
 				loading: true,
 			},
 			{
-				facetId: "makers_with_mutation_data",
+				facetId: "markers_with_mutation_data",
 				name: "Gene mutation",
 				type: "multivalued",
 				options: [],

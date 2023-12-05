@@ -290,155 +290,166 @@ const Compare: NextPage = () => {
 								</div>
 							</div>
 						</div>
-						<div className={`row ${styles.Compare_table}`}>
-							<div className={`col-12 ${styles.Compare_table_title}`}>
-								<h3>PDX Model Engraftment</h3>
-							</div>
-							<div className="col-12">
-								<div className={`row ${styles.Compare_row}`}>
-									{/* fake offset to reduce nesting a bit */}
-									<div className="col-3"></div>
-									{allModelsData.map(({ data }) => {
-										return (
-											<div
-												className="col"
-												key={data?.metadata.modelId + "engraftment"}
-											>
-												{data?.engraftments.map((engraftment: IEngraftment) => {
-													const hostStrainNomenclatures =
-														engraftment.hostStrainNomenclature
-															.split(" ")
-															.map((h) => {
-																const regExp = /(.*)<sup>(.*)<\/sup>(.*)/gm;
-																const matches = regExp.exec(h) || [];
-																const strainPrefix = matches[1] || "";
-																const strainSup = matches[2] || "";
-																const strainSuffix = matches[3] || "";
+						{allModelsData.some(
+							({ data }) => data && data.engraftments.length > 0
+						) ? (
+							<div className={`row ${styles.Compare_table}`}>
+								<div className={`col-12 ${styles.Compare_table_title}`}>
+									<h3>PDX Model Engraftment</h3>
+								</div>
+								<div className="col-12">
+									<div className={`row ${styles.Compare_row}`}>
+										{/* fake offset to reduce nesting a bit */}
+										<div className="col-3"></div>
+										{allModelsData.map(({ data }) => {
+											return (
+												<div
+													className="col"
+													key={data?.metadata.modelId + "engraftment"}
+												>
+													{data?.engraftments.map(
+														(engraftment: IEngraftment) => {
+															const hostStrainNomenclatures =
+																engraftment.hostStrainNomenclature
+																	.split(" ")
+																	.map((h) => {
+																		const regExp = /(.*)<sup>(.*)<\/sup>(.*)/gm;
+																		const matches = regExp.exec(h) || [];
+																		const strainPrefix = matches[1] || "";
+																		const strainSup = matches[2] || "";
+																		const strainSuffix = matches[3] || "";
 
-																return {
-																	strainPrefix,
-																	strainSup,
-																	strainSuffix,
-																};
-															});
-
-													return (
-														<div
-															className="mb-2"
-															key={
-																data?.metadata.modelId +
-																engraftment.engraftmentSite
-															}
-														>
-															<div className="mb-2">
-																<p className="text-uppercase">
-																	<b>Host strain name</b>
-																</p>
-																<Tooltip
-																	content={hostStrainNomenclatures.map(
-																		({
+																		return {
 																			strainPrefix,
 																			strainSup,
 																			strainSuffix,
-																		}: {
-																			strainPrefix: string;
-																			strainSup: string;
-																			strainSuffix: string;
-																		}) => (
-																			<span
-																				className="text-small"
-																				key={
-																					strainPrefix +
-																					strainSup +
-																					strainSuffix
-																				}
-																			>
-																				{strainPrefix}
-																				<sup>{strainSup}</sup>
-																				{strainSuffix}{" "}
-																			</span>
-																		)
-																	)}
-																>
-																	<p className="d-inline text-uppercase">
-																		{engraftment.hostStrain}
-																	</p>
-																</Tooltip>
-															</div>
-															<div>
-																<p className="text-uppercase">
-																	<b>Site</b>
-																</p>
-																<p>{engraftment.engraftmentSite}</p>
-															</div>
-														</div>
-													);
-												})}
-											</div>
-										);
-									})}
-								</div>
-							</div>
-						</div>
-						<div className={`row ${styles.Compare_table}`}>
-							<div className={`col-12 ${styles.Compare_table_title}`}>
-								<h3>Model quality control</h3>
-							</div>
-							<div className="col-12">
-								<div className={`row ${styles.Compare_row}`}>
-									{/* fake offset to reduce some nesting */}
-									<div className="col-3"></div>
-									{allModelsData.map(({ data }) => {
-										return (
-											<div
-												className="col"
-												key={
-													data?.metadata.modelId +
-														data?.qualityData[0]?.validationTechnique ||
-													"" + data?.qualityData[0]?.passagesTested ||
-													""
-												}
-											>
-												{data?.qualityData.map(
-													(qData: QualityData, idx: number) => {
-														const isLast = idx === data?.qualityData.length - 1;
+																		};
+																	});
 
-														return (
-															<div
-																className="mb-2"
-																key={
-																	data?.metadata.modelId +
-																	qData.validationTechnique +
-																	qData.passagesTested
-																}
-															>
-																<div className="mb-2">
-																	<p className="text-uppercase">
-																		<b>Technique</b>
-																	</p>
-																	<p>{qData.validationTechnique}</p>
+															return (
+																<div
+																	className="mb-2"
+																	key={
+																		data?.metadata.modelId +
+																		engraftment.engraftmentSite
+																	}
+																>
+																	<div className="mb-2">
+																		<p className="text-uppercase">
+																			<b>Host strain name</b>
+																		</p>
+																		<Tooltip
+																			content={hostStrainNomenclatures.map(
+																				({
+																					strainPrefix,
+																					strainSup,
+																					strainSuffix,
+																				}: {
+																					strainPrefix: string;
+																					strainSup: string;
+																					strainSuffix: string;
+																				}) => (
+																					<span
+																						className="text-small"
+																						key={
+																							strainPrefix +
+																							strainSup +
+																							strainSuffix
+																						}
+																					>
+																						{strainPrefix}
+																						<sup>{strainSup}</sup>
+																						{strainSuffix}{" "}
+																					</span>
+																				)
+																			)}
+																		>
+																			<p className="d-inline text-uppercase">
+																				{engraftment.hostStrain}
+																			</p>
+																		</Tooltip>
+																	</div>
+																	<div>
+																		<p className="text-uppercase">
+																			<b>Site</b>
+																		</p>
+																		<p>{engraftment.engraftmentSite}</p>
+																	</div>
 																</div>
-																<div>
-																	<p className="text-uppercase">
-																		<b>Passage</b>
-																	</p>
-																	<p>{qData.passagesTested}</p>
-																</div>
-																{!isLast && (
-																	<hr
-																		className={`ml-0 bg-primary-tertiary ${styles["Compare_row-divider"]}`}
-																	/>
-																)}
-															</div>
-														);
-													}
-												)}
-											</div>
-										);
-									})}
+															);
+														}
+													)}
+												</div>
+											);
+										})}
+									</div>
 								</div>
 							</div>
-						</div>
+						) : null}
+						{allModelsData.some(
+							({ data }) => data && data.qualityData.length > 0
+						) ? (
+							<div className={`row ${styles.Compare_table}`}>
+								<div className={`col-12 ${styles.Compare_table_title}`}>
+									<h3>Model quality control</h3>
+								</div>
+								<div className="col-12">
+									<div className={`row ${styles.Compare_row}`}>
+										{/* fake offset to reduce some nesting */}
+										<div className="col-3"></div>
+										{allModelsData.map(({ data }) => {
+											return (
+												<div
+													className="col"
+													key={
+														data?.metadata.modelId +
+															data?.qualityData[0]?.validationTechnique ||
+														"" + data?.qualityData[0]?.passagesTested ||
+														""
+													}
+												>
+													{data?.qualityData.map(
+														(qData: QualityData, idx: number) => {
+															const isLast =
+																idx === data?.qualityData.length - 1;
+
+															return (
+																<div
+																	className="mb-2"
+																	key={
+																		data?.metadata.modelId +
+																		qData.validationTechnique +
+																		qData.passagesTested
+																	}
+																>
+																	<div className="mb-2">
+																		<p className="text-uppercase">
+																			<b>Technique</b>
+																		</p>
+																		<p>{qData.validationTechnique}</p>
+																	</div>
+																	<div>
+																		<p className="text-uppercase">
+																			<b>Passage</b>
+																		</p>
+																		<p>{qData.passagesTested}</p>
+																	</div>
+																	{!isLast && (
+																		<hr
+																			className={`ml-0 bg-primary-tertiary ${styles["Compare_row-divider"]}`}
+																		/>
+																	)}
+																</div>
+															);
+														}
+													)}
+												</div>
+											);
+										})}
+									</div>
+								</div>
+							</div>
+						) : null}
 						<div className={`row ${styles.Compare_table}`}>
 							<div className={`col-12 ${styles.Compare_table_title}`}>
 								<h3>Available data</h3>
@@ -513,18 +524,18 @@ const Compare: NextPage = () => {
 								<div className={`row ${styles.Compare_row}`}>
 									<div className="col-3">
 										<p className="text-uppercase">
-											<b>Cytogenetics</b>
+											<b>Biomarker</b>
 										</p>
 									</div>
 									{allModelsData.map(({ data }) => (
 										<div
 											className="col"
-											key={data?.metadata.modelId + "cytogeneticsData"}
+											key={data?.metadata.modelId + "biomarkerData"}
 										>
 											<p>
 												{data?.molecularData.some(
 													(mData: IMolecularData) =>
-														mData.dataType === "cytogenetics"
+														mData.dataType === "biomarker"
 												)
 													? CHECKMARK_STRING
 													: ""}

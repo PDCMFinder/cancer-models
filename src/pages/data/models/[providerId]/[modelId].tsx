@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import Button from "../../../../components/Button/Button";
 import Link from "next/link";
@@ -6,8 +6,6 @@ import ShowHide from "../../../../components/ShowHide/ShowHide";
 import breakPoints from "../../../../utils/breakpoints";
 import useWindowDimensions from "../../../../hooks/useWindowDimensions";
 import styles from "./Model.module.scss";
-import { useState, useRef } from "react";
-import Modal from "../../../../components/Modal/Modal";
 import Card from "../../../../components/Card/Card";
 import MolecularDataTable from "../../../../components/MolecularDataTable/MolecularDataTable";
 import {
@@ -24,12 +22,21 @@ import Head from "next/head";
 import { getAllModelData } from "../../../../apis/ModelDetails.api";
 import { hj_event } from "../../../../utils/hotjar";
 import TiffImageConverter from "../../../../components/TiffImageConverter/TiffImageConverter";
+import dynamic from "next/dynamic";
+import Loader from "../../../../components/Loader/Loader";
+import Image from "next/image";
+
+const DynamicModal = dynamic(
+	() => import("../../../../components/Modal/Modal"),
+	{
+		loading: () => <Loader />,
+	}
+);
 
 interface IModelDetailsProps {
 	metadata: Metadata;
 	extLinks: ExtLinks;
 	molecularData: IMolecularData[];
-	molecularDataRestrictions: MolecularDataRestrictions[];
 	drugDosing: any[];
 	patientTreatment: PatientTreatment[];
 	qualityData: QualityData[];
@@ -37,34 +44,37 @@ interface IModelDetailsProps {
 	modelId: string;
 	providerId: string;
 	engraftments?: IEngraftment[];
+	modelImages: IModelImage[];
 }
 
-export interface MolecularDataRestrictions {
+export interface IModelImage {
+	url: string;
+	description: string;
+	sampleType: string;
+	passage: string;
+	magnification: string;
+	staining: string;
+}
+
+export interface IMolecularData {
+	modelId: string;
 	dataSource: string;
-	molecularDataTable: string;
+	source: string;
+	sampleId: string;
+	xenograftPassage: string;
+	rawDataUrl: any;
+	dataType: string;
+	platformName: string;
+	dataExists: string;
+	dataRestricted: string;
+	molecularCharacterizationId: number;
+	externalDbLinks: ExternalDbLinks[];
 }
 
 interface PatientTreatment {
 	treatmentDose: string;
 	treatmentName: string;
 	treatmentResponse: string;
-}
-
-export interface IMolecularData {
-	id: number;
-	patientSampleId: string;
-	patientModelId: string;
-	xenograftSampleId: string;
-	cellSampleId: string;
-	xenograftModelId: string;
-	xenograftPassage: string;
-	rawDataUrl: string;
-	dataType: string;
-	platformId: string;
-	platformName: string;
-	dataAvailability: "TRUE" | "FALSE";
-	dataSource: string;
-	externalDbLinks: ExternalDbLinks[];
 }
 
 interface ExternalDbLinks {
@@ -141,25 +151,18 @@ export interface TypesMap {
 	expression_molecular_data: string;
 	cna_molecular_data: string;
 	mutation_measurement_data: string;
-	cytogenetics_molecular_data: string;
+	biomarker_molecular_data: string;
 }
-
-const typesMap: TypesMap = {
-	expression_molecular_data: "expression",
-	cna_molecular_data: "copy number alteration",
-	mutation_measurement_data: "mutation",
-	cytogenetics_molecular_data: "cytogenetics",
-};
 
 const ModelDetails = ({
 	metadata,
 	extLinks,
 	molecularData,
-	molecularDataRestrictions,
 	drugDosing,
 	patientTreatment,
 	qualityData,
 	engraftments,
+	modelImages,
 }: IModelDetailsProps) => {
 	const NA_STRING = "N/A";
 	const [downloadData, setDownloadData] = useState<{
@@ -187,9 +190,6 @@ const ModelDetails = ({
 		{ label: "Primary Site", value: metadata.primarySite },
 		{ label: "Collection Site", value: metadata.collectionSite },
 	];
-	const restrictedTypes = molecularDataRestrictions.map(
-		(d) => typesMap[d.molecularDataTable as keyof TypesMap]
-	);
 
 	useEffect(() => {
 		if (!isInitialLoad && downloadBtnRef.current) {
@@ -204,8 +204,8 @@ const ModelDetails = ({
 				setDownloadData({
 					data: d,
 					filename: `CancerModelsOrg_${data.dataType ?? ""}_${
-						data.patientSampleId ?? data.xenograftModelId ?? ""
-					}_${data.platformName ?? ""}.csv`,
+						data.sampleId ?? ""
+					}_${data.platformName ?? ""}.tsv`,
 				});
 			})
 			.catch((error) => {});
@@ -401,6 +401,19 @@ const ModelDetails = ({
 											)}
 										</li>
 										<li className="mb-2">
+											{modelImages.length ? (
+												<Link
+													replace
+													href="#histology-images"
+													className="text-primary-primary"
+												>
+													Histology images
+												</Link>
+											) : (
+												"Histology images"
+											)}
+										</li>
+										<li className="mb-2">
 											{publications.length ? (
 												<Link
 													replace
@@ -446,7 +459,7 @@ const ModelDetails = ({
 								<div id="engraftments" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">PDX model engraftment</h2>
-										<div className="overflow-scroll showScrollbar-vertical">
+										<div className="overflow-auto showScrollbar-vertical">
 											<table>
 												<caption>PDX model engraftment</caption>
 												<thead>
@@ -542,7 +555,7 @@ const ModelDetails = ({
 								<div id="quality-control" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Model quality control</h2>
-										<div className="overflow-scroll showScrollbar-vertical">
+										<div className="overflow-auto showScrollbar-vertical">
 											<table>
 												<caption>Model quality control</caption>
 												<thead>
@@ -580,7 +593,7 @@ const ModelDetails = ({
 								<div id="molecular-data" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Molecular data</h2>
-										<div className="overflow-scroll showScrollbar-vertical">
+										<div className="overflow-auto showScrollbar-vertical">
 											<table>
 												<caption>Molecular data</caption>
 												<thead>
@@ -597,77 +610,122 @@ const ModelDetails = ({
 												<tbody>
 													{molecularData &&
 														molecularData.map((data) => {
-															const sampleId =
-																data.xenograftSampleId ||
-																data.patientSampleId ||
-																data.cellSampleId;
-															const sampleType = data.xenograftSampleId
-																? "Engrafted Tumour"
-																: "Patient Tumour";
-															const rawDataExternalLink =
-																data.externalDbLinks?.find(
-																	(data) => data.column === "raw_data_url"
-																)?.link;
+															let sampleType,
+																rawDataExternalLinks: ExternalDbLinks[] = [],
+																dataAvailableContent;
+
+															switch (data.source) {
+																case "xenograft":
+																	sampleType = "Engrafted Tumour";
+																	break;
+																case "patient":
+																	sampleType = "Patient Tumour";
+																	break;
+																default:
+																	sampleType = "Tumour Cells";
+															}
+
+															const hasExternalDbLinks =
+																data.externalDbLinks?.length > 0;
+															if (hasExternalDbLinks) {
+																data.externalDbLinks
+																	?.filter(
+																		(data) => data.column === "raw_data_url"
+																	)
+																	.forEach((obj) =>
+																		rawDataExternalLinks.push(obj)
+																	);
+															}
+
+															if (data.dataExists === "TRUE") {
+																if (data.dataRestricted === "TRUE") {
+																	dataAvailableContent = (
+																		<Link
+																			href={extLinks.contactLink || ""}
+																			target="_blank"
+																			rel="noreferrer noopener"
+																			onClick={() =>
+																				hj_event("click_requestData")
+																			}
+																		>
+																			REQUEST DATA
+																		</Link>
+																	);
+																} else {
+																	dataAvailableContent = (
+																		<>
+																			<Button
+																				color="dark"
+																				priority="secondary"
+																				className="text-left link-text mt-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
+																				onClick={() => {
+																					setSelectedMolecularData(data);
+																					hj_event("click_viewData");
+																				}}
+																			>
+																				VIEW DATA
+																			</Button>
+																			<Button
+																				color="dark"
+																				priority="secondary"
+																				className="text-left link-text mt-0 m-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
+																				onClick={() => {
+																					getDownloadData(data);
+																					hj_event("click_downloadData");
+																				}}
+																			>
+																				DOWNLOAD DATA
+																			</Button>
+																		</>
+																	);
+																}
+															} else {
+																dataAvailableContent = (
+																	<Tooltip
+																		content={
+																			<>
+																				<p className={`text-small my-0`}>
+																					Available on next release
+																				</p>
+																			</>
+																		}
+																	>
+																		Pending
+																	</Tooltip>
+																);
+															}
 
 															return (
-																<tr key={data.id}>
+																<tr key={data.molecularCharacterizationId}>
 																	<td className="white-space-nowrap">
-																		{sampleId}
+																		{data.sampleId}
 																	</td>
 																	<td>{sampleType}</td>
 																	<td>{data.xenograftPassage || NA_STRING}</td>
 																	<td className="text-capitalize">
 																		{data.dataType}
 																	</td>
-																	<td>
-																		{!restrictedTypes.includes(data.dataType) &&
-																		data.dataAvailability === "TRUE" ? (
-																			<>
-																				<button
-																					className="text-left link-text mr-3 mr-md-0 mb-md-1 mr-xxx-3"
-																					onClick={() => {
-																						setSelectedMolecularData(data);
-																						hj_event("click_viewData");
-																					}}
-																				>
-																					VIEW DATA
-																				</button>
-																				<button
-																					className="text-left link-text mr-3 mr-md-0 mb-md-1 mr-xxx-3"
-																					onClick={() => {
-																						getDownloadData(data);
-																						hj_event("click_downloadData");
-																					}}
-																				>
-																					DOWNLOAD DATA
-																				</button>
-																			</>
-																		) : (
-																			<Link
-																				href={extLinks.contactLink || ""}
-																				target="_blank"
-																				rel="noreferrer noopener"
-																				onClick={() =>
-																					hj_event("click_requestData")
-																				}
-																			>
-																				REQUEST DATA
-																			</Link>
-																		)}
-																	</td>
+																	<td>{dataAvailableContent}</td>
 																	<td>{data.platformName}</td>
 																	<td>
-																		{data.rawDataUrl ? (
-																			<a
-																				href={rawDataExternalLink}
-																				target="_blank"
-																				rel="noopener noreferrer"
-																			>
-																				{data.rawDataUrl.split(",")[0]}
-																			</a>
-																		) : (
-																			"Not available"
-																		)}
+																		{hasExternalDbLinks
+																			? rawDataExternalLinks?.map(
+																					(externalResource) => (
+																						<React.Fragment
+																							key={externalResource.resource}
+																						>
+																							<Link
+																								href={externalResource.link}
+																								target="_blank"
+																								rel="noopener noreferrer"
+																							>
+																								{externalResource.resource}
+																							</Link>
+																							<br />
+																						</React.Fragment>
+																					)
+																			  )
+																			: "Not available"}
 																	</td>
 																</tr>
 															);
@@ -681,6 +739,7 @@ const ModelDetails = ({
 										filename={downloadData.filename}
 										className="hideElement-accessible"
 										ref={downloadBtnRef}
+										separator={"\t"}
 									/>
 								</div>
 							)}
@@ -688,7 +747,7 @@ const ModelDetails = ({
 								<div id="dosing-studies" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Dosing studies</h2>
-										<div className="overflow-scroll showScrollbar-vertical">
+										<div className="overflow-auto showScrollbar-vertical">
 											<table>
 												<caption>Dosing studies</caption>
 												<thead>
@@ -705,7 +764,7 @@ const ModelDetails = ({
 															treatmentDose: dose,
 															treatmentResponse: response,
 														}) => (
-															<tr key={name}>
+															<tr key={name + dose}>
 																<td>{name}</td>
 																<td>{dose}</td>
 																<td>{response}</td>
@@ -722,7 +781,7 @@ const ModelDetails = ({
 								<div id="patient-treatment" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Patient treatment</h2>
-										<div className="overflow-scroll showScrollbar-vertical">
+										<div className="overflow-auto showScrollbar-vertical">
 											<table>
 												<caption>Patient treatment</caption>
 												<thead>
@@ -748,6 +807,34 @@ const ModelDetails = ({
 													)}
 												</tbody>
 											</table>
+										</div>
+									</div>
+								</div>
+							)}
+							{modelImages.length > 0 && (
+								<div id="histology-images" className="row mb-5 pt-3">
+									<div className="col-12 mb-1">
+										<h2 className="mt-0">Histology images</h2>
+									</div>
+									<div className="col-12">
+										<div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-gap-3">
+											{modelImages.map(({ url, description }) => (
+												<div key={url} className="col">
+													<div className="ar-16-9 overflow-hidden mb-1">
+														<Link href={url} target="_blank" rel="noopener">
+															{/* Image component isnt working for external source */}
+															<img
+																src={url}
+																alt={description}
+																width={500}
+																height={300}
+																className="mb-1 h-auto w-100 object-fit-cover"
+															/>
+														</Link>
+													</div>
+													<p className="text-small mb-0">{description}</p>
+												</div>
+											))}
 										</div>
 									</div>
 								</div>
@@ -779,6 +866,8 @@ const ModelDetails = ({
 															<li className="mr-md-3">
 																<Link
 																	href={`https://europepmc.org/article/MED/${publication.pmid}`}
+																	target="_blank"
+																	rel="noreferrer noopener"
 																>
 																	View at EuropePMC
 																</Link>
@@ -788,6 +877,8 @@ const ModelDetails = ({
 															<li className="mr-md-3">
 																<Link
 																	href={`https://doi.org/${publication.doi}`}
+																	target="_blank"
+																	rel="noreferrer noopener"
 																>
 																	DOI:{publication.doi}
 																</Link>
@@ -797,6 +888,8 @@ const ModelDetails = ({
 															<li>
 																<Link
 																	href={`https://pubmed.ncbi.nlm.nih.gov/${publication.pmid}`}
+																	target="_blank"
+																	rel="noreferrer noopener"
 																>
 																	PubMed
 																</Link>
@@ -817,7 +910,7 @@ const ModelDetails = ({
 				</div>
 			</section>
 			{selectedMolecularData && (
-				<Modal
+				<DynamicModal
 					verticalAlign="top"
 					modalWidth="100"
 					handleClose={() => setSelectedMolecularData(undefined)}
@@ -842,7 +935,7 @@ const ModelDetails = ({
 							handleDownload={getDownloadData}
 						/>
 					</Card>
-				</Modal>
+				</DynamicModal>
 			)}
 		</>
 	);
@@ -862,11 +955,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		metadata,
 		extLinks,
 		molecularData,
-		molecularDataRestrictions,
 		engraftments,
 		drugDosing,
 		patientTreatment,
 		qualityData,
+		modelImages,
 	} = await getAllModelData(
 		params!.modelId as string,
 		params!.providerId as string
@@ -877,11 +970,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			metadata,
 			extLinks,
 			molecularData,
-			molecularDataRestrictions,
 			engraftments: JSON.parse(JSON.stringify(engraftments)),
 			drugDosing,
 			patientTreatment,
 			qualityData,
+			modelImages,
 		},
 		revalidate: 600,
 	};

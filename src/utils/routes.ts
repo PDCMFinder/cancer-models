@@ -1,25 +1,29 @@
 // children: if it has children, it is parent; children of that item
+// If adding a page that already existed, check sitemaps so it's not duplicated
 export const routes = [
 	{ path: "/", name: "Home" },
 	{ path: "/search", name: "Search" },
-	{ path: "/submit", name: "Submit Data" },
-	{ path: "/overview", name: "Data Overview" },
-	// { path: "/blog", name: "Blog" },
+	{ path: "/submit", name: "Submit" },
+	{ path: "/overview", name: "Overview" },
 	{
-		name: "About",
+		name: "More",
 		children: [
 			{
 				path: "/about",
 				name: "CancerModels.Org",
 			},
-			// {
-			// 	path: "/about/metadata-dictionary",
-			// 	name: "Metadata Dictionary",
-			// },
-			// {
-			// 	path: "/about/faq",
-			// 	name: "FAQ",
-			// },
+			{
+				path: "/about/providers",
+				name: "Data Providers",
+			},
+			{
+				path: "https://documenter.getpostman.com/view/6493399/2s8ZDbX1e7",
+				name: "API",
+			},
+			{
+				path: "/training",
+				name: "Training",
+			},
 			{
 				path: "/contact",
 				name: "Contact",

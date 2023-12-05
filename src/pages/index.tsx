@@ -7,24 +7,30 @@ import useWindowDimensions from "../hooks/useWindowDimensions";
 import breakPoints from "../utils/breakpoints";
 import styles from "./index.module.scss";
 import Label from "../components/Input/Label";
-import DataCountCard from "../components/DataCountCard/DataCountCard";
-import CirclePacking from "../components/CirclePacking/CirclePacking";
 import { useQuery } from "react-query";
-import { getCancerHierarchy, getModelCount } from "../apis/AggregatedData.api";
-import { useRouter } from "next/router";
-import Loader from "../components/Loader/Loader";
+import { getModelCount } from "../apis/AggregatedData.api";
 import SearchBar from "../components/SearchBar/SearchBar";
+import dynamic from "next/dynamic";
+import Loader from "../components/Loader/Loader";
+
+const DynamicDataCountCard = dynamic(
+	import("../components/DataCountCard/DataCountCard"),
+	{
+		loading: () => (
+			<div style={{ height: "300px" }}>
+				<Loader />
+			</div>
+		),
+		ssr: false,
+	}
+);
 
 const Home: NextPage = () => {
 	const { windowWidth } = useWindowDimensions();
 	let bpLarge = breakPoints.large;
-	let cancerHierarchyQuery = useQuery("cancerHierarchy", () => {
-		return getCancerHierarchy();
-	});
 	let modelCount = useQuery("modelCount", () => {
 		return getModelCount();
 	});
-	const router = useRouter();
 
 	return (
 		<>
@@ -61,7 +67,8 @@ const Home: NextPage = () => {
 					></div>
 					<div className={`${styles.header_search} py-5`}>
 						<Label
-							name="search"
+							name="searchBar"
+							forId="searchBar-label"
 							className="h3 text-white"
 							label={`Search ${
 								modelCount && modelCount.data
@@ -69,110 +76,62 @@ const Home: NextPage = () => {
 									: ""
 							} cancer models`}
 						/>
-						<SearchBar />
+						<SearchBar id="searchBar-search-id" name="searchBar-name" />
 					</div>
 				</div>
 			</header>
-			<section>
+			<section className="pt-1">
 				<div className="container">
-					<div className="row align-center">
-						<ShowHide windowWidth={windowWidth || 0} showOver={bpLarge}>
-							<div
-								className={`col-12 col-md-10 col-lg-5 offset-md-1 offset-lg-0 ${styles.circlePacking_col}`}
+					<div className="row justify-content-center mb-5">
+						<div className="col-10 col-lg-8 col-xxx-6">
+							<DynamicDataCountCard layout="horizontal" />
+						</div>
+					</div>
+					<div className="row justify-content-center">
+						<div className="col-12 col-lg-8 text-center">
+							<h1 className="h2 my-5">
+								Find the right PDX, organoid and cell line patient-derived
+								cancer model for your next project.
+							</h1>
+							<h2 className="h3">Explore and analyse the data.</h2>
+							<h2 className="h3">Connect with model providers.</h2>
+							<h2 className="h3">All in one platform.</h2>
+							<Button
+								color="dark"
+								priority="primary"
+								htmlTag="a"
+								href="/overview"
+								className="mb-0 mt-5"
 							>
-								{/* Graph */}
-								<div
-									style={{
-										backgroundColor: "#085154",
-										aspectRatio: "1",
-										borderRadius: "500%",
-									}}
-								>
-									{!cancerHierarchyQuery.isLoading &&
-									cancerHierarchyQuery.data ? (
-										<CirclePacking
-											data={cancerHierarchyQuery.data}
-											onCircleClick={(circleId, circleDepth) => {
-												const searchPrefix =
-													circleDepth === 1
-														? `?filters=cancer_system:`
-														: `?filters=search_terms:`;
-												const termSuffix = circleDepth === 1 ? "Cancer" : "";
-												const search = `${searchPrefix}${encodeURIComponent(
-													circleId + termSuffix
-												)}`;
-
-												router.push({
-													pathname: "/search",
-													search,
-												});
-											}}
-										/>
-									) : (
-										<Loader />
-									)}
-								</div>
-							</div>
-						</ShowHide>
-						<div className="col-12 col-lg-6 offset-lg-1">
-							<h2>
-								We can collect and display your data making you more
-								discoverable and visible for end-users.
-							</h2>
-							<p>
-								All submitted models adhere to the PDX-MI standard making it
-								easy for researchers to search and compare models of interest.
-							</p>
-							<div className="text-center text-lg-left">
-								<Button
-									priority="primary"
-									color="dark"
-									href="/submit"
-									htmlTag="a"
-								>
-									Submit data
-								</Button>
-							</div>
+								Explore data overview
+							</Button>
 						</div>
 					</div>
 				</div>
 			</section>
 			<section className="pb-0">
-				<ShowHide hideOver={bpLarge} windowWidth={windowWidth || 0}>
-					<section className="pt-0">
-						<div className="container">
-							<div className="row">
-								<DataCountCard />
-							</div>
-						</div>
-					</section>
-				</ShowHide>
-				<section className="bg-primary-tertiary">
-					<div className="container">
-						<div className="row align-center">
-							<div className="col-12 col-lg-8 offset-lg- text-center text-white">
-								<h1 className="h2 mb-5">
-									Find the right PDX, organoid and cell line patient-derived
-									cancer model for your next project.
-								</h1>
-								<h2 className="h3">Explore and analyse the data.</h2>
-								<h2 className="h3">Connect with model providers.</h2>
-								<h2 className="h3">All in one platform.</h2>
+				<section className="bg-primary-secondary">
+					<div className="container my-4">
+						<div className="row justify-content-center">
+							<div className="col-12 col-lg-6 text-center text-white">
+								<h2 className="mt-0">
+									We can collect and display your data making you more
+									discoverable and visible for end-users.
+								</h2>
+								<p className="mb-2">
+									All submitted models adhere to the PDX-MI standard making it
+									easy for researchers to search and compare models of interest.
+								</p>
 								<Button
-									color="white"
 									priority="primary"
+									color="dark"
+									href="/submit"
 									htmlTag="a"
-									href="/overview"
-									className="mt-5"
+									className="mb-0 mt-5"
 								>
-									Explore data overview
+									Submit data
 								</Button>
 							</div>
-							<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
-								<div className="col-12 col-lg-3 col-xl-2 offset-lg-1 offset-xl-1">
-									<DataCountCard />
-								</div>
-							</ShowHide>
 						</div>
 					</div>
 				</section>

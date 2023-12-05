@@ -1,22 +1,20 @@
 import Logotype from "../Logotype/Logotype";
 import { routes } from "../../utils/routes";
-import { IRoute } from "../../../globalTypes";
+import { IRoute } from "../../../types/globalTypes";
 import ActiveLink from "../ActiveLink/ActiveLink";
 import styles from "./Footer.module.scss";
 import Link from "next/link";
 import { useQuery } from "react-query";
-import { getDataReleaseInformation } from "../../apis/AggregatedData.api";
+import { getLatestDataReleaseInformation } from "../../apis/AggregatedData.api";
 import { hj_event } from "../../utils/hotjar";
-interface IFooterProps {
-	cookieConsentHeight: number;
-}
+
 interface IFooterProps {
 	cookieConsentHeight: number;
 }
 
 const Footer = (props: IFooterProps) => {
-	let releaseInfo = useQuery("releaseInfo", () => {
-		return getDataReleaseInformation();
+	let latestDataReleaseInfo = useQuery("latestDataReleaseInfo", () => {
+		return getLatestDataReleaseInformation();
 	});
 
 	return (
@@ -27,7 +25,11 @@ const Footer = (props: IFooterProps) => {
 			<div className="container">
 				<div className={`row ${styles["Footer_row-main"]}`}>
 					<div className="col-12 col-lg-2">
-						<Link href="/" className={styles.Footer_Logotype}>
+						<Link
+							href="/"
+							className={styles.Footer_Logotype}
+							aria-label="CancerModels.Org logo"
+						>
 							<Logotype color="white" />
 						</Link>
 					</div>
@@ -60,7 +62,7 @@ const Footer = (props: IFooterProps) => {
 									{routes.map((route) => {
 										let children = route.children;
 
-										if (route.name === "About" && children) {
+										if (route.name === "More" && children) {
 											return children.map((child) => (
 												<li key={child.path}>
 													<ActiveLink
@@ -131,16 +133,21 @@ const Footer = (props: IFooterProps) => {
 				</div>
 				<div className="row">
 					<div className="col">
-						{/* Placeholder, change for API information */}
 						<p className="text-small text-center">
-							© 2017-{new Date(releaseInfo.data?.date).getFullYear() || 2023}
+							© 2017-
+							{new Date(
+								latestDataReleaseInfo.data?.released_at || Date.now()
+							).getFullYear()}
 							<br />
-							{releaseInfo.data
-								? `Data Release ${releaseInfo.data.name
-										.replace("dr.", "")
-										.replace("dr", "")} | 
-								${new Date(releaseInfo.data.date).toISOString().substring(0, 10)}`
-								: null}
+							{`Data Release ${
+								latestDataReleaseInfo.data?.tag_name
+							} | ${new Date(
+								latestDataReleaseInfo.data?.released_at || Date.now()
+							).getFullYear()}`}
+							<br />
+							<Link href="/about/releases" className="link-text-light">
+								Release log
+							</Link>
 						</p>
 						<p className="text-center">
 							All model and data submissions are made available under{" "}

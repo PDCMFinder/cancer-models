@@ -9,7 +9,7 @@ interface ICookieConsentProps {
 }
 
 const CookieConsent = (props: ICookieConsentProps) => {
-	const [cookie, setCookie] = useCookies(["CookieConsent"]);
+	const [cookie, setCookie] = useCookies(["cm_consent"]);
 	const cookieConsentRef = useRef<HTMLDivElement>(null);
 	const { windowHeight = 0, windowWidth = 0 } = useWindowDimensions();
 
@@ -37,9 +37,8 @@ const CookieConsent = (props: ICookieConsentProps) => {
 					priority="secondary"
 					color="dark"
 					onClick={() =>
-						setCookie("CookieConsent", "false", {
+						setCookie("cm_consent", "false", {
 							sameSite: "lax",
-							path: "/",
 						})
 					}
 				>
@@ -50,9 +49,8 @@ const CookieConsent = (props: ICookieConsentProps) => {
 					priority="primary"
 					color="dark"
 					onClick={() =>
-						setCookie("CookieConsent", "true", {
+						setCookie("cm_consent", "true", {
 							sameSite: "lax",
-							path: "/",
 						})
 					}
 				>

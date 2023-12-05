@@ -1,3 +1,4 @@
+import styles from "./overview.module.scss";
 import { NextPage } from "next";
 import BarChart from "../components/BarChart/BarChart";
 import DonutChart from "../components/DonutChart/DonutChart";
@@ -6,13 +7,12 @@ import Button from "../components/Button/Button";
 import { useQuery } from "react-query";
 import {
 	getCancerHierarchy,
-	getDataReleaseInformation,
+	getLatestDataReleaseInformation,
 	getModelCount,
 	getModelsByMutatedGene,
 	getModelsByPatientAge,
 	getModelsByPatientEthnicity,
 	getModelsByPatientGender,
-	getModelsByPrimarySite,
 	getModelsByTreatment,
 	getModelsByTumourType,
 	getProviderCount,
@@ -20,6 +20,15 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { countEthnicity } from "../utils/collapseEthnicity";
+import Loader from "../components/Loader/Loader";
+import dynamic from "next/dynamic";
+
+const DynamicCirclePacking = dynamic(
+	() => import("../components/CirclePacking/CirclePacking"),
+	{
+		loading: () => <Loader style={{ height: "300px" }} />,
+	}
+);
 
 function collapseAgeGroup(
 	ageGroupList: { patient_age: string; count: number }[]
@@ -64,14 +73,14 @@ function collapseAgeGroup(
 const Overview: NextPage = () => {
 	const notValidCategories = ["not provided", "not collected"];
 
+	let cancerHierarchyQuery = useQuery("cancerHierarchy", () => {
+		return getCancerHierarchy();
+	});
 	let modelsByCancerHierarchy = useQuery("modelsByCancerHierarchy", () => {
 		return getCancerHierarchy();
 	});
 	let modelsByTreatment = useQuery("modelsByTreatment", () => {
 		return getModelsByTreatment();
-	});
-	let modelsByPrimarySite = useQuery("modelsByPrimarySite", () => {
-		return getModelsByPrimarySite();
 	});
 	let modelsByMutatedGene = useQuery("modelsByMutatedGene", () => {
 		return getModelsByMutatedGene();
@@ -94,8 +103,8 @@ const Overview: NextPage = () => {
 	let modelCount = useQuery("modelCount", () => {
 		return getModelCount();
 	});
-	let releaseInfo = useQuery("releaseInfo", () => {
-		return getDataReleaseInformation();
+	let latestDataReleaseInfo = useQuery("latestDataReleaseInfo", () => {
+		return getLatestDataReleaseInformation();
 	});
 
 	const router = useRouter();
@@ -148,16 +157,39 @@ const Overview: NextPage = () => {
 								</Button>
 							</div>
 						</div>
-						<div className="col-12 col-lg-5 mb-5">
-							{modelsByPrimarySite.data && modelsByPrimarySite.data.length > 0 && (
-								<div style={{ height: "600px", width: "100%" }}>
-									<DonutChart
-										keyId="primary_site"
-										data={modelsByPrimarySite.data}
-										onSliceClick={onGraphClick}
+						<div className={`col-12 col-lg-5 mb-5 ${styles.circlePacking_col}`}>
+							{/* Graph */}
+							<div
+								style={{
+									backgroundColor: "#085154",
+									aspectRatio: "1",
+									borderRadius: "500%",
+								}}
+							>
+								{!cancerHierarchyQuery.isLoading &&
+								cancerHierarchyQuery.data ? (
+									<DynamicCirclePacking
+										data={cancerHierarchyQuery.data}
+										onCircleClick={(circleId, circleDepth) => {
+											const searchPrefix =
+												circleDepth === 1
+													? `?filters=cancer_system:`
+													: `?filters=search_terms:`;
+											const termSuffix = circleDepth === 1 ? "Cancer" : "";
+											const search = `${searchPrefix}${encodeURIComponent(
+												circleId + termSuffix
+											)}`;
+
+											router.push({
+												pathname: "/search",
+												search,
+											});
+										}}
 									/>
-								</div>
-							)}
+								) : (
+									<Loader />
+								)}
+							</div>
 						</div>
 					</div>
 					<div className="row mb-5 align-center">
@@ -177,7 +209,7 @@ const Overview: NextPage = () => {
 										onBarClick={onGraphClick}
 										data={modelsByMutatedGene.data}
 										rotateTicks={true}
-										indexKey="makers_with_mutation_data"
+										indexKey="markers_with_mutation_data"
 									/>
 								</div>
 							)}
@@ -213,22 +245,19 @@ const Overview: NextPage = () => {
 						<div className="col-12">
 							<h2>Current data release</h2>
 							<ul>
-								{releaseInfo.data ? (
+								{latestDataReleaseInfo.data ? (
 									<li>
-										Data release version:{" "}
-										{releaseInfo.data.name.replace("dr.", "").replace("dr", "")}
+										Data release version: {latestDataReleaseInfo.data.tag_name}
 									</li>
 								) : null}
-								{releaseInfo.data ? (
+								{latestDataReleaseInfo.data ? (
 									<li>
 										Date of publication:{" "}
-										{new Date(releaseInfo.data.date)
-											.toISOString()
-											.substring(0, 10)}
+										{latestDataReleaseInfo.data?.released_at}
 									</li>
 								) : null}
-								<li>Number of models: {modelCount.data ?? 7091}</li>
-								<li>Number of providers: {providerCount.data ?? 33}</li>
+								<li>Number of models: {modelCount.data ?? 7500}</li>
+								<li>Number of providers: {providerCount.data ?? 37}</li>
 							</ul>
 							<Link href="/about/releases">Release log</Link>
 						</div>

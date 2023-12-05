@@ -1,16 +1,16 @@
 context("Mobile navbar", () => {
 	beforeEach(() => {
 		cy.visit("");
-		cy.setCookie("CookieFeedback", "true");
+		cy.setCookie("cm_feedback", "true");
 		cy.reload();
 	});
 
 	it("should open and close menu tray", () => {
 		cy.viewport("iphone-8");
-		cy.get(".Navbar-mobile_Navbar-mobile__DT0br button")
+		cy.get("[data-test='navbar-mobile'] button")
 			.should("contain", "Menu")
 			.click();
-		cy.get(".Navbar-mobile_Navbar-mobile_menu__t4pF_").should("exist");
-		cy.get(".Navbar-mobile_Navbar-mobile__DT0br button").realTouch();
+		cy.get("[data-test='navbar-mobile-menu']").should("exist");
+		cy.get("[data-test='navbar-mobile'] button").realTouch();
 	});
 });

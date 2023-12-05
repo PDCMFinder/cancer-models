@@ -1,4 +1,4 @@
-import { IInputProps } from "../../../globalTypes";
+import { IInputProps } from "../../../types/globalTypes";
 import { ChangeEvent } from "react";
 
 const Input = (props: IInputProps) => {
@@ -11,14 +11,7 @@ const Input = (props: IInputProps) => {
 			onChange: (
 				e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
 			): void => {
-				if (
-					(props.type === "checkbox" || props.type === "radio") &&
-					props.onChange
-				) {
-					props.onChange(e);
-				} else {
-					props.onChange;
-				}
+				props.onChange && props.onChange(e);
 			},
 			ref: props.inputRef && props.inputRef,
 			required: props.required,

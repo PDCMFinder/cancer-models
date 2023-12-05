@@ -29,13 +29,14 @@ const Provider: NextPage<IProviderProps> = ({
 						<div className="col-12 col-md-9">
 							<h1 className="m-0">{providerData.name}</h1>
 						</div>
-						<div className="col-12 col-md-3 text-left">
+						<div className="col-12 col-md-3">
 							<Image
 								src={`/${providerData.logo}`}
 								alt={`${providerData.name} logo`}
-								width={150}
-								height={150}
-								className={`w-auto h-auto ${styles.Provider_logo}`}
+								width={3500}
+								height={3500}
+								className={`w-auto h-auto mx-auto ${styles.Provider_logo}`}
+								priority={false}
 							/>
 						</div>
 					</div>
@@ -70,11 +71,9 @@ const Provider: NextPage<IProviderProps> = ({
 export default Provider;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-	const paths = getAllProvidersId();
-
 	return {
-		paths,
-		fallback: false,
+		paths: [],
+		fallback: "blocking",
 	};
 };
 
@@ -84,6 +83,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 	return {
 		props: {
 			providerData,
+			revalidate: 600,
 		},
 	};
 };

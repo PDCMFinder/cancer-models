@@ -33,9 +33,6 @@ function generateSiteMap(providers: string[], host: string): string {
       <url>
         <loc>${host}/privacy-policy</loc>
       </url>
-      <url>
-        <loc>${host}/about/providers</loc>
-      </url>
       ${providers
 				.map(
 					(provider) =>

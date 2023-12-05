@@ -126,6 +126,9 @@ img {
 	}
 }
 .justify-content {
+	&-around {
+		justify-content: space-around;
+	}
 	&-between {
 		justify-content: space-between;
 	}
@@ -154,6 +157,11 @@ img {
 		&-end {
 			align-self: flex-end;
 		}
+	}
+}
+.object-fit {
+	&-cover {
+		object-fit: cover;
 	}
 }
 .h {
@@ -218,6 +226,9 @@ a {
 .ar {
 	&-1 {
 		aspect-ratio: 1;
+	}
+	&-16-9 {
+		aspect-ratio: 16/9;
 	}
 }
 .position {
@@ -295,6 +306,11 @@ textarea {
 	min-height: calc(4em + 2rem);
 	min-width: 100%;
 }
+.br {
+	&-common {
+		border-radius: $br-common;
+	}
+}
 .bg {
 	&-transparent {
 		background-color: transparent !important;
@@ -364,7 +380,7 @@ hr {
 }
 .overflow {
 	&-hidden {
-		overflow: hidden;
+		overflow: hidden !important;
 	}
 	&-scroll {
 		overflow: scroll !important;
@@ -376,6 +392,9 @@ hr {
 	}
 	&-visible {
 		overflow: visible !important;
+	}
+	&-auto {
+		overflow: auto !important;
 	}
 }
 .top-0 {

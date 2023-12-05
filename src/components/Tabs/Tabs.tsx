@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "../Button/Button";
-import { ITabProps } from "../../../globalTypes";
+import { ITabProps } from "../../../types/globalTypes";
 import styles from "./Tabs.module.scss";
 
 interface ITabsProps {
