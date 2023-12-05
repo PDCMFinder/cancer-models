@@ -808,17 +808,18 @@ const ModelDetails = ({
 										<div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-gap-3">
 											{modelImages.map(({ url, description }) => (
 												<div key={url} className="col">
-													<Link href={url} target="_blank" rel="noopener">
-														<Image
-															src={url}
-															alt={description}
-															width={500}
-															height={300}
-															className={`mb-1 ${styles.ModelDetails_modelImage}`}
-															sizes="33vw"
-															quality={10}
-														/>
-													</Link>
+													<div className="ar-16-9 overflow-hidden mb-1">
+														<Link href={url} target="_blank" rel="noopener">
+															{/* Image component isnt working for external source */}
+															<img
+																src={url}
+																alt={description}
+																width={500}
+																height={300}
+																className="mb-1 h-auto w-100 object-fit-cover"
+															/>
+														</Link>
+													</div>
 													<p className="text-small mb-0">{description}</p>
 												</div>
 											))}
