@@ -373,8 +373,11 @@ async function getModelImmuneMarkers(modelId: string) {
 	return response.json().then((d) => {
 		const parsedImmuneMarkers: IImmuneMarkers[] = d.reduce(
 			(result: IImmuneMarkers[], current: IImmuneMarkerAPI) => {
+				// Check for sample id and type, since there might be a marker of different type but same id
 				const existingSampleId = result.find(
-					(item: IImmuneMarkers) => item.sampleId === current.sample_id
+					(item: IImmuneMarkers) =>
+						item.sampleId === current.sample_id &&
+						item.type === current.marker_type
 				);
 				const marker = {
 					details: current.essential_or_additional_details,
@@ -382,7 +385,7 @@ async function getModelImmuneMarkers(modelId: string) {
 					value: [current.marker_value],
 				};
 
-				if (existingSampleId && existingSampleId.type === current.marker_type) {
+				if (existingSampleId) {
 					// Check if column exists in sample id
 					const existingName = existingSampleId.markers.find(
 						(item: IImmuneMarker) => item.name === current.marker_name
