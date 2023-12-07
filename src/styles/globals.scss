@@ -60,6 +60,9 @@ img {
 	&-inline {
 		display: inline;
 	}
+	&-inlineBlock {
+		display: inline-block;
+	}
 	@include mediaOver("md") {
 		&-md {
 			&-flex {
