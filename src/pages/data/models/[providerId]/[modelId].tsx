@@ -13,7 +13,6 @@ import {
 	getMolecularDataDownload,
 	getPublicationData,
 } from "../../../../apis/ModelDetails.api";
-import { CSVLink } from "react-csv";
 import CloseIcon from "../../../../components/CloseIcon/CloseIcon";
 import Tooltip from "../../../../components/Tooltip/Tooltip";
 import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
@@ -24,6 +23,8 @@ import { hj_event } from "../../../../utils/hotjar";
 import dynamic from "next/dynamic";
 import Loader from "../../../../components/Loader/Loader";
 import InputAndLabel from "../../../../components/Input/InputAndLabel";
+import JSZip from "jszip";
+import FileSaver from "file-saver";
 
 const DynamicModal = dynamic(
 	() => import("../../../../components/Modal/Modal"),
@@ -82,6 +83,7 @@ export interface IMolecularData {
 	dataAvailability: "TRUE" | "FALSE";
 	dataSource: string;
 	externalDbLinks: ExternalDbLinks[];
+	[key: string]: any;
 }
 
 interface ExternalDbLinks {
@@ -167,21 +169,9 @@ const ModelDetails = ({
 	engraftments,
 }: IModelDetailsProps) => {
 	const NA_STRING = "N/A";
-	const [singleDataToDownload, setSingleDataToDownload] =
-		useState<IDataFileConfig>({ data: [], filename: "" });
-	const singleDataToDownloadRef =
-		useRef<CSVLink & HTMLAnchorElement & { link: HTMLAnchorElement }>(null);
-	const [batchDataToDownload, setBatchDataToDownload] = useState<
-		IDataFileConfig[]
-	>([]);
-	const batchDownloadRefs = useRef<
-		(CSVLink & HTMLAnchorElement & { link: HTMLAnchorElement })[]
-	>([]);
-	const metadataDownloadRef =
-		useRef<CSVLink & HTMLAnchorElement & { link: HTMLAnchorElement }>(null);
-	const [selectedMolecularData, setSelectedMolecularData] =
+	const [dataToDownload, setDataToDownload] = useState<IDataFileConfig[]>([]);
+	const [selectedMolecularViewData, setSelectedMolecularViewData] =
 		useState<IMolecularData>();
-	const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
 
 	const { windowWidth } = useWindowDimensions();
 	const bpLarge = breakPoints.large;
@@ -197,34 +187,6 @@ const ModelDetails = ({
 	];
 	// New metadata object without the "score" property to use in metadata file download; take out modelId to rearrange
 	const { score: _, modelId: metadataModelId, ...metadataFileData } = metadata;
-
-	// download just one file - direct download from "download data"
-	// need useEffect so we download actual data file - if not, an empty csv downloads on the first render
-	useEffect(() => {
-		if (!isInitialLoad && singleDataToDownloadRef.current)
-			singleDataToDownloadRef.current.link.click();
-
-		if (isInitialLoad) setIsInitialLoad(false);
-	}, [singleDataToDownload]);
-
-	const downloadData = (data: IMolecularData) => {
-		getMolecularDataDownload(data).then((d) =>
-			setSingleDataToDownload({
-				data: d,
-				filename: `CancerModelsOrg_${metadata.modelId}_${
-					data.dataType.split(" ").join("-") ?? ""
-				}_${
-					data.xenograftSampleId ??
-					data.patientSampleId ??
-					data.cellSampleId ??
-					""
-				}_${data.platformName.split(" ").join("-") ?? ""}.tsv`, // if it changes, update in checkbox checked state
-			})
-		);
-
-		// Always download metadata file
-		metadataDownloadRef.current?.link.click();
-	};
 
 	const pubmedIdsQuery = useQuery(
 		[
@@ -249,20 +211,42 @@ const ModelDetails = ({
 		.map((q) => q.data as IPublication)
 		.filter((d) => d !== undefined);
 
-	const toggleFromBatchDownload = (data: IMolecularData) => {
+	const createMetadataFile = (download: boolean = false) => {
+		const filename = "CancerModelsOrg_ModelID-metadata.tsv";
+		const tsvData =
+			Object.keys({
+				modelId: metadataModelId,
+				...metadataFileData,
+				pdxModelPublications: pubmedIds,
+			}).join("\t") +
+			"\n" +
+			Object.values({
+				modelId: metadataModelId,
+				...metadataFileData,
+				pdxModelPublications: pubmedIds,
+			}).join("\t");
+
+		const blob = new Blob([tsvData], { type: "text/tsv" });
+
+		if (download) FileSaver.saveAs(blob, filename);
+
+		return { blob, filename };
+	};
+
+	const toggleFromDownload = (data: IMolecularData) => {
 		const filename: string = `CancerModelsOrg_${metadata.modelId}_${
 			data.dataType.split(" ").join("-") ?? ""
 		}_${
 			data.xenograftSampleId ?? data.patientSampleId ?? data.cellSampleId ?? ""
 		}_${data.platformName.split(" ").join("-") ?? ""}.tsv`; // if it changes, update in checkbox checked state
 
-		if (batchDataToDownload.some((el) => el.filename === filename)) {
-			setBatchDataToDownload((prev) =>
+		if (dataToDownload.some((el) => el.filename === filename)) {
+			setDataToDownload((prev) =>
 				prev.filter((el) => el.filename !== filename)
 			);
 		} else {
 			getMolecularDataDownload(data).then((d) => {
-				setBatchDataToDownload((prev) => [
+				setDataToDownload((prev) => [
 					...prev,
 					{
 						data: d,
@@ -273,10 +257,69 @@ const ModelDetails = ({
 		}
 	};
 
-	const batchDownload = () => {
-		batchDownloadRefs.current.forEach((btn) => btn && btn.link.click());
-		// Always download metadata file
-		metadataDownloadRef.current?.link.click();
+	const downloadData = async (data?: IMolecularData) => {
+		// Create new zip
+		let zip = new JSZip();
+
+		// Create metadata file
+		const { blob: metadataBlob, filename: metadataFileName } =
+			createMetadataFile();
+		// Add metadata file to zip
+		zip.file(metadataFileName, metadataBlob);
+
+		// If we pass some data, that means we just want to download that single data file
+		if (data) {
+			const molecularData = await getMolecularDataDownload(data);
+
+			// Extract headers
+			const headers = Object.keys(molecularData[0]);
+
+			// Convert object values to array of arrays
+			const values = molecularData.map((obj: { [key: string]: any }) =>
+				headers.map((header) => obj[header])
+			);
+
+			// Join headers and values using tab characters
+			const tsv = [headers.join("\t")]
+				.concat(values.map((row: string[]) => row.join("\t")))
+				.join("\n");
+
+			zip.file(
+				`CancerModelsOrg_${metadata.modelId}_${
+					data.dataType.split(" ").join("-") ?? ""
+				}_${
+					data.xenograftSampleId ??
+					data.patientSampleId ??
+					data.cellSampleId ??
+					""
+				}_${data.platformName.split(" ").join("-") ?? ""}.tsv`,
+				tsv
+			);
+		} else {
+			// Create files and add to zip for each data added
+			dataToDownload.forEach((data, index) => {
+				// Extract headers
+				const headers = Object.keys(data.data[0]);
+
+				// Convert object values to array of arrays
+				const values = data.data.map((obj) =>
+					headers.map((header) => obj[header])
+				);
+
+				// Join headers and values using tab characters
+				const tsv = [headers.join("\t")]
+					.concat(values.map((row) => row.join("\t")))
+					.join("\n");
+
+				// Create file inside zip
+				zip.file(data.filename, tsv);
+			});
+		}
+
+		zip.generateAsync({ type: "blob" }).then(function (content) {
+			// Save file to users computer
+			FileSaver.saveAs(content, `CancerModelsOrg_${metadata.modelId}-data.zip`);
+		});
 	};
 
 	return (
@@ -489,24 +532,11 @@ const ModelDetails = ({
 									<Button
 										color="dark"
 										priority="secondary"
-										onClick={() => metadataDownloadRef.current?.link.click()}
+										onClick={() => createMetadataFile(true)}
 										className="mt-0"
 									>
 										Download model metadata
 									</Button>
-									<CSVLink
-										data={[
-											{
-												modelId: metadataModelId,
-												...metadataFileData,
-												pdxModelPublications: pubmedIds,
-											},
-										]} // data needs to be an array
-										filename={`CancerModelsOrg_${metadata.modelId}-metadata.tsv`}
-										className="hideElement-accessible"
-										separator={"\t"} // Make it a tsv
-										ref={metadataDownloadRef}
-									/>
 								</div>
 							</div>
 							{engraftments && engraftments?.length > 0 && (
@@ -722,7 +752,7 @@ const ModelDetails = ({
 																				priority="secondary"
 																				className="text-left link-text mt-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
 																				onClick={() => {
-																					setSelectedMolecularData(data);
+																					setSelectedMolecularViewData(data);
 																					hj_event("click_viewData");
 																				}}
 																			>
@@ -733,7 +763,6 @@ const ModelDetails = ({
 																				priority="secondary"
 																				className="text-left link-text mt-0 m-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
 																				onClick={() => {
-																					downloadData(data);
 																					hj_event("click_downloadData");
 																				}}
 																			>
@@ -744,7 +773,7 @@ const ModelDetails = ({
 																				name={`add-to-download-${sampleId}-${data.dataType}-${data.platformName}`}
 																				type="checkbox"
 																				forId={`add-to-download-id-${sampleId}-${data.dataType}-${data.platformName}`}
-																				checked={batchDataToDownload.some(
+																				checked={dataToDownload.some(
 																					(batchData) =>
 																						batchData.filename ===
 																						`CancerModelsOrg_${
@@ -758,10 +787,14 @@ const ModelDetails = ({
 																							data.patientSampleId ??
 																							data.cellSampleId ??
 																							""
-																						}_${data.platformName ?? ""}.tsv`
+																						}_${
+																							data.platformName
+																								.split(" ")
+																								.join("-") ?? ""
+																						}.tsv` // if this changes, update in toggleFromDownload
 																				)}
 																				onChange={() =>
-																					toggleFromBatchDownload(data)
+																					toggleFromDownload(data)
 																				}
 																				className="text-smaller mt-1"
 																			/>
@@ -823,27 +856,6 @@ const ModelDetails = ({
 											</table>
 										</div>
 									</div>
-									{/* batch csv links */}
-									{batchDataToDownload.map(
-										(fileObj: IDataFileConfig, idx: number) => (
-											<CSVLink
-												key={fileObj.filename}
-												data={fileObj.data}
-												filename={fileObj.filename}
-												className="hideElement-accessible"
-												separator={"\t"} // Make it a tsv
-												ref={(el: any) => (batchDownloadRefs.current[idx] = el)} // Create refs on ref array based on batchDataToDownload elements
-											/>
-										)
-									)}
-									{/* single download csv link */}
-									<CSVLink
-										data={singleDataToDownload.data}
-										filename={singleDataToDownload.filename}
-										className="hideElement-accessible"
-										separator={"\t"} // Make it a tsv
-										ref={singleDataToDownloadRef}
-									/>
 								</div>
 							)}
 							{drugDosing.length > 0 && (
@@ -986,7 +998,7 @@ const ModelDetails = ({
 			</section>
 
 			{/* floating card */}
-			{batchDataToDownload[0] ? (
+			{dataToDownload[0] ? (
 				<div className="row position-sticky bottom-0 mt-5">
 					<div className="col-10 offset-1">
 						<Card
@@ -996,7 +1008,7 @@ const ModelDetails = ({
 							<div className="d-flex align-center justify-content-between">
 								<p className="m-0">
 									<b>Download selected data: </b>
-									{batchDataToDownload.map((data, idx) => {
+									{dataToDownload.map((data, idx) => {
 										const cleanFilename = data.filename
 												.split("_")
 												.slice(2)
@@ -1010,7 +1022,7 @@ const ModelDetails = ({
 														className="text-underline m-0 ml-1"
 														style={{ padding: ".2rem .3rem" }}
 														onClick={() =>
-															setBatchDataToDownload((prev) =>
+															setDataToDownload((prev) =>
 																prev.filter(
 																	(el) => el.filename !== data.filename
 																)
@@ -1046,7 +1058,7 @@ const ModelDetails = ({
 										color="dark"
 										priority="primary"
 										className="my-1 py-1"
-										onClick={() => batchDownload()}
+										onClick={() => downloadData()}
 									>
 										Download
 									</Button>
@@ -1054,7 +1066,7 @@ const ModelDetails = ({
 										color="dark"
 										priority="secondary"
 										className="my-1 ml-1 py-1"
-										onClick={() => setBatchDataToDownload([])}
+										onClick={() => setDataToDownload([])}
 									>
 										Clear
 									</Button>
@@ -1065,11 +1077,11 @@ const ModelDetails = ({
 				</div>
 			) : null}
 			{/* data modal */}
-			{selectedMolecularData && (
+			{selectedMolecularViewData && (
 				<DynamicModal
 					verticalAlign="top"
 					modalWidth="100"
-					handleClose={() => setSelectedMolecularData(undefined)}
+					handleClose={() => setSelectedMolecularViewData(undefined)}
 				>
 					<Card
 						className="bg-white"
@@ -1077,18 +1089,18 @@ const ModelDetails = ({
 						header={
 							<header className="d-flex justify-content-between">
 								<h3 className="m-0">
-									{selectedMolecularData.platformName} data
+									{selectedMolecularViewData.platformName} data
 								</h3>
 								<CloseIcon
 									color="dark"
-									onClick={() => setSelectedMolecularData(undefined)}
+									onClick={() => setSelectedMolecularViewData(undefined)}
 								/>
 							</header>
 						}
 					>
 						<MolecularDataTable
-							data={selectedMolecularData}
-							handleDownload={downloadData}
+							data={selectedMolecularViewData}
+							handleDownload={() => downloadData(selectedMolecularViewData)}
 						/>
 					</Card>
 				</DynamicModal>
