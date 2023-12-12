@@ -249,7 +249,7 @@ export async function getMolecularDataDownload(
 		mutation: "mutation_data_table",
 		expression: "expression_data_table",
 		"copy number alteration": "cna_data_table",
-		biomarker: "biomarker_data_table",
+		"bio markers": "biomarker_data_table",
 	};
 	const endpoint = typeEndpointMap[molecularCharacterization.dataType];
 	let request = `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?molecular_characterization_id=eq.${molecularCharacterization.molecularCharacterizationId}`;
