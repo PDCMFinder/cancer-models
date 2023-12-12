@@ -61,12 +61,7 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 		};
 	}, []);
 
-	const isProductionEnvironment = () => {
-		if (process.env.NEXT_PUBLIC_APP_ENV === "production") {
-			return true;
-		}
-		return false;
-	};
+	const isProductionEnvironment = process.env.NODE_ENV === "production";
 
 	return (
 		<>
@@ -100,7 +95,7 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 					--type-secondary: ${spaceMono.style.fontFamily}, monospace;
 				}
 			`}</style>
-			{isProductionEnvironment() && (
+			{isProductionEnvironment && (
 				<>
 					{/* Hotjar Tracking Code for Cancer Models Org */}
 					<Script id="hotjar" strategy="afterInteractive">

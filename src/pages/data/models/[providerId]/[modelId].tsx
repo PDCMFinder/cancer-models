@@ -25,6 +25,7 @@ import Loader from "../../../../components/Loader/Loader";
 import InputAndLabel from "../../../../components/Input/InputAndLabel";
 import JSZip from "jszip";
 import FileSaver from "file-saver";
+import Image from "next/image";
 
 const DynamicModal = dynamic(
 	() => import("../../../../components/Modal/Modal"),
@@ -37,7 +38,6 @@ interface IModelDetailsProps {
 	metadata: Metadata;
 	extLinks: ExtLinks;
 	molecularData: IMolecularData[];
-	molecularDataRestrictions: MolecularDataRestrictions[];
 	drugDosing: any[];
 	patientTreatment: PatientTreatment[];
 	qualityData: QualityData[];
@@ -45,9 +45,19 @@ interface IModelDetailsProps {
 	modelId: string;
 	providerId: string;
 	engraftments?: IEngraftment[];
+	modelImages: IModelImage[];
 }
 
-export interface MolecularDataRestrictions {
+export interface IModelImage {
+	url: string;
+	description: string;
+	sampleType: string;
+	passage: string;
+	magnification: string;
+	staining: string;
+}
+
+export interface IMolecularData {
 	modelId: string;
 	dataSource: string;
 	source: string;
@@ -59,31 +69,14 @@ export interface MolecularDataRestrictions {
 	dataExists: string;
 	dataRestricted: string;
 	molecularCharacterizationId: number;
-	externalDbLinks: any;
+	externalDbLinks: ExternalDbLinks[];
+	[key: string]: any;
 }
 
 interface PatientTreatment {
 	treatmentDose: string;
 	treatmentName: string;
 	treatmentResponse: string;
-}
-
-export interface IMolecularData {
-	id: number;
-	patientSampleId: string;
-	patientModelId: string;
-	xenograftSampleId: string;
-	cellSampleId: string;
-	xenograftModelId: string;
-	xenograftPassage: string;
-	rawDataUrl: string;
-	dataType: string;
-	platformId: string;
-	platformName: string;
-	dataAvailability: "TRUE" | "FALSE";
-	dataSource: string;
-	externalDbLinks: ExternalDbLinks[];
-	[key: string]: any;
 }
 
 interface ExternalDbLinks {
@@ -162,11 +155,11 @@ const ModelDetails = ({
 	metadata,
 	extLinks,
 	molecularData,
-	molecularDataRestrictions,
 	drugDosing,
 	patientTreatment,
 	qualityData,
 	engraftments,
+	modelImages,
 }: IModelDetailsProps) => {
 	const NA_STRING = "N/A";
 	const [dataToDownload, setDataToDownload] = useState<IDataFileConfig[]>([]);
@@ -236,9 +229,9 @@ const ModelDetails = ({
 	const toggleFromDownload = (data: IMolecularData) => {
 		const filename: string = `CancerModelsOrg_${metadata.modelId}_${
 			data.dataType.split(" ").join("-") ?? ""
-		}_${
-			data.xenograftSampleId ?? data.patientSampleId ?? data.cellSampleId ?? ""
-		}_${data.platformName.split(" ").join("-") ?? ""}.tsv`; // if it changes, update in checkbox checked state
+		}_${data.sampleId ?? ""}_${
+			data.platformName.split(" ").join("-") ?? ""
+		}.tsv`; // if it changes, update in checkbox checked state
 
 		if (dataToDownload.some((el) => el.filename === filename)) {
 			setDataToDownload((prev) =>
@@ -287,17 +280,14 @@ const ModelDetails = ({
 			zip.file(
 				`CancerModelsOrg_${metadata.modelId}_${
 					data.dataType.split(" ").join("-") ?? ""
-				}_${
-					data.xenograftSampleId ??
-					data.patientSampleId ??
-					data.cellSampleId ??
-					""
-				}_${data.platformName.split(" ").join("-") ?? ""}.tsv`,
+				}_${data.sampleId ?? ""}_${
+					data.platformName.split(" ").join("-") ?? ""
+				}.tsv`,
 				tsv
 			);
 		} else {
 			// Create files and add to zip for each data added
-			dataToDownload.forEach((data, index) => {
+			dataToDownload.forEach((data) => {
 				// Extract headers
 				const headers = Object.keys(data.data[0]);
 
@@ -485,6 +475,19 @@ const ModelDetails = ({
 												</Link>
 											) : (
 												"Patient treatment"
+											)}
+										</li>
+										<li className="mb-2">
+											{modelImages.length ? (
+												<Link
+													replace
+													href="#histology-images"
+													className="text-primary-primary"
+												>
+													Histology images
+												</Link>
+											) : (
+												"Histology images"
 											)}
 										</li>
 										<li className="mb-2">
@@ -694,20 +697,19 @@ const ModelDetails = ({
 												<tbody>
 													{molecularData &&
 														molecularData.map((data) => {
-															let sampleId: string,
-																sampleType: string,
+															let sampleType,
 																rawDataExternalLinks: ExternalDbLinks[] = [],
 																dataAvailableContent: JSX.Element;
 
-															if (data.xenograftSampleId) {
-																sampleType = "Engrafted Tumour";
-																sampleId = data.xenograftSampleId;
-															} else if (data.patientSampleId) {
-																sampleType = "Patient Tumour";
-																sampleId = data.patientSampleId;
-															} else {
-																sampleType = "Tumour Cells";
-																sampleId = data.cellSampleId;
+															switch (data.source) {
+																case "xenograft":
+																	sampleType = "Engrafted Tumour";
+																	break;
+																case "patient":
+																	sampleType = "Patient Tumour";
+																	break;
+																default:
+																	sampleType = "Tumour Cells";
 															}
 
 															const hasExternalDbLinks =
@@ -721,17 +723,9 @@ const ModelDetails = ({
 																		rawDataExternalLinks.push(obj)
 																	);
 															}
-															const dataRestrictions =
-																molecularDataRestrictions.find(
-																	(row) =>
-																		row.molecularCharacterizationId === data.id
-																);
-															const dataRestricted =
-																	dataRestrictions?.dataRestricted,
-																dataExists = dataRestrictions?.dataExists;
 
-															if (dataExists === "TRUE") {
-																if (dataRestricted === "TRUE") {
+															if (data.dataExists === "TRUE") {
+																if (data.dataRestricted === "TRUE") {
 																	dataAvailableContent = (
 																		<Link
 																			href={extLinks.contactLink || ""}
@@ -770,9 +764,9 @@ const ModelDetails = ({
 																			</Button>
 																			<InputAndLabel
 																				label="Add to batch download"
-																				name={`add-to-download-${sampleId}-${data.dataType}-${data.platformName}`}
+																				name={`add-to-download-${data.sampleId}-${data.dataType}-${data.platformName}`}
 																				type="checkbox"
-																				forId={`add-to-download-id-${sampleId}-${data.dataType}-${data.platformName}`}
+																				forId={`add-to-download-id-${data.sampleId}-${data.dataType}-${data.platformName}`}
 																				checked={dataToDownload.some(
 																					(batchData) =>
 																						batchData.filename ===
@@ -782,12 +776,7 @@ const ModelDetails = ({
 																							data.dataType
 																								.split(" ")
 																								.join("-") ?? ""
-																						}_${
-																							data.xenograftSampleId ??
-																							data.patientSampleId ??
-																							data.cellSampleId ??
-																							""
-																						}_${
+																						}_${data.sampleId ?? ""}_${
 																							data.platformName
 																								.split(" ")
 																								.join("-") ?? ""
@@ -818,9 +807,9 @@ const ModelDetails = ({
 															}
 
 															return (
-																<tr key={data.id}>
+																<tr key={data.molecularCharacterizationId}>
 																	<td className="white-space-nowrap">
-																		{sampleId}
+																		{data.sampleId}
 																	</td>
 																	<td>{sampleType}</td>
 																	<td>{data.xenograftPassage || NA_STRING}</td>
@@ -922,6 +911,34 @@ const ModelDetails = ({
 													)}
 												</tbody>
 											</table>
+										</div>
+									</div>
+								</div>
+							)}
+							{modelImages.length > 0 && (
+								<div id="histology-images" className="row mb-5 pt-3">
+									<div className="col-12 mb-1">
+										<h2 className="mt-0">Histology images</h2>
+									</div>
+									<div className="col-12">
+										<div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-gap-3">
+											{modelImages.map(({ url, description }) => (
+												<div key={url} className="col">
+													<div className="ar-16-9 overflow-hidden mb-1">
+														<Link href={url} target="_blank" rel="noopener">
+															{/* Image component isnt working for external source */}
+															<img
+																src={url}
+																alt={description}
+																width={500}
+																height={300}
+																className="mb-1 h-auto w-100 object-fit-cover"
+															/>
+														</Link>
+													</div>
+													<p className="text-small mb-0">{description}</p>
+												</div>
+											))}
 										</div>
 									</div>
 								</div>
@@ -1123,11 +1140,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		metadata,
 		extLinks,
 		molecularData,
-		molecularDataRestrictions,
 		engraftments,
 		drugDosing,
 		patientTreatment,
 		qualityData,
+		modelImages,
 	} = await getAllModelData(
 		params!.modelId as string,
 		params!.providerId as string
@@ -1138,11 +1155,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			metadata,
 			extLinks,
 			molecularData,
-			molecularDataRestrictions,
 			engraftments: JSON.parse(JSON.stringify(engraftments)),
 			drugDosing,
 			patientTreatment,
 			qualityData,
+			modelImages,
 		},
 		revalidate: 600,
 	};

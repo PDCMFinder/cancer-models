@@ -75,8 +75,13 @@ $spacers-map: (
 	@for $j from 1 through length($bp-names) {
 		@include mediaOver(#{nth($bp-names, $j)}) {
 			@if #{nth($bp-names, $j)} == "xs" {
-				@each $property, $abbrev in (margin: m, padding: p) {
-					@each $size, $length in $spacers-map {
+				@each $size, $length in $spacers-map {
+					@if #{$length != "auto"} {
+						.row-gap-#{$size} {
+							row-gap: $length !important;
+						}
+					}
+					@each $property, $abbrev in (margin: m, padding: p) {
 						.#{$abbrev}-#{$size} {
 							#{$property}: $length !important;
 						}
@@ -103,8 +108,13 @@ $spacers-map: (
 					}
 				}
 			} @else {
-				@each $property, $abbrev in (margin: m, padding: p) {
-					@each $size, $length in $spacers-map {
+				@each $size, $length in $spacers-map {
+					@if #{$length != "auto"} {
+						.row-gap-#{nth($bp-names, $j)}-#{$size} {
+							row-gap: $length !important;
+						}
+					}
+					@each $property, $abbrev in (margin: m, padding: p) {
 						.#{$abbrev}-#{nth($bp-names, $j)}-#{$size} {
 							#{$property}: $length !important;
 						}

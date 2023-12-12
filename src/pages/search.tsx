@@ -501,17 +501,19 @@ const Search: NextPage = () => {
 							) : (
 								<SearchResultsLoader amount={resultsPerPage} />
 							)}
-						</div>
-						<div className="col-12 col-lg-9 offset-lg-3">
-							<Pagination
-								totalPages={
-									totalResults !== 0
-										? Math.ceil(totalResults / resultsPerPage)
-										: 1
-								}
-								currentPage={currentPage}
-								onPageChange={(page: number) => changePage(page)}
-							/>
+							<div className="row">
+								<div className="col-12">
+									<Pagination
+										totalPages={
+											totalResults !== 0
+												? Math.ceil(totalResults / resultsPerPage)
+												: 1
+										}
+										currentPage={currentPage}
+										onPageChange={(page: number) => changePage(page)}
+									/>
+								</div>
+							</div>
 						</div>
 					</div>
 					{modelsToCompare[0] ? (
