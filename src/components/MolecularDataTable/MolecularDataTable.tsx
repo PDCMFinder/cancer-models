@@ -120,7 +120,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 					{ key: "alt_allele", name: "Alt. Allele" },
 				].filter((column) => columns.includes(column.key));
 				break;
-			case "biomarker":
+			case "bio markers":
 				columnsToDisplay = [
 					{ key: "biomarker", name: "Biomarker" },
 					{ key: "result", name: "Result" },
