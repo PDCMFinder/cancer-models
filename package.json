@@ -30,6 +30,7 @@
 		"@nivo/sunburst": "^0.80.0",
 		"@testing-library/jest-dom": "^5.16.5",
 		"@testing-library/react": "^13.4.0",
+		"@types/jszip": "^3.4.1",
 		"cypress-real-events": "^1.7.4",
 		"file-saver": "^2.0.5",
 		"gray-matter": "^4.0.3",
