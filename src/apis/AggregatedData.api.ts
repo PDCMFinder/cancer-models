@@ -221,7 +221,7 @@ export async function getUIReleaseInformation() {
 		"https://gitlab.ebi.ac.uk/api/v4/projects/4135/releases",
 		{
 			headers: {
-				"PRIVATE-TOKEN": "glpat-m8C7CryLp49hN1QQXFyF",
+				"PRIVATE-TOKEN": "glpat-SJR6QYyByDoaKp-wCRxL",
 			},
 		}
 	);
