@@ -2,8 +2,21 @@ import {
 	ExtLinks,
 	IModelImage,
 	IPublication,
+	IImmuneMarkers,
+	IImmuneMarker,
 } from "../pages/data/models/[providerId]/[modelId]";
 import { camelCase } from "../utils/dataUtils";
+
+interface IImmuneMarkerAPI {
+	model_id: string;
+	data_source: string;
+	source: string;
+	sample_id: string;
+	marker_type: "HLA type" | "Model Genomics";
+	marker_name: string;
+	marker_value: string;
+	essential_or_additional_details: string;
+}
 
 export async function getModelDetailsMetadata(
 	modelId: string,
@@ -368,10 +381,102 @@ export async function getExpressionHeatmap(
 	});
 }
 
+async function getModelImmuneMarkers(modelId: string) {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/immunemarker_data_extended?model_id=eq.${modelId}`
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response.json().then((d) => {
+		const parsedImmuneMarkers: IImmuneMarkers[] = d.reduce(
+			(result: IImmuneMarkers[], current: IImmuneMarkerAPI) => {
+				// Check for sample id and type, since there might be a marker of different type but same id
+				const existingSampleId = result.find(
+					(item: IImmuneMarkers) =>
+						item.sampleId === current.sample_id &&
+						item.type === current.marker_type
+				);
+				const marker = {
+					details: current.essential_or_additional_details,
+					name: current.marker_name,
+					value: [current.marker_value],
+				};
+
+				if (existingSampleId) {
+					// Check if column exists in sample id
+					const existingName = existingSampleId.markers.find(
+						(item: IImmuneMarker) => item.name === current.marker_name
+					);
+
+					// push to same (marker), add value
+					if (existingName && existingName.value) {
+						existingName.value.push(current.marker_value);
+					} else {
+						// new name (marker)
+						existingSampleId.markers.push(marker);
+					}
+				} else {
+					result.push({
+						sampleId: current.sample_id,
+						type: current.marker_type,
+						markers: [marker],
+					});
+				}
+
+				return result;
+			},
+			[]
+		);
+
+		const addMissingNames = (immuneMarker: IImmuneMarkers, type: string) => {
+			// create array with only unique names across all markers of x type
+			const uniqueNames = [
+				...new Set<string>(
+					d
+						.map(
+							(item: IImmuneMarkerAPI) =>
+								item.marker_type === type && item.marker_name
+						)
+						.filter((el: string) => el) // remove empty values
+				),
+			];
+
+			// push "empty" objs so all rows have all columns
+			uniqueNames.forEach((uniqueName: string) => {
+				if (
+					!immuneMarker.markers.some(
+						(marker: IImmuneMarker) => marker.name === uniqueName
+					) &&
+					immuneMarker.type === type
+				) {
+					immuneMarker.markers.push({
+						details: null,
+						name: uniqueName,
+						value: null,
+					});
+				}
+			});
+		};
+
+		// Add all missing names for table structure
+		parsedImmuneMarkers.forEach((immuneMarker: IImmuneMarkers) => {
+			addMissingNames(immuneMarker, "HLA type");
+			addMissingNames(immuneMarker, "Model Genomics");
+
+			immuneMarker.markers.sort((a, b) => a.name.localeCompare(b.name));
+		});
+
+		return parsedImmuneMarkers;
+	});
+}
+
 export const getAllModelData = async (modelId: string, providerId?: string) => {
 	const modelProviderId =
 		providerId ?? (await getProviderId(modelId))[0].data_source;
 	const metadata = await getModelDetailsMetadata(modelId, modelProviderId);
+	const immuneMarkers = await getModelImmuneMarkers(modelId);
 	const pdcmModelId: number = metadata.pdcmModelId;
 	const extLinks = await getModelExtLinks(pdcmModelId, modelId);
 	const molecularData = await getMolecularData(modelId);
@@ -406,6 +511,7 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 		},
 		extLinks,
 		molecularData,
+		immuneMarkers,
 		engraftments,
 		drugDosing,
 		patientTreatment,

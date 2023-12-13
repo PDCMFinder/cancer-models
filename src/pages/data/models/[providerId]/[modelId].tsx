@@ -35,6 +35,7 @@ const DynamicModal = dynamic(
 interface IModelDetailsProps {
 	metadata: Metadata;
 	extLinks: ExtLinks;
+	immuneMarkers: IImmuneMarkers[];
 	molecularData: IMolecularData[];
 	drugDosing: any[];
 	patientTreatment: PatientTreatment[];
@@ -53,6 +54,18 @@ export interface IModelImage {
 	passage: string;
 	magnification: string;
 	staining: string;
+}
+
+export interface IImmuneMarkers {
+	sampleId: string;
+	type: "HLA type" | "Model Genomics";
+	markers: IImmuneMarker[];
+}
+
+export interface IImmuneMarker {
+	name: string;
+	value: string[] | null;
+	details: string | null;
 }
 
 export interface IMolecularData {
@@ -146,6 +159,7 @@ export interface TypesMap {
 const ModelDetails = ({
 	metadata,
 	extLinks,
+	immuneMarkers,
 	molecularData,
 	drugDosing,
 	patientTreatment,
@@ -153,7 +167,10 @@ const ModelDetails = ({
 	engraftments,
 	modelImages,
 }: IModelDetailsProps) => {
-	const NA_STRING = "N/A";
+	const NA_STRING = "N/A",
+		MODEL_GENOMICS_STRING = "Model Genomics",
+		HLA_TYPE_STRING = "HLA type";
+
 	const [downloadData, setDownloadData] = useState<{
 		data: IMolecularData[];
 		filename: string;
@@ -222,6 +239,26 @@ const ModelDetails = ({
 	const publications: IPublication[] = publicationsQuery
 		.map((q) => q.data as IPublication)
 		.filter((d) => d !== undefined);
+
+	const modelGenomicsImmuneMarkers = immuneMarkers.filter(
+		(markerRow) => markerRow.type === MODEL_GENOMICS_STRING
+	);
+	const hlaImmuneMarkers = immuneMarkers.filter(
+		(markerRow) => markerRow.type === HLA_TYPE_STRING
+	);
+
+	// Send Ploity to the end of the model genomics markers array
+	if (modelGenomicsImmuneMarkers.length > 0) {
+		modelGenomicsImmuneMarkers.forEach((genomicMarker) => {
+			const index = genomicMarker.markers.findIndex(
+				(marker) => marker.name === "ploity" || marker.name === "Ploity"
+			);
+			if (index !== -1) {
+				const [removed] = modelGenomicsImmuneMarkers.splice(index, 1);
+				modelGenomicsImmuneMarkers.push(removed);
+			}
+		});
+	}
 
 	return (
 		<>
@@ -360,6 +397,19 @@ const ModelDetails = ({
 												</Link>
 											) : (
 												"Molecular data"
+											)}
+										</li>
+										<li className="mb-2">
+											{immuneMarkers.length ? (
+												<Link
+													replace
+													href="#immune-markers"
+													className="text-primary-primary"
+												>
+													Immune markers
+												</Link>
+											) : (
+												"Immune markers"
 											)}
 										</li>
 										<li className="mb-2">
@@ -731,6 +781,117 @@ const ModelDetails = ({
 									/>
 								</div>
 							)}
+							{immuneMarkers.length > 0 && (
+								<div id="immune-markers" className="row mb-5 pt-3">
+									<div className="col-12 mb-1">
+										<h2 className="mt-0">Immune markers</h2>
+										{modelGenomicsImmuneMarkers.length > 0 ? (
+											<div className="overflow-auto showScrollbar-vertical">
+												<table>
+													<caption>Immune markers</caption>
+													<thead>
+														<tr>
+															<th>SAMPLE ID</th>
+															{/* we can go through one marker as they all have same columns */}
+															{modelGenomicsImmuneMarkers.length > 0 &&
+																modelGenomicsImmuneMarkers[0].markers.map(
+																	(marker) => (
+																		<th key={marker.name}>{marker.name}</th>
+																	)
+																)}
+														</tr>
+													</thead>
+													<tbody>
+														{modelGenomicsImmuneMarkers.map((markerRow) => (
+															<tr key={markerRow.sampleId}>
+																<td className="white-space-nowrap">
+																	{markerRow.sampleId}
+																</td>
+																{markerRow.markers.map((marker) => (
+																	<td
+																		key={marker.name + marker.value}
+																		className="white-space-nowrap"
+																	>
+																		{marker.details ? (
+																			<Tooltip content={marker.details}>
+																				{marker.value?.map((value) => (
+																					<React.Fragment key={value}>
+																						{value}
+																						<br />
+																					</React.Fragment>
+																				))}
+																			</Tooltip>
+																		) : (
+																			marker.value?.map((value) => (
+																				<React.Fragment key={value}>
+																					{value}
+																					<br />
+																				</React.Fragment>
+																			))
+																		)}
+																	</td>
+																))}
+															</tr>
+														))}
+													</tbody>
+												</table>
+											</div>
+										) : null}
+										{hlaImmuneMarkers.length > 0 ? (
+											<div className="overflow-auto showScrollbar-vertical">
+												<h3>HLA</h3>
+												<table>
+													<caption>HLA</caption>
+													<thead>
+														<tr>
+															<th>SAMPLE ID</th>
+															{hlaImmuneMarkers.length > 0 &&
+																hlaImmuneMarkers[0].markers.map((marker) => (
+																	<th key={marker.name}>{marker.name}</th>
+																))}
+														</tr>
+													</thead>
+													<tbody>
+														{hlaImmuneMarkers.map((markerRow) => (
+															<tr key={markerRow.sampleId}>
+																<td className="white-space-nowrap">
+																	{markerRow.sampleId}
+																</td>
+																{markerRow.markers.map((marker) => (
+																	<td
+																		key={marker.name + marker.value}
+																		className="white-space-nowrap"
+																	>
+																		{marker.details ? (
+																			<Tooltip content={marker.details}>
+																				<span>
+																					{marker.value?.map((value) => (
+																						<React.Fragment key={value}>
+																							{value}
+																							<br />
+																						</React.Fragment>
+																					))}
+																				</span>
+																			</Tooltip>
+																		) : (
+																			marker.value?.map((value) => (
+																				<React.Fragment key={value}>
+																					{value}
+																					<br />
+																				</React.Fragment>
+																			))
+																		)}
+																	</td>
+																))}
+															</tr>
+														))}
+													</tbody>
+												</table>
+											</div>
+										) : null}
+									</div>
+								</div>
+							)}
 							{drugDosing.length > 0 && (
 								<div id="dosing-studies" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
@@ -943,6 +1104,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		metadata,
 		extLinks,
 		molecularData,
+		immuneMarkers,
 		engraftments,
 		drugDosing,
 		patientTreatment,
@@ -958,6 +1120,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			metadata,
 			extLinks,
 			molecularData,
+			immuneMarkers,
 			engraftments: JSON.parse(JSON.stringify(engraftments)),
 			drugDosing,
 			patientTreatment,
