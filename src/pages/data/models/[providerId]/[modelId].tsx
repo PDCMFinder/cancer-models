@@ -159,7 +159,7 @@ export interface TypesMap {
 }
 
 interface IDataFileConfig {
-	data: IMolecularData[];
+	data: IMolecularData;
 	filename: string;
 }
 
@@ -177,9 +177,9 @@ const ModelDetails = ({
 	const NA_STRING = "N/A",
 		MODEL_GENOMICS_STRING = "Model Genomics",
 		HLA_TYPE_STRING = "HLA type";
-	const [dataToDownload, setDataToDownload] = useState<IDataFileConfig[]>([]);
 	const [selectedMolecularViewData, setSelectedMolecularViewData] =
 		useState<IMolecularData>();
+	const [dataToDownload, setDataToDownload] = useState<IDataFileConfig[]>([]);
 
 	const { windowWidth } = useWindowDimensions();
 	const bpLarge = breakPoints.large;
@@ -253,15 +253,13 @@ const ModelDetails = ({
 				prev.filter((el) => el.filename !== filename)
 			);
 		} else {
-			getMolecularDataDownload(data).then((d) => {
-				setDataToDownload((prev) => [
-					...prev,
-					{
-						data: d,
-						filename,
-					},
-				]);
-			});
+			setDataToDownload((prev) => [
+				...prev,
+				{
+					data,
+					filename,
+				},
+			]);
 		}
 	};
 
@@ -302,23 +300,25 @@ const ModelDetails = ({
 			);
 		} else {
 			// Create files and add to zip for each data added
-			dataToDownload.forEach((data) => {
-				// Extract headers
-				const headers = Object.keys(data.data[0]);
+			for (const data of dataToDownload) {
+				await getMolecularDataDownload(data.data).then((d) => {
+					// Extract headers
+					const headers = Object.keys(d[0]);
 
-				// Convert object values to array of arrays
-				const values = data.data.map((obj) =>
-					headers.map((header) => obj[header])
-				);
+					// Convert object values to array of arrays
+					const values = d.map((obj: any) =>
+						headers.map((header) => obj[header])
+					);
 
-				// Join headers and values using tab characters
-				const tsv = [headers.join("\t")]
-					.concat(values.map((row) => row.join("\t")))
-					.join("\n");
+					// Join headers and values using tab characters
+					const tsv = [headers.join("\t")]
+						.concat(values.map((row: any) => row.join("\t")))
+						.join("\n");
 
-				// Create file inside zip
-				zip.file(data.filename, tsv);
-			});
+					// Create file inside zip
+					zip.file(data.filename, tsv);
+				});
+			}
 		}
 
 		zip.generateAsync({ type: "blob" }).then(function (content) {
