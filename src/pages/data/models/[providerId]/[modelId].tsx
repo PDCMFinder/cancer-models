@@ -272,7 +272,6 @@ const ModelDetails = ({
 			createMetadataFile();
 		// Add metadata file to zip
 		zip.file(metadataFileName, metadataBlob);
-
 		// If we pass some data, that means we just want to download that single data file
 		if (data) {
 			const molecularData = await getMolecularDataDownload(data);
@@ -301,23 +300,27 @@ const ModelDetails = ({
 		} else {
 			// Create files and add to zip for each data added
 			for (const data of dataToDownload) {
-				await getMolecularDataDownload(data.data).then((d) => {
-					// Extract headers
-					const headers = Object.keys(d[0]);
+				await getMolecularDataDownload(data.data).then(
+					(d: IMolecularData[]) => {
+						if (d.length > 0) {
+							// Extract headers
+							const headers = Object.keys(d[0]);
 
-					// Convert object values to array of arrays
-					const values = d.map((obj: any) =>
-						headers.map((header) => obj[header])
-					);
+							// Convert object values to array of arrays
+							const values = d.map((obj) =>
+								headers.map((header) => obj[header])
+							);
 
-					// Join headers and values using tab characters
-					const tsv = [headers.join("\t")]
-						.concat(values.map((row: any) => row.join("\t")))
-						.join("\n");
+							// Join headers and values using tab characters
+							const tsv = [headers.join("\t")]
+								.concat(values.map((row) => row.join("\t")))
+								.join("\n");
 
-					// Create file inside zip
-					zip.file(data.filename, tsv);
-				});
+							// Create file inside zip
+							zip.file(data.filename, tsv);
+						}
+					}
+				);
 			}
 		}
 
@@ -326,6 +329,43 @@ const ModelDetails = ({
 			FileSaver.saveAs(content, `CancerModelsOrg_${metadata.modelId}-data.zip`);
 		});
 	};
+
+	const downloadAllData = async () => {
+		let allDataZip = new JSZip();
+
+		for (const data of molecularData) {
+			await getMolecularDataDownload(data).then((d: IMolecularData[]) => {
+				if (d.length > 0) {
+					// Extract headers
+					const headers = Object.keys(d[0]);
+
+					// Convert object values to array of arrays
+					const values = d.map((obj) => headers.map((header) => obj[header]));
+
+					// Join headers and values using tab characters
+					const tsv = [headers.join("\t")]
+						.concat(values.map((row) => row.join("\t")))
+						.join("\n");
+
+					// Create file inside zip
+					allDataZip.file(
+						`CancerModelsOrg_${metadata.modelId}_${
+							data.dataType.split(" ").join("-") ?? ""
+						}_${data.sampleId ?? ""}_${
+							data.platformName.split(" ").join("-") ?? ""
+						}.tsv`,
+						tsv
+					);
+				}
+			});
+		}
+
+		allDataZip.generateAsync({ type: "blob" }).then(function (content) {
+			// Save file to users computer
+			FileSaver.saveAs(content, `CancerModelsOrg_${metadata.modelId}-data.zip`);
+		});
+	};
+
 	const modelGenomicsImmuneMarkers = immuneMarkers.filter(
 		(markerRow) => markerRow.type === MODEL_GENOMICS_STRING
 	);
@@ -726,7 +766,16 @@ const ModelDetails = ({
 							{molecularData.length > 0 && (
 								<div id="molecular-data" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
-										<h2 className="mt-0">Molecular data</h2>
+										<div className="d-flex justify-content-between align-center">
+											<h2 className="mt-0">Molecular data</h2>
+											<Button
+												priority="secondary"
+												color="dark"
+												onClick={() => downloadAllData()}
+											>
+												Download all
+											</Button>
+										</div>
 										<div className="overflow-auto showScrollbar-vertical">
 											<table>
 												<caption>Molecular data</caption>
