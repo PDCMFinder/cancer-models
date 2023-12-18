@@ -220,7 +220,7 @@ const ModelDetails = ({
 		.filter((d) => d !== undefined);
 
 	const createMetadataFile = (download: boolean = false) => {
-		const filename = "CancerModelsOrg_ModelID-metadata.tsv";
+		const filename = `CancerModelsOrg_${metadata.modelId}-metadata.tsv`;
 		const tsvData =
 			Object.keys({
 				modelId: metadataModelId,
