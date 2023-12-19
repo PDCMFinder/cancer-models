@@ -180,6 +180,11 @@ const ModelDetails = ({
 	const [selectedMolecularViewData, setSelectedMolecularViewData] =
 		useState<IMolecularData>();
 	const [dataToDownload, setDataToDownload] = useState<IDataFileConfig[]>([]);
+	const [fileDownloadStatus, setFileDownloadStatus] = useState({
+		totalFiles: 0,
+		downloadedFiles: 0,
+		isDownloading: false,
+	});
 
 	const { windowWidth } = useWindowDimensions();
 	const bpLarge = breakPoints.large;
@@ -220,7 +225,7 @@ const ModelDetails = ({
 		.filter((d) => d !== undefined);
 
 	const createMetadataFile = (download: boolean = false) => {
-		const filename = `CancerModelsOrg_${metadata.modelId}-metadata.tsv`;
+		const filename = `CancerModelsOrg_${metadata.modelId}_metadata.tsv`;
 		const tsvData =
 			Object.keys({
 				modelId: metadataModelId,
@@ -274,6 +279,12 @@ const ModelDetails = ({
 		zip.file(metadataFileName, metadataBlob);
 		// If we pass some data, that means we just want to download that single data file
 		if (data) {
+			setFileDownloadStatus((prevState) => ({
+				...prevState,
+				totalFiles: 1,
+				isDownloading: true,
+			}));
+
 			const molecularData = await getMolecularDataDownload(data);
 
 			// Extract headers
@@ -298,6 +309,12 @@ const ModelDetails = ({
 				tsv
 			);
 		} else {
+			setFileDownloadStatus((prevState) => ({
+				...prevState,
+				totalFiles: dataToDownload.length,
+				isDownloading: true,
+			}));
+
 			// Create files and add to zip for each data added
 			for (const data of dataToDownload) {
 				await getMolecularDataDownload(data.data).then(
@@ -318,6 +335,11 @@ const ModelDetails = ({
 
 							// Create file inside zip
 							zip.file(data.filename, tsv);
+
+							setFileDownloadStatus((prevState) => ({
+								...prevState,
+								downloadedFiles: prevState.downloadedFiles + 1,
+							}));
 						}
 					}
 				);
@@ -328,10 +350,32 @@ const ModelDetails = ({
 			// Save file to users computer
 			FileSaver.saveAs(content, `CancerModelsOrg_${metadata.modelId}-data.zip`);
 		});
+
+		setDataToDownload([]);
+		setFileDownloadStatus({
+			totalFiles: 0,
+			downloadedFiles: 0,
+			isDownloading: false,
+		});
 	};
 
 	const downloadAllData = async () => {
 		let allDataZip = new JSZip();
+		let totalDownloadFiles = 0;
+
+		for (const data of molecularData) {
+			if (data.dataExists === "TRUE") {
+				if (data.dataRestricted === "FALSE") {
+					totalDownloadFiles++;
+				}
+			}
+		}
+
+		setFileDownloadStatus((prevState) => ({
+			...prevState,
+			totalFiles: totalDownloadFiles,
+			isDownloading: true,
+		}));
 
 		for (const data of molecularData) {
 			await getMolecularDataDownload(data).then((d: IMolecularData[]) => {
@@ -356,6 +400,11 @@ const ModelDetails = ({
 						}.tsv`,
 						tsv
 					);
+
+					setFileDownloadStatus((prevState) => ({
+						...prevState,
+						downloadedFiles: prevState.downloadedFiles + 1,
+					}));
 				}
 			});
 		}
@@ -363,6 +412,11 @@ const ModelDetails = ({
 		allDataZip.generateAsync({ type: "blob" }).then(function (content) {
 			// Save file to users computer
 			FileSaver.saveAs(content, `CancerModelsOrg_${metadata.modelId}-data.zip`);
+		});
+		setFileDownloadStatus({
+			totalFiles: 0,
+			downloadedFiles: 0,
+			isDownloading: false,
 		});
 	};
 
@@ -1223,7 +1277,7 @@ const ModelDetails = ({
 			</section>
 
 			{/* floating card */}
-			{dataToDownload[0] ? (
+			{dataToDownload.length > 0 ? (
 				<div className="row position-sticky bottom-0 mt-5">
 					<div className="col-10 offset-1">
 						<Card
@@ -1232,51 +1286,63 @@ const ModelDetails = ({
 						>
 							<div className="d-flex align-center justify-content-between">
 								<p className="m-0">
-									<b>Download selected data: </b>
-									{dataToDownload.map((data, idx) => {
-										const cleanFilename = data.filename
-												.split("_")
-												.slice(2)
-												.join("_")
-												.split(".")[0],
-											clearX = (
-												<sup>
-													<Button
-														color="dark"
-														priority="secondary"
-														className="text-underline m-0 ml-1"
-														style={{ padding: ".2rem .3rem" }}
-														onClick={() =>
-															setDataToDownload((prev) =>
-																prev.filter(
-																	(el) => el.filename !== data.filename
-																)
-															)
-														}
-													>
-														X
-													</Button>
-												</sup>
-											);
+									{!fileDownloadStatus.isDownloading ? (
+										<>
+											<b>Download selected data: </b>
+											{dataToDownload.map((data, idx) => {
+												const cleanFilename = data.filename
+														.split("_")
+														.slice(2)
+														.join("_")
+														.split(".")[0],
+													clearX = (
+														<sup>
+															<Button
+																color="dark"
+																priority="secondary"
+																className="text-underline m-0 ml-1"
+																style={{ padding: ".2rem .3rem" }}
+																onClick={() =>
+																	setDataToDownload((prev) =>
+																		prev.filter(
+																			(el) => el.filename !== data.filename
+																		)
+																	)
+																}
+															>
+																X
+															</Button>
+														</sup>
+													);
 
-										if (idx === 0) {
-											return (
-												<React.Fragment key={cleanFilename}>
-													{cleanFilename}
-													{clearX}
-												</React.Fragment>
-											);
-										}
+												if (idx === 0) {
+													return (
+														<React.Fragment key={cleanFilename}>
+															{cleanFilename}
+															{clearX}
+														</React.Fragment>
+													);
+												}
 
-										return (
-											<React.Fragment key={cleanFilename}>
-												{" "}
-												<span className="text-primary-tertiary">+</span>{" "}
-												{cleanFilename}
-												{clearX}
-											</React.Fragment>
-										);
-									})}
+												return (
+													<React.Fragment key={cleanFilename}>
+														{" "}
+														<span className="text-primary-tertiary">
+															+
+														</span>{" "}
+														{cleanFilename}
+														{clearX}
+													</React.Fragment>
+												);
+											})}
+										</>
+									) : (
+										<>
+											<b>Fetching files: </b>
+											{fileDownloadStatus.downloadedFiles + 1}/
+											{fileDownloadStatus.totalFiles}
+										</>
+									)}
 								</p>
 								<div className="d-flex">
 									<Button
