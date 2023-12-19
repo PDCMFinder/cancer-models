@@ -279,12 +279,6 @@ const ModelDetails = ({
 		zip.file(metadataFileName, metadataBlob);
 		// If we pass some data, that means we just want to download that single data file
 		if (data) {
-			setFileDownloadStatus((prevState) => ({
-				...prevState,
-				totalFiles: 1,
-				isDownloading: true,
-			}));
-
 			const molecularData = await getMolecularDataDownload(data);
 
 			// Extract headers
@@ -363,6 +357,12 @@ const ModelDetails = ({
 		let allDataZip = new JSZip();
 		let totalDownloadFiles = 0;
 
+		const { blob: metadataBlob, filename: metadataFileName } =
+			createMetadataFile();
+
+		// Add metadata file to zip
+		allDataZip.file(metadataFileName, metadataBlob);
+
 		for (const data of molecularData) {
 			if (data.dataExists === "TRUE") {
 				if (data.dataRestricted === "FALSE") {
@@ -413,6 +413,7 @@ const ModelDetails = ({
 			// Save file to users computer
 			FileSaver.saveAs(content, `CancerModelsOrg_${metadata.modelId}-data.zip`);
 		});
+
 		setFileDownloadStatus({
 			totalFiles: 0,
 			downloadedFiles: 0,
