@@ -565,6 +565,25 @@ const Compare: NextPage = () => {
 								<div className={`row ${styles.Compare_row}`}>
 									<div className="col-3">
 										<p className="text-uppercase">
+											<b>Immune markers</b>
+										</p>
+									</div>
+									{allModelsData.map(({ data }) => (
+										<div
+											className="col"
+											key={data?.metadata.modelId + "immuneMarkers"}
+										>
+											<p>
+												{data?.immuneMarkers && data?.immuneMarkers.length > 0
+													? CHECKMARK_STRING
+													: ""}
+											</p>
+										</div>
+									))}
+								</div>
+								<div className={`row ${styles.Compare_row}`}>
+									<div className="col-3">
+										<p className="text-uppercase">
 											<b>Drug dosing</b>
 										</p>
 									</div>
