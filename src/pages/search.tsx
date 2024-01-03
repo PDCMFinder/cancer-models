@@ -24,6 +24,8 @@ import Card from "../components/Card/Card";
 import CloseIcon from "../components/CloseIcon/CloseIcon";
 import { NextPage } from "next/types";
 import dynamic from "next/dynamic";
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
 
 const DynamicModal = dynamic(import("../components/Modal/Modal"), {
 	loading: () => (
@@ -67,6 +69,27 @@ const Search: NextPage = () => {
 	const [modelsToCompare, setModelsToCompare] = useState<string[]>([]);
 	const router = useRouter();
 	const ignoredFilterValues = ["page", "search_terms"];
+
+	useEffect(() => {
+		const driverObj = driver({
+			showProgress: true,
+			steps: [
+				{
+					element: "#searchBar",
+					popover: {
+						title: "Animated Tour Example",
+						description:
+							"Here is the code example showing animated tour. Let's walk you through it.",
+						side: "bottom",
+						align: "start",
+					},
+				},
+			],
+			popoverClass: "driverjs-theme",
+		});
+
+		driverObj.drive();
+	}, []);
 
 	const changePage = (page: number) => {
 		setCurrentPage(page);
