@@ -36,7 +36,7 @@ export const searchTourSteps: DriveStep[] = [
 			title: "Search result",
 			description:
 				"A single cancer model based on your search query and/or filtering.",
-			side: "left",
+			side: "top",
 			align: "center",
 		},
 	},
@@ -44,8 +44,8 @@ export const searchTourSteps: DriveStep[] = [
 		element: "#tour_searchResult",
 		popover: {
 			description:
-				"Check the bottom left checkbox ('Add to compare') to continue.",
-			side: "left",
+				"Check the bottom right checkbox ('Add to compare') to continue.",
+			side: "top",
 			align: "center",
 		},
 	},
@@ -93,6 +93,15 @@ export const compareTourSteps: DriveStep[] = [
 		element: "#tour_compare-qualityControl",
 		popover: {
 			title: "Model quality control",
+			// description: "Metadata",
+			side: "top",
+			align: "center",
+		},
+	},
+	{
+		element: "#tour_compare-availableData",
+		popover: {
+			title: "Available data",
 			// description: "Metadata",
 			side: "top",
 			align: "center",

@@ -479,7 +479,10 @@ const Compare: NextPage = () => {
 								</div>
 							</div>
 						) : null}
-						<div className={`row ${styles.Compare_table}`}>
+						<div
+							className={`row ${styles.Compare_table}`}
+							id="tour_compare-availableData"
+						>
 							<div className={`col-12 ${styles.Compare_table_title}`}>
 								<h3>Available data</h3>
 							</div>
