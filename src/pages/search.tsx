@@ -25,6 +25,7 @@ import CloseIcon from "../components/CloseIcon/CloseIcon";
 import { NextPage } from "next/types";
 import dynamic from "next/dynamic";
 import { driver } from "driver.js";
+import { searchTourSteps } from "../utils/tourSteps";
 import "driver.js/dist/driver.css";
 
 const DynamicModal = dynamic(import("../components/Modal/Modal"), {
@@ -70,26 +71,10 @@ const Search: NextPage = () => {
 	const router = useRouter();
 	const ignoredFilterValues = ["page", "search_terms"];
 
-	useEffect(() => {
-		const driverObj = driver({
-			showProgress: true,
-			steps: [
-				{
-					element: "#searchBar",
-					popover: {
-						title: "Animated Tour Example",
-						description:
-							"Here is the code example showing animated tour. Let's walk you through it.",
-						side: "bottom",
-						align: "start",
-					},
-				},
-			],
-			popoverClass: "driverjs-theme",
-		});
-
-		driverObj.drive();
-	}, []);
+	const driverObj = driver({
+		showProgress: true,
+		steps: searchTourSteps,
+	});
 
 	const changePage = (page: number) => {
 		setCurrentPage(page);
@@ -443,6 +428,17 @@ const Search: NextPage = () => {
 			<section>
 				<div className="container">
 					<div className="row">
+						<div className="col-12">
+							<Button
+								color="dark"
+								priority="secondary"
+								onClick={() => driverObj.drive()}
+							>
+								Take page tour
+							</Button>
+						</div>
+					</div>
+					<div className="row">
 						<div className="col-12 col-lg-9 offset-lg-3">
 							<div className="row mb-3 align-center">
 								<div className="col-12 col-md-6">
@@ -545,6 +541,7 @@ const Search: NextPage = () => {
 								<Card
 									className="bg-primary-quaternary mb-2"
 									contentClassName="py-2"
+									id="tour_compareCard"
 								>
 									<div className="d-flex align-center justify-content-between">
 										<p className="m-0">

@@ -15,6 +15,9 @@ import Tooltip from "../components/Tooltip/Tooltip";
 import Button from "../components/Button/Button";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
+import { compareTourSteps } from "../utils/tourSteps";
 
 const Compare: NextPage = () => {
 	const CHECKMARK_STRING = "✔";
@@ -23,6 +26,11 @@ const Compare: NextPage = () => {
 	const modelsToCompareArr =
 		typeof query.models === "string" ? query.models.split(" ") : [];
 	const [modelsToCompare, setModelsToCompare] = useState(modelsToCompareArr);
+
+	const driverObj = driver({
+		showProgress: true,
+		steps: compareTourSteps,
+	});
 
 	const allModelsData = useQueries(
 		modelsToCompare.map((model: string) => {
@@ -70,6 +78,15 @@ const Compare: NextPage = () => {
 				<div className="container">
 					<div className="row py-5">
 						<div className="col-12">
+							<Button
+								color="dark"
+								priority="secondary"
+								onClick={() => driverObj.drive()}
+							>
+								Take page tour
+							</Button>
+						</div>
+						<div className="col-12">
 							<h1 className="m-0">Compare models</h1>
 						</div>
 					</div>
@@ -78,7 +95,10 @@ const Compare: NextPage = () => {
 			{allModelDataIsLoaded ? (
 				<section>
 					<div className="container">
-						<div className="row bg-white position-sticky top-0 pt-2 pb-3">
+						<div
+							className="row bg-white position-sticky top-0 pt-2 pb-3"
+							id="tour_modelsToCompare"
+						>
 							{/* fake offset to reduce nesting a bit */}
 							<div className="col-3"></div>
 							{allModelsData.map((model) => (
@@ -130,7 +150,10 @@ const Compare: NextPage = () => {
 								</div>
 							))}
 						</div>
-						<div className={`row ${styles.Compare_table}`}>
+						<div
+							className={`row ${styles.Compare_table}`}
+							id="tour_compare-metadata"
+						>
 							<div className={`col-12 ${styles.Compare_table_title}`}>
 								<h3>Patient / tumour metadata</h3>
 							</div>
@@ -293,7 +316,10 @@ const Compare: NextPage = () => {
 						{allModelsData.some(
 							({ data }) => data && data.engraftments.length > 0
 						) ? (
-							<div className={`row ${styles.Compare_table}`}>
+							<div
+								className={`row ${styles.Compare_table}`}
+								id="tour_compare-engraftment"
+							>
 								<div className={`col-12 ${styles.Compare_table_title}`}>
 									<h3>PDX Model Engraftment</h3>
 								</div>
@@ -389,7 +415,10 @@ const Compare: NextPage = () => {
 						{allModelsData.some(
 							({ data }) => data && data.qualityData.length > 0
 						) ? (
-							<div className={`row ${styles.Compare_table}`}>
+							<div
+								className={`row ${styles.Compare_table}`}
+								id="tour_compare-qualityControl"
+							>
 								<div className={`col-12 ${styles.Compare_table_title}`}>
 									<h3>Model quality control</h3>
 								</div>
