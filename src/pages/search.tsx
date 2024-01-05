@@ -27,6 +27,7 @@ import dynamic from "next/dynamic";
 import { driver } from "driver.js";
 import { searchTourSteps } from "../utils/tourSteps";
 import "driver.js/dist/driver.css";
+import FloatingButton from "../components/FloatingWidget/FloatingButton";
 
 const DynamicModal = dynamic(import("../components/Modal/Modal"), {
 	loading: () => (
@@ -428,17 +429,6 @@ const Search: NextPage = () => {
 			<section>
 				<div className="container">
 					<div className="row">
-						<div className="col-12">
-							<Button
-								color="dark"
-								priority="secondary"
-								onClick={() => driverObj.drive()}
-							>
-								Take page tour
-							</Button>
-						</div>
-					</div>
-					<div className="row">
 						<div className="col-12 col-lg-9 offset-lg-3">
 							<div className="row mb-3 align-center">
 								<div className="col-12 col-md-6">
@@ -613,6 +603,7 @@ const Search: NextPage = () => {
 					) : null}
 				</div>
 			</section>
+			<FloatingButton onClick={driverObj.drive}>Take page tour</FloatingButton>
 		</>
 	);
 };

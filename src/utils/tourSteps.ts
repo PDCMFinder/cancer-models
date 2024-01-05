@@ -53,7 +53,8 @@ export const searchTourSteps: DriveStep[] = [
 		element: "#tour_compareCard",
 		popover: {
 			title: "Compare",
-			description: "Includes the models you've chosen to compare",
+			description:
+				"Includes the models you've chosen to compare. Keep checking more boxes to add.",
 			side: "left",
 			align: "center",
 		},
@@ -103,6 +104,16 @@ export const compareTourSteps: DriveStep[] = [
 		popover: {
 			title: "Available data",
 			// description: "Metadata",
+			side: "top",
+			align: "center",
+		},
+	},
+	{
+		element: "#tour_compare-buttons",
+		popover: {
+			title: "Compare buttons",
+			description:
+				"Click any of the corresponding model buttons to view more detailed information",
 			side: "top",
 			align: "center",
 		},
