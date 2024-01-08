@@ -493,3 +493,14 @@ table {
 .grecaptcha-badge {
 	display: none !important;
 }
+.driver-popover {
+	color: $color-primary-primary !important;
+	.driver-popover-title {
+		font-family: $type-primary;
+	}
+	.driver-popover-description,
+	.driver-popover-footer * {
+		font-family: $type-secondary !important;
+		line-height: 1.1;
+	}
+}

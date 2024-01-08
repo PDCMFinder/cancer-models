@@ -30,6 +30,7 @@ const Compare: NextPage = () => {
 
 	const driverObj = driver({
 		showProgress: true,
+		prevBtnText: "← Prev",
 		steps: compareTourSteps,
 	});
 

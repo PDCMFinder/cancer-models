@@ -1,5 +1,4 @@
 import Button from "../Button/Button";
-import styles from "./FloatingButton.module.scss";
 
 interface IFloatingButtonProps {
 	position?: string;
@@ -28,16 +27,14 @@ const FloatingButton = ({
 	}
 
 	return (
-		<div className={`position-fixed ${positionClassNames.join(" ")}`}>
-			<Button
-				priority="secondary"
-				color="dark"
-				onClick={() => (onClick ? onClick() : null)}
-				className="bg-white"
-			>
-				{children}
-			</Button>
-		</div>
+		<Button
+			priority="secondary"
+			color="dark"
+			onClick={() => (onClick ? onClick() : null)}
+			className={`bg-white position-fixed ${positionClassNames.join(" ")}`}
+		>
+			{children}
+		</Button>
 	);
 };
 

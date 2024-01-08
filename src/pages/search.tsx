@@ -74,6 +74,7 @@ const Search: NextPage = () => {
 
 	const driverObj = driver({
 		showProgress: true,
+		prevBtnText: "← Prev",
 		steps: searchTourSteps,
 	});
 
