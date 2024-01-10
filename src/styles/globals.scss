@@ -499,6 +499,7 @@ table {
 		font-family: $type-primary;
 	}
 	.driver-popover-description,
+	.driver-popover-description *,
 	.driver-popover-footer * {
 		font-family: $type-secondary !important;
 		line-height: 1.1;

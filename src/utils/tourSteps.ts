@@ -59,6 +59,14 @@ export const searchTourSteps: DriveStep[] = [
 			align: "center",
 		},
 	},
+	{
+		popover: {
+			description:
+				"More detailed information can be found at our <a href='/training' target='_blank'>training page</a>",
+			side: "left",
+			align: "center",
+		},
+	},
 ];
 
 // /compare
@@ -115,6 +123,14 @@ export const compareTourSteps: DriveStep[] = [
 			description:
 				"Click any of the corresponding model buttons to view more detailed information",
 			side: "top",
+			align: "center",
+		},
+	},
+	{
+		popover: {
+			description:
+				"More detailed information can be found at our <a href='/training' target='_blank'>training page</a>",
+			side: "left",
 			align: "center",
 		},
 	},
