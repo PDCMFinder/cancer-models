@@ -4,6 +4,7 @@ import styles from "./QualityBadge.module.scss";
 
 interface IQualityBadgeProps {
 	className?: string;
+	id?: string;
 	containerClassName?: string;
 	score: number;
 	style?: CSSProperties;
@@ -11,7 +12,7 @@ interface IQualityBadgeProps {
 
 const QualityBadge = (props: IQualityBadgeProps) => {
 	return (
-		<div className={props.containerClassName}>
+		<div className={props.containerClassName} id={props.id}>
 			<Tooltip
 				content={
 					<>

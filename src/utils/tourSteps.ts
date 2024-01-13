@@ -135,3 +135,138 @@ export const compareTourSteps: DriveStep[] = [
 		},
 	},
 ];
+
+// /data/models/[provider]/[modelId]
+export const modelTourSteps: DriveStep[] = [
+	{
+		element: "#tour_model-histologyType",
+		popover: {
+			title: "Model histology and type",
+			description: "Eg. Breast Cancer (histology) - PDX (type)",
+			side: "top",
+			align: "center",
+		},
+	},
+	{
+		element: "#tour_model-id",
+		popover: {
+			title: "Model id",
+			description: "Model unique identifier given by CancerModels.Org",
+			side: "top",
+			align: "center",
+		},
+	},
+	{
+		element: "#tour_model-score",
+		popover: {
+			title: "Model score",
+			description:
+				"Score related to the amount of information available about the model, not the quality of the model.",
+			side: "top",
+			align: "center",
+		},
+	},
+	{
+		element: "#tour_model-providerInfo",
+		popover: {
+			title: "Model provider",
+			description: "Provider information and contact",
+			side: "top",
+			align: "center",
+		},
+	},
+	{
+		element: "#metadata",
+		popover: {
+			title: "Model metadata",
+			description: "Metadata for model",
+			side: "top",
+			align: "center",
+		},
+		// onHighlightStarted: (element) => {
+		// 	if (!element) {
+		// 		driverObj.moveNext();
+		// 	}
+		// },
+	},
+	{
+		element: "#engraftments",
+		popover: {
+			title: "Model engraftment",
+			description: "engraftment for model",
+			side: "top",
+			align: "center",
+		},
+	},
+	{
+		element: "#quality-control",
+		popover: {
+			title: "Model quality control",
+			description: "quality control for model",
+			side: "top",
+			align: "center",
+		},
+	},
+	{
+		element: "#molecular-data",
+		popover: {
+			title: "Model molecular data",
+			description: "molecular data for model",
+			side: "top",
+			align: "center",
+		},
+	},
+	{
+		element: "#immune-markers",
+		popover: {
+			title: "Model immune markers",
+			description: "immune markers for model",
+			side: "top",
+			align: "center",
+		},
+	},
+	{
+		element: "#dosing-studies",
+		popover: {
+			title: "Model dosing studies",
+			description: "dosing studies for model",
+			side: "top",
+			align: "center",
+		},
+	},
+	{
+		element: "#patient-treatment",
+		popover: {
+			title: "Model patient treatment",
+			description: "patient treatment for model",
+			side: "top",
+			align: "center",
+		},
+	},
+	{
+		element: "#histology-images",
+		popover: {
+			title: "Model histology images",
+			description: "histology images for model",
+			side: "top",
+			align: "center",
+		},
+	},
+	{
+		element: "#publications",
+		popover: {
+			title: "Model publications",
+			description: "publications for model",
+			side: "top",
+			align: "center",
+		},
+	},
+	{
+		popover: {
+			description:
+				"More detailed information can be found at our <a href='/training' target='_blank'>training page</a>",
+			side: "left",
+			align: "center",
+		},
+	},
+];
