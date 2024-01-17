@@ -23,7 +23,7 @@ import { getAllModelData } from "../../../../apis/ModelDetails.api";
 import { hj_event } from "../../../../utils/hotjar";
 import dynamic from "next/dynamic";
 import Loader from "../../../../components/Loader/Loader";
-import { driver, DriveStep } from "driver.js";
+import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import FloatingButton from "../../../../components/FloatingWidget/FloatingButton";
 import { modelTourSteps } from "../../../../utils/tourSteps";

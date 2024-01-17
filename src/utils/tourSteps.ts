@@ -179,7 +179,8 @@ export const modelTourSteps: DriveStep[] = [
 		element: "#metadata",
 		popover: {
 			title: "Model metadata",
-			description: "Metadata for model",
+			description:
+				"This section provides information about the patient and tumour. It includes clinical information such as patient demographics, and tumour characteristics.",
 			side: "top",
 			align: "center",
 		},
@@ -193,7 +194,8 @@ export const modelTourSteps: DriveStep[] = [
 		element: "#engraftments",
 		popover: {
 			title: "Model engraftment",
-			description: "engraftment for model",
+			description:
+				"This section provides details about the successful engraftment of Patient-Derived Xenograft (PDX) models such as the establishment of the model, engraftment success rates, and relevant details about the transplantation process.",
 			side: "top",
 			align: "center",
 		},
@@ -202,7 +204,8 @@ export const modelTourSteps: DriveStep[] = [
 		element: "#quality-control",
 		popover: {
 			title: "Model quality control",
-			description: "quality control for model",
+			description:
+				"This section provides information on methods/protocols used to ensure the quality and reliability of the data and models.",
 			side: "top",
 			align: "center",
 		},
@@ -211,7 +214,8 @@ export const modelTourSteps: DriveStep[] = [
 		element: "#molecular-data",
 		popover: {
 			title: "Model molecular data",
-			description: "molecular data for model",
+			description:
+				"This section provides information about molecular characterization of cancer models, such as expression, copy number alteration, mutation, biomarkers data. This provides an insight into the genetic makeup of tumour. ",
 			side: "top",
 			align: "center",
 		},
@@ -220,7 +224,8 @@ export const modelTourSteps: DriveStep[] = [
 		element: "#immune-markers",
 		popover: {
 			title: "Model immune markers",
-			description: "immune markers for model",
+			description:
+				"This section provides information about the immune response within the tumour microenvironment.  ",
 			side: "top",
 			align: "center",
 		},
@@ -229,7 +234,8 @@ export const modelTourSteps: DriveStep[] = [
 		element: "#dosing-studies",
 		popover: {
 			title: "Model dosing studies",
-			description: "dosing studies for model",
+			description:
+				"This section provides information about the drug dosage and response of the drug in the cancer models, which provides insights into understanding the drug efficacy.",
 			side: "top",
 			align: "center",
 		},
@@ -238,7 +244,8 @@ export const modelTourSteps: DriveStep[] = [
 		element: "#patient-treatment",
 		popover: {
 			title: "Model patient treatment",
-			description: "patient treatment for model",
+			description:
+				"This section provides information about the treatment dosage and response of the treatment in the cancer models, which provides insights into understanding the treatment efficacy.",
 			side: "top",
 			align: "center",
 		},
@@ -247,7 +254,8 @@ export const modelTourSteps: DriveStep[] = [
 		element: "#histology-images",
 		popover: {
 			title: "Model histology images",
-			description: "histology images for model",
+			description:
+				"This section provides histology images associated with models, which provides deeper understanding of the tumour morphology.",
 			side: "top",
 			align: "center",
 		},
@@ -256,7 +264,8 @@ export const modelTourSteps: DriveStep[] = [
 		element: "#publications",
 		popover: {
 			title: "Model publications",
-			description: "publications for model",
+			description:
+				"This section provides relevant publications associated with the cancer models.",
 			side: "top",
 			align: "center",
 		},
