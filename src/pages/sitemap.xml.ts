@@ -13,12 +13,13 @@ function generateSiteMap(providers: string[], host: string): string {
 				.map((route) => {
 					if (route.children?.length) {
 						return route.children
-							.map(
-								(child) =>
-									`<url>
+							.map((child) => {
+								if (!child.path.includes("http")) {
+									return `<url>
                     <loc>https://${host}${child.path}</loc>
-                  </url>`
-							)
+                  </url>`;
+								}
+							})
 							.join("");
 					} else {
 						return `<url>
