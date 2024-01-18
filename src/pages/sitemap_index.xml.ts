@@ -7,10 +7,10 @@ function generateSiteMap(host: string): string {
 	return `
     <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
       <sitemap>
-        <loc>${host}/sitemap.xml</loc>
+        <loc>https://${host}/sitemap.xml</loc>
       </sitemap>
       <sitemap>
-        <loc>${host}/sitemap1.xml</loc>
+        <loc>https://${host}/sitemap1.xml</loc>
       </sitemap>
     </sitemapindex>
   `;

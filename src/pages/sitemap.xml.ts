@@ -16,28 +16,28 @@ function generateSiteMap(providers: string[], host: string): string {
 							.map(
 								(child) =>
 									`<url>
-                    <loc>${host}${child.path}</loc>
+                    <loc>https://${host}${child.path}</loc>
                   </url>`
 							)
 							.join("");
 					} else {
 						return `<url>
-              <loc>${host}${route.path}</loc>
+              <loc>https://${host}${route.path}</loc>
             </url>`;
 					}
 				})
 				.join("")}
       <url>
-        <loc>${host}/terms-of-use</loc>
+        <loc>https://${host}/terms-of-use</loc>
       </url>
       <url>
-        <loc>${host}/privacy-policy</loc>
+        <loc>https://${host}/privacy-policy</loc>
       </url>
       ${providers
 				.map(
 					(provider) =>
 						`<url>
-              <loc>${host}/about/providers/${provider.replace(
+              <loc>https://${host}/about/providers/${provider.replace(
 							/\.md$/,
 							""
 						)}</loc>
