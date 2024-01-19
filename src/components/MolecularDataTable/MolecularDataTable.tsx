@@ -157,10 +157,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 					priority="primary"
 					color="dark"
 					className="m-0"
-					onClick={() => {
-						props.handleDownload(data);
-						hj_event("click_downloadData-modal");
-					}}
+					onClick={() => props.handleDownload(data)}
 				>
 					Download Data
 				</Button>

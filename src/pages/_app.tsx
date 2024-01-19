@@ -95,7 +95,7 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 					--type-secondary: ${spaceMono.style.fontFamily}, monospace;
 				}
 			`}</style>
-			{isProductionEnvironment && (
+			{!isProductionEnvironment && (
 				<>
 					{/* Hotjar Tracking Code for Cancer Models Org */}
 					<Script id="hotjar" strategy="beforeInteractive">
@@ -111,6 +111,7 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 					{/* Google Analytics code */}
 					<Script
 						strategy="beforeInteractive"
+						id="google-tagManager"
 						src="https://www.googletagmanager.com/gtag/js?id=G-34S5KH94SX"
 					/>
 					<Script id="google-analytics" strategy="beforeInteractive">

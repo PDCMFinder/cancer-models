@@ -25,6 +25,7 @@ import Loader from "../../../../components/Loader/Loader";
 import InputAndLabel from "../../../../components/Input/InputAndLabel";
 import JSZip from "jszip";
 import FileSaver from "file-saver";
+import ReactGA from "react-ga4";
 
 const DynamicModal = dynamic(
 	() => import("../../../../components/Modal/Modal"),
@@ -241,7 +242,14 @@ const ModelDetails = ({
 
 		const blob = new Blob([tsvData], { type: "text/tsv" });
 
-		if (download) FileSaver.saveAs(blob, filename);
+		if (download) {
+			FileSaver.saveAs(blob, filename);
+
+			ReactGA.event("download_data", {
+				category: "event",
+				value: 1,
+			});
+		}
 
 		return { blob, filename };
 	};
@@ -302,6 +310,12 @@ const ModelDetails = ({
 				}.tsv`,
 				tsv
 			);
+
+			// Adding 1 for metadata
+			ReactGA.event("download_data", {
+				category: "event",
+				value: 1 + 1,
+			});
 		} else {
 			setFileDownloadStatus((prevState) => ({
 				...prevState,
@@ -338,6 +352,12 @@ const ModelDetails = ({
 					}
 				);
 			}
+
+			// Adding 1 for metadata
+			ReactGA.event("download_data", {
+				category: "event",
+				value: dataToDownload.length + 1,
+			});
 		}
 
 		zip.generateAsync({ type: "blob" }).then(function (content) {
@@ -412,6 +432,12 @@ const ModelDetails = ({
 		allDataZip.generateAsync({ type: "blob" }).then(function (content) {
 			// Save file to users computer
 			FileSaver.saveAs(content, `CancerModelsOrg_${metadata.modelId}-data.zip`);
+		});
+
+		// Adding 1 for metadata
+		ReactGA.event("download_data", {
+			category: "event",
+			value: totalDownloadFiles + 1,
 		});
 
 		setFileDownloadStatus({

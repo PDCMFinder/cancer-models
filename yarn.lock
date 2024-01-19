@@ -12117,6 +12117,11 @@ react-element-to-jsx-string@^14.3.4:
     is-plain-object "5.0.0"
     react-is "17.0.2"
 
+react-ga4@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-ga4/-/react-ga4-2.1.0.tgz#56601f59d95c08466ebd6edfbf8dede55c4678f9"
+  integrity sha512-ZKS7PGNFqqMd3PJ6+C2Jtz/o1iU9ggiy8Y8nUeksgVuvNISbmrQtJiZNvC/TjDsqD0QlU5Wkgs7i+w9+OjHhhQ==
+
 react-google-recaptcha@^3.1.0:
   version "3.1.0"
   resolved "https://registry.npmjs.org/react-google-recaptcha/-/react-google-recaptcha-3.1.0.tgz"
@@ -12124,6 +12129,11 @@ react-google-recaptcha@^3.1.0:
   dependencies:
     prop-types "^15.5.0"
     react-async-script "^1.2.0"
+
+react-hotjar@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/react-hotjar/-/react-hotjar-6.2.0.tgz#a5db97a6d17dc69f1e45caa872e195a04e8a16af"
+  integrity sha512-uMX2IS5IKt1VkhHPwl2QEAEUmmm6VyxfzlwHLUKTQGZoE/0HWD71iGA7T31PO3KeN9+XUsTJS2P3zHva6TyhrQ==
 
 react-inspector@^5.1.0:
   version "5.1.1"
