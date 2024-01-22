@@ -98,7 +98,12 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 			{isProductionEnvironment && (
 				<>
 					{/* Hotjar Tracking Code for Cancer Models Org */}
-					<Script id="hotjar" strategy="beforeInteractive">
+					<Script
+						id="hotjar"
+						strategy={
+							isProductionEnvironment ? "beforeInteractive" : "afterInteractive"
+						}
+					>
 						{`(function(h,o,t,j,a,r){
                   h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
                   h._hjSettings={hjid:${HJ_ID},hjsv:6};
@@ -110,11 +115,18 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 					</Script>
 					{/* Google Analytics code */}
 					<Script
-						strategy="beforeInteractive"
+						strategy={
+							isProductionEnvironment ? "beforeInteractive" : "afterInteractive"
+						}
 						id="google-tagManager"
 						src="https://www.googletagmanager.com/gtag/js?id=G-34S5KH94SX"
 					/>
-					<Script id="google-analytics" strategy="beforeInteractive">
+					<Script
+						id="google-analytics"
+						strategy={
+							isProductionEnvironment ? "beforeInteractive" : "afterInteractive"
+						}
+					>
 						{`window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);}
                   gtag('js', new Date());
