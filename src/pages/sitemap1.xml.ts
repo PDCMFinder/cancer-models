@@ -13,7 +13,7 @@ function generateSiteMap(
 				.map(
 					(modelproviderMix) =>
 						`<url>
-              <loc>${host}/data/models/${modelproviderMix.data_source}/${modelproviderMix.external_model_id}</loc>
+              <loc>https://${host}/data/models/${modelproviderMix.data_source}/${modelproviderMix.external_model_id}</loc>
             </url>`
 				)
 				.join("")}

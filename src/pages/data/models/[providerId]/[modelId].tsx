@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import Button from "../../../../components/Button/Button";
 import Link from "next/link";
@@ -13,7 +13,6 @@ import {
 	getMolecularDataDownload,
 	getPublicationData,
 } from "../../../../apis/ModelDetails.api";
-import { CSVLink } from "react-csv";
 import CloseIcon from "../../../../components/CloseIcon/CloseIcon";
 import Tooltip from "../../../../components/Tooltip/Tooltip";
 import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
@@ -23,7 +22,10 @@ import { getAllModelData } from "../../../../apis/ModelDetails.api";
 import { hj_event } from "../../../../utils/hotjar";
 import dynamic from "next/dynamic";
 import Loader from "../../../../components/Loader/Loader";
-import Image from "next/image";
+import InputAndLabel from "../../../../components/Input/InputAndLabel";
+import JSZip from "jszip";
+import FileSaver from "file-saver";
+import ReactGA from "react-ga4";
 
 const DynamicModal = dynamic(
 	() => import("../../../../components/Modal/Modal"),
@@ -81,6 +83,7 @@ export interface IMolecularData {
 	dataRestricted: string;
 	molecularCharacterizationId: number;
 	externalDbLinks: ExternalDbLinks[];
+	[key: string]: any;
 }
 
 interface PatientTreatment {
@@ -156,6 +159,11 @@ export interface TypesMap {
 	biomarker_molecular_data: string;
 }
 
+interface IDataFileConfig {
+	data: IMolecularData;
+	filename: string;
+}
+
 const ModelDetails = ({
 	metadata,
 	extLinks,
@@ -170,19 +178,14 @@ const ModelDetails = ({
 	const NA_STRING = "N/A",
 		MODEL_GENOMICS_STRING = "Model Genomics",
 		HLA_TYPE_STRING = "HLA type";
-
-	const [downloadData, setDownloadData] = useState<{
-		data: IMolecularData[];
-		filename: string;
-	}>({
-		data: [],
-		filename: "",
-	});
-	const downloadBtnRef =
-		useRef<CSVLink & HTMLAnchorElement & { link: HTMLAnchorElement }>(null);
-	const [selectedMolecularData, setSelectedMolecularData] =
+	const [selectedMolecularViewData, setSelectedMolecularViewData] =
 		useState<IMolecularData>();
-	const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
+	const [dataToDownload, setDataToDownload] = useState<IDataFileConfig[]>([]);
+	const [fileDownloadStatus, setFileDownloadStatus] = useState({
+		totalFiles: 0,
+		downloadedFiles: 0,
+		isDownloading: false,
+	});
 
 	const { windowWidth } = useWindowDimensions();
 	const bpLarge = breakPoints.large;
@@ -196,26 +199,8 @@ const ModelDetails = ({
 		{ label: "Primary Site", value: metadata.primarySite },
 		{ label: "Collection Site", value: metadata.collectionSite },
 	];
-
-	useEffect(() => {
-		if (!isInitialLoad && downloadBtnRef.current) {
-			downloadBtnRef.current.link.click();
-		}
-		if (isInitialLoad) setIsInitialLoad(false);
-	}, [downloadData]);
-
-	const getDownloadData = (data: IMolecularData): void => {
-		getMolecularDataDownload(data, data.dataType)
-			.then((d) => {
-				setDownloadData({
-					data: d,
-					filename: `CancerModelsOrg_${data.dataType ?? ""}_${
-						data.sampleId ?? ""
-					}_${data.platformName ?? ""}.tsv`,
-				});
-			})
-			.catch((error) => {});
-	};
+	// New metadata object without the "score" property to use in metadata file download; take out modelId to rearrange
+	const { score: _, modelId: metadataModelId, ...metadataFileData } = metadata;
 
 	const pubmedIdsQuery = useQuery(
 		[
@@ -240,6 +225,228 @@ const ModelDetails = ({
 		.map((q) => q.data as IPublication)
 		.filter((d) => d !== undefined);
 
+	const createMetadataFile = (download: boolean = false) => {
+		const filename = `CancerModelsOrg_${metadata.modelId}_metadata.tsv`;
+		const tsvData =
+			Object.keys({
+				modelId: metadataModelId,
+				...metadataFileData,
+				pdxModelPublications: pubmedIds,
+			}).join("\t") +
+			"\n" +
+			Object.values({
+				modelId: metadataModelId,
+				...metadataFileData,
+				pdxModelPublications: pubmedIds,
+			}).join("\t");
+
+		const blob = new Blob([tsvData], { type: "text/tsv" });
+
+		if (download) {
+			FileSaver.saveAs(blob, filename);
+
+			ReactGA.event("download_data", {
+				category: "event",
+				value: 1,
+			});
+		}
+
+		return { blob, filename };
+	};
+
+	const toggleFromDownload = (data: IMolecularData) => {
+		const filename: string = `CancerModelsOrg_${metadata.modelId}_${
+			data.dataType.split(" ").join("-") ?? ""
+		}_${data.sampleId ?? ""}_${
+			data.platformName.split(" ").join("-") ?? ""
+		}.tsv`; // if it changes, update in checkbox checked state
+
+		if (dataToDownload.some((el) => el.filename === filename)) {
+			setDataToDownload((prev) =>
+				prev.filter((el) => el.filename !== filename)
+			);
+		} else {
+			setDataToDownload((prev) => [
+				...prev,
+				{
+					data,
+					filename,
+				},
+			]);
+		}
+	};
+
+	const downloadData = async (data?: IMolecularData) => {
+		// Create new zip
+		let zip = new JSZip();
+
+		// Create metadata file
+		const { blob: metadataBlob, filename: metadataFileName } =
+			createMetadataFile();
+		// Add metadata file to zip
+		zip.file(metadataFileName, metadataBlob);
+		// If we pass some data, that means we just want to download that single data file
+		if (data) {
+			const molecularData = await getMolecularDataDownload(data);
+
+			// Extract headers
+			const headers = Object.keys(molecularData[0]);
+
+			// Convert object values to array of arrays
+			const values = molecularData.map((obj: { [key: string]: any }) =>
+				headers.map((header) => obj[header])
+			);
+
+			// Join headers and values using tab characters
+			const tsv = [headers.join("\t")]
+				.concat(values.map((row: string[]) => row.join("\t")))
+				.join("\n");
+
+			zip.file(
+				`CancerModelsOrg_${metadata.modelId}_${
+					data.dataType.split(" ").join("-") ?? ""
+				}_${data.sampleId ?? ""}_${
+					data.platformName.split(" ").join("-") ?? ""
+				}.tsv`,
+				tsv
+			);
+
+			// Adding 1 for metadata
+			ReactGA.event("download_data", {
+				category: "event",
+				value: 1 + 1,
+			});
+		} else {
+			setFileDownloadStatus((prevState) => ({
+				...prevState,
+				totalFiles: dataToDownload.length,
+				isDownloading: true,
+			}));
+
+			// Create files and add to zip for each data added
+			for (const data of dataToDownload) {
+				await getMolecularDataDownload(data.data).then(
+					(d: IMolecularData[]) => {
+						if (d.length > 0) {
+							// Extract headers
+							const headers = Object.keys(d[0]);
+
+							// Convert object values to array of arrays
+							const values = d.map((obj) =>
+								headers.map((header) => obj[header])
+							);
+
+							// Join headers and values using tab characters
+							const tsv = [headers.join("\t")]
+								.concat(values.map((row) => row.join("\t")))
+								.join("\n");
+
+							// Create file inside zip
+							zip.file(data.filename, tsv);
+
+							setFileDownloadStatus((prevState) => ({
+								...prevState,
+								downloadedFiles: prevState.downloadedFiles + 1,
+							}));
+						}
+					}
+				);
+			}
+
+			// Adding 1 for metadata
+			ReactGA.event("download_data", {
+				category: "event",
+				value: dataToDownload.length + 1,
+			});
+		}
+
+		zip.generateAsync({ type: "blob" }).then(function (content) {
+			// Save file to users computer
+			FileSaver.saveAs(content, `CancerModelsOrg_${metadata.modelId}-data.zip`);
+		});
+
+		setDataToDownload([]);
+		setFileDownloadStatus({
+			totalFiles: 0,
+			downloadedFiles: 0,
+			isDownloading: false,
+		});
+	};
+
+	const downloadAllData = async () => {
+		let allDataZip = new JSZip();
+		let totalDownloadFiles = 0;
+
+		const { blob: metadataBlob, filename: metadataFileName } =
+			createMetadataFile();
+
+		// Add metadata file to zip
+		allDataZip.file(metadataFileName, metadataBlob);
+
+		for (const data of molecularData) {
+			if (data.dataExists === "TRUE") {
+				if (data.dataRestricted === "FALSE") {
+					totalDownloadFiles++;
+				}
+			}
+		}
+
+		setFileDownloadStatus((prevState) => ({
+			...prevState,
+			totalFiles: totalDownloadFiles,
+			isDownloading: true,
+		}));
+
+		for (const data of molecularData) {
+			await getMolecularDataDownload(data).then((d: IMolecularData[]) => {
+				if (d.length > 0) {
+					// Extract headers
+					const headers = Object.keys(d[0]);
+
+					// Convert object values to array of arrays
+					const values = d.map((obj) => headers.map((header) => obj[header]));
+
+					// Join headers and values using tab characters
+					const tsv = [headers.join("\t")]
+						.concat(values.map((row) => row.join("\t")))
+						.join("\n");
+
+					// Create file inside zip
+					allDataZip.file(
+						`CancerModelsOrg_${metadata.modelId}_${
+							data.dataType.split(" ").join("-") ?? ""
+						}_${data.sampleId ?? ""}_${
+							data.platformName.split(" ").join("-") ?? ""
+						}.tsv`,
+						tsv
+					);
+
+					setFileDownloadStatus((prevState) => ({
+						...prevState,
+						downloadedFiles: prevState.downloadedFiles + 1,
+					}));
+				}
+			});
+		}
+
+		allDataZip.generateAsync({ type: "blob" }).then(function (content) {
+			// Save file to users computer
+			FileSaver.saveAs(content, `CancerModelsOrg_${metadata.modelId}-data.zip`);
+		});
+
+		// Adding 1 for metadata
+		ReactGA.event("download_data", {
+			category: "event",
+			value: totalDownloadFiles + 1,
+		});
+
+		setFileDownloadStatus({
+			totalFiles: 0,
+			downloadedFiles: 0,
+			isDownloading: false,
+		});
+	};
+
 	const modelGenomicsImmuneMarkers = immuneMarkers.filter(
 		(markerRow) => markerRow.type === MODEL_GENOMICS_STRING
 	);
@@ -262,7 +469,7 @@ const ModelDetails = ({
 
 	return (
 		<>
-			{/* metadata */}
+			{/* page metadata */}
 			<Head>
 				<title>
 					{`CancerModels.Org - ${metadata.modelId} - ${metadata.histology} - ${metadata.modelType}`}
@@ -492,6 +699,16 @@ const ModelDetails = ({
 										})}
 									</ul>
 								</div>
+								<div className="col-12">
+									<Button
+										color="dark"
+										priority="secondary"
+										onClick={() => createMetadataFile(true)}
+										className="mt-0"
+									>
+										Download model metadata
+									</Button>
+								</div>
 							</div>
 							{engraftments && engraftments?.length > 0 && (
 								<div id="engraftments" className="row mb-5 pt-3">
@@ -516,11 +733,11 @@ const ModelDetails = ({
 															engraftment.hostStrainNomenclature
 																.split(" ")
 																.map((h) => {
-																	const regExp = /(.*)<sup>(.*)<\/sup>(.*)/gm;
-																	const matches = regExp.exec(h) || [];
-																	const strainPrefix = matches[1] || "";
-																	const strainSup = matches[2] || "";
-																	const strainSuffix = matches[3] || "";
+																	const regExp = /(.*)<sup>(.*)<\/sup>(.*)/gm,
+																		matches = regExp.exec(h) || [],
+																		strainPrefix = matches[1] || "",
+																		strainSup = matches[2] || "",
+																		strainSuffix = matches[3] || "";
 
 																	return {
 																		strainPrefix,
@@ -630,7 +847,16 @@ const ModelDetails = ({
 							{molecularData.length > 0 && (
 								<div id="molecular-data" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
-										<h2 className="mt-0">Molecular data</h2>
+										<div className="d-flex justify-content-between align-center">
+											<h2 className="mt-0">Molecular data</h2>
+											<Button
+												priority="secondary"
+												color="dark"
+												onClick={() => downloadAllData()}
+											>
+												Download all
+											</Button>
+										</div>
 										<div className="overflow-auto showScrollbar-vertical">
 											<table>
 												<caption>Molecular data</caption>
@@ -650,7 +876,7 @@ const ModelDetails = ({
 														molecularData.map((data) => {
 															let sampleType,
 																rawDataExternalLinks: ExternalDbLinks[] = [],
-																dataAvailableContent;
+																dataAvailableContent: JSX.Element;
 
 															switch (data.source) {
 																case "xenograft":
@@ -697,7 +923,7 @@ const ModelDetails = ({
 																				priority="secondary"
 																				className="text-left link-text mt-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
 																				onClick={() => {
-																					setSelectedMolecularData(data);
+																					setSelectedMolecularViewData(data);
 																					hj_event("click_viewData");
 																				}}
 																			>
@@ -708,12 +934,37 @@ const ModelDetails = ({
 																				priority="secondary"
 																				className="text-left link-text mt-0 m-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
 																				onClick={() => {
-																					getDownloadData(data);
+																					downloadData(data);
 																					hj_event("click_downloadData");
 																				}}
 																			>
 																				DOWNLOAD DATA
 																			</Button>
+																			<InputAndLabel
+																				label="Add to batch download"
+																				name={`add-to-download-${data.sampleId}-${data.dataType}-${data.platformName}`}
+																				type="checkbox"
+																				forId={`add-to-download-id-${data.sampleId}-${data.dataType}-${data.platformName}`}
+																				checked={dataToDownload.some(
+																					(batchData) =>
+																						batchData.filename ===
+																						`CancerModelsOrg_${
+																							metadata.modelId
+																						}_${
+																							data.dataType
+																								.split(" ")
+																								.join("-") ?? ""
+																						}_${data.sampleId ?? ""}_${
+																							data.platformName
+																								.split(" ")
+																								.join("-") ?? ""
+																						}.tsv` // if this changes, update in toggleFromDownload
+																				)}
+																				onChange={() =>
+																					toggleFromDownload(data)
+																				}
+																				className="text-smaller mt-1"
+																			/>
 																		</>
 																	);
 																}
@@ -772,13 +1023,6 @@ const ModelDetails = ({
 											</table>
 										</div>
 									</div>
-									<CSVLink
-										data={downloadData.data}
-										filename={downloadData.filename}
-										className="hideElement-accessible"
-										ref={downloadBtnRef}
-										separator={"\t"}
-									/>
 								</div>
 							)}
 							{immuneMarkers.length > 0 && (
@@ -1058,11 +1302,104 @@ const ModelDetails = ({
 					</div>
 				</div>
 			</section>
-			{selectedMolecularData && (
+
+			{/* floating card */}
+			{dataToDownload.length > 0 ? (
+				<div className="row position-sticky bottom-0 mt-5">
+					<div className="col-10 offset-1">
+						<Card
+							className="bg-primary-quaternary mb-2"
+							contentClassName="py-2"
+						>
+							<div className="d-flex align-center justify-content-between">
+								<p className="m-0">
+									{!fileDownloadStatus.isDownloading ? (
+										<>
+											<b>Download selected data: </b>
+											{dataToDownload.map((data, idx) => {
+												const cleanFilename = data.filename
+														.split("_")
+														.slice(2)
+														.join("_")
+														.split(".")[0],
+													clearX = (
+														<sup>
+															<Button
+																color="dark"
+																priority="secondary"
+																className="text-underline m-0 ml-1"
+																style={{ padding: ".2rem .3rem" }}
+																onClick={() =>
+																	setDataToDownload((prev) =>
+																		prev.filter(
+																			(el) => el.filename !== data.filename
+																		)
+																	)
+																}
+															>
+																X
+															</Button>
+														</sup>
+													);
+
+												if (idx === 0) {
+													return (
+														<React.Fragment key={cleanFilename}>
+															{cleanFilename}
+															{clearX}
+														</React.Fragment>
+													);
+												}
+
+												return (
+													<React.Fragment key={cleanFilename}>
+														{" "}
+														<span className="text-primary-tertiary">
+															+
+														</span>{" "}
+														{cleanFilename}
+														{clearX}
+													</React.Fragment>
+												);
+											})}
+										</>
+									) : (
+										<>
+											<b>Fetching files: </b>
+											{fileDownloadStatus.downloadedFiles + 1}/
+											{fileDownloadStatus.totalFiles}
+										</>
+									)}
+								</p>
+								<div className="d-flex">
+									<Button
+										color="dark"
+										priority="primary"
+										className="my-1 py-1"
+										onClick={() => downloadData()}
+									>
+										Download
+									</Button>
+									<Button
+										color="dark"
+										priority="secondary"
+										className="my-1 ml-1 py-1"
+										onClick={() => setDataToDownload([])}
+									>
+										Clear
+									</Button>
+								</div>
+							</div>
+						</Card>
+					</div>
+				</div>
+			) : null}
+			{/* data modal */}
+			{selectedMolecularViewData && (
 				<DynamicModal
 					verticalAlign="top"
 					modalWidth="100"
-					handleClose={() => setSelectedMolecularData(undefined)}
+					handleClose={() => setSelectedMolecularViewData(undefined)}
 				>
 					<Card
 						className="bg-white"
@@ -1070,18 +1407,18 @@ const ModelDetails = ({
 						header={
 							<header className="d-flex justify-content-between">
 								<h3 className="m-0">
-									{selectedMolecularData.platformName} data
+									{selectedMolecularViewData.platformName} data
 								</h3>
 								<CloseIcon
 									color="dark"
-									onClick={() => setSelectedMolecularData(undefined)}
+									onClick={() => setSelectedMolecularViewData(undefined)}
 								/>
 							</header>
 						}
 					>
 						<MolecularDataTable
-							data={selectedMolecularData}
-							handleDownload={getDownloadData}
+							data={selectedMolecularViewData}
+							handleDownload={() => downloadData(selectedMolecularViewData)}
 						/>
 					</Card>
 				</DynamicModal>
