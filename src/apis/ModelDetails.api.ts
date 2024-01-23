@@ -1,6 +1,7 @@
 import {
 	ExtLinks,
 	IModelImage,
+	IMolecularData,
 	IPublication,
 	IImmuneMarkers,
 	IImmuneMarker,
@@ -257,20 +258,19 @@ export async function getModelMolecularDataDetails(
 }
 
 export async function getMolecularDataDownload(
-	molecularCharacterization: any,
-	dataType: string
+	molecularCharacterization: IMolecularData
 ) {
-	if (!molecularCharacterization.id) {
+	if (!molecularCharacterization.molecularCharacterizationId) {
 		return [];
 	}
 	const typeEndpointMap: any = {
 		mutation: "mutation_data_table",
 		expression: "expression_data_table",
 		"copy number alteration": "cna_data_table",
-		biomarker: "biomarker_data_table",
+		"bio markers": "biomarker_data_table",
 	};
-	const endpoint = typeEndpointMap[dataType];
-	let request = `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?molecular_characterization_id=eq.${molecularCharacterization.id}`;
+	const endpoint = typeEndpointMap[molecularCharacterization.dataType];
+	let request = `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?molecular_characterization_id=eq.${molecularCharacterization.molecularCharacterizationId}`;
 	let response = await fetch(request, { headers: { Prefer: "count=exact" } });
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
@@ -280,9 +280,7 @@ export async function getMolecularDataDownload(
 			delete item.molecular_characterization_id;
 			delete item.text;
 			delete item.external_db_links;
-			item["sampleID"] =
-				molecularCharacterization.patientSampleId ||
-				molecularCharacterization.xenograftSampleId;
+			item["sampleID"] = molecularCharacterization.sampleId;
 			return item;
 		});
 	});
@@ -513,6 +511,39 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 			pdcmModelId,
 			modelId,
 			providerId: modelProviderId,
+			// Extras for metadata file
+			externalModelId: metadata.externalModelId,
+			projectName: metadata.projectName,
+			datasetAvailable: metadata.datasetAvailable,
+			cancerGradingSystem: metadata.cancerGradingSystem,
+			cancerStagingSystem: metadata.cancerStagingSystem,
+			patientHistory: metadata.patientHistory,
+			patientEthnicyAssesmentMethod: metadata.patientEthnicyAssesmentMethod
+				? JSON.parse(JSON.stringify(metadata.patientEthnicyAssesmentMethod))
+				: null,
+			patientInitialDiagnosis: metadata.patientInitialDiagnosis,
+			patientTreatmentStatus: metadata.patientTreatmentStatus,
+			patientAgeAtInitialDiagnosis: metadata.patientAgeAtInitialDiagnosis,
+			patientSampleId: metadata.patientSampleId,
+			patientSampleCollectionDate: metadata.patientSampleCollectionDate,
+			patientSampleCollectionEvent: metadata.patientSampleCollectionEvent,
+			patientSampleMonthsSinceCollection:
+				metadata.patientSampleMonthsSinceCollection
+					? JSON.parse(
+							JSON.stringify(metadata.patientSampleMonthsSinceCollection)
+					  )
+					: null,
+			patientSampleVirologyStatus: metadata.patientSampleVirologyStatus,
+			patientSampleShareable: metadata.patientSampleShareable
+				? JSON.parse(JSON.stringify(metadata.patientSampleShareable))
+				: null,
+			patientSampleTreatedAtCollection:
+				metadata.patientSampleTreatedAtCollection,
+			patientSampleTreatedPriorToCollection:
+				metadata.patientSampleTreatedPriorToCollection,
+			pdxModelPublications: metadata.pdxModelPublications,
+			...metadata.qualityAssurance[0],
+			...metadata.xenograftModelSpecimens[0],
 		},
 		extLinks,
 		molecularData,
