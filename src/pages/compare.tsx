@@ -19,9 +19,14 @@ import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import { compareTourSteps } from "../utils/tourSteps";
 import FloatingButton from "../components/FloatingWidget/FloatingButton";
+import ShowHide from "../components/ShowHide/ShowHide";
+import breakPoints from "../utils/breakpoints";
+import useWindowDimensions from "../hooks/useWindowDimensions";
 
 const Compare: NextPage = () => {
 	const CHECKMARK_STRING = "✔";
+	const { windowWidth = 0 } = useWindowDimensions();
+	const bpLarge = breakPoints.large;
 	const { query } = useRouter();
 	const router = useRouter();
 	const modelsToCompareArr =
@@ -654,9 +659,11 @@ const Compare: NextPage = () => {
 							</div>
 						</div>
 					</section>
-					<FloatingButton onClick={driverObj.drive}>
-						Take page tour
-					</FloatingButton>
+					<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
+						<FloatingButton onClick={driverObj.drive}>
+							Take page tour
+						</FloatingButton>
+					</ShowHide>
 				</>
 			) : (
 				<>
