@@ -26,6 +26,10 @@ import InputAndLabel from "../../../../components/Input/InputAndLabel";
 import JSZip from "jszip";
 import FileSaver from "file-saver";
 import ReactGA from "react-ga4";
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
+import FloatingButton from "../../../../components/FloatingWidget/FloatingButton";
+import { modelTourSteps } from "../../../../utils/tourSteps";
 
 const DynamicModal = dynamic(
 	() => import("../../../../components/Modal/Modal"),
@@ -199,6 +203,11 @@ const ModelDetails = ({
 		{ label: "Primary Site", value: metadata.primarySite },
 		{ label: "Collection Site", value: metadata.collectionSite },
 	];
+	const driverObj = driver({
+		showProgress: true,
+		prevBtnText: "← Prev",
+		steps: modelTourSteps,
+	});
 	// New metadata object without the "score" property to use in metadata file download; take out modelId to rearrange
 	const { score: _, modelId: metadataModelId, ...metadataFileData } = metadata;
 
@@ -458,7 +467,7 @@ const ModelDetails = ({
 	if (modelGenomicsImmuneMarkers.length > 0) {
 		modelGenomicsImmuneMarkers.forEach((genomicMarker) => {
 			const index = genomicMarker.markers.findIndex(
-				(marker) => marker.name === "ploity" || marker.name === "Ploity"
+				(marker) => marker.name.toLocaleLowerCase() === "ploity"
 			);
 			if (index !== -1) {
 				const [removed] = modelGenomicsImmuneMarkers.splice(index, 1);
@@ -482,19 +491,26 @@ const ModelDetails = ({
 						<div className="col-12 col-md-10 col-lg-6 col-xl-6 col-xxx-4 offset-md-1 offset-xl-2 offset-xxx-2 mb-5">
 							<h2
 								className={`m-0 text-family-secondary ${styles.ModelDetails_histology}`}
+								id="tour_model-histologyType"
 							>
 								{metadata.histology} - {metadata.modelType}
 							</h2>
-							<h1 className="m-0 mb-2">{metadata.modelId}</h1>
+							<h1 className="m-0 mb-2" id="tour_model-id">
+								{metadata.modelId}
+							</h1>
 							{metadata.score > 0 && (
 								<QualityBadge
 									score={metadata.score}
 									containerClassName="text-white"
 									className="w-50"
+									id="tour_model-score"
 								/>
 							)}
 						</div>
-						<div className="col-12 col-md-10 col-lg-5 col-xxx-3 col-xl-5 offset-lg-1 offset-xl-5 offset-xxx-1 offset-md-1 text-right">
+						<div
+							className="col-12 col-md-10 col-lg-5 col-xxx-3 col-xl-5 offset-lg-1 offset-xl-5 offset-xxx-1 offset-md-1 text-right"
+							id="tour_model-providerInfo"
+						>
 							<p className="mb-1">Provided by</p>
 							<h3 className="my-0 mb-3 mb-lg-0">
 								<Link
@@ -1423,6 +1439,11 @@ const ModelDetails = ({
 					</Card>
 				</DynamicModal>
 			)}
+			<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
+				<FloatingButton onClick={driverObj.drive}>
+					Take page tour
+				</FloatingButton>
+			</ShowHide>
 		</>
 	);
 };

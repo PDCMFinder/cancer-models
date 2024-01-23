@@ -24,6 +24,10 @@ import Card from "../components/Card/Card";
 import CloseIcon from "../components/CloseIcon/CloseIcon";
 import { NextPage } from "next/types";
 import dynamic from "next/dynamic";
+import { driver } from "driver.js";
+import { searchTourSteps } from "../utils/tourSteps";
+import "driver.js/dist/driver.css";
+import FloatingButton from "../components/FloatingWidget/FloatingButton";
 
 const DynamicModal = dynamic(import("../components/Modal/Modal"), {
 	loading: () => (
@@ -67,6 +71,12 @@ const Search: NextPage = () => {
 	const [modelsToCompare, setModelsToCompare] = useState<string[]>([]);
 	const router = useRouter();
 	const ignoredFilterValues = ["page", "search_terms"];
+
+	const driverObj = driver({
+		showProgress: true,
+		prevBtnText: "← Prev",
+		steps: searchTourSteps,
+	});
 
 	const changePage = (page: number) => {
 		setCurrentPage(page);
@@ -522,6 +532,7 @@ const Search: NextPage = () => {
 								<Card
 									className="bg-primary-quaternary mb-2"
 									contentClassName="py-2"
+									id="tour_compareCard"
 								>
 									<div className="d-flex align-center justify-content-between">
 										<p className="m-0">
@@ -593,6 +604,11 @@ const Search: NextPage = () => {
 					) : null}
 				</div>
 			</section>
+			<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
+				<FloatingButton onClick={driverObj.drive}>
+					Take page tour
+				</FloatingButton>
+			</ShowHide>
 		</>
 	);
 };

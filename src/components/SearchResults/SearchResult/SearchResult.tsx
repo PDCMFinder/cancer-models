@@ -81,7 +81,7 @@ const SearchResult = (props: ISearchResultProps) => {
 	const modelLink = `/data/models/${sourceId}/${pdcmId}`;
 
 	return (
-		<Card className={`${styles.SearchResult}`}>
+		<Card className={`${styles.SearchResult}`} id="tour_searchResult">
 			<div className="row">
 				<div className="col-12 col-md-6 col-lg-4 d-lg-flex flex-column justify-content-between">
 					<div>

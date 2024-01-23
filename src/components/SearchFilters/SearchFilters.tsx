@@ -34,6 +34,7 @@ const SearchFilters = (props: ISearchFilters) => {
 		<Card
 			className="bg-lightGray bc-transparent overflow-visible"
 			contentClassName="py-3 px-2"
+			id="tour_filters"
 		>
 			{filterData.map((facet: IFacetSectionProps) => {
 				let facetKey = facet.key,
