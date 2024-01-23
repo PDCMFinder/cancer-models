@@ -16,7 +16,8 @@ export const searchTourSteps: DriveStep[] = [
 		element: "#tour_filters",
 		popover: {
 			title: "Search results filters",
-			description: "Narrow your search results to suit your needs.",
+			description:
+				"Narrow your search results to suit your needs using one or multiple filter options.",
 			side: "right",
 			align: "center",
 		},
@@ -35,7 +36,7 @@ export const searchTourSteps: DriveStep[] = [
 		popover: {
 			title: "Search result",
 			description:
-				"A single cancer model based on your search query and/or filtering.",
+				"Individual cancer model based on your search query and/or filtering.",
 			side: "top",
 			align: "center",
 		},
@@ -54,7 +55,7 @@ export const searchTourSteps: DriveStep[] = [
 		popover: {
 			title: "Compare",
 			description:
-				"Includes the models you've chosen to compare. Keep checking more boxes to add.",
+				"Includes the models you've chosen to compare. Keep checking more boxes to add and then compare.",
 			side: "left",
 			align: "center",
 		},
@@ -75,7 +76,8 @@ export const compareTourSteps: DriveStep[] = [
 		element: "#tour_modelsToCompare",
 		popover: {
 			title: "Models to compare",
-			description: "This are the models that have their data being compared",
+			description:
+				"This are the models that have their data being compared. You can remove models you don't want to compare anymore. At least 2 models are needed at all times.",
 			side: "top",
 			align: "center",
 		},
@@ -84,7 +86,8 @@ export const compareTourSteps: DriveStep[] = [
 		element: "#tour_compare-metadata",
 		popover: {
 			title: "Patient / tumour metadata",
-			// description: "Metadata",
+			description:
+				"This section provides information about the patient and tumour. It includes clinical information such as patient demographics, and tumour characteristics.",
 			side: "top",
 			align: "center",
 		},
@@ -93,7 +96,8 @@ export const compareTourSteps: DriveStep[] = [
 		element: "#tour_compare-engraftment",
 		popover: {
 			title: "PDX Model Engraftment",
-			// description: "Metadata",
+			description:
+				"This section provides details about the successful engraftment of Patient-Derived Xenograft (PDX) models such as the establishment of the model, engraftment success rates, and relevant details about the transplantation process.",
 			side: "top",
 			align: "center",
 		},
@@ -102,7 +106,8 @@ export const compareTourSteps: DriveStep[] = [
 		element: "#tour_compare-qualityControl",
 		popover: {
 			title: "Model quality control",
-			// description: "Metadata",
+			description:
+				"This section provides information on methods/protocols used to ensure the quality and reliability of the data and models.",
 			side: "top",
 			align: "center",
 		},
@@ -111,7 +116,8 @@ export const compareTourSteps: DriveStep[] = [
 		element: "#tour_compare-availableData",
 		popover: {
 			title: "Available data",
-			// description: "Metadata",
+			description:
+				"Data that's available for this models. More data for this sections can be found in each individual model page.",
 			side: "top",
 			align: "center",
 		},
@@ -142,7 +148,7 @@ export const modelTourSteps: DriveStep[] = [
 		element: "#tour_model-histologyType",
 		popover: {
 			title: "Model histology and type",
-			description: "Eg. Breast Cancer (histology) - PDX (type)",
+			description: "[histology] - [type]",
 			side: "top",
 			align: "center",
 		},
