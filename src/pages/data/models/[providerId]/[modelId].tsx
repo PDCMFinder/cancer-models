@@ -528,10 +528,7 @@ const ModelDetails = ({
 										target="_blank"
 										rel="noopener noreferrer"
 										onClick={() =>
-											ReactGA.event("provider_view_data", {
-												category: "event",
-												provider: metadata.providerId,
-											})
+											hj_event(`click_providerViewData-${metadata.providerId}`)
 										}
 									>
 										View data at {metadata.providerId || "provider"}
@@ -544,10 +541,7 @@ const ModelDetails = ({
 									href={extLinks.contactLink}
 									className="mb-0 ml-lg-3 align-self-end"
 									onClick={() =>
-										ReactGA.event("provider_contact", {
-											category: "event",
-											provider: metadata.providerId,
-										})
+										hj_event(`click_providerContact-${metadata.providerId}`)
 									}
 								>
 									<>Contact {metadata.providerId || "provider"}</>
@@ -931,10 +925,7 @@ const ModelDetails = ({
 																			target="_blank"
 																			rel="noreferrer noopener"
 																			onClick={() =>
-																				ReactGA.event("provider_request_data", {
-																					category: "event",
-																					provider: metadata.providerId,
-																				})
+																				hj_event("click_requestData")
 																			}
 																		>
 																			REQUEST DATA
@@ -949,9 +940,7 @@ const ModelDetails = ({
 																				className="text-left link-text mt-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
 																				onClick={() => {
 																					setSelectedMolecularViewData(data);
-																					ReactGA.event("view_data", {
-																						category: "event",
-																					});
+																					hj_event("click_viewData");
 																				}}
 																			>
 																				VIEW DATA
@@ -961,8 +950,8 @@ const ModelDetails = ({
 																				priority="secondary"
 																				className="text-left link-text mt-0 m-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
 																				onClick={() => {
-																					// Handles GA event inside downloadData function
 																					downloadData(data);
+																					hj_event("click_downloadData");
 																				}}
 																			>
 																				DOWNLOAD DATA
