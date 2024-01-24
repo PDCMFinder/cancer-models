@@ -4,10 +4,10 @@ import Button from "../components/Button/Button";
 import Form from "../components/Form/Form";
 import InputAndLabel from "../components/Input/InputAndLabel";
 import { createTicket } from "../apis/Contact.api";
-import { hj_event } from "../utils/hotjar";
 import Loader from "../components/Loader/Loader";
 import Link from "next/link";
 import ReCAPTCHA from "react-google-recaptcha";
+import ReactGA from "react-ga4";
 
 interface IFormStatus {
 	status: "success" | "error" | "loading" | "";
@@ -49,6 +49,11 @@ const Contact: NextPage = () => {
 			setFormStatus({
 				status: "success",
 				message: "Thank you for your message! We will be in touch soon.",
+			});
+
+			ReactGA.event("contactForm-success", {
+				category: "event",
+				value: 1,
 			});
 		} else if (response.error) {
 			// Logging the error so Hotjar can show it in analytics
@@ -136,12 +141,7 @@ const Contact: NextPage = () => {
 									apply.
 								</p>
 								<div className="text-right">
-									<Button
-										type="submit"
-										priority="primary"
-										color="dark"
-										onClick={() => hj_event("click_contactSubmit")}
-									>
+									<Button type="submit" priority="primary" color="dark">
 										Submit
 									</Button>
 								</div>
