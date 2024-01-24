@@ -61,11 +61,9 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 		};
 	}, []);
 
-	const isProductionEnvironment = process.env.NODE_ENV === "production";
-	console.log({
-		gitLab_var: process.env.GITLAB_ENVIRONMENT_IS_STAGING,
-		node_env: process.env.NODE_ENV,
-	});
+	const isProductionEnvironment =
+		process.env.NEXT_PUBLIC_APP_ENV === "production";
+
 	return (
 		<>
 			<Head>
