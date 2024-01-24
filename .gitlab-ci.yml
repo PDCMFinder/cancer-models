@@ -58,6 +58,7 @@ build_dev_image:
     - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
     - rm .env.production && cp .env.development .env.production
   script:
+    - export NODE_ENV=staging
     - |
       if [[ "${REQUIRES_REBUILD_IMAGE}" == "true" ]]; then
           echo "Building dev image: ${CI_REGISTRY_IMAGE}:dev" 
