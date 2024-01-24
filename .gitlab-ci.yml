@@ -70,7 +70,7 @@ build_dev_image:
           docker push "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":dev  | tee ${MOUNT_POINT}/dockerhub-push-latest.log
       fi
     - docker logout
-
+  environment: staging
   artifacts:
     paths:
       - "$MOUNT_POINT/"

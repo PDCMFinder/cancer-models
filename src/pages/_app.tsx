@@ -62,7 +62,10 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 	}, []);
 
 	const isProductionEnvironment = process.env.NODE_ENV === "production";
-
+	console.log({
+		gitLab_var: process.env.GITLAB_ENVIRONMENT_IS_STAGING,
+		node_env: process.env.NODE_ENV,
+	});
 	return (
 		<>
 			<Head>
@@ -98,12 +101,7 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 			{isProductionEnvironment && (
 				<>
 					{/* Hotjar Tracking Code for Cancer Models Org */}
-					<Script
-						id="hotjar"
-						strategy={
-							isProductionEnvironment ? "beforeInteractive" : "afterInteractive"
-						}
-					>
+					<Script id="hotjar" strategy="beforeInteractive">
 						{`(function(h,o,t,j,a,r){
                   h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
                   h._hjSettings={hjid:${HJ_ID},hjsv:6};
@@ -115,18 +113,11 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 					</Script>
 					{/* Google Analytics code */}
 					<Script
-						strategy={
-							isProductionEnvironment ? "beforeInteractive" : "afterInteractive"
-						}
+						strategy="beforeInteractive"
 						id="google-tagManager"
 						src="https://www.googletagmanager.com/gtag/js?id=G-34S5KH94SX"
 					/>
-					<Script
-						id="google-analytics"
-						strategy={
-							isProductionEnvironment ? "beforeInteractive" : "afterInteractive"
-						}
-					>
+					<Script id="google-analytics" strategy="beforeInteractive">
 						{`window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);}
                   gtag('js', new Date());
