@@ -1,7 +1,6 @@
 import Navbar from "../Navbar/Navbar";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
-import FloatingWidget from "../FloatingWidget/FloatingWidget";
 import Card from "../Card/Card";
 import Button from "../Button/Button";
 import CloseIcon from "../CloseIcon/CloseIcon";
@@ -9,6 +8,9 @@ import dynamic from "next/dynamic";
 import Loader from "../Loader/Loader";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import FloatingButton from "../FloatingWidget/FloatingButton";
+import ReactGA from "react-ga4";
+import FeedbackIcon from "../FeedbackIcon/FeedbackIcon";
 
 const DynamicModal = dynamic(import("../Modal/Modal"), {
 	loading: () => (
@@ -42,6 +44,7 @@ interface ILayoutProps {
 const Layout = (props: ILayoutProps) => {
 	const [cookies, setCookie] = useCookies();
 	const [cookieConsentHeight, setCookieConsentHeight] = useState<number>(0);
+	const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 	const surveyHref =
 		"https://docs.google.com/forms/d/e/1FAIpQLSeRJQ7Xu1pMqegYvs4KVdA17bucM6XzW2zzA2yHaroPfSR7Sg/viewform";
 	const [queryClient] = useState(
@@ -70,17 +73,21 @@ const Layout = (props: ILayoutProps) => {
 						setCookieConsentHeight={setCookieConsentHeight}
 					/>
 				)}
-				<FloatingWidget
-					link={surveyHref}
-					onClick={() =>
-						setCookie("cm_feedback", "true", {
-							sameSite: "lax",
-							maxAge: 2592000,
-						})
-					}
+				{/* bottom right survey bubble */}
+				<FloatingButton
+					onClick={() => {
+						setShowFeedbackModal(true);
+						ReactGA.event("feedback_bubble-click", {
+							category: "event",
+						});
+					}}
+					position="bottom right"
+					className="p-2 br-round"
+					priority="primary"
+					color="dark"
 				>
-					Help us improve - take our user survey
-				</FloatingWidget>
+					<FeedbackIcon />
+				</FloatingButton>
 				<ReactQueryDevtools initialIsOpen={false} />
 				<DynamicFooter cookieConsentHeight={cookieConsentHeight} />
 				{!cookies["cm_feedback"] && (
@@ -134,6 +141,34 @@ const Layout = (props: ILayoutProps) => {
 									Go to feedback survey
 								</Button>
 							</div>
+						</Card>
+					</DynamicModal>
+				)}
+				{showFeedbackModal && (
+					<DynamicModal handleClose={() => setShowFeedbackModal(false)}>
+						<Card
+							className="bg-white"
+							contentClassName="pt-0"
+							headerClassName="py-1 px-2 bg-white"
+							header={
+								<header className="text-right">
+									<CloseIcon
+										color="dark"
+										onClick={() => setShowFeedbackModal(false)}
+									/>
+								</header>
+							}
+						>
+							<iframe
+								src="https://docs.google.com/forms/d/e/1FAIpQLSdUyImdk48tbO72gw3BTuQ00grvJNgq25FnrlxxrF-1qPzrCA/viewform?embedded=true"
+								width="640"
+								height="550"
+								frameBorder={0}
+								marginHeight={0}
+								marginWidth={0}
+							>
+								Loading…
+							</iframe>
 						</Card>
 					</DynamicModal>
 				)}

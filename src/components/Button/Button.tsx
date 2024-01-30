@@ -7,7 +7,7 @@ import { IArrowIconProps } from "../ArrowIcon/ArrowIcon";
 const RIGHT = "right",
 	DOWN = "down";
 
-interface IButtonProps {
+export interface IButtonProps {
 	style?: CSSProperties;
 	children: string | JSX.Element;
 	priority: "primary" | "secondary";
@@ -37,8 +37,7 @@ const Button = (props: IButtonProps) => {
       ${styles[`Button-${props.priority}`]}
       ${styles[`Button-${props.color}`]}
       ${propsClassName ? propsClassName : ""}
-    `.trim(),
-		externalLinkProps = null;
+    `.trim();
 
 	const handleOnClick = () => {
 		if (props.onClick) props.onClick();

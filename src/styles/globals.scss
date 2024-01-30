@@ -310,6 +310,9 @@ textarea {
 	&-common {
 		border-radius: $br-common;
 	}
+	&-round {
+		border-radius: 500px !important;
+	}
 }
 .bg {
 	&-transparent {
