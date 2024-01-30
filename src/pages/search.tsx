@@ -605,7 +605,11 @@ const Search: NextPage = () => {
 				</div>
 			</section>
 			<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
-				<FloatingButton onClick={driverObj.drive}>
+				<FloatingButton
+					onClick={driverObj.drive}
+					priority="secondary"
+					color="dark"
+				>
 					Take page tour
 				</FloatingButton>
 			</ShowHide>
