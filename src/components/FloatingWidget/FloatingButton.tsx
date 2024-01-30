@@ -1,13 +1,19 @@
-import Button from "../Button/Button";
+import Button, { IButtonProps } from "../Button/Button";
 
 interface IFloatingButtonProps {
+	priority: IButtonProps["priority"];
+	color: IButtonProps["color"];
 	position?: string;
-	children: string;
+	className?: string;
+	children: string | JSX.Element;
 	onClick?: () => void;
 }
 
 const FloatingButton = ({
+	priority,
+	color,
 	position = "bottom left",
+	className,
 	children,
 	onClick,
 }: IFloatingButtonProps) => {
@@ -28,10 +34,10 @@ const FloatingButton = ({
 
 	return (
 		<Button
-			priority="secondary"
-			color="dark"
+			priority={priority}
+			color={color}
 			onClick={() => (onClick ? onClick() : null)}
-			className={`bg-white position-fixed ${positionClassNames.join(" ")}`}
+			className={`position-fixed ${className} ${positionClassNames.join(" ")}`}
 		>
 			{children}
 		</Button>
