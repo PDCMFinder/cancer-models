@@ -542,7 +542,7 @@ const ModelDetails = ({
 									color="white"
 									htmlTag="a"
 									href={extLinks.contactLink}
-									className="mb-0 ml-lg-3 align-self-end"
+									className="mb-0 ml-lg-3 align-self-end bg-transparent"
 									onClick={() =>
 										ReactGA.event("provider_contact", {
 											category: "event",
