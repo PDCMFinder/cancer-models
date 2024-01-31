@@ -76,6 +76,7 @@ const Search: NextPage = () => {
 		showProgress: true,
 		prevBtnText: "← Prev",
 		steps: searchTourSteps,
+		onDestroyed: () => setModelsToCompare([]),
 	});
 
 	const changePage = (page: number) => {
@@ -591,7 +592,7 @@ const Search: NextPage = () => {
 											<Button
 												color="dark"
 												priority="secondary"
-												className="my-1 ml-1 py-1"
+												className="my-1 ml-1 py-1 bg-transparent"
 												onClick={() => setModelsToCompare([])}
 											>
 												Clear
@@ -606,7 +607,10 @@ const Search: NextPage = () => {
 			</section>
 			<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
 				<FloatingButton
-					onClick={driverObj.drive}
+					onClick={() => {
+						setModelsToCompare([]);
+						driverObj.drive();
+					}}
 					priority="secondary"
 					color="dark"
 				>

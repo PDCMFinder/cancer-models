@@ -207,6 +207,18 @@ const ModelDetails = ({
 		showProgress: true,
 		prevBtnText: "← Prev",
 		steps: modelTourSteps,
+		onHighlightStarted: (el, step) => {
+			if (!el && !driverObj.isLastStep()) {
+				if (step.popover) {
+					step.popover.description =
+						"<b>(Not available for current model)</b> <br/>" +
+						step.popover?.description;
+				}
+			}
+		},
+		onDestroyed: () => {
+			window.scrollTo(0, 0);
+		},
 	});
 	// New metadata object without the "score" property to use in metadata file download; take out modelId to rearrange
 	const { score: _, modelId: metadataModelId, ...metadataFileData } = metadata;
