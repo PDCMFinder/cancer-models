@@ -37,6 +37,18 @@ const Compare: NextPage = () => {
 		showProgress: true,
 		prevBtnText: "← Prev",
 		steps: compareTourSteps,
+		onHighlightStarted: (el, step) => {
+			if (!el && !driverObj.isLastStep()) {
+				if (step.popover) {
+					step.popover.description =
+						"<b>(Not available for current models)</b> <br/>" +
+						step.popover?.description;
+				}
+			}
+		},
+		onDestroyed: () => {
+			window.scrollTo(0, 0);
+		},
 	});
 
 	const allModelsData = useQueries(
