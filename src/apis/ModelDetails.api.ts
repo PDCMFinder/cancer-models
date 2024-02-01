@@ -489,6 +489,12 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 	const patientTreatment = await getPatientTreatment(pdcmModelId);
 	const qualityData = await getModelQualityData(pdcmModelId);
 	const modelImages = await getModelImages(modelId);
+	const qualityAssuranceObj = metadata.qualityAssurance
+		? metadata.qualityAssurance[0]
+		: {};
+	const xenograftModelSpecimensObj = metadata.xenograftModelSpecimens
+		? metadata.xenograftModelSpecimens[0]
+		: {};
 
 	return {
 		// deconstruct metadata object so we dont pass more props than we need/should
@@ -542,8 +548,8 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 			patientSampleTreatedPriorToCollection:
 				metadata.patientSampleTreatedPriorToCollection,
 			pdxModelPublications: metadata.pdxModelPublications,
-			...metadata.qualityAssurance[0],
-			...metadata.xenograftModelSpecimens[0],
+			...qualityAssuranceObj,
+			...xenograftModelSpecimensObj,
 		},
 		extLinks,
 		molecularData,
