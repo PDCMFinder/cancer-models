@@ -9,8 +9,8 @@ import Loader from "../Loader/Loader";
 import Pagination from "../Pagination/Pagination";
 import { useState } from "react";
 import InputAndLabel from "../Input/InputAndLabel";
-import { hj_event } from "../../utils/hotjar";
 import Link from "next/link";
+import ReactGA from "react-ga4";
 
 interface IMolecularDataTableProps {
 	data: IMolecularData;
@@ -224,6 +224,12 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 																				href={l.link}
 																				target="_blank"
 																				rel="noopener noreferrer"
+																				onClick={() =>
+																					ReactGA.event("external_provider", {
+																						category: "event",
+																						resource: l.resource,
+																					})
+																				}
 																			>
 																				{l.resource}
 																			</Link>{" "}
