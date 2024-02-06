@@ -3,12 +3,13 @@
 .Modal_backdrop {
 	background-color: rgba(0, 0, 0, 0.75);
 	z-index: 9999999999;
+	left: 0;
 }
 .Modal {
 	z-index: 9999999999;
 	overflow-x: hidden;
 	overflow-y: scroll;
-	min-height: min-content;
+	min-height: initial;
 	height: auto;
 	max-height: 100%;
 	top: $spacing-2;
