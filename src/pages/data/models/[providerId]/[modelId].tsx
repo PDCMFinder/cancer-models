@@ -1253,7 +1253,16 @@ const ModelDetails = ({
 											{modelImages.map(({ url, description }) => (
 												<div key={url} className="col">
 													<div className="ar-16-9 overflow-hidden mb-1">
-														<Link href={url} target="_blank" rel="noopener">
+														<Link
+															href={url}
+															target="_blank"
+															rel="noopener"
+															onClick={() =>
+																ReactGA.event("histologyImg_click", {
+																	category: "event",
+																})
+															}
+														>
 															{/* Image component isnt working for external source */}
 															<img
 																src={url}
