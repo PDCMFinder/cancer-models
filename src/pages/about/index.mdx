@@ -1,5 +1,6 @@
 import MdLayout from "../../components/MdLayout/MdLayout";
 import Button from "../../components/Button/Button";
+import ReactGA from "react-ga4";
 
 [comment]: # "Metadata"
 [comment]: # "Page title = h1 in banner"
@@ -47,7 +48,7 @@ If you use PDX-MI in your work, please cite our publication:
 
 ## API Documentation
 
-<a href="https://documenter.getpostman.com/view/6493399/2s8ZDbX1e7" target="_blank" rel="noopener noreferrer">Learn how to use our open API</a>
+<a href="https://documenter.getpostman.com/view/6493399/2s8ZDbX1e7" target="_blank" rel="noopener noreferrer" onClick={() => ReactGA.event("view_api", {category: "event"})}>Learn how to use our open API</a>
 
 ## CancerModels.Org training materials
 
