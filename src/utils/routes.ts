@@ -18,7 +18,7 @@ export const routes = [
 			},
 			{
 				path: "https://documenter.getpostman.com/view/6493399/2s8ZDbX1e7",
-				name: "API",
+				name: "API", // if changes, update GA event in footer and header
 			},
 			{
 				path: "/training",

@@ -6,7 +6,7 @@ import styles from "./Footer.module.scss";
 import Link from "next/link";
 import { useQuery } from "react-query";
 import { getLatestDataReleaseInformation } from "../../apis/AggregatedData.api";
-import { hj_event } from "../../utils/hotjar";
+import ReactGA from "react-ga4";
 
 interface IFooterProps {
 	cookieConsentHeight: number;
@@ -63,17 +63,28 @@ const Footer = (props: IFooterProps) => {
 										let children = route.children;
 
 										if (route.name === "More" && children) {
-											return children.map((child) => (
-												<li key={child.path}>
-													<ActiveLink
-														className="link-text-light"
-														activeClassName={styles["Footer_item-active"]}
-														href={child.path}
-													>
-														{child.name}
-													</ActiveLink>
-												</li>
-											));
+											return children.map((child) => {
+												let childName = child.name,
+													onClickProp;
+
+												if (childName === "API") {
+													onClickProp = () =>
+														ReactGA.event("view_api", { category: "event" });
+												}
+
+												return (
+													<li key={child.path}>
+														<ActiveLink
+															className="link-text-light"
+															activeClassName={styles["Footer_item-active"]}
+															href={child.path}
+															onClick={onClickProp}
+														>
+															{child.name}
+														</ActiveLink>
+													</li>
+												);
+											});
 										}
 									})}
 									<li>
@@ -124,7 +135,6 @@ const Footer = (props: IFooterProps) => {
 							<a
 								href="mailto:info@cancermodels.org"
 								className="link-text-light mt-2"
-								onClick={() => hj_event("click_footerEmail")}
 							>
 								info@cancermodels.org
 							</a>

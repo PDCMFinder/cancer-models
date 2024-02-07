@@ -5,6 +5,7 @@ import ActiveLink from "../../ActiveLink/ActiveLink";
 import styles from "./Navbar-desktop.module.scss";
 import Button from "../../Button/Button";
 import Card from "../../Card/Card";
+import ReactGA from "react-ga4";
 
 const NavDesktop = (props: INavProps) => {
 	return (
@@ -46,7 +47,14 @@ const NavDesktop = (props: INavProps) => {
 
 							if (children) {
 								let childrenItems = children.map((child) => {
-									let childPath = child.path;
+									let childPath = child.path,
+										childName = child.name,
+										onClickProp;
+
+									if (childName === "API") {
+										onClickProp = () =>
+											ReactGA.event("view_api", { category: "event" });
+									}
 
 									return (
 										<li key={childPath}>
@@ -54,6 +62,7 @@ const NavDesktop = (props: INavProps) => {
 												className={`${styles.Navbar_item} link-text-light`}
 												activeClassName={styles["Navbar_item_link-active"]}
 												href={childPath}
+												onClick={onClickProp}
 											>
 												{child.name}
 											</ActiveLink>
