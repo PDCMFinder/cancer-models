@@ -10,7 +10,7 @@ export const routes = [
 		children: [
 			{
 				path: "/about",
-				name: "CancerModels.Org",
+				name: "About",
 			},
 			{
 				path: "/about/providers",
