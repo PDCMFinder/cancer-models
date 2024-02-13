@@ -21,6 +21,10 @@ export const routes = [
 				name: "API", // if changes, update GA event in footer and header
 			},
 			{
+				path: "/cbioportal",
+				name: "cBioPortal",
+			},
+			{
 				path: "/training",
 				name: "Training",
 			},
