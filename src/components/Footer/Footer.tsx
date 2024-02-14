@@ -1,5 +1,5 @@
 import Logotype from "../Logotype/Logotype";
-import { routes } from "../../utils/routes";
+import { routes, routesWithGAEvents } from "../../utils/routes";
 import { IRoute } from "../../../types/globalTypes";
 import ActiveLink from "../ActiveLink/ActiveLink";
 import styles from "./Footer.module.scss";
@@ -67,9 +67,15 @@ const Footer = (props: IFooterProps) => {
 												let childName = child.name,
 													onClickProp;
 
-												if (childName === "API") {
+												const childGAEvent = routesWithGAEvents.find(
+													(route) => route.routeName === childName
+												);
+
+												if (childGAEvent) {
 													onClickProp = () =>
-														ReactGA.event("view_api", { category: "event" });
+														ReactGA.event(childGAEvent.eventName, {
+															category: "event",
+														});
 												}
 
 												return (
