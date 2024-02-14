@@ -64,26 +64,42 @@ const Providers: NextPage<IProvidersProps> = ({
 														}}
 													/>
 												</div>
-											</div>
-										</div>
-										<div className="row mb-3">
-											<div className="col-12">
 												<Link
 													href={`/about/providers/${provider.id}`}
-													className="mr-3"
+													className="mt-2"
 												>
 													Continue reading...
 												</Link>
+											</div>
+										</div>
+										<div className="row">
+											<div className="col-12">
+												{/* <h4 className="mb-0 d-inline mr-2">
+													View models and data at:
+												</h4> */}
 												<Button
 													color="dark"
 													priority="primary"
+													className="mr-2 mt-0"
 													href={`/search?filters=data_source:${provider.abbreviation.replace(
 														" ",
 														"-"
 													)}`}
 													htmlTag="a"
 												>
-													<>See all {provider.abbreviation} models</>
+													<>View at CancerModels.Org</>
+												</Button>
+												<Button
+													color="dark"
+													priority="secondary"
+													className="mt-0"
+													href={`/search?filters=data_source:${provider.abbreviation.replace(
+														" ",
+														"-"
+													)}`}
+													htmlTag="a"
+												>
+													<>View at cBioPortal</>
 												</Button>
 											</div>
 										</div>
