@@ -18,7 +18,7 @@ export const routes = [
 			},
 			{
 				path: "https://documenter.getpostman.com/view/6493399/2s8ZDbX1e7",
-				name: "API", // if changes, update GA event in footer and header
+				name: "API",
 			},
 			{
 				path: "/cbioportal",
@@ -29,9 +29,24 @@ export const routes = [
 				name: "Training",
 			},
 			{
+				path: "https://www.ebi.ac.uk/training/events/guide-identifying-suitable-patient-derived-cancer-models-cancermodelsorg/",
+				name: "EMBL-EBI Training",
+			},
+			{
 				path: "/contact",
 				name: "Contact",
 			},
 		],
+	},
+];
+
+export const routesWithGAEvents = [
+	{
+		routeName: "API",
+		eventName: "view_api",
+	},
+	{
+		routeName: "EMBL-EBI Training",
+		eventName: "view_EMBLEBITraining",
 	},
 ];

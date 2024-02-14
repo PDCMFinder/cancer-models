@@ -6,6 +6,7 @@ import styles from "./Navbar-desktop.module.scss";
 import Button from "../../Button/Button";
 import Card from "../../Card/Card";
 import ReactGA from "react-ga4";
+import { routesWithGAEvents } from "../../../utils/routes";
 
 const NavDesktop = (props: INavProps) => {
 	return (
@@ -51,9 +52,15 @@ const NavDesktop = (props: INavProps) => {
 										childName = child.name,
 										onClickProp;
 
-									if (childName === "API") {
+									const childGAEvent = routesWithGAEvents.find(
+										(route) => route.routeName === childName
+									);
+
+									if (childGAEvent) {
 										onClickProp = () =>
-											ReactGA.event("view_api", { category: "event" });
+											ReactGA.event(childGAEvent.eventName, {
+												category: "event",
+											});
 									}
 
 									return (

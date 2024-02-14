@@ -7,6 +7,8 @@ import { INavProps, IRoute } from "../../../../types/globalTypes";
 import ActiveLink from "../../ActiveLink/ActiveLink";
 import Link from "next/link";
 import styles from "./Navbar-mobile.module.scss";
+import ReactGA from "react-ga4";
+import { routesWithGAEvents } from "../../../utils/routes";
 
 const ADD = "add",
 	REMOVE = "remove";
@@ -66,7 +68,19 @@ const NavMobile = (props: INavProps) => {
 
 										if (children) {
 											return children.map((child) => {
-												let path = child.path;
+												let path = child.path,
+													onClickProp;
+
+												const childGAEvent = routesWithGAEvents.find(
+													(route) => route.routeName === child.name
+												);
+
+												if (childGAEvent) {
+													onClickProp = () =>
+														ReactGA.event(childGAEvent.eventName, {
+															category: "event",
+														});
+												}
 
 												return (
 													<li key={path}>
@@ -74,6 +88,7 @@ const NavMobile = (props: INavProps) => {
 															className={`${styles.Navbar_item} link-text-light`}
 															activeClassName={styles["Navbar_item-active"]}
 															href={path}
+															onClick={onClickProp}
 														>
 															{child.name}
 														</ActiveLink>
