@@ -1521,6 +1521,5 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			qualityData,
 			modelImages,
 		},
-		revalidate: 600,
 	};
 };
