@@ -29,10 +29,6 @@ export const routes = [
 				name: "Training",
 			},
 			{
-				path: "https://www.ebi.ac.uk/training/events/guide-identifying-suitable-patient-derived-cancer-models-cancermodelsorg/",
-				name: "EMBL-EBI Training",
-			},
-			{
 				path: "/contact",
 				name: "Contact",
 			},
@@ -44,9 +40,5 @@ export const routesWithGAEvents = [
 	{
 		routeName: "API",
 		eventName: "view_api",
-	},
-	{
-		routeName: "EMBL-EBI Training",
-		eventName: "view_EMBLEBITraining",
 	},
 ];
