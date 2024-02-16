@@ -37,76 +37,76 @@ const Providers: NextPage<IProvidersProps> = ({
 			<section>
 				<div className="container">
 					<div className="row">
-						{allProvidersBasics?.map((provider) => (
-							<div className="col-12 mb-3" key={provider.id}>
-								<div className="row">
-									<div className="col-12 col-md-2 text-center">
-										<Image
-											src={`/${provider.logo}`}
-											alt={`${provider.name} logo`}
-											width={150}
-											height={150}
-											className={`mx-auto mb-2 w-auto h-auto ${styles.Providers_logo}`}
-										/>
-									</div>
-									<div className="col-12 col-md-9 mb-5">
-										<div className="row">
-											<div className="col-12 d-flex align-center">
-												<h2 className="h3 mt-0 mr-3">{provider.name}</h2>
-											</div>
+						{allProvidersBasics?.map((provider) => {
+							const parsedProvider = provider.abbreviation.replace(" ", "-"),
+								providerName = provider.name,
+								providerId = provider.id;
+
+							return (
+								<div className="col-12 mb-3" key={providerId}>
+									<div className="row">
+										<div className="col-12 col-md-2 text-center">
+											<Image
+												src={`/${provider.logo}`}
+												alt={`${providerName} logo`}
+												width={150}
+												height={150}
+												className={`mx-auto mb-2 w-auto h-auto ${styles.Providers_logo}`}
+											/>
 										</div>
-										<div className="row mb-3">
-											<div className="col-12">
-												<div className={styles.Providers_content}>
-													<div
-														dangerouslySetInnerHTML={{
-															__html: provider.parsedContent,
-														}}
-													/>
+										<div className="col-12 col-md-9 mb-5">
+											<div className="row">
+												<div className="col-12 d-flex align-center">
+													<h2 className="h3 mt-0 mr-3">{providerName}</h2>
 												</div>
-												<Link
-													href={`/about/providers/${provider.id}`}
-													className="mt-2"
-												>
-													Continue reading...
-												</Link>
 											</div>
-										</div>
-										<div className="row">
-											<div className="col-12">
-												{/* <h4 className="mb-0 d-inline mr-2">
-													View models and data at:
-												</h4> */}
-												<Button
-													color="dark"
-													priority="primary"
-													className="mr-2 mt-0"
-													href={`/search?filters=data_source:${provider.abbreviation.replace(
-														" ",
-														"-"
-													)}`}
-													htmlTag="a"
-												>
-													<>View at CancerModels.Org</>
-												</Button>
-												<Button
-													color="dark"
-													priority="secondary"
-													className="mt-0"
-													href={`/search?filters=data_source:${provider.abbreviation.replace(
-														" ",
-														"-"
-													)}`}
-													htmlTag="a"
-												>
-													<>View at cBioPortal</>
-												</Button>
+											<div className="row mb-3">
+												<div className="col-12">
+													<div className={styles.Providers_content}>
+														<div
+															dangerouslySetInnerHTML={{
+																__html: provider.parsedContent,
+															}}
+														/>
+													</div>
+													<Link
+														href={`/about/providers/${providerId}`}
+														className="mt-0"
+													>
+														Continue reading...
+													</Link>
+												</div>
+											</div>
+											<div className="row">
+												<div className="col-12">
+													<h4 className="mb-0 d-inline mr-2">
+														View models and data at:
+													</h4>
+													<Button
+														color="dark"
+														priority="primary"
+														className="mr-2 mt-0"
+														href={`/search?filters=data_source:${parsedProvider}`}
+														htmlTag="a"
+													>
+														<>CancerModels.Org</>
+													</Button>
+													<Button
+														color="dark"
+														priority="secondary"
+														className="mt-0"
+														href={`/cbioportal/study/clinicalData?id=${parsedProvider}`}
+														htmlTag="a"
+													>
+														<>cBioPortal</>
+													</Button>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						))}
+							);
+						})}
 					</div>
 				</div>
 			</section>
