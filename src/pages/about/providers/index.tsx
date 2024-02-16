@@ -97,6 +97,7 @@ const Providers: NextPage<IProvidersProps> = ({
 														className="mt-0"
 														href={`/cbioportal/study/clinicalData?id=${parsedProvider}`}
 														htmlTag="a"
+														target="_blank"
 													>
 														<>cBioPortal</>
 													</Button>

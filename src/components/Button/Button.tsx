@@ -12,6 +12,7 @@ export interface IButtonProps {
 	children: string | JSX.Element;
 	priority: "primary" | "secondary";
 	color: "dark" | "light" | "white";
+	target?: "_blank" | "_self" | "_parent" | "_top";
 	htmlTag?: "a" | "button";
 	type?: "button" | "submit" | "reset";
 	href?: string;
@@ -66,6 +67,7 @@ const Button = (props: IButtonProps) => {
 				className={classNames}
 				href={href}
 				onClick={handleOnClick}
+				target={props.target}
 				{...externalLinkProps}
 			>
 				<>
