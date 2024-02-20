@@ -1096,7 +1096,13 @@ const ModelDetails = ({
 																		className="white-space-nowrap"
 																	>
 																		{marker.details ? (
-																			<Tooltip content={marker.details}>
+																			<Tooltip
+																				content={
+																					<p className="text-small m-0">
+																						{marker.details}
+																					</p>
+																				}
+																			>
 																				{marker.value?.map((value) => (
 																					<React.Fragment key={value}>
 																						{value}
