@@ -1,28 +1,23 @@
 import {
 	ExtLinks,
 	IModelImage,
-	IMolecularData,
 	IPublication,
 	IImmuneMarkers,
 	IImmuneMarker,
 } from "../pages/data/models/[providerId]/[modelId]";
+import {
+	IImmuneMarkerAPI,
+	IModelDetailsMetadata,
+	IModelQualityData,
+	IMolecularData,
+	IPublicationData,
+} from "../types/PDCModel.model";
 import { camelCase } from "../utils/dataUtils";
-
-interface IImmuneMarkerAPI {
-	model_id: string;
-	data_source: string;
-	source: string;
-	sample_id: string;
-	marker_type: "HLA type" | "Model Genomics";
-	marker_name: string;
-	marker_value: string;
-	essential_or_additional_details: string;
-}
 
 export async function getModelDetailsMetadata(
 	modelId: string,
 	providerId: string
-): Promise<any> {
+): Promise<IModelDetailsMetadata> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&data_source=eq.${providerId}`
 	);
@@ -63,7 +58,7 @@ export async function getModelImages(modelId: string): Promise<IModelImage[]> {
 export async function getModelPubmedIds(
 	modelId: string = "",
 	providerId: string
-): Promise<any> {
+): Promise<string[]> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/model_information?external_model_id=eq.${modelId}&data_source=eq.${providerId}&select=publication_group(pubmed_ids)`
 	);
@@ -79,7 +74,9 @@ export async function getModelPubmedIds(
 	return pubmedIds.replaceAll(" ", "").split(",");
 }
 
-export async function getPublicationData(pubmedId: string) {
+export async function getPublicationData(
+	pubmedId: string
+): Promise<IPublicationData | undefined> {
 	if (pubmedId !== "") {
 		let response = await fetch(
 			`https://www.ebi.ac.uk/europepmc/webservices/rest/article/MED/${pubmedId.replace(
@@ -130,7 +127,18 @@ export async function getModelExtLinks(
 	});
 }
 
-export async function getModelQualityData(pdcmModelId: number) {
+interface IParsedModelQualityData {
+	id: number;
+	description: string;
+	passagesTested: string;
+	validationTechnique: string;
+	validationHostStrainNomenclature: string;
+	modelId: number;
+}
+
+export async function getModelQualityData(
+	pdcmModelId: number
+): Promise<IParsedModelQualityData | []> {
 	if (pdcmModelId !== 0 && !pdcmModelId) {
 		return [];
 	}
@@ -141,11 +149,13 @@ export async function getModelQualityData(pdcmModelId: number) {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
-		return d.map((item: any) => camelCase(item));
+		return d.map((item: keyof IModelQualityData) => camelCase(item));
 	});
 }
 
-export async function getMolecularData(modelId: string) {
+export async function getMolecularData(
+	modelId: string
+): Promise<IMolecularData | []> {
 	if (!modelId) {
 		return [];
 	}
@@ -156,7 +166,7 @@ export async function getMolecularData(modelId: string) {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
-		return d.map((item: any) => {
+		return d.map((item: keyof IMolecularData) => {
 			return camelCase(item);
 		});
 	});
@@ -524,9 +534,8 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 			cancerGradingSystem: metadata.cancerGradingSystem,
 			cancerStagingSystem: metadata.cancerStagingSystem,
 			patientHistory: metadata.patientHistory,
-			patientEthnicyAssesmentMethod: metadata.patientEthnicyAssesmentMethod
-				? JSON.parse(JSON.stringify(metadata.patientEthnicyAssesmentMethod))
-				: null,
+			patientEthnicityAssessmentMethod:
+				metadata.patientEthnicityAssessmentMethod,
 			patientInitialDiagnosis: metadata.patientInitialDiagnosis,
 			patientTreatmentStatus: metadata.patientTreatmentStatus,
 			patientAgeAtInitialDiagnosis: metadata.patientAgeAtInitialDiagnosis,
@@ -534,15 +543,9 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 			patientSampleCollectionDate: metadata.patientSampleCollectionDate,
 			patientSampleCollectionEvent: metadata.patientSampleCollectionEvent,
 			patientSampleMonthsSinceCollection:
-				metadata.patientSampleMonthsSinceCollection
-					? JSON.parse(
-							JSON.stringify(metadata.patientSampleMonthsSinceCollection)
-					  )
-					: null,
+				metadata.patientSampleMonthsSinceCollection1,
 			patientSampleVirologyStatus: metadata.patientSampleVirologyStatus,
-			patientSampleShareable: metadata.patientSampleShareable
-				? JSON.parse(JSON.stringify(metadata.patientSampleShareable))
-				: null,
+			patientSampleSharable: metadata.patientSampleSharable,
 			patientSampleTreatedAtCollection:
 				metadata.patientSampleTreatedAtCollection,
 			patientSampleTreatedPriorToCollection:
