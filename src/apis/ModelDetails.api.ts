@@ -524,9 +524,8 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 			cancerGradingSystem: metadata.cancerGradingSystem,
 			cancerStagingSystem: metadata.cancerStagingSystem,
 			patientHistory: metadata.patientHistory,
-			patientEthnicyAssesmentMethod: metadata.patientEthnicyAssesmentMethod
-				? JSON.parse(JSON.stringify(metadata.patientEthnicyAssesmentMethod))
-				: null,
+			patientEthnicityAssessmentMethod:
+				metadata.patientEthnicityAssessmentMethod,
 			patientInitialDiagnosis: metadata.patientInitialDiagnosis,
 			patientTreatmentStatus: metadata.patientTreatmentStatus,
 			patientAgeAtInitialDiagnosis: metadata.patientAgeAtInitialDiagnosis,
@@ -534,15 +533,9 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 			patientSampleCollectionDate: metadata.patientSampleCollectionDate,
 			patientSampleCollectionEvent: metadata.patientSampleCollectionEvent,
 			patientSampleMonthsSinceCollection:
-				metadata.patientSampleMonthsSinceCollection
-					? JSON.parse(
-							JSON.stringify(metadata.patientSampleMonthsSinceCollection)
-					  )
-					: null,
+				metadata.patientSampleMonthsSinceCollection1,
 			patientSampleVirologyStatus: metadata.patientSampleVirologyStatus,
-			patientSampleShareable: metadata.patientSampleShareable
-				? JSON.parse(JSON.stringify(metadata.patientSampleShareable))
-				: null,
+			patientSampleSharable: metadata.patientSampleSharable,
 			patientSampleTreatedAtCollection:
 				metadata.patientSampleTreatedAtCollection,
 			patientSampleTreatedPriorToCollection:
