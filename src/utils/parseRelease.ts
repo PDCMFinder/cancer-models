@@ -19,7 +19,13 @@ const parseRelease = async (
 	release.description = parsedDescription.toString();
 	if (repository) release.repository = repository;
 
-	return release;
+	// return only needed data
+	return {
+		released_at: release.released_at,
+		tag_name: release.tag_name,
+		description: release.description,
+		repository: release.repository,
+	};
 };
 
 export default parseRelease;
