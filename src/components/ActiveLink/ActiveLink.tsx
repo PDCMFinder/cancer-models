@@ -5,6 +5,7 @@ import React, { PropsWithChildren, useState, useEffect } from "react";
 type ActiveLinkProps = LinkProps & {
 	className?: string;
 	activeClassName: string;
+	isBlank?: boolean;
 };
 
 const ActiveLink = ({
@@ -17,12 +18,13 @@ const ActiveLink = ({
 	const [computedClassName, setComputedClassName] =
 		useState<string | undefined>(className);
 	const [isActive, setIsActive] = useState<boolean>(false);
-	const externalLinkProps = props.href.toString().includes("http")
-		? {
-				target: "_blank",
-				rel: "noopener noreferrer",
-		  }
-		: null;
+	const externalLinkProps =
+		props.href.toString().includes("http") || props.isBlank
+			? {
+					target: "_blank",
+					rel: "noopener noreferrer",
+			  }
+			: null;
 
 	useEffect(() => {
 		// Check if the router fields are updated client-side

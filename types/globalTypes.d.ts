@@ -33,9 +33,11 @@ export interface IRoute {
 	path?: string;
 	name: string;
 	secondary?: boolean;
+	isBlank?: boolean;
 	children?: {
 		path: string;
 		name: string;
+		isBlank?: boolean;
 	}[];
 }
 
