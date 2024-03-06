@@ -527,7 +527,6 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 			patientEthnicityAssessmentMethod:
 				metadata.patientEthnicityAssessmentMethod,
 			patientInitialDiagnosis: metadata.patientInitialDiagnosis,
-			patientTreatmentStatus: metadata.patientTreatmentStatus,
 			patientAgeAtInitialDiagnosis: metadata.patientAgeAtInitialDiagnosis,
 			patientSampleId: metadata.patientSampleId,
 			patientSampleCollectionDate: metadata.patientSampleCollectionDate,
