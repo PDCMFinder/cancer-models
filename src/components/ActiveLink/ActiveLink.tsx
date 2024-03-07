@@ -12,6 +12,7 @@ const ActiveLink = ({
 	children,
 	activeClassName,
 	className,
+	isBlank,
 	...props
 }: PropsWithChildren<ActiveLinkProps>) => {
 	const { asPath, isReady } = useRouter();
@@ -19,7 +20,7 @@ const ActiveLink = ({
 		useState<string | undefined>(className);
 	const [isActive, setIsActive] = useState<boolean>(false);
 	const externalLinkProps =
-		props.href.toString().includes("http") || props.isBlank
+		props.href.toString().includes("http") || isBlank
 			? {
 					target: "_blank",
 					rel: "noopener noreferrer",
