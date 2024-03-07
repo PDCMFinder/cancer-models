@@ -1,4 +1,3 @@
-import { IMolecularData } from "../../pages/data/models/[providerId]/[modelId]";
 import Button from "../Button/Button";
 import { useQuery } from "react-query";
 import {
@@ -11,6 +10,7 @@ import { useState } from "react";
 import InputAndLabel from "../Input/InputAndLabel";
 import Link from "next/link";
 import ReactGA from "react-ga4";
+import { IAPIMolecularData, IMolecularData } from "../../types/PDCModel.model";
 
 interface IMolecularDataTableProps {
 	data: IMolecularData;
@@ -194,7 +194,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 							</tr>
 						) : (
 							dataDetails &&
-							dataDetails[1]?.map((row: DataDetailsRow, i: number) => (
+							dataDetails[1]?.map((row: IAPIMolecularData, i: number) => (
 								<tr key={`page-${currentPage}-row-${i}`}>
 									{Object.keys(row)
 										.filter((k) =>
@@ -208,7 +208,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 												key === "hgnc_symbol" && !row[key]
 													? "non_harmonised_symbol"
 													: key;
-											let columnContent = row[validKey as keyof DataDetailsRow];
+											let columnContent = row[validKey as keyof IAPI];
 											if (!columnContent && key === "amino_acid_change")
 												columnContent = "-";
 											return (

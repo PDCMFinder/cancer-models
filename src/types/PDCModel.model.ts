@@ -67,7 +67,6 @@ export interface IModelDetailsMetadata {
 	patientEthnicity: string;
 	patientEthnicityAssessmentMethod: string;
 	patientInitialDiagnosis: string;
-	patientTreatmentStatus: string;
 	patientAgeAtInitialDiagnosis: string;
 	patientSampleId: string;
 	patientSampleCollectionDate: string;
@@ -147,6 +146,12 @@ export interface IModelQualityData {
 	model_id: number;
 }
 
+interface IExternalDbLinks {
+	column: string;
+	resource: string;
+	link: string;
+}
+
 export interface IMolecularData {
 	modelId: string;
 	dataSource: string;
@@ -157,8 +162,40 @@ export interface IMolecularData {
 	dataType: string;
 	platformName: string;
 	molecularCharacterizationId: number;
-	externalDbLinks: any;
+	externalDbLinks: IExternalDbLinks[];
 	dataExists: string;
 	dataRestricted: string;
 	[key: string]: any;
+}
+
+export interface IAPIMolecularData {
+	hgnc_symbol: string;
+	non_harmonised_symbol: string;
+	amino_acid_change: string;
+	chromosome: string;
+	strand: string;
+	consequence: string;
+	read_depth: string;
+	allele_frequency: string;
+	seq_start_position: string;
+	ref_allele: string;
+	alt_allele: string;
+	biotype: string;
+	external_db_links: IExternalDbLinks[];
+	data_source: string;
+}
+
+export interface IModelMolecularDataDetails {
+	modelId: string;
+	dataSource: string;
+	source: string;
+	sampleId: string;
+	xenograftPassage: string;
+	rawDataUrl: any;
+	dataType: string;
+	platformName: string;
+	molecularCharacterizationId: number;
+	externalDbLinks: IExternalDbLinks[];
+	dataExists: string;
+	dataRestricted: string;
 }

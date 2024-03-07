@@ -6,6 +6,7 @@ import {
 	IImmuneMarker,
 } from "../pages/data/models/[providerId]/[modelId]";
 import {
+	IAPIMolecularData,
 	IImmuneMarkerAPI,
 	IModelDetailsMetadata,
 	IModelQualityData,
@@ -172,35 +173,10 @@ export async function getMolecularData(
 	});
 }
 
-export async function getModelMolecularDataColumns(
-	molecularCharacterizationId: number,
-	dataType: string
-) {
-	if (!molecularCharacterizationId || dataType === "biomarker") {
-		return [];
-	}
-	const typeEndpointMap: any = {
-		mutation: "mutation_data_table_columns",
-		expression: "expression_data_table_columns",
-		"copy number alteration": "cna_data_table_columns",
-		biomarker: "biomarker_data_table_columns",
-	};
-	const endpoint = typeEndpointMap[dataType];
-	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?molecular_characterization_id=eq.${molecularCharacterizationId}`
-	);
-	if (!response.ok) {
-		throw new Error("Network response was not ok");
-	}
-	return response.json().then((d) => {
-		return d[0].not_empty_cols;
-	});
-}
-
 export async function getAvailableDataColumns(
 	dataSource: string,
 	molecularCharacterizationType: string
-) {
+): Promise<string[]> {
 	switch (molecularCharacterizationType) {
 		case "copy number alteration":
 			molecularCharacterizationType = "cna";
@@ -229,11 +205,11 @@ export async function getModelMolecularDataDetails(
 	pageSize: number,
 	sortColumn: string,
 	sortDirection: string
-) {
+): Promise<[number, IAPIMolecularData[]] | []> {
 	if (!molecularCharacterizationId) {
 		return [];
 	}
-	const typeEndpointMap: any = {
+	const typeEndpointMap: { [key: string]: string } = {
 		mutation: "mutation_data_table",
 		expression: "expression_data_table",
 		"copy number alteration": "cna_data_table",
@@ -251,14 +227,23 @@ export async function getModelMolecularDataDetails(
 			request += `.${sortDirection}`;
 		}
 	}
+	console.log(request);
 	let response = await fetch(request, { headers: { Prefer: "count=exact" } });
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
+		console.log([
+			parseInt(response.headers.get("Content-Range")?.split("/")[1] || "0"),
+			d.map((item) => {
+				delete item.molecular_characterization_id;
+				delete item.text;
+				return item;
+			}),
+		]);
 		return [
 			parseInt(response.headers.get("Content-Range")?.split("/")[1] || "0"),
-			d.map((item: any) => {
+			d.map((item) => {
 				delete item.molecular_characterization_id;
 				delete item.text;
 				return item;
@@ -537,7 +522,6 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 			patientEthnicityAssessmentMethod:
 				metadata.patientEthnicityAssessmentMethod,
 			patientInitialDiagnosis: metadata.patientInitialDiagnosis,
-			patientTreatmentStatus: metadata.patientTreatmentStatus,
 			patientAgeAtInitialDiagnosis: metadata.patientAgeAtInitialDiagnosis,
 			patientSampleId: metadata.patientSampleId,
 			patientSampleCollectionDate: metadata.patientSampleCollectionDate,
