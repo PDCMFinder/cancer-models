@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "../styles/globals.scss";
 import type { AppProps } from "next/app";
 import App, { AppContext } from "next/app";
@@ -10,6 +10,7 @@ import handleBodyClass from "../utils/handleBodyClass";
 import { Cookies, CookiesProvider } from "react-cookie";
 import Script from "next/script";
 import { HJ_ID } from "../utils/hotjar";
+import { useRouter } from "next/router";
 
 const USERNAVIGATION_MOUSE = "userNavigation-mouse",
 	USERNAVIGATION_KEYBOARD = "userNavigation-keyboard",
@@ -35,7 +36,9 @@ if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
 }
 
 /* @ts-ignore */
-function CancerModels({ Component, pageProps, cookies }: AppProps) {
+function CancerModels({ Component, pageProps, cookies, host }: AppProps) {
+	const { asPath } = useRouter();
+	const [envHost] = useState(host);
 	const isBrowser = typeof window !== "undefined";
 
 	useEffect(() => {
@@ -76,6 +79,8 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 				/>
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<meta property="og:image" content="/ogimage.png" />
+				{/* canonical url without params */}
+				<link rel="canonical" href={envHost + asPath.split("?")[0]} />
 
 				{/* Generics */}
 				<link rel="icon" href="/favicon-32.png" sizes="32x32" />
@@ -148,5 +153,9 @@ CancerModels.getInitialProps = async (appContext: AppContext) => {
 	// 	"public, s-maxage=100, stale-while-revalidate=590"
 	// );
 
-	return { ...appProps, cookies: appContext.ctx.req?.headers?.cookie };
+	return {
+		...appProps,
+		cookies: appContext.ctx.req?.headers?.cookie,
+		host: appContext.ctx.req?.headers?.host,
+	};
 };
