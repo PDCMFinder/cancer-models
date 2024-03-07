@@ -100,3 +100,6 @@ cypress/screenshots/*
 cypress/videos/*
 
 .fttemplates
+
+## Eslint diagnosis results
+eslint-results.txt

@@ -1,28 +1,43 @@
 import { camelCase } from "../utils/dataUtils";
 import { IGitlabRelease } from "../../types/releaseTypes";
-import { remark } from "remark";
-import remarkHtml from "remark-html";
 import parseRelease from "../utils/parseRelease";
+import {
+	ICancerHierarchy,
+	IModelByCancerSystem,
+	IModelByTreatment,
+	IModelByType,
+	IModelByMutatedGene,
+	IMutatedGene,
+	IModelByPatientGender,
+	IModelByTumourType,
+	IModelsByPatientEthnicity,
+	IModelByPatientAge,
+	IParsedRelease,
+	IModelCount,
+} from "../types/AggregatedData.model";
 
-export async function getCancerHierarchy(): Promise<any> {
+export async function getCancerHierarchy(): Promise<ICancerHierarchy> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_cancer`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json().then((d) => {
-		let hierarchy: any = {};
+	return response.json().then((d: IModelByCancerSystem[]) => {
+		let hierarchy: {
+			[key: string]: ICancerHierarchy["children"][0];
+		} = {};
+
 		d.filter(
-			(i: any) =>
+			(i) =>
 				i.cancer_system !== null &&
 				i.cancer_system !== i.histology &&
 				i.cancer_system !== "Unclassified"
-		).forEach((element: any) => {
+		).forEach((element) => {
 			if (hierarchy[element.cancer_system] === undefined) {
 				hierarchy[element.cancer_system] = {
 					search_terms: element.cancer_system.replace("Cancer", ""),
-					children: [],
+					children: [] as ICancerHierarchy["children"][0]["children"],
 				};
 			}
 			hierarchy[element.cancer_system].children.push({
@@ -38,19 +53,7 @@ export async function getCancerHierarchy(): Promise<any> {
 	});
 }
 
-export async function getFrequentlyMutatedGenes() {
-	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/models_by_mutated_gene?order=count.desc&limit=20`
-	);
-	if (!response.ok) {
-		throw new Error("Network response was not ok");
-	}
-	return response
-		.json()
-		.then((d: any[]) => d.reverse().map((i: any) => camelCase(i)));
-}
-
-export async function getModelsByTreatment() {
+export async function getModelsByTreatment(): Promise<IModelByTreatment[]> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_treatment?order=count.desc&limit=20`
 	);
@@ -59,7 +62,7 @@ export async function getModelsByTreatment() {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json().then((d: any[]) => {
+	return response.json().then((d) => {
 		var i;
 		for (i = 0; i < d.length; i++) {
 			d[i]["treatment_list"] = d[i]["treatment"];
@@ -70,29 +73,17 @@ export async function getModelsByTreatment() {
 	});
 }
 
-export async function getModelsByType() {
+export async function getModelsByType(): Promise<IModelByType[]> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_type?order=count.desc`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json().then((d: any[]) => d.map((i: any) => camelCase(i)));
+	return response.json().then((d) => d.map((i: IModelByType) => camelCase(i)));
 }
 
-export async function getModelsByPrimarySite() {
-	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/models_by_primary_site?order=count.desc&limit=10`
-	);
-
-	if (!response.ok) {
-		throw new Error("Network response was not ok");
-	}
-
-	return response.json();
-}
-
-export async function getModelsByMutatedGene() {
+export async function getModelsByMutatedGene(): Promise<IModelByMutatedGene[]> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_mutated_gene?order=count.desc&limit=10`
 	);
@@ -101,18 +92,20 @@ export async function getModelsByMutatedGene() {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json().then((d: any[]) => {
+	return response.json().then((d: IMutatedGene[]) => {
 		var i;
 		for (i = 0; i < d.length; i++) {
 			d[i]["markers_with_mutation_data"] = d[i]["mutated_gene"];
 			delete d[i]["mutated_gene"];
 		}
 
-		return d;
+		return d as IModelByMutatedGene[];
 	});
 }
 
-export async function getModelsByPatientGender() {
+export async function getModelsByPatientGender(): Promise<
+	IModelByPatientGender[]
+> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_sex?order=count.desc&limit=10`
 	);
@@ -124,7 +117,7 @@ export async function getModelsByPatientGender() {
 	return response.json();
 }
 
-export async function getModelsByTumourType() {
+export async function getModelsByTumourType(): Promise<IModelByTumourType[]> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_tumour_type?order=count.desc&limit=10`
 	);
@@ -136,7 +129,9 @@ export async function getModelsByTumourType() {
 	return response.json();
 }
 
-export async function getModelsByPatientEthnicity() {
+export async function getModelsByPatientEthnicity(): Promise<
+	IModelsByPatientEthnicity[]
+> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_ethnicity?order=count.desc`
 	);
@@ -148,7 +143,7 @@ export async function getModelsByPatientEthnicity() {
 	return response.json();
 }
 
-export async function getModelsByPatientAge() {
+export async function getModelsByPatientAge(): Promise<IModelByPatientAge[]> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_age?order=count.desc&limit=10`
 	);
@@ -160,25 +155,7 @@ export async function getModelsByPatientAge() {
 	return response.json();
 }
 
-export async function getModelsByDatasetAvailability() {
-	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/models_by_dataset_availability?order=count.desc`
-	);
-	if (!response.ok) {
-		throw new Error("Network response was not ok");
-	}
-	return response.json().then((d: any[]) =>
-		d.reverse().map((i: any) => {
-			return {
-				id: i.dataset_availability,
-				label: i.dataset_availability,
-				value: i.count,
-			};
-		})
-	);
-}
-
-export async function getDataReleaseInformation() {
+export async function getDataReleaseInformation(): Promise<IParsedRelease[]> {
 	let response = await fetch(
 		"https://gitlab.ebi.ac.uk/api/v4/projects/1629/releases",
 		{
@@ -191,15 +168,17 @@ export async function getDataReleaseInformation() {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
+		let parsedReleases: IParsedRelease[] = [];
+
 		d.forEach(async (release: IGitlabRelease) => {
-			release = await parseRelease(release, "Data");
+			parsedReleases.push(await parseRelease(release, "Data"));
 		});
 
-		return d;
+		return parsedReleases;
 	});
 }
 
-export async function getLatestDataReleaseInformation() {
+export async function getLatestDataReleaseInformation(): Promise<IParsedRelease> {
 	// pdxfinder-data repo (data)
 	let response = await fetch(
 		"https://gitlab.ebi.ac.uk/api/v4/projects/1629/releases?per_page=1",
@@ -215,7 +194,7 @@ export async function getLatestDataReleaseInformation() {
 	return response.json().then((d: IGitlabRelease[]) => parseRelease(d[0]));
 }
 
-export async function getUIReleaseInformation() {
+export async function getUIReleaseInformation(): Promise<IParsedRelease[]> {
 	// cancer-models repo (ui)
 	let response = await fetch(
 		"https://gitlab.ebi.ac.uk/api/v4/projects/4135/releases",
@@ -231,15 +210,17 @@ export async function getUIReleaseInformation() {
 	}
 
 	return response.json().then((d) => {
+		let parsedReleases: IParsedRelease[] = [];
+
 		d.forEach(async (release: IGitlabRelease) => {
-			release = await parseRelease(release, "UI");
+			parsedReleases.push(await parseRelease(release, "UI"));
 		});
 
-		return d;
+		return parsedReleases;
 	});
 }
 
-export async function getModelCount() {
+export async function getModelCount(): Promise<IModelCount["value"]> {
 	let response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/info`);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
@@ -248,14 +229,11 @@ export async function getModelCount() {
 	return response
 		.json()
 		.then(
-			(d) =>
-				d.filter(
-					(el: { value: string; key: string }) => el.key === "total_models"
-				)[0].value
+			(d) => d.filter((el: IModelCount) => el.key === "total_models")[0].value
 		);
 }
 
-export async function getProviderCount() {
+export async function getProviderCount(): Promise<string | undefined> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/provider_group?select=id`,
 		{

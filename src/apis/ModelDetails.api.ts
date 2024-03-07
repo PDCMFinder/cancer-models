@@ -1,28 +1,24 @@
 import {
 	ExtLinks,
 	IModelImage,
-	IMolecularData,
 	IPublication,
 	IImmuneMarkers,
 	IImmuneMarker,
 } from "../pages/data/models/[providerId]/[modelId]";
+import {
+	IAPIMolecularData,
+	IImmuneMarkerAPI,
+	IModelDetailsMetadata,
+	IModelQualityData,
+	IMolecularData,
+	IPublicationData,
+} from "../types/PDCModel.model";
 import { camelCase } from "../utils/dataUtils";
-
-interface IImmuneMarkerAPI {
-	model_id: string;
-	data_source: string;
-	source: string;
-	sample_id: string;
-	marker_type: "HLA type" | "Model Genomics";
-	marker_name: string;
-	marker_value: string;
-	essential_or_additional_details: string;
-}
 
 export async function getModelDetailsMetadata(
 	modelId: string,
 	providerId: string
-): Promise<any> {
+): Promise<IModelDetailsMetadata> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&data_source=eq.${providerId}`
 	);
@@ -63,7 +59,7 @@ export async function getModelImages(modelId: string): Promise<IModelImage[]> {
 export async function getModelPubmedIds(
 	modelId: string = "",
 	providerId: string
-): Promise<any> {
+): Promise<string[]> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/model_information?external_model_id=eq.${modelId}&data_source=eq.${providerId}&select=publication_group(pubmed_ids)`
 	);
@@ -79,7 +75,9 @@ export async function getModelPubmedIds(
 	return pubmedIds.replaceAll(" ", "").split(",");
 }
 
-export async function getPublicationData(pubmedId: string) {
+export async function getPublicationData(
+	pubmedId: string
+): Promise<IPublicationData | undefined> {
 	if (pubmedId !== "") {
 		let response = await fetch(
 			`https://www.ebi.ac.uk/europepmc/webservices/rest/article/MED/${pubmedId.replace(
@@ -130,7 +128,18 @@ export async function getModelExtLinks(
 	});
 }
 
-export async function getModelQualityData(pdcmModelId: number) {
+interface IParsedModelQualityData {
+	id: number;
+	description: string;
+	passagesTested: string;
+	validationTechnique: string;
+	validationHostStrainNomenclature: string;
+	modelId: number;
+}
+
+export async function getModelQualityData(
+	pdcmModelId: number
+): Promise<IParsedModelQualityData | []> {
 	if (pdcmModelId !== 0 && !pdcmModelId) {
 		return [];
 	}
@@ -141,11 +150,13 @@ export async function getModelQualityData(pdcmModelId: number) {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
-		return d.map((item: any) => camelCase(item));
+		return d.map((item: keyof IModelQualityData) => camelCase(item));
 	});
 }
 
-export async function getMolecularData(modelId: string) {
+export async function getMolecularData(
+	modelId: string
+): Promise<IMolecularData | []> {
 	if (!modelId) {
 		return [];
 	}
@@ -156,41 +167,16 @@ export async function getMolecularData(modelId: string) {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
-		return d.map((item: any) => {
+		return d.map((item: keyof IMolecularData) => {
 			return camelCase(item);
 		});
-	});
-}
-
-export async function getModelMolecularDataColumns(
-	molecularCharacterizationId: number,
-	dataType: string
-) {
-	if (!molecularCharacterizationId || dataType === "biomarker") {
-		return [];
-	}
-	const typeEndpointMap: any = {
-		mutation: "mutation_data_table_columns",
-		expression: "expression_data_table_columns",
-		"copy number alteration": "cna_data_table_columns",
-		biomarker: "biomarker_data_table_columns",
-	};
-	const endpoint = typeEndpointMap[dataType];
-	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?molecular_characterization_id=eq.${molecularCharacterizationId}`
-	);
-	if (!response.ok) {
-		throw new Error("Network response was not ok");
-	}
-	return response.json().then((d) => {
-		return d[0].not_empty_cols;
 	});
 }
 
 export async function getAvailableDataColumns(
 	dataSource: string,
 	molecularCharacterizationType: string
-) {
+): Promise<string[]> {
 	switch (molecularCharacterizationType) {
 		case "copy number alteration":
 			molecularCharacterizationType = "cna";
@@ -219,11 +205,11 @@ export async function getModelMolecularDataDetails(
 	pageSize: number,
 	sortColumn: string,
 	sortDirection: string
-) {
+): Promise<[number, IAPIMolecularData[]] | []> {
 	if (!molecularCharacterizationId) {
 		return [];
 	}
-	const typeEndpointMap: any = {
+	const typeEndpointMap: { [key: string]: string } = {
 		mutation: "mutation_data_table",
 		expression: "expression_data_table",
 		"copy number alteration": "cna_data_table",
@@ -241,14 +227,23 @@ export async function getModelMolecularDataDetails(
 			request += `.${sortDirection}`;
 		}
 	}
+	console.log(request);
 	let response = await fetch(request, { headers: { Prefer: "count=exact" } });
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
+		console.log([
+			parseInt(response.headers.get("Content-Range")?.split("/")[1] || "0"),
+			d.map((item) => {
+				delete item.molecular_characterization_id;
+				delete item.text;
+				return item;
+			}),
+		]);
 		return [
 			parseInt(response.headers.get("Content-Range")?.split("/")[1] || "0"),
-			d.map((item: any) => {
+			d.map((item) => {
 				delete item.molecular_characterization_id;
 				delete item.text;
 				return item;
