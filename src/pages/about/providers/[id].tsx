@@ -21,7 +21,7 @@ const Provider: NextPage<IProviderProps> = ({
 	return (
 		<>
 			<Head>
-				<title>{`CancerModels.Org - ${providerData.name}`}</title>
+				<title>{`${providerData.name} - CancerModels.Org`}</title>
 			</Head>
 			<section>
 				<div className="container">
