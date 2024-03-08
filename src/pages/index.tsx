@@ -89,10 +89,10 @@ const Home: NextPage = () => {
 					</div>
 					<div className="row justify-content-center">
 						<div className="col-12 col-lg-8 text-center">
-							<h1 className="h2 my-5">
+							<h2 className="my-5">
 								Find the right PDX, organoid and cell line patient-derived
 								cancer model for your next project.
-							</h1>
+							</h2>
 							<h2 className="h3">Explore and analyse the data.</h2>
 							<h2 className="h3">Connect with model providers.</h2>
 							<h2 className="h3">All in one platform.</h2>
