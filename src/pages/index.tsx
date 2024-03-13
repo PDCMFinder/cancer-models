@@ -12,6 +12,7 @@ import { getModelCount } from "../apis/AggregatedData.api";
 import SearchBar from "../components/SearchBar/SearchBar";
 import dynamic from "next/dynamic";
 import Loader from "../components/Loader/Loader";
+import MindMap from "../components/MindMap/MindMap";
 
 const DynamicDataCountCard = dynamic(
 	import("../components/DataCountCard/DataCountCard"),
@@ -88,11 +89,18 @@ const Home: NextPage = () => {
 						</div>
 					</div>
 					<div className="row justify-content-center">
-						<div className="col-12 col-lg-8 text-center">
-							<h1 className="h2 my-5">
+						<div className="col-12 col-lg-8">
+							<h1 className="h2 my-5 text-center">
 								Find the right PDX, organoid and cell line patient-derived
 								cancer model for your next project.
 							</h1>
+						</div>
+						<div className="col-12">
+							<MindMap />
+						</div>
+					</div>
+					<div className="row justify-content-center">
+						<div className="col-12 col-lg-8 text-center">
 							<h2 className="h3">Explore and analyse the data.</h2>
 							<h2 className="h3">Connect with model providers.</h2>
 							<h2 className="h3">All in one platform.</h2>

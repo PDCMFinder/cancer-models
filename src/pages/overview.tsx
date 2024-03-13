@@ -22,7 +22,6 @@ import { useRouter } from "next/router";
 import { countEthnicity } from "../utils/collapseEthnicity";
 import Loader from "../components/Loader/Loader";
 import dynamic from "next/dynamic";
-import MindMap from "../components/MindMap/MindMap";
 
 const DynamicCirclePacking = dynamic(
 	() => import("../components/CirclePacking/CirclePacking"),
@@ -137,15 +136,6 @@ const Overview: NextPage = () => {
 					</div>
 				</div>
 			</header>
-			<section>
-				<div className="container">
-					<div className="row">
-						<div className="col-12">
-							<MindMap />
-						</div>
-					</div>
-				</div>
-			</section>
 			<section>
 				<div className="container">
 					<div className="row mb-5 align-center">
