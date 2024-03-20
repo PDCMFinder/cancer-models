@@ -38,7 +38,7 @@ const NavDesktop = (props: INavProps) => {
 										className={`${styles.Navbar_item} link-text-light`}
 										activeClassName={styles["Navbar_item_link-active"]}
 										href={path}
-										isBlank={route.isBlank}
+										opensNewTab={route.opensNewTab}
 									>
 										{name}
 									</ActiveLink>
@@ -70,7 +70,7 @@ const NavDesktop = (props: INavProps) => {
 												className={`${styles.Navbar_item} link-text-light`}
 												activeClassName={styles["Navbar_item_link-active"]}
 												href={childPath}
-												isBlank={child.isBlank}
+												opensNewTab={child.opensNewTab}
 												onClick={onClickProp}
 											>
 												{child.name}
