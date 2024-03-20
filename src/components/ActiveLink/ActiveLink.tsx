@@ -5,13 +5,14 @@ import React, { PropsWithChildren, useState, useEffect } from "react";
 type ActiveLinkProps = LinkProps & {
 	className?: string;
 	activeClassName: string;
-	isBlank?: boolean;
+	opensNewTab?: boolean;
 };
 
 const ActiveLink = ({
 	children,
 	activeClassName,
 	className,
+	opensNewTab,
 	...props
 }: PropsWithChildren<ActiveLinkProps>) => {
 	const { asPath, isReady } = useRouter();
@@ -19,7 +20,7 @@ const ActiveLink = ({
 		useState<string | undefined>(className);
 	const [isActive, setIsActive] = useState<boolean>(false);
 	const externalLinkProps =
-		props.href.toString().includes("http") || props.isBlank
+		props.href.toString().includes("http") || opensNewTab
 			? {
 					target: "_blank",
 					rel: "noopener noreferrer",

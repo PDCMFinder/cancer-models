@@ -48,7 +48,7 @@ const Footer = (props: IFooterProps) => {
 														className="link-text-light"
 														activeClassName={styles["Footer_item-active"]}
 														href={path}
-														isBlank={route.isBlank}
+														opensNewTab={route.opensNewTab}
 													>
 														{route.name}
 													</ActiveLink>
@@ -85,7 +85,7 @@ const Footer = (props: IFooterProps) => {
 															className="link-text-light"
 															activeClassName={styles["Footer_item-active"]}
 															href={child.path}
-															isBlank={child.isBlank}
+															opensNewTab={child.opensNewTab}
 															onClick={onClickProp}
 														>
 															{child.name}
