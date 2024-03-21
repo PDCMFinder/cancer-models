@@ -1,0 +1,74 @@
+$border: #ddd;
+$border-hover: #aaa;
+$bg-hover: #eee;
+$text: #888;
+$text-hover: #000;
+$ident: 2rem;
+$left: -($ident);
+
+.HierarchyTree {
+	ul {
+		margin-left: $ident;
+	}
+	li {
+		list-style-type: none;
+		margin: 10px 0 10px 10px;
+		position: relative;
+		&:before {
+			content: "";
+			position: absolute;
+			top: -10px;
+			left: $left;
+			border-left: 1px solid $border;
+			border-bottom: 1px solid $border;
+			width: $ident;
+			height: 15px;
+		}
+		&:after {
+			position: absolute;
+			content: "";
+			top: 5px;
+			left: $left;
+			border-left: 1px solid $border;
+			border-top: 1px solid $border;
+			width: $ident;
+			height: 100%;
+		}
+		&:last-child:after {
+			display: none;
+		}
+		span {
+			display: block;
+			border: 1px solid $border;
+			padding: 10px;
+			color: $text;
+			text-decoration: none;
+			width: max-content;
+			&:hover,
+			&:focus {
+				background: $bg-hover;
+				color: $text-hover;
+				border: 1px solid $border-hover;
+				& + ul {
+					li {
+						span {
+							background: $bg-hover;
+							color: $text-hover;
+							border: 1px solid $border-hover;
+						}
+					}
+				}
+			}
+
+			&:hover + ul,
+			&:focus + ul {
+				li {
+					&:after,
+					&:before {
+						border-color: $border-hover;
+					}
+				}
+			}
+		}
+	}
+}
