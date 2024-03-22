@@ -29,6 +29,7 @@ import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import FloatingButton from "../../../../components/FloatingWidget/FloatingButton";
 import { modelTourSteps } from "../../../../utils/tourSteps";
+import HierarchyTree from "../../../../components/HierarchyTree/HierarchyTree";
 
 const DynamicModal = dynamic(
 	() => import("../../../../components/Modal/Modal"),
@@ -495,7 +496,6 @@ const ModelDetails = ({
 					{`CancerModels.Org - ${metadata.modelId} - ${metadata.histology} - ${metadata.modelType}`}
 				</title>
 			</Head>
-
 			<header className="bg-primary-primary text-white py-5">
 				<div className="container">
 					<div className="row align-center py-5 pb-lg-0 text-capitalize">
@@ -1351,6 +1351,11 @@ const ModelDetails = ({
 									</div>
 								</div>
 							)}
+							<div className="row">
+								<div className="col-12">
+									<HierarchyTree />
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

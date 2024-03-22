@@ -1,74 +1,65 @@
-$border: #ddd;
-$border-hover: #aaa;
-$bg-hover: #eee;
-$text: #888;
-$text-hover: #000;
-$ident: 2rem;
-$left: -($ident);
+@import "../../styles/vars";
 
 .HierarchyTree {
-	ul {
-		margin-left: $ident;
-	}
 	li {
 		list-style-type: none;
-		margin: 10px 0 10px 10px;
+		margin: 0;
+		padding: 10px 5px 0 5px;
 		position: relative;
-		&:before {
+		&::before,
+		&::after {
 			content: "";
+			left: -20px;
 			position: absolute;
-			top: -10px;
-			left: $left;
-			border-left: 1px solid $border;
-			border-bottom: 1px solid $border;
-			width: $ident;
-			height: 15px;
+			right: auto;
 		}
-		&:after {
-			position: absolute;
-			content: "";
-			top: 5px;
-			left: $left;
-			border-left: 1px solid $border;
-			border-top: 1px solid $border;
-			width: $ident;
+		&::before {
+			border-left: 1px solid #999;
+			bottom: 50px;
 			height: 100%;
+			top: 0;
+			width: 1px;
 		}
-		&:last-child:after {
-			display: none;
+		&::after {
+			border-top: 1px solid #999;
+			height: 20px;
+			top: 30px;
+			width: 25px;
 		}
 		span {
-			display: block;
-			border: 1px solid $border;
-			padding: 10px;
-			color: $text;
+			border: 1px solid #999;
+			border-radius: 5px;
+			display: inline-block;
+			padding: 3px 8px;
 			text-decoration: none;
-			width: max-content;
-			&:hover,
-			&:focus {
-				background: $bg-hover;
-				color: $text-hover;
-				border: 1px solid $border-hover;
-				& + ul {
-					li {
-						span {
-							background: $bg-hover;
-							color: $text-hover;
-							border: 1px solid $border-hover;
-						}
-					}
-				}
-			}
-
-			&:hover + ul,
-			&:focus + ul {
-				li {
-					&:after,
-					&:before {
-						border-color: $border-hover;
-					}
-				}
+		}
+		// > span {
+		// 	cursor: pointer;
+		// }
+		&:last-child::before {
+			height: 30px;
+		}
+		// TODO
+		span:hover {
+			background: #000;
+			border: 1px solid #94a0b4;
+			color: #000;
+			+ ul li span {
+				background: #eee;
+				border: 1px solid #94a0b4;
+				color: #000;
 			}
 		}
+	}
+	> ul > li {
+		&::before,
+		&::after {
+			border: 0;
+		}
+	}
+	&_current {
+		background-color: $color-primary-tertiary;
+		color: $color-white;
+		border-radius: 5px;
 	}
 }
