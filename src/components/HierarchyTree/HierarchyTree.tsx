@@ -1,25 +1,102 @@
-import ReactFlow from "reactflow";
+import ReactFlow, { Position, Node, Panel, MarkerType } from "reactflow";
+import CustomNode from "./CustomNode";
 // import "reactflow/dist/style.css";
 import "reactflow/dist/base.css";
 
-const initialNodes = [
-	{ id: "1", data: { label: "Grandfather" }, position: { x: 0, y: 0 } },
-	{ id: "2", data: { label: "Grandmother" }, position: { x: 100, y: 0 } },
-	{ id: "3", data: { label: "Father" }, position: { x: 0, y: 100 } },
-	{ id: "4", data: { label: "Mother" }, position: { x: 100, y: 100 } },
-	{ id: "5", data: { label: "You" }, position: { x: 50, y: 200 } },
+export interface INode {
+	id: string;
+	data: INodeData;
+	position: INodePosition;
+	type: string;
+	className: string;
+}
+
+export interface INodeData {
+	label: string;
+	provider: string;
+}
+
+export interface INodePosition {
+	x: number;
+	y: number;
+}
+
+const initialNodes: Node[] = [
+	{
+		id: "1",
+		data: { label: "SIDM01263", provider: "asdf" },
+		position: { x: 0, y: 50 },
+		type: "custom",
+	},
+	{
+		id: "4",
+		data: { label: "SIDM01263", provider: "asdf" },
+		position: { x: 0, y: 150 },
+		type: "custom",
+	},
+	{
+		id: "2",
+		data: { label: "SIDM01244", provider: "asdf" },
+		position: { x: 350, y: 50 },
+		type: "custom",
+		className: "current",
+	},
+	{
+		id: "3",
+		data: { label: "SIDM01016", provider: "asdf" },
+		position: { x: 700, y: 50 },
+		type: "custom",
+	},
+	{
+		id: "5",
+		data: { label: "SIDM01016", provider: "asdf" },
+		position: { x: 350, y: 150 },
+		type: "custom",
+	},
 ];
 
 const initialEdges = [
-	{ id: "e1-2", source: "1", target: "3" },
-	{ id: "e2-1", source: "2", target: "3" },
-	{ id: "e3-4", source: "3", target: "5" },
-	{ id: "e4-5", source: "4", target: "5" },
+	{
+		id: "e1-2",
+		source: "1",
+		target: "2",
+		markerEnd: {
+			type: MarkerType.ArrowClosed,
+		},
+	},
+	{
+		id: "e2-3",
+		source: "2",
+		target: "3",
+		markerEnd: {
+			type: MarkerType.ArrowClosed,
+		},
+	},
+	{
+		id: "e4-2",
+		source: "4",
+		target: "2",
+		markerEnd: {
+			type: MarkerType.ArrowClosed,
+		},
+	},
+	{
+		id: "e4-5",
+		source: "4",
+		target: "5",
+		markerEnd: {
+			type: MarkerType.ArrowClosed,
+		},
+	},
 ];
 
-function Flow() {
+const nodeTypes = {
+	custom: CustomNode,
+};
+
+function HierarchyTree() {
 	return (
-		<div style={{ height: "300px", width: "50%" }}>
+		<div style={{ height: "300px", width: "100%" }}>
 			<ReactFlow
 				nodes={initialNodes}
 				edges={initialEdges}
@@ -27,6 +104,8 @@ function Flow() {
 				proOptions={{
 					hideAttribution: true,
 				}}
+				draggable={false}
+				panOnDrag={false}
 				preventScrolling={false}
 				zoomOnScroll={false}
 				zoomOnPinch={false}
@@ -36,10 +115,13 @@ function Flow() {
 				nodesConnectable={false}
 				nodesDraggable={false}
 				nodesFocusable={false}
-				elementsSelectable={false}
-			></ReactFlow>
+				// elementsSelectable={false} // need this to be true so user can click link
+				nodeTypes={nodeTypes}
+			>
+				{/* <Panel position="top-left">top-left</Panel> */}
+			</ReactFlow>
 		</div>
 	);
 }
 
-export default Flow;
+export default HierarchyTree;
