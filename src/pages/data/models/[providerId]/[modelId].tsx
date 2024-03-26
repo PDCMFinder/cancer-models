@@ -38,6 +38,18 @@ const DynamicModal = dynamic(
 	}
 );
 
+interface IModelRelationshipModel {
+	type: string;
+	parents?: IModelRelationshipModel[] | null;
+	children?: IModelRelationshipModel[] | null;
+	external_model_id: string;
+}
+
+export interface IModelRelationships {
+	parents: IModelRelationshipModel[];
+	children: IModelRelationshipModel[];
+}
+
 interface IModelDetailsProps {
 	metadata: Metadata;
 	extLinks: ExtLinks;
@@ -51,6 +63,7 @@ interface IModelDetailsProps {
 	providerId: string;
 	engraftments?: IEngraftment[];
 	modelImages: IModelImage[];
+	modelRelationships: IModelRelationships;
 }
 
 export interface IModelImage {
@@ -178,6 +191,7 @@ const ModelDetails = ({
 	qualityData,
 	engraftments,
 	modelImages,
+	modelRelationships,
 }: IModelDetailsProps) => {
 	const NA_STRING = "N/A",
 		MODEL_GENOMICS_STRING = "Model Genomics",
@@ -1514,6 +1528,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		patientTreatment,
 		qualityData,
 		modelImages,
+		modelRelationships,
 	} = await getAllModelData(
 		params!.modelId as string,
 		params!.providerId as string
@@ -1530,6 +1545,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			patientTreatment,
 			qualityData,
 			modelImages,
+			modelRelationships,
 		},
 		revalidate: 600,
 	};
