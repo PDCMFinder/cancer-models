@@ -515,23 +515,13 @@ table {
 .react-flow__pane {
 	cursor: default !important;
 }
-// .react-flow__node-custom {
-// 	width: min-content;
-// 	height: 1rem;
-// 	background-color: red;
-// 	visibility: visible !important;
-// }
 .react-flow__viewport {
 	transform: scale(1) !important;
 }
 .react-flow__node-custom {
 	cursor: default !important;
-	width: min-content;
-	border-radius: 5px;
+	border-radius: $br-common;
 	border: 1px solid $color-primary-primary;
-	a {
-		padding: 1rem 1.5rem;
-	}
 	p {
 		margin: 0;
 	}

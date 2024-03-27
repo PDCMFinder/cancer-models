@@ -13,7 +13,10 @@ const Test = ({ data }: { data: INodeData }) => {
 					isConnectable={false}
 				/>
 				<p>
-					<a href={`/data/models/${data.provider}/${data.label}`}>
+					<a
+						className="px-1 py-2"
+						href={`/data/models/${data.provider}/${data.label}`}
+					>
 						{data.label}
 					</a>
 				</p>

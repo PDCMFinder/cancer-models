@@ -693,6 +693,20 @@ const ModelDetails = ({
 											)}
 										</li>
 										<li className="mb-2">
+											{modelRelationships?.parents?.length > 0 ||
+											modelRelationships?.children?.length > 0 ? (
+												<Link
+													replace
+													href="#model-relationships"
+													className="text-primary-primary"
+												>
+													Model Relationships
+												</Link>
+											) : (
+												"Model Relationships"
+											)}
+										</li>
+										<li className="mb-2">
 											{modelImages.length ? (
 												<Link
 													replace
@@ -1262,6 +1276,14 @@ const ModelDetails = ({
 									</div>
 								</div>
 							)}
+							{(modelRelationships?.parents?.length > 0 ||
+								modelRelationships?.children?.length > 0) && (
+								<div id="model-relationships" className="row">
+									<div className="col-12">
+										<HierarchyTree />
+									</div>
+								</div>
+							)}
 							{modelImages.length > 0 && (
 								<div id="histology-images" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
@@ -1365,11 +1387,6 @@ const ModelDetails = ({
 									</div>
 								</div>
 							)}
-							<div className="row">
-								<div className="col-12">
-									<HierarchyTree />
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
