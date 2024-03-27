@@ -19,7 +19,6 @@ import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
 import { useQueries, useQuery } from "react-query";
 import Head from "next/head";
 import { getAllModelData } from "../../../../apis/ModelDetails.api";
-import { hj_event } from "../../../../utils/hotjar";
 import dynamic from "next/dynamic";
 import Loader from "../../../../components/Loader/Loader";
 import InputAndLabel from "../../../../components/Input/InputAndLabel";
@@ -30,6 +29,7 @@ import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import FloatingButton from "../../../../components/FloatingWidget/FloatingButton";
 import { modelTourSteps } from "../../../../utils/tourSteps";
+import HierarchyTree from "../../../../components/HierarchyTree/HierarchyTree";
 
 const DynamicModal = dynamic(
 	() => import("../../../../components/Modal/Modal"),
@@ -37,6 +37,18 @@ const DynamicModal = dynamic(
 		loading: () => <Loader />,
 	}
 );
+
+interface IModelRelationshipModel {
+	type: string;
+	parents?: IModelRelationshipModel[] | null;
+	children?: IModelRelationshipModel[] | null;
+	external_model_id: string;
+}
+
+export interface IModelRelationships {
+	parents: IModelRelationshipModel[];
+	children: IModelRelationshipModel[];
+}
 
 interface IModelDetailsProps {
 	metadata: Metadata;
@@ -51,6 +63,7 @@ interface IModelDetailsProps {
 	providerId: string;
 	engraftments?: IEngraftment[];
 	modelImages: IModelImage[];
+	modelRelationships: IModelRelationships;
 }
 
 export interface IModelImage {
@@ -178,6 +191,7 @@ const ModelDetails = ({
 	qualityData,
 	engraftments,
 	modelImages,
+	modelRelationships,
 }: IModelDetailsProps) => {
 	const NA_STRING = "N/A",
 		MODEL_GENOMICS_STRING = "Model Genomics",
@@ -496,7 +510,6 @@ const ModelDetails = ({
 					{`CancerModels.Org - ${metadata.modelId} - ${metadata.histology} - ${metadata.modelType}`}
 				</title>
 			</Head>
-
 			<header className="bg-primary-primary text-white py-5">
 				<div className="container">
 					<div className="row align-center py-5 pb-lg-0 text-capitalize">
@@ -677,6 +690,20 @@ const ModelDetails = ({
 												</Link>
 											) : (
 												"Patient treatment"
+											)}
+										</li>
+										<li className="mb-2">
+											{modelRelationships?.parents?.length > 0 ||
+											modelRelationships?.children?.length > 0 ? (
+												<Link
+													replace
+													href="#model-relationships"
+													className="text-primary-primary"
+												>
+													Model Relationships
+												</Link>
+											) : (
+												"Model Relationships"
 											)}
 										</li>
 										<li className="mb-2">
@@ -1249,6 +1276,14 @@ const ModelDetails = ({
 									</div>
 								</div>
 							)}
+							{(modelRelationships?.parents?.length > 0 ||
+								modelRelationships?.children?.length > 0) && (
+								<div id="model-relationships" className="row">
+									<div className="col-12">
+										<HierarchyTree />
+									</div>
+								</div>
+							)}
 							{modelImages.length > 0 && (
 								<div id="histology-images" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
@@ -1510,6 +1545,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		patientTreatment,
 		qualityData,
 		modelImages,
+		modelRelationships,
 	} = await getAllModelData(
 		params!.modelId as string,
 		params!.providerId as string
@@ -1526,6 +1562,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			patientTreatment,
 			qualityData,
 			modelImages,
+			modelRelationships,
 		},
 		revalidate: 600,
 	};

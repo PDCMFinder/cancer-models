@@ -5,6 +5,7 @@ import {
 	IPublication,
 	IImmuneMarkers,
 	IImmuneMarker,
+	IModelRelationships,
 } from "../pages/data/models/[providerId]/[modelId]";
 import { camelCase } from "../utils/dataUtils";
 
@@ -57,6 +58,20 @@ export async function getModelImages(modelId: string): Promise<IModelImage[]> {
 		} else {
 			return [];
 		}
+	});
+}
+
+export async function getModelRelationships(modelId: string): Promise<any> {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&select=model_relationships`
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+	return response.json().then((d) => {
+		const data: IModelRelationships = d[0].model_relationships;
+
+		return data;
 	});
 }
 
@@ -489,6 +504,7 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 	const patientTreatment = await getPatientTreatment(pdcmModelId);
 	const qualityData = await getModelQualityData(pdcmModelId);
 	const modelImages = await getModelImages(modelId);
+	const modelRelationships = await getModelRelationships(modelId);
 	const qualityAssuranceObj = metadata.qualityAssurance
 		? metadata.qualityAssurance[0]
 		: {};
@@ -551,6 +567,7 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 		patientTreatment,
 		qualityData,
 		modelImages,
+		modelRelationships,
 		publications: [] as IPublication[],
 	};
 };
