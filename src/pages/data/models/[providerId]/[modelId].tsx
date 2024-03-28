@@ -31,6 +31,7 @@ import "driver.js/dist/driver.css";
 import FloatingButton from "../../../../components/FloatingWidget/FloatingButton";
 import { modelTourSteps } from "../../../../utils/tourSteps";
 import HierarchyTree from "../../../../components/HierarchyTree/HierarchyTree";
+import parseRelationships from "../../../../utils/parseRelationships";
 
 const DynamicModal = dynamic(
 	() => import("../../../../components/Modal/Modal"),
@@ -39,16 +40,11 @@ const DynamicModal = dynamic(
 	}
 );
 
-interface IModelRelationshipModel {
-	type: string;
-	parents?: IModelRelationshipModel[] | null;
-	children?: IModelRelationshipModel[] | null;
-	external_model_id: string;
-}
-
 export interface IModelRelationships {
-	parents: IModelRelationshipModel[];
-	children: IModelRelationshipModel[];
+	type?: string;
+	parents?: IModelRelationships[];
+	children?: IModelRelationships[];
+	external_model_id?: string;
 }
 
 interface IModelDetailsProps {
@@ -694,8 +690,8 @@ const ModelDetails = ({
 											)}
 										</li>
 										<li className="mb-2">
-											{modelRelationships?.parents?.length > 0 ||
-											modelRelationships?.children?.length > 0 ? (
+											{Array.isArray(modelRelationships?.parents) ||
+											Array.isArray(modelRelationships?.children) ? (
 												<Link
 													replace
 													href="#model-relationships"
@@ -1277,11 +1273,16 @@ const ModelDetails = ({
 									</div>
 								</div>
 							)}
-							{(modelRelationships?.parents?.length > 0 ||
-								modelRelationships?.children?.length > 0) && (
+							{(Array.isArray(modelRelationships?.parents) ||
+								Array.isArray(modelRelationships?.children)) && (
 								<div id="model-relationships" className="row">
 									<div className="col-12">
-										<HierarchyTree />
+										<HierarchyTree
+											data={parseRelationships(
+												modelRelationships,
+												metadata.providerId
+											)}
+										/>
 									</div>
 								</div>
 							)}

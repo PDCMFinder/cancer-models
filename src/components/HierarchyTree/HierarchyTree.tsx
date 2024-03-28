@@ -1,14 +1,23 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Dagre from "@dagrejs/dagre";
 import ReactFlow, { MarkerType, Node, Edge, ReactFlowRefType } from "reactflow";
 import "reactflow/dist/style.css";
 import CustomNode from "./CustomNode";
+import { IModelRelationships } from "../../pages/data/models/[providerId]/[modelId]";
 
-type LayoutedNode = Node & {
+interface IHierarchyTreeProps {
+	data: { nodes: LayoutedNode[]; edges: Edge[] }; // TODO Update
+}
+
+export type LayoutedNode = Node & {
 	x: number;
 	y: number;
 	width: number;
 	height: number;
+	data: {
+		label: string;
+		provider: string;
+	};
 };
 
 const commonNodeProperties = {
@@ -27,33 +36,33 @@ const commonEdgeProperties = {
 	type: "smoothstep",
 };
 
-export const initialNodes: LayoutedNode[] = [
+const initialNodes: LayoutedNode[] = [
 	{
-		id: "1",
-		data: { label: "input" },
+		id: "14234",
+		data: { label: "input", provider: "string" },
 		...commonNodeProperties,
 	},
 	{
 		id: "1b",
-		data: { label: "input" },
+		data: { label: "input", provider: "string" },
 		...commonNodeProperties,
 	},
 	{
 		id: "2",
-		data: { label: "node 2" },
+		data: { label: "node 2", provider: "string" },
 		...commonNodeProperties,
 	},
 	{
 		id: "3",
-		data: { label: "node 2" },
+		data: { label: "node 2", provider: "string" },
 		...commonNodeProperties,
 	},
 ];
 
-export const initialEdges: Edge[] = [
+const initialEdges: Edge[] = [
 	{
 		id: "e12",
-		source: "1",
+		source: "14234",
 		target: "2",
 		...commonEdgeProperties,
 	},
@@ -77,7 +86,7 @@ const nodeTypes = {
 
 const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 
-const HierarchyTree = () => {
+const HierarchyTree = (props: IHierarchyTreeProps) => {
 	const flowRef = useRef<ReactFlowRefType>(null);
 	const reactFlowHeight = flowRef?.current?.scrollHeight;
 
@@ -89,7 +98,7 @@ const HierarchyTree = () => {
 	Dagre.layout(g);
 
 	return (
-		<div style={{ height: reactFlowHeight }} className="w-100">
+		<div style={{ height: reactFlowHeight, width: "100%" }} className="w-100">
 			<ReactFlow
 				nodes={initialNodes.map((node) => {
 					return {
