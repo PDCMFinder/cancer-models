@@ -1,6 +1,6 @@
+import React, { useRef } from "react";
 import Dagre from "@dagrejs/dagre";
-import React from "react";
-import ReactFlow, { MarkerType, Node, Edge } from "reactflow";
+import ReactFlow, { MarkerType, Node, Edge, ReactFlowRefType } from "reactflow";
 import "reactflow/dist/style.css";
 import CustomNode from "./CustomNode";
 
@@ -34,6 +34,11 @@ export const initialNodes: LayoutedNode[] = [
 		...commonNodeProperties,
 	},
 	{
+		id: "1b",
+		data: { label: "input" },
+		...commonNodeProperties,
+	},
+	{
 		id: "2",
 		data: { label: "node 2" },
 		...commonNodeProperties,
@@ -53,6 +58,12 @@ export const initialEdges: Edge[] = [
 		...commonEdgeProperties,
 	},
 	{
+		id: "e1b2",
+		source: "1b",
+		target: "2",
+		...commonEdgeProperties,
+	},
+	{
 		id: "e23",
 		source: "2",
 		target: "3",
@@ -67,6 +78,9 @@ const nodeTypes = {
 const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 
 const HierarchyTree = () => {
+	const flowRef = useRef<ReactFlowRefType>(null);
+	const reactFlowHeight = flowRef?.current?.scrollHeight;
+
 	g.setGraph({ rankdir: "LR" });
 
 	initialEdges.forEach((edge) => g.setEdge(edge.source, edge.target));
@@ -75,7 +89,7 @@ const HierarchyTree = () => {
 	Dagre.layout(g);
 
 	return (
-		<div style={{ height: "300px", width: "100%" }}>
+		<div style={{ height: reactFlowHeight }} className="w-100">
 			<ReactFlow
 				nodes={initialNodes.map((node) => {
 					return {
@@ -103,6 +117,7 @@ const HierarchyTree = () => {
 				nodesDraggable={false}
 				nodesFocusable={false}
 				nodeTypes={nodeTypes}
+				ref={flowRef}
 			></ReactFlow>
 		</div>
 	);
