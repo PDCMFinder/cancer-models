@@ -1,8 +1,7 @@
 import { memo } from "react";
-import { Handle, Position } from "reactflow";
-import { INodeData } from "./HierarchyTree";
+import { Handle, Node, Position } from "reactflow";
 
-const Test = ({ data }: { data: INodeData }) => {
+const CustomNode = ({ data }: Node["data"]) => {
 	return (
 		<>
 			<div>
@@ -14,7 +13,7 @@ const Test = ({ data }: { data: INodeData }) => {
 				/>
 				<p>
 					<a
-						className="px-1 py-2"
+						className="px-2 py-1"
 						href={`/data/models/${data.provider}/${data.label}`}
 					>
 						{data.label}
@@ -31,4 +30,4 @@ const Test = ({ data }: { data: INodeData }) => {
 	);
 };
 
-export default memo(Test);
+export default memo(CustomNode);

@@ -10,6 +10,7 @@ import Card from "../../../../components/Card/Card";
 import MolecularDataTable from "../../../../components/MolecularDataTable/MolecularDataTable";
 import {
 	getModelPubmedIds,
+	getModelRelationships,
 	getMolecularDataDownload,
 	getPublicationData,
 } from "../../../../apis/ModelDetails.api";
@@ -700,10 +701,10 @@ const ModelDetails = ({
 													href="#model-relationships"
 													className="text-primary-primary"
 												>
-													Model Relationships
+													Relationships
 												</Link>
 											) : (
-												"Model Relationships"
+												"Relationships"
 											)}
 										</li>
 										<li className="mb-2">

@@ -497,6 +497,8 @@ table {
 		}
 	}
 }
+
+// Overwrite external libraries css
 .grecaptcha-badge {
 	display: none !important;
 }
@@ -529,7 +531,7 @@ table {
 		background-color: $color-primary-quaternary;
 	}
 }
-.react-flow__edge-default {
+[class^="react-flow__edge"] {
 	path {
 		stroke: $color-primary-tertiary;
 	}

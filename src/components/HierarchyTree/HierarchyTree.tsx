@@ -1,75 +1,62 @@
-import ReactFlow, {
-	Node,
-	MarkerType,
-	Edge,
-	Panel,
-	useReactFlow,
-	useNodesState,
-	useEdgesState,
-	ReactFlowProvider,
-} from "reactflow";
 import Dagre from "@dagrejs/dagre";
+import React from "react";
+import ReactFlow, { MarkerType, Node, Edge } from "reactflow";
+import "reactflow/dist/style.css";
 import CustomNode from "./CustomNode";
-// import "reactflow/dist/style.css";
-import "reactflow/dist/base.css";
-import { useCallback, useEffect } from "react";
 
-export interface INode {
-	id: string;
-	data: INodeData;
-	position: INodePosition;
-	type: string;
-	className: string;
-}
-
-export interface INodeData {
-	label: string;
-	provider: string;
-}
-
-export interface INodePosition {
+type LayoutedNode = Node & {
 	x: number;
 	y: number;
-}
+	width: number;
+	height: number;
+};
 
-const initialNodes: Node[] = [
+const commonNodeProperties = {
+	x: 0,
+	y: 0,
+	position: { x: 0, y: 0 },
+	type: "custom",
+	width: 100,
+	height: 45,
+};
+
+const commonEdgeProperties = {
+	markerEnd: {
+		type: MarkerType.ArrowClosed,
+	},
+	type: "smoothstep",
+};
+
+export const initialNodes: LayoutedNode[] = [
 	{
 		id: "1",
-		type: "custom",
 		data: { label: "input" },
-		position: { x: 0, y: 0 },
+		...commonNodeProperties,
 	},
 	{
 		id: "2",
-		type: "custom",
 		data: { label: "node 2" },
-		position: { x: 0, y: 0 },
-		className: "current",
+		...commonNodeProperties,
 	},
 	{
 		id: "3",
-		type: "custom",
-		data: { label: "node 3" },
-		position: { x: 0, y: 0 },
+		data: { label: "node 2" },
+		...commonNodeProperties,
 	},
 ];
 
-const initialEdges = [
+export const initialEdges: Edge[] = [
 	{
 		id: "e12",
 		source: "1",
 		target: "2",
-		markerEnd: {
-			type: MarkerType.ArrowClosed,
-		},
+		...commonEdgeProperties,
 	},
 	{
-		id: "e13",
+		id: "e23",
 		source: "2",
 		target: "3",
-		markerEnd: {
-			type: MarkerType.ArrowClosed,
-		},
+		...commonEdgeProperties,
 	},
 ];
 
@@ -79,66 +66,44 @@ const nodeTypes = {
 
 const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 
-const LayoutFlow = () => {
-	const { fitView } = useReactFlow();
-	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-
-	useEffect(() => {
-		// horizontal layout - less empty space than vertical since we currently don't have many nodes
-		g.setGraph({ rankdir: "LR" });
-
-		edges.forEach((edge) => g.setEdge(edge.source, edge.target));
-		nodes.forEach((node) => g.setNode(node.id, node));
-
-		Dagre.layout(g);
-
-		setNodes(
-			nodes.map((node) => {
-				const { x, y } = g.node(node.id);
-
-				return { ...node, position: { x, y } };
-			})
-		);
-		setEdges(edges);
-
-		window.requestAnimationFrame(() => {
-			fitView();
-		});
-	}, [nodes, edges]);
-
-	return (
-		<ReactFlow
-			nodes={nodes}
-			edges={edges}
-			onNodesChange={onNodesChange}
-			onEdgesChange={onEdgesChange}
-			nodeTypes={nodeTypes}
-			fitView
-			proOptions={{
-				hideAttribution: true,
-			}}
-			draggable={false}
-			panOnDrag={false}
-			preventScrolling={false}
-			zoomOnScroll={false}
-			zoomOnPinch={false}
-			zoomOnDoubleClick={false}
-			selectNodesOnDrag={false}
-			connectOnClick={false}
-			nodesConnectable={false}
-			nodesDraggable={false}
-			nodesFocusable={false}
-		></ReactFlow>
-	);
-};
-
 const HierarchyTree = () => {
+	g.setGraph({ rankdir: "LR" });
+
+	initialEdges.forEach((edge) => g.setEdge(edge.source, edge.target));
+	initialNodes.forEach((node) => g.setNode(node.id, node));
+
+	Dagre.layout(g);
+
 	return (
 		<div style={{ height: "300px", width: "100%" }}>
-			<ReactFlowProvider>
-				<LayoutFlow />
-			</ReactFlowProvider>
+			<ReactFlow
+				nodes={initialNodes.map((node) => {
+					return {
+						...node,
+						position: {
+							x: node.x - node.width / 2,
+							y: node.y - node.height / 2,
+						},
+					};
+				})}
+				edges={initialEdges}
+				fitView
+				proOptions={{
+					hideAttribution: true,
+				}}
+				draggable={false}
+				panOnDrag={false}
+				preventScrolling={false}
+				zoomOnScroll={false}
+				zoomOnPinch={false}
+				zoomOnDoubleClick={false}
+				selectNodesOnDrag={false}
+				connectOnClick={false}
+				nodesConnectable={false}
+				nodesDraggable={false}
+				nodesFocusable={false}
+				nodeTypes={nodeTypes}
+			></ReactFlow>
 		</div>
 	);
 };
