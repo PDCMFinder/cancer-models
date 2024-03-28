@@ -19,69 +19,6 @@ export type LayoutedNode = Node & {
 	};
 };
 
-const commonNodeProperties = {
-	x: 0,
-	y: 0,
-	position: { x: 0, y: 0 },
-	type: "custom",
-	width: 100,
-	height: 45,
-};
-
-const commonEdgeProperties = {
-	markerEnd: {
-		type: MarkerType.ArrowClosed,
-	},
-	type: "smoothstep",
-};
-
-const initialNodes: LayoutedNode[] = [
-	{
-		id: "SIDM01016",
-		data: {
-			label: "SIDM01016",
-			provider: "CMP",
-		},
-		x: 0,
-		y: 0,
-		position: {
-			x: 0,
-			y: 0,
-		},
-		type: "custom",
-		width: 100,
-		height: 45,
-	},
-	{
-		id: "SIDM01263",
-		data: {
-			label: "SIDM01263",
-			provider: "CMP",
-		},
-		x: 0,
-		y: 0,
-		position: {
-			x: 0,
-			y: 0,
-		},
-		type: "custom",
-		width: 100,
-		height: 45,
-	},
-];
-
-const initialEdges: Edge[] = [
-	{
-		id: "eSIDM01016-SIDM01244",
-		source: "SIDM01016",
-		target: "SIDM01263",
-		markerEnd: {
-			type: MarkerType.ArrowClosed,
-		},
-		type: "smoothstep",
-	},
-];
-
 const nodeTypes = {
 	custom: CustomNode,
 };

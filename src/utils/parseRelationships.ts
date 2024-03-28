@@ -61,18 +61,6 @@ const parseRelationships = (
 					parseRelationships(parent, providerId, currentId, parsedData);
 				});
 			}
-			// else {
-			// 	const parentId = (data.parents as IModelRelationships)
-			// 		.external_model_id;
-			// 	const childId = data.external_model_id;
-			// 	parsedData.edges.push({
-			// 		id: `e${parentId}-${childId}`,
-			// 		source: parentId,
-			// 		target: childId,
-			// 		...commonEdgeProperties,
-			// 	});
-			// 	parseRelationships(data.parents, providerId, currentId, parsedData);
-			// }
 		}
 		if (data.children) {
 			if (Array.isArray(data.children)) {
@@ -88,18 +76,6 @@ const parseRelationships = (
 					parseRelationships(child, providerId, currentId, parsedData);
 				});
 			}
-			// else {
-			// 	const parentId = data.external_model_id;
-			// 	const childId = (data.children as IModelRelationships)
-			// 		.external_model_id;
-			// 	parsedData.edges.push({
-			// 		id: `e${parentId}-${childId}`,
-			// 		source: parentId,
-			// 		target: childId,
-			// 		...commonEdgeProperties,
-			// 	});
-			// 	parseRelationships(data.children, providerId, currentId, parsedData);
-			// }
 		}
 	}
 
