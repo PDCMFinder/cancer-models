@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import Dagre from "@dagrejs/dagre";
 import ReactFlow, { MarkerType, Node, Edge, ReactFlowRefType } from "reactflow";
 import "reactflow/dist/style.css";
 import CustomNode from "./CustomNode";
-import { IModelRelationships } from "../../pages/data/models/[providerId]/[modelId]";
 
 interface IHierarchyTreeProps {
 	data: { nodes: LayoutedNode[]; edges: Edge[] }; // TODO Update
@@ -38,45 +37,48 @@ const commonEdgeProperties = {
 
 const initialNodes: LayoutedNode[] = [
 	{
-		id: "14234",
-		data: { label: "input", provider: "string" },
-		...commonNodeProperties,
+		id: "SIDM01016",
+		data: {
+			label: "SIDM01016",
+			provider: "CMP",
+		},
+		x: 0,
+		y: 0,
+		position: {
+			x: 0,
+			y: 0,
+		},
+		type: "custom",
+		width: 100,
+		height: 45,
 	},
 	{
-		id: "1b",
-		data: { label: "input", provider: "string" },
-		...commonNodeProperties,
-	},
-	{
-		id: "2",
-		data: { label: "node 2", provider: "string" },
-		...commonNodeProperties,
-	},
-	{
-		id: "3",
-		data: { label: "node 2", provider: "string" },
-		...commonNodeProperties,
+		id: "SIDM01263",
+		data: {
+			label: "SIDM01263",
+			provider: "CMP",
+		},
+		x: 0,
+		y: 0,
+		position: {
+			x: 0,
+			y: 0,
+		},
+		type: "custom",
+		width: 100,
+		height: 45,
 	},
 ];
 
 const initialEdges: Edge[] = [
 	{
-		id: "e12",
-		source: "14234",
-		target: "2",
-		...commonEdgeProperties,
-	},
-	{
-		id: "e1b2",
-		source: "1b",
-		target: "2",
-		...commonEdgeProperties,
-	},
-	{
-		id: "e23",
-		source: "2",
-		target: "3",
-		...commonEdgeProperties,
+		id: "eSIDM01016-SIDM01244",
+		source: "SIDM01016",
+		target: "SIDM01263",
+		markerEnd: {
+			type: MarkerType.ArrowClosed,
+		},
+		type: "smoothstep",
 	},
 ];
 
@@ -86,21 +88,21 @@ const nodeTypes = {
 
 const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 
-const HierarchyTree = (props: IHierarchyTreeProps) => {
+const HierarchyTree = ({ data }: IHierarchyTreeProps) => {
 	const flowRef = useRef<ReactFlowRefType>(null);
 	const reactFlowHeight = flowRef?.current?.scrollHeight;
 
 	g.setGraph({ rankdir: "LR" });
 
-	initialEdges.forEach((edge) => g.setEdge(edge.source, edge.target));
-	initialNodes.forEach((node) => g.setNode(node.id, node));
+	data.edges.forEach((edge) => g.setEdge(edge.source, edge.target));
+	data.nodes.forEach((node) => g.setNode(node.id, node));
 
 	Dagre.layout(g);
 
 	return (
 		<div style={{ height: reactFlowHeight, width: "100%" }} className="w-100">
 			<ReactFlow
-				nodes={initialNodes.map((node) => {
+				nodes={data.nodes.map((node) => {
 					return {
 						...node,
 						position: {
@@ -109,7 +111,7 @@ const HierarchyTree = (props: IHierarchyTreeProps) => {
 						},
 					};
 				})}
-				edges={initialEdges}
+				edges={data.edges}
 				fitView
 				proOptions={{
 					hideAttribution: true,

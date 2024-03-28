@@ -21,7 +21,8 @@ const commonEdgeProperties = {
 const parseRelationships = (
 	data: IModelRelationships,
 	providerId: string,
-	parsedData: { nodes: LayoutedNode[]; edges: Edge[] } = {
+	currentId: string,
+	parsedData: { nodes: LayoutedNode[]; edges: any[] } = {
 		nodes: [],
 		edges: [],
 	}
@@ -36,24 +37,69 @@ const parseRelationships = (
 				},
 				...commonNodeProperties,
 			});
+		} else {
+			parsedData.nodes.push({
+				id: currentId,
+				data: {
+					label: currentId,
+					provider: providerId,
+				},
+				...commonNodeProperties,
+			});
 		}
 		if (data.parents) {
 			if (Array.isArray(data.parents)) {
-				data.parents.forEach((parent: IModelRelationships) =>
-					parseRelationships(parent, providerId, parsedData)
-				);
-			} else {
-				parseRelationships(data.parents, providerId, parsedData);
+				data.parents.forEach((parent: IModelRelationships) => {
+					const parentId = parent.external_model_id;
+					const childId = data.external_model_id ?? currentId;
+					parsedData.edges.push({
+						id: `e${parentId}-${childId}`,
+						source: parentId,
+						target: childId,
+						...commonEdgeProperties,
+					});
+					parseRelationships(parent, providerId, currentId, parsedData);
+				});
 			}
+			// else {
+			// 	const parentId = (data.parents as IModelRelationships)
+			// 		.external_model_id;
+			// 	const childId = data.external_model_id;
+			// 	parsedData.edges.push({
+			// 		id: `e${parentId}-${childId}`,
+			// 		source: parentId,
+			// 		target: childId,
+			// 		...commonEdgeProperties,
+			// 	});
+			// 	parseRelationships(data.parents, providerId, currentId, parsedData);
+			// }
 		}
 		if (data.children) {
 			if (Array.isArray(data.children)) {
-				data.children.forEach((child: IModelRelationships) =>
-					parseRelationships(child, providerId, parsedData)
-				);
-			} else {
-				parseRelationships(data.children, providerId, parsedData);
+				data.children.forEach((child: IModelRelationships) => {
+					const parentId = data.external_model_id ?? currentId;
+					const childId = child.external_model_id;
+					parsedData.edges.push({
+						id: `e${parentId}-${childId}`,
+						source: parentId,
+						target: childId,
+						...commonEdgeProperties,
+					});
+					parseRelationships(child, providerId, currentId, parsedData);
+				});
 			}
+			// else {
+			// 	const parentId = data.external_model_id;
+			// 	const childId = (data.children as IModelRelationships)
+			// 		.external_model_id;
+			// 	parsedData.edges.push({
+			// 		id: `e${parentId}-${childId}`,
+			// 		source: parentId,
+			// 		target: childId,
+			// 		...commonEdgeProperties,
+			// 	});
+			// 	parseRelationships(data.children, providerId, currentId, parsedData);
+			// }
 		}
 	}
 

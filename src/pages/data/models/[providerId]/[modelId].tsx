@@ -10,7 +10,6 @@ import Card from "../../../../components/Card/Card";
 import MolecularDataTable from "../../../../components/MolecularDataTable/MolecularDataTable";
 import {
 	getModelPubmedIds,
-	getModelRelationships,
 	getMolecularDataDownload,
 	getPublicationData,
 } from "../../../../apis/ModelDetails.api";
@@ -1280,7 +1279,8 @@ const ModelDetails = ({
 										<HierarchyTree
 											data={parseRelationships(
 												modelRelationships,
-												metadata.providerId
+												metadata.providerId,
+												metadata.modelId
 											)}
 										/>
 									</div>
