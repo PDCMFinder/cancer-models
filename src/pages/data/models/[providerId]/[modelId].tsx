@@ -29,13 +29,23 @@ import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
 import FloatingButton from "../../../../components/FloatingWidget/FloatingButton";
 import { modelTourSteps } from "../../../../utils/tourSteps";
-import HierarchyTree from "../../../../components/HierarchyTree/HierarchyTree";
 import parseRelationships from "../../../../utils/parseRelationships";
 
 const DynamicModal = dynamic(
 	() => import("../../../../components/Modal/Modal"),
 	{
 		loading: () => <Loader />,
+	}
+);
+
+const DynamicHierarchyTree = dynamic(
+	() => import("../../../../components/HierarchyTree/HierarchyTree"),
+	{
+		loading: () => (
+			<div style={{ height: "100px" }}>
+				<Loader />
+			</div>
+		),
 	}
 );
 
@@ -1274,9 +1284,10 @@ const ModelDetails = ({
 							)}
 							{(Array.isArray(modelRelationships?.parents) ||
 								Array.isArray(modelRelationships?.children)) && (
-								<div id="model-relationships" className="row">
-									<div className="col-12">
-										<HierarchyTree
+								<div id="model-relationships" className="row mb-5 pt-3">
+									<div className="col-12 mb-1">
+										<h2 className="mt-0 mb-4">Model relationships</h2>
+										<DynamicHierarchyTree
 											data={parseRelationships(
 												modelRelationships,
 												metadata.providerId,

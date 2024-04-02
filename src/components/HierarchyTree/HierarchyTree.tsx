@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import Dagre from "@dagrejs/dagre";
-import ReactFlow, { MarkerType, Node, Edge, ReactFlowRefType } from "reactflow";
+import ReactFlow, { Node, Edge, ReactFlowRefType } from "reactflow";
 import "reactflow/dist/style.css";
 import CustomNode from "./CustomNode";
 
@@ -17,6 +17,7 @@ export type LayoutedNode = Node & {
 		label: string;
 		provider: string;
 	};
+	classname?: string;
 };
 
 const nodeTypes = {
@@ -29,7 +30,7 @@ const HierarchyTree = ({ data }: IHierarchyTreeProps) => {
 	const flowRef = useRef<ReactFlowRefType>(null);
 	const reactFlowHeight = flowRef?.current?.scrollHeight;
 
-	g.setGraph({ rankdir: "LR" });
+	g.setGraph({ rankdir: "LR" }); // Could also be TB so the tree is vertical. Need to update custom node if using TB
 
 	data.edges.forEach((edge) => g.setEdge(edge.source, edge.target));
 	data.nodes.forEach((node) => g.setNode(node.id, node));
