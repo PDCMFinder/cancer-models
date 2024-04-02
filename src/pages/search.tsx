@@ -28,6 +28,7 @@ import { driver } from "driver.js";
 import { searchTourSteps } from "../utils/tourSteps";
 import "driver.js/dist/driver.css";
 import FloatingButton from "../components/FloatingWidget/FloatingButton";
+import Head from "next/head";
 
 const DynamicModal = dynamic(import("../components/Modal/Modal"), {
 	loading: () => (
@@ -395,6 +396,16 @@ const Search: NextPage = () => {
 
 	return (
 		<>
+			{/* page metadata */}
+			<Head>
+				<title>
+					Explore Patient-Derived Xenograft, Cell and Organoid models
+				</title>
+				<meta
+					name="description"
+					content="Discover a diverse catalog of cancer models. Find the perfect PDX, organoid, and cell line models for your research."
+				/>
+			</Head>
 			<header className={`py-5 ${styles.Search_header}`}>
 				<div className="container">
 					<div className="row">

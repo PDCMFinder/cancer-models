@@ -29,4 +29,4 @@ The following resources are available:
 
 Stewart, E,_ Federico, S,_ Chen, X,\* et al, Orthotopic patient-derived PDXs of paediatric solid tumours. Nature. 2017 [... Read more](https://pubmed.ncbi.nlm.nih.gov/28854174)
 
-![](/img/providers/sjcrh-image.png)
+![Tumour diagram](/img/providers/sjcrh-image.png)

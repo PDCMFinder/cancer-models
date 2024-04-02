@@ -8,6 +8,7 @@ import Loader from "../components/Loader/Loader";
 import Link from "next/link";
 import ReCAPTCHA from "react-google-recaptcha";
 import ReactGA from "react-ga4";
+import Head from "next/head";
 
 interface IFormStatus {
 	status: "success" | "error" | "loading" | "";
@@ -68,6 +69,16 @@ const Contact: NextPage = () => {
 
 	return (
 		<>
+			{/* page metadata */}
+			<Head>
+				<title>
+					Connect with CancerModels.Org for Collaborations & Inquiries
+				</title>
+				<meta
+					name="description"
+					content="Contact our team to explore opportunities in cancer research, model contributions, or any questions you may have."
+				/>
+			</Head>
 			<header className="bg-primary-primary text-white mb-5 py-5">
 				<div className="container">
 					<div className="row py-5">
