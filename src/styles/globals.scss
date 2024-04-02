@@ -231,6 +231,11 @@ a {
 		aspect-ratio: 16/9;
 	}
 }
+.cursor {
+	&-default {
+		cursor: default !important;
+	}
+}
 .position {
 	&-relative {
 		position: relative;
@@ -492,6 +497,8 @@ table {
 		}
 	}
 }
+
+// Overwrite external libraries css
 .grecaptcha-badge {
 	display: none !important;
 }
@@ -505,5 +512,27 @@ table {
 	.driver-popover-footer * {
 		font-family: $type-secondary !important;
 		line-height: 1.1;
+	}
+}
+.react-flow__pane {
+	cursor: default !important;
+}
+.react-flow__viewport {
+	transform: scale(1) !important;
+}
+.react-flow__node-custom {
+	cursor: default !important;
+	border-radius: $br-common;
+	border: 1px solid $color-primary-primary;
+	p {
+		margin: 0;
+	}
+	&.current {
+		background-color: $color-primary-quaternary;
+	}
+}
+[class^="react-flow__edge"] {
+	path {
+		stroke: $color-primary-tertiary;
 	}
 }
