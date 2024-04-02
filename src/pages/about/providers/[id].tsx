@@ -20,8 +20,13 @@ const Provider: NextPage<IProviderProps> = ({
 }: IProviderProps) => {
 	return (
 		<>
+			{/* page metadata */}
 			<Head>
-				<title>{`${providerData.name} - CancerModels.Org`}</title>
+				<title>{`Cancer Model Data providers: ${providerData.name}`}</title>
+				<meta
+					name="description"
+					content="Discover our network of data providers enriching the ecosystem of patient-derived cancer model information."
+				/>
 			</Head>
 			<section>
 				<div className="container">

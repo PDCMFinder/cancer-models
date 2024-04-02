@@ -22,6 +22,7 @@ import { useRouter } from "next/router";
 import { countEthnicity } from "../utils/collapseEthnicity";
 import Loader from "../components/Loader/Loader";
 import dynamic from "next/dynamic";
+import Head from "next/head";
 
 const DynamicCirclePacking = dynamic(
 	() => import("../components/CirclePacking/CirclePacking"),
@@ -124,6 +125,18 @@ const Overview: NextPage = () => {
 
 	return (
 		<>
+			{/* page metadata */}
+			<Head>
+				<title>Comprehensive Overview of Patient-Derived Cancer Models</title>
+				<meta
+					name="description"
+					content="Gain insights of PDX, organoid, and cell line models data on our portal."
+				/>
+				<meta
+					name="keywords"
+					content="Patient-derived cancer models, overview, research insights"
+				/>
+			</Head>
 			<header className="bg-primary-primary text-white mb-5 py-5">
 				<div className="container">
 					<div className="row py-5">

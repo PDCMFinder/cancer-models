@@ -71,11 +71,15 @@ function CancerModels({ Component, pageProps, cookies, host }: AppProps) {
 		<>
 			<Head>
 				<title>
-					Cancer Models: Patient Derived Xenografts, Organoids, Cells
+					Cancer Models: Patient-Derived Xenografts, Organoids, Cells
 				</title>
 				<meta
 					name="description"
-					content="The largest open catalog of patient-derived cancer models. Find the right PDX, organoid and cell line patient-derived cancer model for your next project."
+					content="Discover the largest catalog of patient-derived xenograft, organoid, and cell cancer models for your next project."
+				/>
+				<meta
+					name="keywords"
+					content="Patient-derived models, Cancer research models, PDX models, Cell line models, Organoid models, Cancer model repositories, Molecular data"
 				/>
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<meta property="og:image" content="/ogimage.png" />
