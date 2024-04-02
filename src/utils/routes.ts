@@ -23,7 +23,7 @@ export const routes = [
 			{
 				path: "/cbioportal",
 				name: "cBioPortal",
-				isBlank: true,
+				opensNewTab: true,
 			},
 			{
 				path: "/training",

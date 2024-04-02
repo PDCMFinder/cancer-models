@@ -33,11 +33,11 @@ export interface IRoute {
 	path?: string;
 	name: string;
 	secondary?: boolean;
-	isBlank?: boolean;
+	opensNewTab?: boolean;
 	children?: {
 		path: string;
 		name: string;
-		isBlank?: boolean;
+		opensNewTab?: boolean;
 	}[];
 }
 
