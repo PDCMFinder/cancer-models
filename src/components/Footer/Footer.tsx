@@ -137,7 +137,7 @@ const Footer = (props: IFooterProps) => {
 							</Link>{" "}
 							are co-developers of CancerModels.Org. This work is supported by
 							the National Institutes of Health/National Cancer Institute U24
-							CA204781 01, U24 CA253539 01 and R01 CA089713.
+							CA204781, U24 CA253539 and R01 CA089713.
 						</p>
 						<p className="mb-0">
 							<a
