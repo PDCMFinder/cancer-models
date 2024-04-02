@@ -1,4 +1,4 @@
-import { Head } from "next/dist/pages/_document";
+import Head from "next/head";
 
 interface IMdLayoutProps {
 	children: string;
@@ -20,7 +20,7 @@ const MdLayout = ({ children, meta }: IMdLayoutProps) => {
 					<meta name="description" content={meta.metaDescription} />
 				)}
 				{meta.metaKeywords ?? (
-					<meta name="ketwords" content={meta.metaKeywords} />
+					<meta name="keywords" content={meta.metaKeywords} />
 				)}
 			</Head>
 			<header className="bg-primary-primary text-white mb-5 py-5">
