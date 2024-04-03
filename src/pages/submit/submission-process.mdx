@@ -1,0 +1,84 @@
+import MdLayout from "../../components/MdLayout/MdLayout";
+
+[comment]: # "Metadata"
+[comment]: # "Page title = h1 in banner"
+
+export const meta = {
+	pageTitle: "Submission process",
+	metaTitle: "Submit your models and contribute to cancer research",
+	metaDescription:
+		"Be part of innovation. Submit patient-derived cancer models to cancermodels.org. Advance research, improve treatments.",
+};
+
+[comment]: # "Page content below"
+[comment]: # "Can include html tags"
+
+## Getting started:
+
+[img placeholder]
+
+### Step 1: Prepare Your Data
+
+Before you dive into the submission process, ensure you have all the necessary data and information about your patient-derived cancer models (PDCMs) and associated data.
+
+1. Go to the [Metadata Dictionary page](/validation/dictionary) on cancermodels.org and familiarise yourself with the data model
+2. Download the metadata template Excel file from the metadata dictionary page.
+3. The Metadata Dictionary expresses the details of the data model, which adheres to specific formats and restrictions to ensure a standard of data quality.
+4. Download the Clinical/Model metadata template (Excel file) from the Metadata templates section of the [submit page](/submit). This template is split into six sections, which help describe your PDCM thoroughly. Please refer to the [Metadata Dictionary](/validation/dictionary) while filing in the templates.
+
+### Step 2: Fill Out the Templates
+
+1. Carefully fill in the template with all the essential details about your PDCMs. Be as accurate and complete as possible.<br/>
+   **Tips to format your metadata file​**
+   1. Open your model metadata in Excel:
+   2. BEFORE pasting data, reformat cells as text: Right-click empty cells, choose "Format cells," select "Text," and click "Ok."
+   3. Do not delete the first four rows reserved for field headers; they are vital for validation.
+   4. Paste your data under the correct header fields.
+2. Save the Excel spreadsheet with preserved sheet names. Confirm to "keep using that format" if prompted.
+3. If you are using a text editor, make sure you have invisible characters turned on. This way you can be sure that tabs are correctly separating each field value.
+4. You do not need to remove any columns from the Excel file.
+5. Please refer to the [list of permissible values](/validation/docs/dictionary/permissible-values) for filling in the metadata
+
+### Step 3: Validate Your Metadata
+
+1. After you've filled out the templates, you can use cancermodels.org's validation service. You can find this tool [here](/validation/validator) and to understand how to use the validator, visit the [how-to-use](/validation/docs/validation/how-to-use) page.
+2. The validation service will check your metadata for any errors or missing information. Don't worry if you encounter errors; the service will guide you on how to fix them.
+3. You can also refer to the [validation report](/validation/docs/validation/error-report) page and the data model in the [Metadata Dictionary page](/validation/dictionary) for additional help in resolving any validation issues.
+4. If you are stuck you can get in touch with us by [email](mailto:helpdesk@cancermodels.org). We are here to help!
+
+### Step 4: Submit Your Models
+
+1. Once you validate your metadata, get in touch with the cancermodels.org team. You can reach us by [email](mailto:helpdesk@cancermodels.org).
+2. Provide the filled-out and validated metadata templates and any associated data you have or links to where your data is stored.
+3. Once you've submitted your information, the cancermodels.org team will process your submission.
+
+### Step 5: Relax and Wait for Release
+
+1. After submitting your PDCMs, take a deep breath and relax. Let the cancermodels.org team handle the rest.
+2. Once your submission is processed and everything is in agreement, cancermodels.org will release the information you provided. If you wish we can let you know when your models and data is available online. You can also find that through notifications we post on Twitter and LinkedIn of new releases.
+
+## Licence
+
+All cancermodels.org model and data submissions are available under CC0 or EMBL-EBI terms of use. Since 1st January 2023 we are asking model providers to agree to share their data under the terms of CC0. This dedicates the data to the public domain, allowing downstream users to consume the data without restriction. Metadata and data submitted prior to 1 January 2023 are made available under the EMBL-EBI terms of use. Whilst these terms do not themselves impose any restrictions on downstream use, the application of CC0 licence removes any ambiguity. We advise users of cancermodels.org to note the licence terms of individual datasets, if applicable to their specific use case. The licence terms are accessible from the individual model pages. Please ensure that the original data are cited whenever they are used in a publication.
+
+## Contact
+
+You can contact us via [email](mailto:helpdesk@cancermodels.org) or make use of our [contact form](https://www.cancermodels.org/contact).
+
+## Additional resource
+
+- [Metadata Dictionary page](https://www.cancermodels.org/validation/dictionary)
+- [Metadata dictionary overview](https://www.cancermodels.org/validation/docs/dictionary/dictionary-overview)
+- [List of permissible values](https://www.cancermodels.org/validation/docs/dictionary/permissible-values)
+- [Validator](https://www.cancermodels.org/validation/validator)
+- [how-to-use](https://www.cancermodels.org/validation/docs/validation/how-to-use)
+- [validation report](https://www.cancermodels.org/validation/docs/validation/error-report)
+- [European Nucleotide Archive](https://www.ebi.ac.uk/ena/browser/home)
+
+## Submit your PDCM data to cancermodels.org to increase their visibility
+
+To start the process please contact cancermodels.org team: [submissions](mailto:helpdesk@cancermodels.org?subject=PDCM%20producer:%20Data%20Submission%20request)&nbsp;<img className="d-inline" src="/img/envelope-icon.svg" title="Envelope Icon" alt="Envelope Icon"/>
+
+[comment]: # "End page content - do not edit below this line"
+
+export default ({ children }) => <MdLayout meta={meta}>{children}</MdLayout>;
