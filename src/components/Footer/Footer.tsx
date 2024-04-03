@@ -186,6 +186,16 @@ const Footer = (props: IFooterProps) => {
 							>
 								EMBL-EBI terms of use.
 							</Link>
+							<br />
+							Our platform also conforms to the EMBL-EBI{" "}
+							<a
+								target="_blank"
+								rel="noreferrer noopener"
+								className="link-text-light"
+								href="https://www.ebi.ac.uk/long-term-data-preservation"
+							>
+								long-term data preservation policies.
+							</a>
 						</p>
 					</div>
 				</div>
