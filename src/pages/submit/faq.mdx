@@ -1,0 +1,72 @@
+import MdLayout from "../../components/MdLayout/MdLayout";
+
+[comment]: # "Metadata"
+[comment]: # "Page title = h1 in banner"
+
+export const meta = {
+	pageTitle: "FAQ",
+	metaTitle: "Submit your models and contribute to cancer research",
+	metaDescription:
+		"Be part of innovation. Submit patient-derived cancer models to CancerModels.Org. Advance research, improve treatments.",
+};
+
+[comment]: # "Page content below"
+[comment]: # "Can include html tags"
+
+## Frequently Asked Questions
+
+### General
+
+**What model types can I submit to CancerModels.Org?**<br/>
+PDX, organoids and cell lines
+
+**Can I submit image data to CancerModels.Org?**<br/>
+Yes, we do accept image data at CancerModels.Org. We ask you to submit your image data to the Bio-image archive. Please contact us for [submission](mailto:helpdesk@cancermodels.org?subject=PDCM%20producer:%20Data%20Submission%20request)&nbsp;<img className="d-inline" src="/img/envelope-icon.svg" title="Envelope Icon" alt="Envelope Icon"/>.
+
+### Metadata
+
+**Which sheet needs to be filled for Organoid and cell line models?**<br/>
+As of now, CancerModels.Org accepts organoid and cell line model information in the ‘cell model’ sheet of the metadata template. We collect information such as model name, supplier information, growth properties, external ids etc. Please add any other relevant information in the comments field. CancerModels.Org are currently in the process of standardising MI standard for organoids models.
+
+**What are the six sections of CancerModels.Org metadata template?**<br/>
+The six section of CancerModels.Org metadata template covers the clinical and model information using these six sheets: patient, patient sample, sharing, pdx model, model validation, cell model.
+
+### Molecular data
+
+**What molecular data types do CancerModels.Org accept?**<br/>
+CancerModels.Org currently accepts, but not limited to, gene expression, mutation, copy number alterations, biomarker, drug dosing studies, and patient treatment data.
+
+**I have a molecular data type other than currently accepted by CancerModels.Org?**<br/>
+Please contact the CancerModels.Org team mentioning the data type and data format.
+
+### Data formats
+
+**Can I submit gene expression matrix data for submitting gene expression data?**<br/>
+If you have a two dimensional matrix with a gene per row and a sample per column. For each gene-sample pair, a real number represents the gene expression in that sample. Please transform your data into a columnar representation while referring to the gene expression template. Kindly make sure the data is structured in a similar way to the template and share this transformed data with us.
+
+**My genomic data is on GRCh37 genome assembly. Can I submit this data?**<br/>
+For submitting genomic data to CancerModels.Org, you do not need to lift your data to recent genome assembly as we have our liftover and annotation pipeline for it.
+
+**We have different replicates for each PDOX, and I wonder how do I fill this information in the template?**<br/>
+Recommended: Please use a unique RNA sequencing ID (sample ID) for each replicate, and provide a separate file for each replicate and named using the same ID.
+
+### Data sharing/exchange
+
+**How can I share the data files?**<br/>
+The data files can be shared via FTP, email, secure file sharing services such as Box, DropBox, Google Drive etc. If you have an API/endpoint from where the data can be fetched, that also works.
+
+## Submit your PDCM data to cancermodels.org to increase their visibility
+
+To start the process please contact cancermodels.org team: [submissions](mailto:helpdesk@cancermodels.org?subject=PDCM%20producer:%20Data%20Submission%20request)&nbsp;<img className="d-inline" src="/img/envelope-icon.svg" title="Envelope Icon" alt="Envelope Icon"/>
+
+## Why and what to submit
+
+Learn about the benefits of submitting your data to CancerModels.Org and what data types and formats to submit [here](/submit)
+
+## Submission process
+
+Learn more about our [data submission process and additional resources](/submit/submission-process)
+
+[comment]: # "End page content - do not edit below this line"
+
+export default ({ children }) => <MdLayout meta={meta}>{children}</MdLayout>;
