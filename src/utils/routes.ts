@@ -10,36 +10,41 @@ export const routes = [
 		children: [
 			{
 				path: "/about",
-				name: "About",
+				name: "About"
 			},
 			{
 				path: "/about/providers",
-				name: "Data Providers",
+				name: "Data Providers"
 			},
 			{
 				path: "https://documenter.getpostman.com/view/6493399/2s8ZDbX1e7",
-				name: "API",
+				name: "API"
 			},
 			{
 				path: "/cbioportal",
 				name: "cBioPortal",
-				opensNewTab: true,
+				opensNewTab: true
 			},
 			{
-				path: "/training",
-				name: "Training",
+				path: "https://github.com/PDCMFinder/",
+				name: "Open source repositories",
+				opensNewTab: true
+			},
+			{
+				path: "/tutorials",
+				name: "Tutorials"
 			},
 			{
 				path: "/contact",
-				name: "Contact",
-			},
-		],
-	},
+				name: "Contact"
+			}
+		]
+	}
 ];
 
 export const routesWithGAEvents = [
 	{
 		routeName: "API",
-		eventName: "view_api",
-	},
+		eventName: "view_api"
+	}
 ];
