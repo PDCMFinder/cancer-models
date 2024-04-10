@@ -55,7 +55,7 @@ const Tutorials: NextPage = () => {
 				<div className="container">
 					<div className="row">
 						{videos.map((video) => (
-							<div className="col-6">
+							<div className="col-6" key={video.src}>
 								<Card
 									className="mb-4"
 									headerClassName="py-1"
@@ -63,7 +63,6 @@ const Tutorials: NextPage = () => {
 								>
 									<iframe
 										className="w-100 ar-16-9"
-										key={video.src}
 										src={video.src}
 										title={video.title}
 										frameBorder="0"
