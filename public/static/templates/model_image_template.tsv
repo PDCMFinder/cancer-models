@@ -1,0 +1,5 @@
+Field	model_id	URL	description	sample_type	passage	magnification	staining
+#Description	Unique identifier for all the PDXs derived from the same tissue sample	Link to the model image Description of the image on what was being imaged	Type of sample being imaged Passage number imaging was performed.	Passage 0 correspond to first engraftment (if this is not the case please define how passages are numbered).	Magnification of the mode image Staining used for imaging the sample		
+#Example	 J000077451	https://www.ebi.ac.uk/biostudies/files/S-BIAD850/submission/J000077451/J000077451180207133606.tiff	P2 tumor ID018 for PDX model J000077451 stained for H&E.	pdx	0	20x	H&E
+#Format Requirements	free alphanumerical	URL	free text	"pdx, patient, organoid, cell line"	numeric	free text	free text
+#Essential?	desirable	desirable	desirable	desirable	desirable	desirable	desirable
