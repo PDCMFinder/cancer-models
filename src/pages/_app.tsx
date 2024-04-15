@@ -84,7 +84,10 @@ function CancerModels({ Component, pageProps, cookies, host }: AppProps) {
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<meta property="og:image" content="/ogimage.png" />
 				{/* canonical url without params */}
-				<link rel="canonical" href={envHost + asPath.split("?")[0]} />
+				<link
+					rel="canonical"
+					href={`https://${envHost + asPath.split("?")[0]}`}
+				/>
 
 				{/* Generics */}
 				<link rel="icon" href="/favicon-32.png" sizes="32x32" />
