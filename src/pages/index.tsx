@@ -1,17 +1,16 @@
 import type { NextPage } from "next";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import Button from "../components/Button/Button";
+import { useQuery } from "react-query";
 import bannerImage from "../../public/national-cancer-institute-wUg8xhJ3aBs.jpg";
+import { getModelCount } from "../apis/AggregatedData.api";
+import Button from "../components/Button/Button";
+import Label from "../components/Input/Label";
+import Loader from "../components/Loader/Loader";
 import ShowHide from "../components/ShowHide/ShowHide";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import breakPoints from "../utils/breakpoints";
 import styles from "./index.module.scss";
-import Label from "../components/Input/Label";
-import { useQuery } from "react-query";
-import { getModelCount } from "../apis/AggregatedData.api";
-import SearchBar from "../components/SearchBar/SearchBar";
-import dynamic from "next/dynamic";
-import Loader from "../components/Loader/Loader";
 
 const DynamicDataCountCard = dynamic(
 	import("../components/DataCountCard/DataCountCard"),
@@ -21,7 +20,18 @@ const DynamicDataCountCard = dynamic(
 				<Loader />
 			</div>
 		),
-		ssr: false,
+		ssr: false
+	}
+);
+const DynamicSearchBar = dynamic(
+	() => import("../components/SearchBar/SearchBar"),
+	{
+		loading: () => (
+			<div style={{ height: "50px" }}>
+				<Loader />
+			</div>
+		),
+		ssr: false
 	}
 );
 
@@ -76,7 +86,7 @@ const Home: NextPage = () => {
 									: ""
 							} cancer models`}
 						/>
-						<SearchBar id="searchBar-search-id" name="searchBar-name" />
+						<DynamicSearchBar id="searchBar-search-id" name="searchBar-name" />
 					</div>
 				</div>
 			</header>

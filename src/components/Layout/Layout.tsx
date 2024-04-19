@@ -1,41 +1,35 @@
-import Navbar from "../Navbar/Navbar";
-import { useCookies } from "react-cookie";
-import { useEffect, useState } from "react";
-import Card from "../Card/Card";
-import Button from "../Button/Button";
-import CloseIcon from "../CloseIcon/CloseIcon";
 import dynamic from "next/dynamic";
-import Loader from "../Loader/Loader";
+import { useState } from "react";
+import { useCookies } from "react-cookie";
+import ReactGA from "react-ga4";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import FloatingButton from "../FloatingWidget/FloatingButton";
-import ReactGA from "react-ga4";
+import Button from "../Button/Button";
+import Card from "../Card/Card";
+import CloseIcon from "../CloseIcon/CloseIcon";
 import FeedbackIcon from "../FeedbackIcon/FeedbackIcon";
+import FloatingButton from "../FloatingWidget/FloatingButton";
+import Loader from "../Loader/Loader";
+import Modal from "../Modal/Modal";
+import Navbar from "../Navbar/Navbar";
 
-const DynamicModal = dynamic(import("../Modal/Modal"), {
-	loading: () => (
-		<div style={{ height: "300px" }}>
-			<Loader />
-		</div>
-	),
-	ssr: false,
-});
-const DynamicCookieConsent = dynamic(import("../CookieConsent/CookieConsent"), {
-	loading: () => (
-		<div style={{ height: "100px" }}>
-			<Loader />
-		</div>
-	),
-	ssr: false,
-});
 const DynamicFooter = dynamic(() => import("../Footer/Footer"), {
 	loading: () => (
 		<div style={{ height: "300px" }}>
 			<Loader />
 		</div>
 	),
-	ssr: false,
+	ssr: false
 });
+const DynamicModal = dynamic(() => import("../Modal/Modal"), {
+	ssr: false
+});
+const DynamicCookieConsent = dynamic(
+	() => import("../CookieConsent/CookieConsent"),
+	{
+		ssr: false
+	}
+);
 
 interface ILayoutProps {
 	children: JSX.Element;
@@ -43,7 +37,6 @@ interface ILayoutProps {
 
 const Layout = (props: ILayoutProps) => {
 	const [cookies, setCookie] = useCookies();
-	const [cookieConsentHeight, setCookieConsentHeight] = useState<number>(0);
 	const [showFeedbackModal, setShowFeedbackModal] = useState(false);
 	const surveyHref =
 		"https://docs.google.com/forms/d/e/1FAIpQLSeRJQ7Xu1pMqegYvs4KVdA17bucM6XzW2zzA2yHaroPfSR7Sg/viewform";
@@ -53,32 +46,24 @@ const Layout = (props: ILayoutProps) => {
 				defaultOptions: {
 					queries: {
 						staleTime: Infinity,
-						refetchOnWindowFocus: true,
-					},
-				},
+						refetchOnWindowFocus: true
+					}
+				}
 			})
 	);
-
-	useEffect(() => {
-		if (cookies["cm_consent"]) setCookieConsentHeight(0);
-	}, [cookies["cm_consent"]]);
 
 	return (
 		<>
 			<QueryClientProvider client={queryClient}>
 				<Navbar />
 				<main>{props.children}</main>
-				{cookies["cm_consent"] ?? (
-					<DynamicCookieConsent
-						setCookieConsentHeight={setCookieConsentHeight}
-					/>
-				)}
+				{!cookies["cm_consent"] && <DynamicCookieConsent />}
 				{/* bottom right survey bubble */}
 				<FloatingButton
 					onClick={() => {
 						setShowFeedbackModal(true);
 						ReactGA.event("feedback_bubble-click", {
-							category: "event",
+							category: "event"
 						});
 					}}
 					position="bottom right"
@@ -89,7 +74,7 @@ const Layout = (props: ILayoutProps) => {
 					<FeedbackIcon />
 				</FloatingButton>
 				<ReactQueryDevtools initialIsOpen={false} />
-				<DynamicFooter cookieConsentHeight={cookieConsentHeight} />
+				<DynamicFooter />
 				{!cookies["cm_feedback"] && (
 					<DynamicModal
 						className="overflow-hidden"
@@ -98,7 +83,7 @@ const Layout = (props: ILayoutProps) => {
 						handleClose={() =>
 							setCookie("cm_feedback", "true", {
 								sameSite: "lax",
-								maxAge: 259200,
+								maxAge: 259200
 							})
 						}
 					>
@@ -112,7 +97,7 @@ const Layout = (props: ILayoutProps) => {
 										onClick={() =>
 											setCookie("cm_feedback", "true", {
 												sameSite: "lax",
-												maxAge: 259200,
+												maxAge: 259200
 											})
 										}
 									/>
@@ -134,7 +119,7 @@ const Layout = (props: ILayoutProps) => {
 									onClick={() =>
 										setCookie("cm_feedback", "true", {
 											sameSite: "lax",
-											maxAge: 2592000,
+											maxAge: 2592000
 										})
 									}
 								>
@@ -145,7 +130,7 @@ const Layout = (props: ILayoutProps) => {
 					</DynamicModal>
 				)}
 				{showFeedbackModal && (
-					<DynamicModal handleClose={() => setShowFeedbackModal(false)}>
+					<Modal handleClose={() => setShowFeedbackModal(false)}>
 						<Card
 							className="bg-white"
 							contentClassName="pt-0"
@@ -170,7 +155,7 @@ const Layout = (props: ILayoutProps) => {
 								Loading…
 							</iframe>
 						</Card>
-					</DynamicModal>
+					</Modal>
 				)}
 			</QueryClientProvider>
 		</>

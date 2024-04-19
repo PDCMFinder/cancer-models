@@ -1,18 +1,14 @@
-import Logotype from "../Logotype/Logotype";
-import { routes, routesWithGAEvents } from "../../utils/routes";
-import { IRoute } from "../../../types/globalTypes";
-import ActiveLink from "../ActiveLink/ActiveLink";
-import styles from "./Footer.module.scss";
 import Link from "next/link";
-import { useQuery } from "react-query";
-import { getLatestDataReleaseInformation } from "../../apis/AggregatedData.api";
 import ReactGA from "react-ga4";
+import { useQuery } from "react-query";
+import { IRoute } from "../../../types/globalTypes";
+import { getLatestDataReleaseInformation } from "../../apis/AggregatedData.api";
+import { routes, routesWithGAEvents } from "../../utils/routes";
+import ActiveLink from "../ActiveLink/ActiveLink";
+import Logotype from "../Logotype/Logotype";
+import styles from "./Footer.module.scss";
 
-interface IFooterProps {
-	cookieConsentHeight: number;
-}
-
-const Footer = (props: IFooterProps) => {
+const Footer = () => {
 	let latestDataReleaseInfo = useQuery("latestDataReleaseInfo", () => {
 		return getLatestDataReleaseInformation();
 	});
@@ -20,7 +16,7 @@ const Footer = (props: IFooterProps) => {
 	return (
 		<footer
 			className={`${styles.Footer} text-white`}
-			style={{ paddingBottom: `calc(${props.cookieConsentHeight}px + 3.5rem)` }}
+			style={{ paddingBottom: "3.5rem" }}
 		>
 			<div className="container">
 				<div className={`row ${styles["Footer_row-main"]}`}>
@@ -75,7 +71,7 @@ const Footer = (props: IFooterProps) => {
 												if (childGAEvent) {
 													onClickProp = () =>
 														ReactGA.event(childGAEvent.eventName, {
-															category: "event",
+															category: "event"
 														});
 												}
 
