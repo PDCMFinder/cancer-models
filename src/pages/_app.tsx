@@ -1,16 +1,13 @@
-import { useEffect, useState } from "react";
-import "../styles/globals.scss";
 import type { AppProps } from "next/app";
-import App, { AppContext } from "next/app";
-import { Merriweather } from "next/font/google";
-import { Space_Mono } from "next/font/google";
-import Layout from "../components/Layout/Layout";
+import { Merriweather, Space_Mono } from "next/font/google";
 import Head from "next/head";
-import handleBodyClass from "../utils/handleBodyClass";
-import { Cookies, CookiesProvider } from "react-cookie";
-import Script from "next/script";
-import { HJ_ID } from "../utils/hotjar";
 import { useRouter } from "next/router";
+import Script from "next/script";
+import { useEffect } from "react";
+import { CookiesProvider } from "react-cookie";
+import Layout from "../components/Layout/Layout";
+import "../styles/globals.scss";
+import handleBodyClass from "../utils/handleBodyClass";
 
 const USERNAVIGATION_MOUSE = "userNavigation-mouse",
 	USERNAVIGATION_KEYBOARD = "userNavigation-keyboard",
@@ -23,12 +20,12 @@ const USERNAVIGATION_MOUSE = "userNavigation-mouse",
 const merriweather = Merriweather({
 	weight: "400",
 	subsets: ["latin"],
-	display: "swap",
+	display: "swap"
 });
 const spaceMono = Space_Mono({
 	weight: ["400", "700"],
 	subsets: ["latin"],
-	display: "swap",
+	display: "swap"
 });
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
@@ -36,10 +33,10 @@ if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
 }
 
 /* @ts-ignore */
-function CancerModels({ Component, pageProps, cookies, host }: AppProps) {
+function CancerModels({ Component, pageProps }: AppProps) {
 	const { asPath } = useRouter();
-	const [envHost] = useState(host);
-	const isBrowser = typeof window !== "undefined";
+	// hardcode envhost so we don't have to use getserverprops on whole app
+	const envHost = "https://www.cancermodels.org/";
 
 	useEffect(() => {
 		handleBodyClass([USERNAVIGATION_MOUSE], ADD);
@@ -84,10 +81,7 @@ function CancerModels({ Component, pageProps, cookies, host }: AppProps) {
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<meta property="og:image" content="/ogimage.png" />
 				{/* canonical url without params */}
-				<link
-					rel="canonical"
-					href={`https://${envHost + asPath.split("?")[0]}`}
-				/>
+				<link rel="canonical" href={`${envHost}${asPath.split("?")[0]}`} />
 
 				{/* Generics */}
 				<link rel="icon" href="/favicon-32.png" sizes="32x32" />
@@ -114,7 +108,7 @@ function CancerModels({ Component, pageProps, cookies, host }: AppProps) {
 					<Script id="hotjar" strategy="beforeInteractive">
 						{`(function(h,o,t,j,a,r){
                   h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-                  h._hjSettings={hjid:${HJ_ID},hjsv:6};
+                  h._hjSettings={hjid:3209855,hjsv:6};
                   a=o.getElementsByTagName('head')[0];
                   r=o.createElement('script');r.async=1;
                   r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
@@ -137,10 +131,7 @@ function CancerModels({ Component, pageProps, cookies, host }: AppProps) {
 					</Script>
 				</>
 			)}
-			<CookiesProvider
-				cookies={isBrowser ? undefined : new Cookies(cookies)}
-				defaultSetOptions={{ path: "/" }}
-			>
+			<CookiesProvider defaultSetOptions={{ path: "/" }}>
 				<Layout>
 					<Component {...pageProps} />
 				</Layout>
@@ -150,19 +141,3 @@ function CancerModels({ Component, pageProps, cookies, host }: AppProps) {
 }
 
 export default CancerModels;
-
-CancerModels.getInitialProps = async (appContext: AppContext) => {
-	const appProps = await App.getInitialProps(appContext);
-
-	// bfcache ; ssr caching. Commented because its sending double headers in modelid page, doesn't affect lighthouse much
-	// appContext.ctx.res?.setHeader(
-	// 	"Cache-Control",
-	// 	"public, s-maxage=100, stale-while-revalidate=590"
-	// );
-
-	return {
-		...appProps,
-		cookies: appContext.ctx.req?.headers?.cookie,
-		host: appContext.ctx.req?.headers?.host,
-	};
-};
