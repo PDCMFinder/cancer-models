@@ -1,11 +1,11 @@
 import {
 	ExtLinks,
-	IModelImage,
-	IMolecularData,
-	IPublication,
-	IImmuneMarkers,
 	IImmuneMarker,
+	IImmuneMarkers,
+	IModelImage,
 	IModelRelationships,
+	IMolecularData,
+	IPublication
 } from "../pages/data/models/[providerId]/[modelId]";
 import { camelCase } from "../utils/dataUtils";
 
@@ -18,6 +18,16 @@ interface IImmuneMarkerAPI {
 	marker_name: string;
 	marker_value: string;
 	essential_or_additional_details: string;
+}
+
+export async function getCellModelData(pdcmModelId: number): Promise<any> {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/cell_model?model_id=eq.${pdcmModelId}`
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+	return response.json().then((d) => camelCase(d[0]));
 }
 
 export async function getModelDetailsMetadata(
@@ -139,7 +149,7 @@ export async function getModelExtLinks(
 			contactLink: extLinks.contactForm.formUrl
 				? extLinks.contactForm.formUrl
 				: createMailToLink(extLinks.contactPeople.emailList, modelId),
-			sourceDatabaseUrl: extLinks.sourceDatabase.databaseUrl,
+			sourceDatabaseUrl: extLinks.sourceDatabase.databaseUrl
 		};
 		return modelExtLinks;
 	});
@@ -188,7 +198,7 @@ export async function getModelMolecularDataColumns(
 		mutation: "mutation_data_table_columns",
 		expression: "expression_data_table_columns",
 		"copy number alteration": "cna_data_table_columns",
-		biomarker: "biomarker_data_table_columns",
+		biomarker: "biomarker_data_table_columns"
 	};
 	const endpoint = typeEndpointMap[dataType];
 	let response = await fetch(
@@ -242,7 +252,7 @@ export async function getModelMolecularDataDetails(
 		mutation: "mutation_data_table",
 		expression: "expression_data_table",
 		"copy number alteration": "cna_data_table",
-		"bio markers": "biomarker_data_table",
+		"bio markers": "biomarker_data_table"
 	};
 	const endpoint = typeEndpointMap[dataType];
 	let request = `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?molecular_characterization_id=eq.${molecularCharacterizationId}`;
@@ -267,7 +277,7 @@ export async function getModelMolecularDataDetails(
 				delete item.molecular_characterization_id;
 				delete item.text;
 				return item;
-			}),
+			})
 		];
 	});
 }
@@ -282,7 +292,7 @@ export async function getMolecularDataDownload(
 		mutation: "mutation_data_table",
 		expression: "expression_data_table",
 		"copy number alteration": "cna_data_table",
-		"bio markers": "biomarker_data_table",
+		"bio markers": "biomarker_data_table"
 	};
 	const endpoint = typeEndpointMap[molecularCharacterization.dataType];
 	let request = `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?molecular_characterization_id=eq.${molecularCharacterization.molecularCharacterizationId}`;
@@ -348,7 +358,7 @@ export async function getPatientTreatment(pdcmModelId: number) {
 			let treatment = {
 				treatmentName: itemCamelCase.treatment.replaceAll(" And ", ", "),
 				treatmentDose: itemCamelCase.dose,
-				treatmentResponse: itemCamelCase.response,
+				treatmentResponse: itemCamelCase.response
 			};
 			return treatment;
 		})
@@ -374,7 +384,7 @@ export async function getModelDrugDosing(
 			let treatment = {
 				treatmentName: itemCamelCase.treatment,
 				treatmentDose: itemCamelCase.dose,
-				treatmentResponse: itemCamelCase.response,
+				treatmentResponse: itemCamelCase.response
 			};
 			return treatment;
 		});
@@ -419,7 +429,7 @@ async function getModelImmuneMarkers(modelId: string) {
 				const marker = {
 					details: current.essential_or_additional_details,
 					name: current.marker_name,
-					value: [current.marker_value],
+					value: [current.marker_value]
 				};
 
 				if (existingSampleId) {
@@ -439,7 +449,7 @@ async function getModelImmuneMarkers(modelId: string) {
 					result.push({
 						sampleId: current.sample_id,
 						type: current.marker_type,
-						markers: [marker],
+						markers: [marker]
 					});
 				}
 
@@ -458,7 +468,7 @@ async function getModelImmuneMarkers(modelId: string) {
 								item.marker_type === type && item.marker_name
 						)
 						.filter((el: string) => el) // remove empty values
-				),
+				)
 			];
 
 			// push "empty" objs so all rows have all columns
@@ -472,7 +482,7 @@ async function getModelImmuneMarkers(modelId: string) {
 					immuneMarker.markers.push({
 						details: null,
 						name: uniqueName,
-						value: null,
+						value: null
 					});
 				}
 			});
@@ -499,6 +509,8 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 	const extLinks = await getModelExtLinks(pdcmModelId, modelId);
 	const molecularData = await getMolecularData(modelId);
 	const modelType = metadata.modelType;
+	const cellModelData =
+		modelType === "organoid" ? await getCellModelData(pdcmModelId) : {};
 	const engraftments = await getModelEngraftments(pdcmModelId, modelType);
 	const drugDosing = await getModelDrugDosing(pdcmModelId, modelType);
 	const patientTreatment = await getPatientTreatment(pdcmModelId);
@@ -506,7 +518,7 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 	const modelImages = await getModelImages(modelId);
 	const modelRelationships = await getModelRelationships(modelId);
 	const qualityAssuranceObj = metadata.qualityAssurance
-		? metadata.qualityAssurance[0]
+		? camelCase(metadata.qualityAssurance[0])
 		: {};
 	const xenograftModelSpecimensObj = metadata.xenograftModelSpecimens
 		? metadata.xenograftModelSpecimens[0]
@@ -557,18 +569,19 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 				metadata.patientSampleTreatedPriorToCollection,
 			pdxModelPublications: metadata.pdxModelPublications,
 			...qualityAssuranceObj,
-			...xenograftModelSpecimensObj,
+			...xenograftModelSpecimensObj
 		},
 		extLinks,
 		molecularData,
 		immuneMarkers,
 		engraftments,
+		cellModelData,
 		drugDosing,
 		patientTreatment,
 		qualityData,
 		modelImages,
 		modelRelationships,
-		publications: [] as IPublication[],
+		publications: [] as IPublication[]
 	};
 };
 

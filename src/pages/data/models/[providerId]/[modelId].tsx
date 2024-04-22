@@ -1,40 +1,40 @@
-import React, { useState } from "react";
-import { GetStaticProps, GetStaticPaths } from "next";
-import Button from "../../../../components/Button/Button";
-import Link from "next/link";
-import ShowHide from "../../../../components/ShowHide/ShowHide";
-import breakPoints from "../../../../utils/breakpoints";
-import useWindowDimensions from "../../../../hooks/useWindowDimensions";
-import styles from "./Model.module.scss";
-import Card from "../../../../components/Card/Card";
-import MolecularDataTable from "../../../../components/MolecularDataTable/MolecularDataTable";
-import {
-	getModelPubmedIds,
-	getMolecularDataDownload,
-	getPublicationData,
-} from "../../../../apis/ModelDetails.api";
-import CloseIcon from "../../../../components/CloseIcon/CloseIcon";
-import Tooltip from "../../../../components/Tooltip/Tooltip";
-import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
-import { useQueries, useQuery } from "react-query";
-import Head from "next/head";
-import { getAllModelData } from "../../../../apis/ModelDetails.api";
-import dynamic from "next/dynamic";
-import Loader from "../../../../components/Loader/Loader";
-import InputAndLabel from "../../../../components/Input/InputAndLabel";
-import JSZip from "jszip";
-import FileSaver from "file-saver";
-import ReactGA from "react-ga4";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
+import FileSaver from "file-saver";
+import JSZip from "jszip";
+import { GetStaticPaths, GetStaticProps } from "next";
+import dynamic from "next/dynamic";
+import Head from "next/head";
+import Link from "next/link";
+import React, { useState } from "react";
+import ReactGA from "react-ga4";
+import { useQueries, useQuery } from "react-query";
+import {
+	getAllModelData,
+	getModelPubmedIds,
+	getMolecularDataDownload,
+	getPublicationData
+} from "../../../../apis/ModelDetails.api";
+import Button from "../../../../components/Button/Button";
+import Card from "../../../../components/Card/Card";
+import CloseIcon from "../../../../components/CloseIcon/CloseIcon";
 import FloatingButton from "../../../../components/FloatingWidget/FloatingButton";
-import { modelTourSteps } from "../../../../utils/tourSteps";
+import InputAndLabel from "../../../../components/Input/InputAndLabel";
+import Loader from "../../../../components/Loader/Loader";
+import MolecularDataTable from "../../../../components/MolecularDataTable/MolecularDataTable";
+import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
+import ShowHide from "../../../../components/ShowHide/ShowHide";
+import Tooltip from "../../../../components/Tooltip/Tooltip";
+import useWindowDimensions from "../../../../hooks/useWindowDimensions";
+import breakPoints from "../../../../utils/breakpoints";
 import parseRelationships from "../../../../utils/parseRelationships";
+import { modelTourSteps } from "../../../../utils/tourSteps";
+import styles from "./Model.module.scss";
 
 const DynamicModal = dynamic(
 	() => import("../../../../components/Modal/Modal"),
 	{
-		loading: () => <Loader />,
+		loading: () => <Loader />
 	}
 );
 
@@ -45,7 +45,7 @@ const DynamicHierarchyTree = dynamic(
 			<div style={{ height: "100px" }}>
 				<Loader />
 			</div>
-		),
+		)
 	}
 );
 
@@ -68,8 +68,30 @@ interface IModelDetailsProps {
 	modelId: string;
 	providerId: string;
 	engraftments?: IEngraftment[];
+	cellModelData?: ICellModelData;
 	modelImages: IModelImage[];
 	modelRelationships: IModelRelationships;
+}
+
+interface ICellModelData {
+	id: number;
+	modelName: string;
+	modelNameAliases: string;
+	type: string;
+	growthProperties: string;
+	growthMedia: string;
+	mediaId: string;
+	parentId: any;
+	originPatientSampleId: any;
+	modelId: number;
+	plateCoating: string;
+	otherPlateCoating: string;
+	passageNumber: string;
+	contaminated: string;
+	contaminationDetails: string;
+	supplements: string;
+	drug: string;
+	drugConcentration: string;
 }
 
 export interface IModelImage {
@@ -128,6 +150,12 @@ export interface QualityData {
 	validationTechnique: string;
 	validationHostStrainNomenclature: string;
 	modelId: number;
+	morphologicalFeatures: string;
+	snpAnalysis: string;
+	strAnalysis: string;
+	tumourStatus: string;
+	modelPurity: string;
+	comments: string;
 }
 
 interface Metadata {
@@ -195,9 +223,10 @@ const ModelDetails = ({
 	drugDosing,
 	patientTreatment,
 	qualityData,
+	cellModelData,
 	engraftments,
 	modelImages,
-	modelRelationships,
+	modelRelationships
 }: IModelDetailsProps) => {
 	const NA_STRING = "N/A",
 		MODEL_GENOMICS_STRING = "Model Genomics",
@@ -208,7 +237,7 @@ const ModelDetails = ({
 	const [fileDownloadStatus, setFileDownloadStatus] = useState({
 		totalFiles: 0,
 		downloadedFiles: 0,
-		isDownloading: false,
+		isDownloading: false
 	});
 
 	const { windowWidth } = useWindowDimensions();
@@ -221,7 +250,7 @@ const ModelDetails = ({
 		{ label: "Cancer Grade", value: metadata.cancerGrade },
 		{ label: "Cancer Stage", value: metadata.cancerStage },
 		{ label: "Primary Site", value: metadata.primarySite },
-		{ label: "Collection Site", value: metadata.collectionSite },
+		{ label: "Collection Site", value: metadata.collectionSite }
 	];
 	const driverObj = driver({
 		showProgress: true,
@@ -238,7 +267,7 @@ const ModelDetails = ({
 		},
 		onDestroyed: () => {
 			window.scrollTo(0, 0);
-		},
+		}
 	});
 	// New metadata object without the "score" property to use in metadata file download; take out modelId to rearrange
 	const { score: _, modelId: metadataModelId, ...metadataFileData } = metadata;
@@ -246,7 +275,7 @@ const ModelDetails = ({
 	const pubmedIdsQuery = useQuery(
 		[
 			"pubmed-ids-data",
-			{ modelId: metadata.modelId, providerId: metadata.providerId },
+			{ modelId: metadata.modelId, providerId: metadata.providerId }
 		],
 		() => getModelPubmedIds(metadata.modelId, metadata.providerId)
 	);
@@ -257,7 +286,7 @@ const ModelDetails = ({
 		pubmedIds.map((p: string) => {
 			return {
 				queryKey: ["publication-data", p],
-				queryFn: () => getPublicationData(p),
+				queryFn: () => getPublicationData(p)
 			};
 		})
 	);
@@ -272,13 +301,13 @@ const ModelDetails = ({
 			Object.keys({
 				modelId: metadataModelId,
 				...metadataFileData,
-				pdxModelPublications: pubmedIds,
+				pdxModelPublications: pubmedIds
 			}).join("\t") +
 			"\n" +
 			Object.values({
 				modelId: metadataModelId,
 				...metadataFileData,
-				pdxModelPublications: pubmedIds,
+				pdxModelPublications: pubmedIds
 			}).join("\t");
 
 		const blob = new Blob([tsvData], { type: "text/tsv" });
@@ -288,7 +317,7 @@ const ModelDetails = ({
 
 			ReactGA.event("download_data", {
 				category: "event",
-				value: 1,
+				value: 1
 			});
 		}
 
@@ -311,8 +340,8 @@ const ModelDetails = ({
 				...prev,
 				{
 					data,
-					filename,
-				},
+					filename
+				}
 			]);
 		}
 	};
@@ -355,13 +384,13 @@ const ModelDetails = ({
 			// Adding 1 for metadata
 			ReactGA.event("download_data", {
 				category: "event",
-				value: 1 + 1,
+				value: 1 + 1
 			});
 		} else {
 			setFileDownloadStatus((prevState) => ({
 				...prevState,
 				totalFiles: dataToDownload.length,
-				isDownloading: true,
+				isDownloading: true
 			}));
 
 			// Create files and add to zip for each data added
@@ -387,7 +416,7 @@ const ModelDetails = ({
 
 							setFileDownloadStatus((prevState) => ({
 								...prevState,
-								downloadedFiles: prevState.downloadedFiles + 1,
+								downloadedFiles: prevState.downloadedFiles + 1
 							}));
 						}
 					}
@@ -397,7 +426,7 @@ const ModelDetails = ({
 			// Adding 1 for metadata
 			ReactGA.event("download_data", {
 				category: "event",
-				value: dataToDownload.length + 1,
+				value: dataToDownload.length + 1
 			});
 		}
 
@@ -410,7 +439,7 @@ const ModelDetails = ({
 		setFileDownloadStatus({
 			totalFiles: 0,
 			downloadedFiles: 0,
-			isDownloading: false,
+			isDownloading: false
 		});
 	};
 
@@ -435,7 +464,7 @@ const ModelDetails = ({
 		setFileDownloadStatus((prevState) => ({
 			...prevState,
 			totalFiles: totalDownloadFiles,
-			isDownloading: true,
+			isDownloading: true
 		}));
 
 		for (const data of molecularData) {
@@ -464,7 +493,7 @@ const ModelDetails = ({
 
 					setFileDownloadStatus((prevState) => ({
 						...prevState,
-						downloadedFiles: prevState.downloadedFiles + 1,
+						downloadedFiles: prevState.downloadedFiles + 1
 					}));
 				}
 			});
@@ -478,13 +507,13 @@ const ModelDetails = ({
 		// Adding 1 for metadata
 		ReactGA.event("download_data", {
 			category: "event",
-			value: totalDownloadFiles + 1,
+			value: totalDownloadFiles + 1
 		});
 
 		setFileDownloadStatus({
 			totalFiles: 0,
 			downloadedFiles: 0,
-			isDownloading: false,
+			isDownloading: false
 		});
 	};
 
@@ -561,7 +590,7 @@ const ModelDetails = ({
 										onClick={() =>
 											ReactGA.event("provider_view_data", {
 												category: "event",
-												provider: metadata.providerId,
+												provider: metadata.providerId
 											})
 										}
 									>
@@ -577,7 +606,7 @@ const ModelDetails = ({
 									onClick={() =>
 										ReactGA.event("provider_contact", {
 											category: "event",
-											provider: metadata.providerId,
+											provider: metadata.providerId
 										})
 									}
 								>
@@ -621,7 +650,20 @@ const ModelDetails = ({
 											</Link>
 										</li>
 										<li className="mb-2">
-											{metadata.modelType === "PDX" && engraftments?.length ? (
+											{metadata.modelType === "organoid" ? (
+												cellModelData?.id ? (
+													<Link
+														replace
+														href="#derivation"
+														className="text-primary-primary"
+													>
+														Model derivation
+													</Link>
+												) : (
+													"Model derivation"
+												)
+											) : metadata.modelType === "PDX" &&
+											  engraftments?.length ? (
 												<Link
 													replace
 													href="#engraftments"
@@ -777,96 +819,134 @@ const ModelDetails = ({
 									</Button>
 								</div>
 							</div>
-							{engraftments && engraftments?.length > 0 && (
-								<div id="engraftments" className="row mb-5 pt-3">
+							{metadata.modelType !== "organoid" &&
+								engraftments &&
+								engraftments?.length > 0 && (
+									<div id="engraftments" className="row mb-5 pt-3">
+										<div className="col-12 mb-1">
+											<h2 className="mt-0">PDX model engraftment</h2>
+											<div className="overflow-auto showScrollbar-vertical">
+												<table>
+													<caption>PDX model engraftment</caption>
+													<thead>
+														<tr>
+															<th>HOST STRAIN NAME</th>
+															<th>SITE</th>
+															<th>TYPE</th>
+															<th>MATERIAL</th>
+															<th>MATERIAL STATUS</th>
+															<th>PASSAGE</th>
+														</tr>
+													</thead>
+													<tbody>
+														{engraftments?.map((engraftment) => {
+															const hostStrainNomenclatures =
+																engraftment.hostStrainNomenclature
+																	.split(" ")
+																	.map((h) => {
+																		const regExp = /(.*)<sup>(.*)<\/sup>(.*)/gm,
+																			matches = regExp.exec(h) || [],
+																			strainPrefix = matches[1] || "",
+																			strainSup = matches[2] || "",
+																			strainSuffix = matches[3] || "";
+
+																		return {
+																			strainPrefix,
+																			strainSup,
+																			strainSuffix
+																		};
+																	});
+
+															return (
+																<tr key={engraftment.hostStrainNomenclature}>
+																	<td className="white-space-nowrap">
+																		<Tooltip
+																			content={hostStrainNomenclatures.map(
+																				({
+																					strainPrefix,
+																					strainSup,
+																					strainSuffix
+																				}: {
+																					strainPrefix: string;
+																					strainSup: string;
+																					strainSuffix: string;
+																				}) => (
+																					<span
+																						className="text-small"
+																						key={
+																							strainPrefix +
+																							strainSup +
+																							strainSuffix
+																						}
+																					>
+																						{strainPrefix}
+																						<sup>{strainSup}</sup>
+																						{strainSuffix}{" "}
+																					</span>
+																				)
+																			)}
+																		>
+																			<span className="text-uppercase">
+																				{engraftment.hostStrain}
+																			</span>
+																		</Tooltip>
+																	</td>
+																	<td>
+																		{engraftment.engraftmentSite ?? NA_STRING}
+																	</td>
+																	<td>
+																		{engraftment.engraftmentType ?? NA_STRING}
+																	</td>
+																	<td>
+																		{engraftment.engraftmentSampleType ??
+																			NA_STRING}
+																	</td>
+																	<td>
+																		{engraftment.engraftmentSampleState ??
+																			NA_STRING}
+																	</td>
+																	<td>
+																		{engraftment.passageNumber ?? NA_STRING}
+																	</td>
+																</tr>
+															);
+														})}
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								)}
+							{metadata.modelType === "organoid" && cellModelData?.id && (
+								<div id="derivation" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
-										<h2 className="mt-0">PDX model engraftment</h2>
+										<h2 className="mt-0">Model derivation</h2>
 										<div className="overflow-auto showScrollbar-vertical">
 											<table>
-												<caption>PDX model engraftment</caption>
+												<caption>Model derivation</caption>
 												<thead>
 													<tr>
-														<th>HOST STRAIN NAME</th>
-														<th>SITE</th>
+														<th>GROWTH PROPERTIES</th>
+														<th>GROWTH MEDIA</th>
+														<th>PLATE COATING</th>
 														<th>TYPE</th>
-														<th>MATERIAL</th>
-														<th>MATERIAL STATUS</th>
+														{qualityData.length > 0 &&
+															qualityData[0].tumourStatus && <th>STATUS</th>}
 														<th>PASSAGE</th>
 													</tr>
 												</thead>
 												<tbody>
-													{engraftments?.map((engraftment) => {
-														const hostStrainNomenclatures =
-															engraftment.hostStrainNomenclature
-																.split(" ")
-																.map((h) => {
-																	const regExp = /(.*)<sup>(.*)<\/sup>(.*)/gm,
-																		matches = regExp.exec(h) || [],
-																		strainPrefix = matches[1] || "",
-																		strainSup = matches[2] || "",
-																		strainSuffix = matches[3] || "";
-
-																	return {
-																		strainPrefix,
-																		strainSup,
-																		strainSuffix,
-																	};
-																});
-
-														return (
-															<tr key={engraftment.hostStrainNomenclature}>
-																<td className="white-space-nowrap">
-																	<Tooltip
-																		content={hostStrainNomenclatures.map(
-																			({
-																				strainPrefix,
-																				strainSup,
-																				strainSuffix,
-																			}: {
-																				strainPrefix: string;
-																				strainSup: string;
-																				strainSuffix: string;
-																			}) => (
-																				<span
-																					className="text-small"
-																					key={
-																						strainPrefix +
-																						strainSup +
-																						strainSuffix
-																					}
-																				>
-																					{strainPrefix}
-																					<sup>{strainSup}</sup>
-																					{strainSuffix}{" "}
-																				</span>
-																			)
-																		)}
-																	>
-																		<span className="text-uppercase">
-																			{engraftment.hostStrain}
-																		</span>
-																	</Tooltip>
-																</td>
-																<td>
-																	{engraftment.engraftmentSite ?? NA_STRING}
-																</td>
-																<td>
-																	{engraftment.engraftmentType ?? NA_STRING}
-																</td>
-																<td>
-																	{engraftment.engraftmentSampleType ??
-																		NA_STRING}
-																</td>
-																<td>
-																	{engraftment.engraftmentSampleState ??
-																		NA_STRING}
-																</td>
-																<td>
-																	{engraftment.passageNumber ?? NA_STRING}
-																</td>
-															</tr>
-														);
-													})}
+													<tr>
+														<td>{cellModelData?.growthProperties}</td>
+														<td>{cellModelData?.growthMedia}</td>
+														<td>{cellModelData?.plateCoating}</td>
+														<td>{cellModelData?.type}</td>
+														{qualityData.length > 0 &&
+															qualityData[0].tumourStatus && (
+																<td>{qualityData[0].tumourStatus}</td>
+															)}
+														<td>{cellModelData?.passageNumber}</td>
+													</tr>
 												</tbody>
 											</table>
 										</div>
@@ -878,35 +958,83 @@ const ModelDetails = ({
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Model quality control</h2>
 										<div className="overflow-auto showScrollbar-vertical">
-											<table>
-												<caption>Model quality control</caption>
-												<thead>
-													<tr>
-														<th>TECHNIQUE</th>
-														<th>DESCRIPTION</th>
-														<th>PASSAGE</th>
-													</tr>
-												</thead>
-												<tbody>
-													{qualityData.map(
-														({
-															validationTechnique,
-															description,
-															passagesTested,
-														}: {
-															validationTechnique: string;
-															description: string;
-															passagesTested: string;
-														}) => (
-															<tr key={validationTechnique}>
-																<td>{validationTechnique}</td>
-																<td>{description}</td>
-																<td>{passagesTested}</td>
-															</tr>
-														)
-													)}
-												</tbody>
-											</table>
+											{metadata.modelType === "organoid" ? (
+												<table>
+													<caption>Model quality control</caption>
+													<thead>
+														<tr>
+															<th>TECHNIQUE</th>
+															<th>PASSAGE</th>
+															<th>MORPHOLOGICAL FEATURES</th>
+															<th>SNP ANALYSIS</th>
+															<th>STR ANALYSIS</th>
+															<th>MODEL PURITY</th>
+														</tr>
+													</thead>
+													<tbody>
+														{qualityData.map(
+															({
+																validationTechnique,
+																description,
+																passagesTested,
+																morphologicalFeatures,
+																snpAnalysis,
+																strAnalysis,
+																modelPurity
+															}) => (
+																<tr key={validationTechnique}>
+																	<td>
+																		<Tooltip
+																			content={
+																				<p className="text-small m-0">
+																					{description}
+																				</p>
+																			}
+																		>
+																			{validationTechnique}
+																		</Tooltip>
+																	</td>
+																	<td>{passagesTested}</td>
+																	<td>{morphologicalFeatures}</td>
+																	<td>{snpAnalysis}</td>
+																	<td>{strAnalysis}</td>
+																	<td>{modelPurity}</td>
+																</tr>
+															)
+														)}
+													</tbody>
+												</table>
+											) : (
+												<table>
+													<caption>Model quality control</caption>
+													<thead>
+														<tr>
+															<th>TECHNIQUE</th>
+															<th>DESCRIPTION</th>
+															<th>PASSAGE</th>
+														</tr>
+													</thead>
+													<tbody>
+														{qualityData.map(
+															({
+																validationTechnique,
+																description,
+																passagesTested
+															}: {
+																validationTechnique: string;
+																description: string;
+																passagesTested: string;
+															}) => (
+																<tr key={validationTechnique}>
+																	<td>{validationTechnique}</td>
+																	<td>{description}</td>
+																	<td>{passagesTested}</td>
+																</tr>
+															)
+														)}
+													</tbody>
+												</table>
+											)}
 										</div>
 									</div>
 								</div>
@@ -978,7 +1106,7 @@ const ModelDetails = ({
 																			onClick={() =>
 																				ReactGA.event("provider_request_data", {
 																					category: "event",
-																					provider: metadata.providerId,
+																					provider: metadata.providerId
 																				})
 																			}
 																		>
@@ -995,7 +1123,7 @@ const ModelDetails = ({
 																				onClick={() => {
 																					setSelectedMolecularViewData(data);
 																					ReactGA.event("view_data", {
-																						category: "event",
+																						category: "event"
 																					});
 																				}}
 																			>
@@ -1233,7 +1361,7 @@ const ModelDetails = ({
 														({
 															treatmentName: name,
 															treatmentDose: dose,
-															treatmentResponse: response,
+															treatmentResponse: response
 														}) => (
 															<tr key={name + dose}>
 																<td>{name}</td>
@@ -1267,7 +1395,7 @@ const ModelDetails = ({
 														({
 															treatmentName: name,
 															treatmentDose: dose,
-															treatmentResponse: response,
+															treatmentResponse: response
 														}) => (
 															<tr key={name}>
 																<td className="white-space-unset">{name}</td>
@@ -1313,7 +1441,7 @@ const ModelDetails = ({
 															rel="noopener"
 															onClick={() =>
 																ReactGA.event("histologyImg_click", {
-																	category: "event",
+																	category: "event"
 																})
 															}
 														>
@@ -1543,7 +1671,7 @@ export default ModelDetails;
 export const getStaticPaths: GetStaticPaths = async () => {
 	return {
 		paths: [],
-		fallback: "blocking",
+		fallback: "blocking"
 	};
 };
 
@@ -1554,11 +1682,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		molecularData,
 		immuneMarkers,
 		engraftments,
+		cellModelData,
 		drugDosing,
 		patientTreatment,
 		qualityData,
 		modelImages,
-		modelRelationships,
+		modelRelationships
 	} = await getAllModelData(
 		params!.modelId as string,
 		params!.providerId as string
@@ -1571,12 +1700,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			molecularData,
 			immuneMarkers,
 			engraftments: JSON.parse(JSON.stringify(engraftments)),
+			cellModelData,
 			drugDosing,
 			patientTreatment,
 			qualityData,
 			modelImages,
-			modelRelationships,
+			modelRelationships
 		},
-		revalidate: 600,
+		revalidate: 600
 	};
 };

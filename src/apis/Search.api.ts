@@ -3,7 +3,7 @@ import {
 	IFacetProps,
 	IFacetSectionProps,
 	IFacetSidebarOperators,
-	IFacetSidebarSelection,
+	IFacetSidebarSelection
 } from "../types/Facet.model";
 import { SearchResult } from "../types/Search.model";
 import { ethnicityCategories } from "../utils/collapseEthnicity";
@@ -24,7 +24,7 @@ export async function getSearchOptions() {
 			.map((option: any) => {
 				return {
 					key: option.replace(/[\W_]+/g, "_").toLowerCase(),
-					name: option.trim(),
+					name: option.trim()
 				};
 			});
 	});
@@ -39,23 +39,23 @@ export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
 		model: {
 			key: "model",
 			name: "Model",
-			facets: [],
+			facets: []
 		},
 		molecular_data: {
 			key: "molecular_data",
 			name: "Molecular Data",
-			facets: [],
+			facets: []
 		},
 		patient_tumour: {
 			key: "patient_tumour",
 			name: "Patient / Tumor",
-			facets: [],
+			facets: []
 		},
 		treatment_drug_dosing: {
 			key: "treatment_drug_dosing",
 			name: "Treatment / Drug dosing",
-			facets: [],
-		},
+			facets: []
+		}
 	};
 
 	if (!response.ok) {
@@ -128,7 +128,7 @@ export async function getSearchResults(
 				"markers_with_biomarker_data",
 				"custom_treatment_type_list",
 				"hla_types",
-				"msi_status",
+				"msi_status"
 			];
 			let options: string[] = searchFilterSelection[filterId].selection.map(
 				(d: string) => `"${d}"`
@@ -156,8 +156,8 @@ export async function getSearchResults(
 
 			let optionsQuery =
 				apiOperator === "in"
-					? `(${options.join(",").replaceAll(";", "%3B")})`
-					: `{${options.join(",").replaceAll(";", "%3B")}}`;
+					? `(${encodeURIComponent(options.join(","))})`
+					: `{${encodeURIComponent(options.join(","))}`;
 
 			query += `&${filterId}=${apiOperator}.${optionsQuery}`;
 		}
@@ -189,9 +189,9 @@ export async function getSearchResults(
 					modelType: result.model_type,
 					patientAge: result.patient_age,
 					patientSex: result.patient_sex,
-					score: result.pdx_metadata_score,
+					score: result.pdx_metadata_score
 				};
-			}),
+			})
 		];
 	});
 }
@@ -204,7 +204,7 @@ function mapApiFacet(apiFacet: any): IFacetProps {
 		"markers_with_expression_data",
 		"markers_with_biomarker_data",
 		"treatment_list",
-		"model_treatment_list",
+		"model_treatment_list"
 	];
 	let facetType = "check";
 
@@ -221,7 +221,7 @@ function mapApiFacet(apiFacet: any): IFacetProps {
 		options: apiFacet.facet_options
 			? sortOptions(apiFacet.facet_column, apiFacet.facet_options)
 			: [],
-		placeholder: apiFacet.facet_example,
+		placeholder: apiFacet.facet_example
 	};
 }
 
