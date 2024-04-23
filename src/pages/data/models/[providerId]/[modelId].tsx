@@ -984,15 +984,19 @@ const ModelDetails = ({
 															}) => (
 																<tr key={validationTechnique}>
 																	<td>
-																		<Tooltip
-																			content={
-																				<p className="text-small m-0">
-																					{description}
-																				</p>
-																			}
-																		>
-																			{validationTechnique}
-																		</Tooltip>
+																		{description !== "Not provided" ? (
+																			<Tooltip
+																				content={
+																					<p className="text-small m-0">
+																						{description}
+																					</p>
+																				}
+																			>
+																				{validationTechnique}
+																			</Tooltip>
+																		) : (
+																			validationTechnique
+																		)}
 																	</td>
 																	<td>{passagesTested}</td>
 																	<td>{morphologicalFeatures}</td>
@@ -1028,7 +1032,7 @@ const ModelDetails = ({
 																<tr key={validationTechnique}>
 																	<td>{validationTechnique}</td>
 																	<td>{description}</td>
-																	<td>{passagesTested}</td>
+																	<td>{passagesTested ?? "Not provided"}</td>
 																</tr>
 															)
 														)}
