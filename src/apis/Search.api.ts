@@ -157,7 +157,7 @@ export async function getSearchResults(
 			let optionsQuery =
 				apiOperator === "in"
 					? `(${encodeURIComponent(options.join(","))})`
-					: `{${encodeURIComponent(options.join(","))}`;
+					: `{${encodeURIComponent(options.join(","))}}`;
 
 			query += `&${filterId}=${apiOperator}.${optionsQuery}`;
 		}
