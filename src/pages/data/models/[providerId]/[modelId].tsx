@@ -300,12 +300,14 @@ const ModelDetails = ({
 		const tsvData =
 			Object.keys({
 				modelId: metadataModelId,
+				...cellModelData,
 				...metadataFileData,
 				pdxModelPublications: pubmedIds
 			}).join("\t") +
 			"\n" +
 			Object.values({
 				modelId: metadataModelId,
+				...cellModelData,
 				...metadataFileData,
 				pdxModelPublications: pubmedIds
 			}).join("\t");
