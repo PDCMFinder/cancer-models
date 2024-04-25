@@ -1,37 +1,34 @@
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
 import type { NextPage } from "next";
-import { useRouter } from "next/router";
-import { getAllModelData } from "../apis/ModelDetails.api";
-import { useQueries } from "react-query";
 import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useQueries } from "react-query";
+import { getAllModelData } from "../apis/ModelDetails.api";
+import Button from "../components/Button/Button";
+import FloatingButton from "../components/FloatingWidget/FloatingButton";
 import Loader from "../components/Loader/Loader";
 import QualityBadge from "../components/QualityBadge/QualityBadge";
+import ShowHide from "../components/ShowHide/ShowHide";
+import Tooltip from "../components/Tooltip/Tooltip";
+import useWindowDimensions from "../hooks/useWindowDimensions";
+import breakPoints from "../utils/breakpoints";
+import { compareTourSteps } from "../utils/tourSteps";
+import styles from "./compare.module.scss";
 import {
 	IEngraftment,
 	IMolecularData,
-	QualityData,
+	QualityData
 } from "./data/models/[providerId]/[modelId]";
-import styles from "./compare.module.scss";
-import Tooltip from "../components/Tooltip/Tooltip";
-import Button from "../components/Button/Button";
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { driver } from "driver.js";
-import "driver.js/dist/driver.css";
-import { compareTourSteps } from "../utils/tourSteps";
-import FloatingButton from "../components/FloatingWidget/FloatingButton";
-import ShowHide from "../components/ShowHide/ShowHide";
-import breakPoints from "../utils/breakpoints";
-import useWindowDimensions from "../hooks/useWindowDimensions";
 
 const Compare: NextPage = () => {
 	const CHECKMARK_STRING = "✔";
 	const { windowWidth = 0 } = useWindowDimensions();
 	const bpLarge = breakPoints.large;
-	const { query } = useRouter();
 	const router = useRouter();
-	const modelsToCompareArr =
-		typeof query.models === "string" ? query.models.split(" ") : [];
-	const [modelsToCompare, setModelsToCompare] = useState(modelsToCompareArr);
+	const [modelsToCompare, setModelsToCompare] = useState<string[]>([]);
 
 	const driverObj = driver({
 		showProgress: true,
@@ -48,14 +45,14 @@ const Compare: NextPage = () => {
 		},
 		onDestroyed: () => {
 			window.scrollTo(0, 0);
-		},
+		}
 	});
 
 	const allModelsData = useQueries(
 		modelsToCompare.map((model: string) => {
 			return {
 				queryKey: ["model-data", model],
-				queryFn: () => getAllModelData(model),
+				queryFn: () => getAllModelData(model)
 			};
 		})
 	);
@@ -63,23 +60,26 @@ const Compare: NextPage = () => {
 		(data) => data.data !== undefined
 	);
 
+	// Set models from URL, limit models to at least 2
 	useEffect(() => {
-		if (!query.models || modelsToCompareArr.length < 2) {
+		const urlModelIds = router.asPath?.split("=")[1].split("+");
+		if (urlModelIds.length < 2) {
 			alert("You need at least 2 models to compare");
 			router.replace({
-				pathname: "/search",
+				pathname: "/search"
 			});
 		}
-		setModelsToCompare(modelsToCompareArr);
+		setModelsToCompare(urlModelIds);
 	}, []);
 
+	// Update URL when a model is removed
 	useEffect(() => {
 		router.push(
 			{
 				pathname: "/compare",
 				query: {
-					models: modelsToCompare.join(" "),
-				},
+					models: modelsToCompare.join(" ")
+				}
 			},
 			undefined,
 			{ shallow: true }
@@ -367,7 +367,7 @@ const Compare: NextPage = () => {
 																			return {
 																				strainPrefix,
 																				strainSup,
-																				strainSuffix,
+																				strainSuffix
 																			};
 																		});
 
@@ -388,7 +388,7 @@ const Compare: NextPage = () => {
 																					({
 																						strainPrefix,
 																						strainSup,
-																						strainSuffix,
+																						strainSuffix
 																					}: {
 																						strainPrefix: string;
 																						strainSup: string;
