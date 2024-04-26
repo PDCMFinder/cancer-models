@@ -9,6 +9,7 @@ import typeaheadStyles from "../../utils/typeaheadStyles";
 import { onFilterChangeType } from "../../pages/search";
 import Fragment from "../Fragment/Fragment";
 import { ethnicityCategories } from "../../utils/collapseEthnicity";
+import InformationIcon from "../InformationIcon/InformationIcon";
 
 interface ISearchFilterContentProps {
 	data: IFacetProps[];
@@ -237,7 +238,8 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 
 				return (
 					<div className="w-100 text-capitalize" key={facetName}>
-						<h3 className="mb-1 p text-bold">{facetName}</h3>
+						<h3 className="mb-0 p text-bold d-inlineBlock">{facetName}</h3>
+						<InformationIcon information="Patient Ethnic group. Can be derived from self-assement or genetic analysis." />
 						<hr />
 						{facetContent}
 					</div>
