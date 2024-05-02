@@ -166,7 +166,7 @@ export async function getSearchResults(
 	let response = await fetch(
 		`${API_URL}/search_index?${query}&limit=${pageSize}&offset=${
 			(searchFilterSelection["page"].selection[0] - 1) * pageSize
-		}&select=provider_name,patient_age,patient_sex,external_model_id,model_type,data_source,histology,primary_site,collection_site,tumour_type,dataset_available,scores->>pdx_metadata_score&order=${sortBy}`,
+		}&select=provider_name,patient_age,patient_sex,external_model_id,model_type,data_source,histology,primary_site,collection_site,tumour_type,dataset_available,scores&order=${sortBy}`,
 		{ headers: { Prefer: "count=exact" } }
 	);
 	if (!response.ok) {
@@ -176,6 +176,11 @@ export async function getSearchResults(
 		return [
 			parseInt(response.headers.get("Content-Range")?.split("/")[1] || "0"),
 			d.map((result: any) => {
+				const score =
+					(result.model_type === "PDX"
+						? result.scores.pdx_metadata_score
+						: result.scores.in_vitro_metadata_score) ?? 0;
+
 				return {
 					pdcmId: result.external_model_id,
 					sourceId: result.data_source,
@@ -189,7 +194,7 @@ export async function getSearchResults(
 					modelType: result.model_type,
 					patientAge: result.patient_age,
 					patientSex: result.patient_sex,
-					score: result.pdx_metadata_score
+					score
 				};
 			})
 		];

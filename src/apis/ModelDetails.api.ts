@@ -1,5 +1,6 @@
 import {
 	AllModelData,
+	CellModelData,
 	ExtLinks,
 	ImmuneMarker,
 	Marker,
@@ -488,8 +489,6 @@ export const getAllModelData = async (
 	const extLinks = await getModelExtLinks(pdcmModelId, modelId);
 	const molecularData = await getMolecularData(modelId);
 	const modelType = metadata.modelType;
-	const cellModelData =
-		modelType !== "PDX" ? await getCellModelData(pdcmModelId) : {};
 	const engraftments = await getModelEngraftments(pdcmModelId, modelType);
 	const drugDosing = await getModelDrugDosing(pdcmModelId, modelType);
 	const patientTreatment = await getPatientTreatment(pdcmModelId);
@@ -502,6 +501,14 @@ export const getAllModelData = async (
 	const xenograftModelSpecimensObj = metadata.xenograftModelSpecimens
 		? metadata.xenograftModelSpecimens[0]
 		: {};
+
+	let score: number = metadata.scores.pdx_metadata_score,
+		cellModelData = {} as CellModelData;
+
+	if (modelType !== "PDX") {
+		cellModelData = await getCellModelData(pdcmModelId);
+		score = metadata.scores.in_vitro_metadata_score;
+	}
 
 	return {
 		// deconstruct metadata object so we dont pass more props than we need/should
@@ -520,7 +527,7 @@ export const getAllModelData = async (
 			collectionSite: metadata.collectionSite,
 			licenseName: metadata.licenseName ?? "",
 			licenseUrl: metadata.licenseUrl ?? "",
-			score: metadata.scores.pdx_metadata_score ?? 0,
+			score: score ?? 0,
 			pdcmModelId,
 			modelId,
 			providerId: modelProviderId,
