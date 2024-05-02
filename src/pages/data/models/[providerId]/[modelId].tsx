@@ -375,15 +375,18 @@ const ModelDetails = ({
 		(markerRow) => markerRow.type === HLA_TYPE_STRING
 	);
 
-	// Send Ploity to the end of the model genomics markers array
+	// Send ploidy to the end of the model genomics markers array
 	if (modelGenomicsImmuneMarkers.length > 0) {
 		modelGenomicsImmuneMarkers.forEach((genomicMarker) => {
 			const index = genomicMarker.markers.findIndex(
-				(marker) => marker.name.toLocaleLowerCase() === "ploity"
+				(marker) => marker.name.toLocaleLowerCase() === "ploidy"
 			);
 			if (index !== -1) {
-				const [removed] = modelGenomicsImmuneMarkers.splice(index, 1);
-				modelGenomicsImmuneMarkers.push(removed);
+				const [removed] = modelGenomicsImmuneMarkers[0].markers.splice(
+					index,
+					1
+				);
+				modelGenomicsImmuneMarkers[0].markers.push(removed);
 			}
 		});
 	}
