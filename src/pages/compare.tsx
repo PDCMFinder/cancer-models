@@ -14,17 +14,18 @@ import QualityBadge from "../components/QualityBadge/QualityBadge";
 import ShowHide from "../components/ShowHide/ShowHide";
 import Tooltip from "../components/Tooltip/Tooltip";
 import useWindowDimensions from "../hooks/useWindowDimensions";
+import {
+	Engraftment,
+	MolecularData,
+	QualityData
+} from "../types/ModelData.model";
 import breakPoints from "../utils/breakpoints";
 import { compareTourSteps } from "../utils/tourSteps";
 import styles from "./compare.module.scss";
-import {
-	IEngraftment,
-	IMolecularData,
-	QualityData
-} from "./data/models/[providerId]/[modelId]";
 
 const Compare: NextPage = () => {
-	const CHECKMARK_STRING = "✔";
+	const CHECKMARK_STRING = "✔",
+		PDX_STRING = "PDX";
 	const { windowWidth = 0 } = useWindowDimensions();
 	const bpLarge = breakPoints.large;
 	const router = useRouter();
@@ -112,54 +113,53 @@ const Compare: NextPage = () => {
 							>
 								{/* fake offset to reduce nesting a bit */}
 								<div className="col-3"></div>
-								{allModelsData.map((model) => (
-									<div className="col" key={model.data?.metadata.modelId}>
-										{/* quality badge always at baseline */}
-										<div className="d-flex flex-column h-100 justify-content-between">
-											<div>
-												<sub>
-													<Button
-														color="dark"
-														priority="secondary"
-														className="text-underline m-0 mb-1"
-														style={{ padding: ".2rem .3rem" }}
-														onClick={() => {
-															if (modelsToCompare.length > 2) {
-																setModelsToCompare((prevModels) =>
-																	prevModels.filter(
-																		(prevModel) =>
-																			prevModel !== model.data?.metadata.modelId
-																	)
-																);
-															} else {
-																alert(
-																	"Can't remove model, you need at least 2 models to compare"
-																);
-															}
-														}}
-													>
-														X
-													</Button>
-												</sub>
-												<h1 className="h3 m-0">
-													<Link
-														href={`/data/models/${model.data?.metadata.providerId}/${model.data?.metadata.modelId}`}
-														className="text-primary-primary"
-													>
-														{model.data?.metadata.modelId}
-													</Link>
-												</h1>
-												<h2 className="p mt-0">
-													{model.data?.metadata.histology}
-												</h2>
+								{allModelsData.map(({ data }) => {
+									const metadata = data?.metadata;
+
+									return metadata ? (
+										<div className="col" key={metadata.modelId}>
+											{/* quality badge always at baseline */}
+											<div className="d-flex flex-column h-100 justify-content-between">
+												<div>
+													<sub>
+														<Button
+															color="dark"
+															priority="secondary"
+															className="text-underline m-0 mb-1"
+															style={{ padding: ".2rem .3rem" }}
+															onClick={() => {
+																if (modelsToCompare.length > 2) {
+																	setModelsToCompare((prevModels) =>
+																		prevModels.filter(
+																			(prevModel) =>
+																				prevModel !== metadata.modelId
+																		)
+																	);
+																} else {
+																	alert(
+																		"Can't remove model, you need at least 2 models to compare"
+																	);
+																}
+															}}
+														>
+															X
+														</Button>
+													</sub>
+													<h1 className="h3 m-0">
+														<Link
+															href={`/data/models/${metadata.providerId}/${data?.metadata.modelId}`}
+															className="text-primary-primary"
+														>
+															{metadata.modelId}
+														</Link>
+													</h1>
+													<h2 className="p mt-0">{metadata.histology}</h2>
+												</div>
+												<QualityBadge className="w-50" score={metadata.score} />
 											</div>
-											<QualityBadge
-												className="w-50"
-												score={model.data?.metadata.score}
-											/>
 										</div>
-									</div>
-								))}
+									) : null;
+								})}
 							</div>
 							<div
 								className={`row ${styles.Compare_table}`}
@@ -176,18 +176,18 @@ const Compare: NextPage = () => {
 											</p>
 										</div>
 										{allModelsData.map(({ data }) => {
-											return (
+											return data ? (
 												<div
 													className="col"
 													key={
-														data?.metadata.modelId + data?.metadata.patientSex
+														data.metadata.modelId + data?.metadata.patientSex
 													}
 												>
 													<p className="text-capitalize">
-														{data?.metadata.patientSex}
+														{data.metadata.patientSex}
 													</p>
 												</div>
-											);
+											) : null;
 										})}
 									</div>
 									<div className={`row ${styles.Compare_row}`}>
@@ -197,16 +197,16 @@ const Compare: NextPage = () => {
 											</p>
 										</div>
 										{allModelsData.map(({ data }) => {
-											return (
+											const metadata = data?.metadata;
+
+											return metadata ? (
 												<div
 													className="col"
-													key={
-														data?.metadata.modelId + data?.metadata.patientAge
-													}
+													key={metadata.modelId + metadata.patientAge}
 												>
-													<p>{data?.metadata.patientAge}</p>
+													<p>{metadata.patientAge}</p>
 												</div>
-											);
+											) : null;
 										})}
 									</div>
 									<div className={`row ${styles.Compare_row}`}>
@@ -216,17 +216,16 @@ const Compare: NextPage = () => {
 											</p>
 										</div>
 										{allModelsData.map(({ data }) => {
-											return (
+											const metadata = data?.metadata;
+
+											return metadata ? (
 												<div
 													className="col"
-													key={
-														data?.metadata.modelId +
-														data?.metadata.patientEthnicity
-													}
+													key={metadata.modelId + metadata.patientEthnicity}
 												>
-													<p>{data?.metadata.patientEthnicity}</p>
+													<p>{metadata.patientEthnicity}</p>
 												</div>
-											);
+											) : null;
 										})}
 									</div>
 									<div className={`row ${styles.Compare_row}`}>
@@ -236,16 +235,16 @@ const Compare: NextPage = () => {
 											</p>
 										</div>
 										{allModelsData.map(({ data }) => {
-											return (
+											const metadata = data?.metadata;
+
+											return metadata ? (
 												<div
 													className="col"
-													key={
-														data?.metadata.modelId + data?.metadata.tumourType
-													}
+													key={metadata.modelId + metadata.tumourType}
 												>
-													<p>{data?.metadata.tumourType}</p>
+													<p>{metadata.tumourType}</p>
 												</div>
-											);
+											) : null;
 										})}
 									</div>
 									<div className={`row ${styles.Compare_row}`}>
@@ -255,16 +254,16 @@ const Compare: NextPage = () => {
 											</p>
 										</div>
 										{allModelsData.map(({ data }) => {
-											return (
+											const metadata = data?.metadata;
+
+											return metadata ? (
 												<div
 													className="col"
-													key={
-														data?.metadata.modelId + data?.metadata.cancerGrade
-													}
+													key={metadata.modelId + metadata.cancerGrade}
 												>
-													<p>{data?.metadata.cancerGrade}</p>
+													<p>{metadata.cancerGrade}</p>
 												</div>
-											);
+											) : null;
 										})}
 									</div>
 									<div className={`row ${styles.Compare_row}`}>
@@ -274,16 +273,16 @@ const Compare: NextPage = () => {
 											</p>
 										</div>
 										{allModelsData.map(({ data }) => {
-											return (
+											const metadata = data?.metadata;
+
+											return metadata ? (
 												<div
 													className="col"
-													key={
-														data?.metadata.modelId + data?.metadata.cancerStage
-													}
+													key={metadata.modelId + metadata.cancerStage}
 												>
-													<p>{data?.metadata.cancerStage}</p>
+													<p>{metadata.cancerStage}</p>
 												</div>
-											);
+											) : null;
 										})}
 									</div>
 									<div className={`row ${styles.Compare_row}`}>
@@ -293,18 +292,18 @@ const Compare: NextPage = () => {
 											</p>
 										</div>
 										{allModelsData.map(({ data }) => {
-											return (
+											const metadata = data?.metadata;
+
+											return metadata ? (
 												<div
 													className="col"
-													key={
-														data?.metadata.modelId + data?.metadata.primarySite
-													}
+													key={metadata.modelId + metadata.primarySite}
 												>
 													<p className="text-capitalize">
-														{data?.metadata.primarySite}
+														{metadata.primarySite}
 													</p>
 												</div>
-											);
+											) : null;
 										})}
 									</div>
 									<div className={`row ${styles.Compare_row}`}>
@@ -314,29 +313,30 @@ const Compare: NextPage = () => {
 											</p>
 										</div>
 										{allModelsData.map(({ data }) => {
-											return (
+											const metadata = data?.metadata;
+
+											return metadata ? (
 												<div
 													className="col"
-													key={
-														data?.metadata.modelId +
-														data?.metadata.collectionSite
-													}
+													key={metadata.modelId + metadata.collectionSite}
 												>
 													<p className="text-capitalize">
-														{data?.metadata.collectionSite}
+														{metadata.collectionSite}
 													</p>
 												</div>
-											);
+											) : null;
 										})}
 									</div>
 								</div>
 							</div>
 							{allModelsData.some(
-								({ data }) => data && data.engraftments.length > 0
+								({ data }) =>
+									(data?.engraftments ?? []).length > 0 &&
+									data?.metadata?.modelType === PDX_STRING
 							) ? (
 								<div
 									className={`row ${styles.Compare_table}`}
-									id="tour_compare-engraftment"
+									id="tour_compare-derivation"
 								>
 									<div className={`col-12 ${styles.Compare_table_title}`}>
 										<h3>PDX Model Engraftment</h3>
@@ -349,10 +349,10 @@ const Compare: NextPage = () => {
 												return (
 													<div
 														className="col"
-														key={data?.metadata.modelId + "engraftment"}
+														key={data?.metadata.modelId + "derivation"}
 													>
 														{data?.engraftments.map(
-															(engraftment: IEngraftment) => {
+															(engraftment: Engraftment) => {
 																const hostStrainNomenclatures =
 																	engraftment.hostStrainNomenclature
 																		.split(" ")
@@ -432,7 +432,70 @@ const Compare: NextPage = () => {
 								</div>
 							) : null}
 							{allModelsData.some(
-								({ data }) => data && data.qualityData.length > 0
+								({ data }) =>
+									data?.metadata?.modelType !== PDX_STRING &&
+									data?.cellModelData?.id
+							) ? (
+								<div
+									className={`row ${styles.Compare_table}`}
+									id="tour_compare-derivation"
+								>
+									<div className={`col-12 ${styles.Compare_table_title}`}>
+										<h3>Model Derivation</h3>
+									</div>
+									<div className="col-12">
+										<div className={`row ${styles.Compare_row}`}>
+											{/* fake offset to reduce nesting a bit */}
+											<div className="col-3"></div>
+											{allModelsData.map(({ data }) => {
+												const dataToShowObj = {
+													"Growth Properties":
+														data?.cellModelData.growthProperties,
+													"Grown Media": data?.cellModelData.growthMedia,
+													"Plate Coating": data?.cellModelData.plateCoating,
+													Supplements: data?.cellModelData.supplements,
+													Contaminated: data?.cellModelData.contaminated,
+													"Contamination Details":
+														data?.cellModelData.contaminationDetails
+												};
+
+												const columnValues: JSX.Element[] = [];
+
+												Object.entries(dataToShowObj).forEach(
+													([key, value]) => {
+														columnValues.push(
+															<div className="mb-2">
+																<p className="text-uppercase">
+																	<b>{key}</b>
+																</p>
+																<p>{value ?? "Not provided"}</p>
+															</div>
+														);
+													}
+												);
+
+												return (
+													<div
+														className="col"
+														key={data?.metadata.modelId + "derivation"}
+													>
+														{data?.cellModelData.id && (
+															<div
+																className="mb-2"
+																key={data?.metadata.modelId}
+															>
+																{columnValues}
+															</div>
+														)}
+													</div>
+												);
+											})}
+										</div>
+									</div>
+								</div>
+							) : null}
+							{allModelsData.some(
+								({ data }) => (data?.qualityData ?? []).length > 0
 							) ? (
 								<div
 									className={`row ${styles.Compare_table}`}
@@ -450,14 +513,37 @@ const Compare: NextPage = () => {
 													<div
 														className="col"
 														key={
-															data?.metadata.modelId +
-																data?.qualityData[0]?.validationTechnique ||
-															"" + data?.qualityData[0]?.passagesTested ||
-															""
+															(data?.metadata.modelId ?? "") +
+															(data?.qualityData[0]?.validationTechnique ||
+																"") +
+															(data?.qualityData[0]?.passagesTested || "")
 														}
 													>
 														{data?.qualityData.map(
 															(qData: QualityData, idx: number) => {
+																const dataToShowObj = {
+																	Technique: qData.validationTechnique,
+																	Passage: qData.passagesTested,
+																	"Morphological features":
+																		qData.morphologicalFeatures,
+																	"Model purity": qData.modelPurity
+																};
+
+																const columnValues: JSX.Element[] = [];
+
+																Object.entries(dataToShowObj).forEach(
+																	([key, value]) => {
+																		columnValues.push(
+																			<div className="mb-2">
+																				<p className="text-uppercase">
+																					<b>{key}</b>
+																				</p>
+																				<p>{value ?? "Not provided"}</p>
+																			</div>
+																		);
+																	}
+																);
+
 																const isLast =
 																	idx === data?.qualityData.length - 1;
 
@@ -470,18 +556,7 @@ const Compare: NextPage = () => {
 																			qData.passagesTested
 																		}
 																	>
-																		<div className="mb-2">
-																			<p className="text-uppercase">
-																				<b>Technique</b>
-																			</p>
-																			<p>{qData.validationTechnique}</p>
-																		</div>
-																		<div>
-																			<p className="text-uppercase">
-																				<b>Passage</b>
-																			</p>
-																			<p>{qData.passagesTested}</p>
-																		</div>
+																		{columnValues}
 																		{!isLast && (
 																			<hr
 																				className={`ml-0 bg-primary-tertiary ${styles["Compare_row-divider"]}`}
@@ -519,7 +594,7 @@ const Compare: NextPage = () => {
 											>
 												<p>
 													{data?.molecularData.some(
-														(mData: IMolecularData) =>
+														(mData: MolecularData) =>
 															mData.dataType === "mutation"
 													)
 														? CHECKMARK_STRING
@@ -541,7 +616,7 @@ const Compare: NextPage = () => {
 											>
 												<p>
 													{data?.molecularData.some(
-														(mData: IMolecularData) =>
+														(mData: MolecularData) =>
 															mData.dataType === "expression"
 													)
 														? CHECKMARK_STRING
@@ -563,7 +638,7 @@ const Compare: NextPage = () => {
 											>
 												<p>
 													{data?.molecularData.some(
-														(mData: IMolecularData) =>
+														(mData: MolecularData) =>
 															mData.dataType === "copy number alteration"
 													)
 														? CHECKMARK_STRING
@@ -585,8 +660,8 @@ const Compare: NextPage = () => {
 											>
 												<p>
 													{data?.molecularData.some(
-														(mData: IMolecularData) =>
-															mData.dataType === "biomarker"
+														(mData: MolecularData) =>
+															mData.dataType === "bio markers"
 													)
 														? CHECKMARK_STRING
 														: ""}
@@ -606,7 +681,7 @@ const Compare: NextPage = () => {
 												key={data?.metadata.modelId + "treatmentData"}
 											>
 												<p>
-													{data?.patientTreatment.length > 0
+													{(data?.patientTreatment ?? []).length > 0
 														? CHECKMARK_STRING
 														: ""}
 												</p>
@@ -644,7 +719,9 @@ const Compare: NextPage = () => {
 												key={data?.metadata.modelId + "dosingData"}
 											>
 												<p>
-													{data?.drugDosing.length > 0 ? CHECKMARK_STRING : ""}
+													{(data?.drugDosing ?? []).length > 0
+														? CHECKMARK_STRING
+														: ""}
 												</p>
 											</div>
 										))}
@@ -653,21 +730,24 @@ const Compare: NextPage = () => {
 							</div>
 							<div className="row" id="tour_compare-buttons">
 								<div className="col-3"></div>
-								{allModelsData.map(({ data }) => (
-									<div
-										className="col"
-										key={data?.metadata.modelId + "viewModelButton"}
-									>
-										<Button
-											color="dark"
-											priority="primary"
-											htmlTag="a"
-											href={`/data/models/${data?.metadata.providerId}/${data?.metadata.modelId}`}
+								{allModelsData.map(({ data }) => {
+									const metadata = data?.metadata;
+									return metadata ? (
+										<div
+											className="col"
+											key={metadata.modelId + "viewModelButton"}
 										>
-											View model
-										</Button>
-									</div>
-								))}
+											<Button
+												color="dark"
+												priority="primary"
+												htmlTag="a"
+												href={`/data/models/${metadata.providerId}/${metadata.modelId}`}
+											>
+												View model
+											</Button>
+										</div>
+									) : null;
+								})}
 							</div>
 						</div>
 					</section>

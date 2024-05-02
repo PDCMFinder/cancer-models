@@ -1,6 +1,6 @@
 import { Edge, MarkerType } from "reactflow";
 import { LayoutedNode } from "../components/HierarchyTree/HierarchyTree";
-import { IModelRelationships } from "../pages/data/models/[providerId]/[modelId]";
+import { ModelRelationships } from "../types/ModelData.model";
 
 const commonNodeProperties = {
 	x: 0,
@@ -19,7 +19,7 @@ const commonEdgeProperties = {
 };
 
 const parseRelationships = (
-	data: IModelRelationships,
+	data: ModelRelationships,
 	providerId: string,
 	currentId: string,
 	parsedData: { nodes: LayoutedNode[]; edges: Edge[] } = {
@@ -51,7 +51,7 @@ const parseRelationships = (
 		}
 		if (data.parents) {
 			if (Array.isArray(data.parents)) {
-				data.parents.forEach((parent: IModelRelationships) => {
+				data.parents.forEach((parent: ModelRelationships) => {
 					const parentId = parent.external_model_id ?? "";
 					const childId = data.external_model_id ?? currentId;
 
@@ -68,7 +68,7 @@ const parseRelationships = (
 		}
 		if (data.children) {
 			if (Array.isArray(data.children)) {
-				data.children.forEach((child: IModelRelationships) => {
+				data.children.forEach((child: ModelRelationships) => {
 					const parentId = data.external_model_id ?? currentId;
 					const childId = child.external_model_id ?? "";
 
