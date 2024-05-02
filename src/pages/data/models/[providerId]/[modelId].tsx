@@ -26,6 +26,12 @@ import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
 import ShowHide from "../../../../components/ShowHide/ShowHide";
 import Tooltip from "../../../../components/Tooltip/Tooltip";
 import useWindowDimensions from "../../../../hooks/useWindowDimensions";
+import {
+	AllModelData,
+	ExternalDbLink,
+	MolecularData,
+	Publication
+} from "../../../../types/ModelData.model";
 import breakPoints from "../../../../utils/breakpoints";
 import parseRelationships from "../../../../utils/parseRelationships";
 import { modelTourSteps } from "../../../../utils/tourSteps";
@@ -49,160 +55,6 @@ const DynamicHierarchyTree = dynamic(
 	}
 );
 
-export interface IModelRelationships {
-	type?: string;
-	parents?: IModelRelationships[];
-	children?: IModelRelationships[];
-	external_model_id?: string;
-}
-
-interface IModelDetailsProps {
-	metadata: Metadata;
-	extLinks: ExtLinks;
-	immuneMarkers: IImmuneMarkers[];
-	molecularData: IMolecularData[];
-	drugDosing: any[];
-	patientTreatment: PatientTreatment[];
-	qualityData: QualityData[];
-	className: string;
-	modelId: string;
-	providerId: string;
-	engraftments?: IEngraftment[];
-	cellModelData?: ICellModelData;
-	modelImages: IModelImage[];
-	modelRelationships: IModelRelationships;
-}
-
-interface ICellModelData {
-	id: number;
-	modelName: string;
-	modelNameAliases: string;
-	type: string;
-	growthProperties: string;
-	growthMedia: string;
-	mediaId: string;
-	parentId: any;
-	originPatientSampleId: any;
-	modelId: number;
-	plateCoating: string;
-	otherPlateCoating: string;
-	passageNumber: string;
-	contaminated: string;
-	contaminationDetails: string;
-	supplements: string;
-	drug: string;
-	drugConcentration: string;
-}
-
-export interface IModelImage {
-	url: string;
-	description: string;
-	sampleType: string;
-	passage: string;
-	magnification: string;
-	staining: string;
-}
-
-export interface IImmuneMarkers {
-	sampleId: string;
-	type: "HLA type" | "Model Genomics";
-	markers: IImmuneMarker[];
-}
-
-export interface IImmuneMarker {
-	name: string;
-	value: string[] | null;
-	details: string | null;
-}
-
-export interface IMolecularData {
-	modelId: string;
-	dataSource: string;
-	source: string;
-	sampleId: string;
-	xenograftPassage: string;
-	rawDataUrl: any;
-	dataType: string;
-	platformName: string;
-	dataExists: string;
-	dataRestricted: string;
-	molecularCharacterizationId: number;
-	externalDbLinks: ExternalDbLinks[];
-	[key: string]: any;
-}
-
-interface PatientTreatment {
-	treatmentDose: string;
-	treatmentName: string;
-	treatmentResponse: string;
-}
-
-interface ExternalDbLinks {
-	column: string;
-	link: string;
-	resource: string;
-}
-
-export interface QualityData {
-	id: number;
-	description: string;
-	passagesTested: string;
-	validationTechnique: string;
-	validationHostStrainNomenclature: string;
-	modelId: number;
-	morphologicalFeatures: string;
-	snpAnalysis: string;
-	strAnalysis: string;
-	tumourStatus: string;
-	modelPurity: string;
-	comments: string;
-}
-
-interface Metadata {
-	histology: string;
-	providerName: string;
-	cancerSystem: string;
-	modelType: string;
-	patientSex: string;
-	patientAge: string;
-	patientEthnicity: string;
-	modelId: string;
-	providerId: string;
-	tumourType: string;
-	cancerGrade: string;
-	cancerStage: string;
-	primarySite: string;
-	collectionSite: string;
-	licenseName: string;
-	licenseUrl: string;
-	score: number;
-	pdcmModelId: number;
-}
-
-export interface ExtLinks {
-	contactLink?: string;
-	sourceDatabaseUrl?: string;
-}
-
-export interface IPublication {
-	pmid: string;
-	doi: string;
-	pubYear: string;
-	title: string;
-	authorString: string;
-	journalTitle: string;
-}
-
-export interface IEngraftment {
-	passageNumber: string;
-	hostStrain: string;
-	engraftmentSite: string;
-	engraftmentType: string;
-	engraftmentSampleType: string;
-	engraftmentSampleState: string;
-	hostStrainNomenclature: string;
-}
-
 export interface TypesMap {
 	expression_molecular_data: string;
 	cna_molecular_data: string;
@@ -211,7 +63,7 @@ export interface TypesMap {
 }
 
 interface IDataFileConfig {
-	data: IMolecularData;
+	data: MolecularData;
 	filename: string;
 }
 
@@ -227,12 +79,13 @@ const ModelDetails = ({
 	engraftments,
 	modelImages,
 	modelRelationships
-}: IModelDetailsProps) => {
+}: AllModelData) => {
 	const NA_STRING = "N/A",
 		MODEL_GENOMICS_STRING = "Model Genomics",
-		HLA_TYPE_STRING = "HLA type";
+		HLA_TYPE_STRING = "HLA type",
+		PDX_STRING = "PDX";
 	const [selectedMolecularViewData, setSelectedMolecularViewData] =
-		useState<IMolecularData>();
+		useState<MolecularData>();
 	const [dataToDownload, setDataToDownload] = useState<IDataFileConfig[]>([]);
 	const [fileDownloadStatus, setFileDownloadStatus] = useState({
 		totalFiles: 0,
@@ -282,7 +135,7 @@ const ModelDetails = ({
 
 	const pubmedIds = pubmedIdsQuery.data || [];
 
-	const publicationsQuery = useQueries<IPublication[]>(
+	const publicationsQuery = useQueries<Publication[]>(
 		pubmedIds.map((p: string) => {
 			return {
 				queryKey: ["publication-data", p],
@@ -291,24 +144,24 @@ const ModelDetails = ({
 		})
 	);
 
-	const publications: IPublication[] = publicationsQuery
-		.map((q) => q.data as IPublication)
+	const publications: Publication[] = publicationsQuery
+		.map((q) => q.data as Publication)
 		.filter((d) => d !== undefined);
 
 	const createMetadataFile = (download: boolean = false) => {
 		const filename = `CancerModelsOrg_${metadata.modelId}_metadata.tsv`;
 		const tsvData =
 			Object.keys({
-				modelId: metadataModelId,
 				...cellModelData,
 				...metadataFileData,
+				modelId: metadataModelId,
 				pdxModelPublications: pubmedIds
 			}).join("\t") +
 			"\n" +
 			Object.values({
-				modelId: metadataModelId,
 				...cellModelData,
 				...metadataFileData,
+				modelId: metadataModelId,
 				pdxModelPublications: pubmedIds
 			}).join("\t");
 
@@ -326,7 +179,7 @@ const ModelDetails = ({
 		return { blob, filename };
 	};
 
-	const toggleFromDownload = (data: IMolecularData) => {
+	const toggleFromDownload = (data: MolecularData) => {
 		const filename: string = `CancerModelsOrg_${metadata.modelId}_${
 			data.dataType.split(" ").join("-") ?? ""
 		}_${data.sampleId ?? ""}_${
@@ -348,7 +201,7 @@ const ModelDetails = ({
 		}
 	};
 
-	const downloadData = async (data?: IMolecularData) => {
+	const downloadData = async (data?: MolecularData) => {
 		// Create new zip
 		let zip = new JSZip();
 
@@ -397,32 +250,28 @@ const ModelDetails = ({
 
 			// Create files and add to zip for each data added
 			for (const data of dataToDownload) {
-				await getMolecularDataDownload(data.data).then(
-					(d: IMolecularData[]) => {
-						if (d.length > 0) {
-							// Extract headers
-							const headers = Object.keys(d[0]);
+				await getMolecularDataDownload(data.data).then((d: MolecularData[]) => {
+					if (d.length > 0) {
+						// Extract headers
+						const headers = Object.keys(d[0]);
 
-							// Convert object values to array of arrays
-							const values = d.map((obj) =>
-								headers.map((header) => obj[header])
-							);
+						// Convert object values to array of arrays
+						const values = d.map(Object.values);
 
-							// Join headers and values using tab characters
-							const tsv = [headers.join("\t")]
-								.concat(values.map((row) => row.join("\t")))
-								.join("\n");
+						// Join headers and values using tab characters
+						const tsv = [headers.join("\t")]
+							.concat(values.map((row) => row.join("\t")))
+							.join("\n");
 
-							// Create file inside zip
-							zip.file(data.filename, tsv);
+						// Create file inside zip
+						zip.file(data.filename, tsv);
 
-							setFileDownloadStatus((prevState) => ({
-								...prevState,
-								downloadedFiles: prevState.downloadedFiles + 1
-							}));
-						}
+						setFileDownloadStatus((prevState) => ({
+							...prevState,
+							downloadedFiles: prevState.downloadedFiles + 1
+						}));
 					}
-				);
+				});
 			}
 
 			// Adding 1 for metadata
@@ -470,13 +319,13 @@ const ModelDetails = ({
 		}));
 
 		for (const data of molecularData) {
-			await getMolecularDataDownload(data).then((d: IMolecularData[]) => {
+			await getMolecularDataDownload(data).then((d: MolecularData[]) => {
 				if (d.length > 0) {
 					// Extract headers
 					const headers = Object.keys(d[0]);
 
 					// Convert object values to array of arrays
-					const values = d.map((obj) => headers.map((header) => obj[header]));
+					const values = d.map(Object.values);
 
 					// Join headers and values using tab characters
 					const tsv = [headers.join("\t")]
@@ -652,7 +501,7 @@ const ModelDetails = ({
 											</Link>
 										</li>
 										<li className="mb-2">
-											{metadata.modelType === "organoid" ? (
+											{metadata.modelType !== PDX_STRING ? (
 												cellModelData?.id ? (
 													<Link
 														replace
@@ -664,7 +513,7 @@ const ModelDetails = ({
 												) : (
 													"Model derivation"
 												)
-											) : metadata.modelType === "PDX" &&
+											) : metadata.modelType === PDX_STRING &&
 											  engraftments?.length ? (
 												<Link
 													replace
@@ -821,7 +670,7 @@ const ModelDetails = ({
 									</Button>
 								</div>
 							</div>
-							{metadata.modelType !== "organoid" &&
+							{metadata.modelType === PDX_STRING &&
 								engraftments &&
 								engraftments?.length > 0 && (
 									<div id="engraftments" className="row mb-5 pt-3">
@@ -919,7 +768,7 @@ const ModelDetails = ({
 										</div>
 									</div>
 								)}
-							{metadata.modelType === "organoid" && cellModelData?.id && (
+							{metadata.modelType !== PDX_STRING && cellModelData?.id && (
 								<div id="derivation" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Model derivation</h2>
@@ -931,23 +780,45 @@ const ModelDetails = ({
 														<th>GROWTH PROPERTIES</th>
 														<th>GROWTH MEDIA</th>
 														<th>PLATE COATING</th>
-														<th>TYPE</th>
 														{qualityData.length > 0 &&
 															qualityData[0].tumourStatus && <th>STATUS</th>}
 														<th>PASSAGE</th>
+														<th>SUPPLEMENTS</th>
+														<th>CONTAMINATED</th>
+														<th>CONTAMINATION DETAILS</th>
 													</tr>
 												</thead>
 												<tbody>
 													<tr>
 														<td>{cellModelData?.growthProperties}</td>
-														<td>{cellModelData?.growthMedia}</td>
+														<td
+															className={
+																cellModelData?.growthMedia.toLowerCase() !==
+																"not provided"
+																	? "white-space-nowrap"
+																	: undefined
+															}
+														>
+															{cellModelData?.growthMedia}
+														</td>
 														<td>{cellModelData?.plateCoating}</td>
-														<td>{cellModelData?.type}</td>
 														{qualityData.length > 0 &&
 															qualityData[0].tumourStatus && (
 																<td>{qualityData[0].tumourStatus}</td>
 															)}
 														<td>{cellModelData?.passageNumber}</td>
+														<td
+															className={
+																cellModelData?.growthMedia.toLowerCase() !==
+																"not provided"
+																	? "white-space-nowrap"
+																	: undefined
+															}
+														>
+															{cellModelData?.supplements}
+														</td>
+														<td>{cellModelData?.contaminated}</td>
+														<td>{cellModelData?.contaminationDetails}</td>
 													</tr>
 												</tbody>
 											</table>
@@ -960,7 +831,7 @@ const ModelDetails = ({
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Model quality control</h2>
 										<div className="overflow-auto showScrollbar-vertical">
-											{metadata.modelType === "organoid" ? (
+											{metadata.modelType !== PDX_STRING ? (
 												<table>
 													<caption>Model quality control</caption>
 													<thead>
@@ -968,7 +839,6 @@ const ModelDetails = ({
 															<th>TECHNIQUE</th>
 															<th>PASSAGE</th>
 															<th>MORPHOLOGICAL FEATURES</th>
-															<th>SNP ANALYSIS</th>
 															<th>STR ANALYSIS</th>
 															<th>MODEL PURITY</th>
 														</tr>
@@ -980,7 +850,6 @@ const ModelDetails = ({
 																description,
 																passagesTested,
 																morphologicalFeatures,
-																snpAnalysis,
 																strAnalysis,
 																modelPurity
 															}) => (
@@ -1000,9 +869,8 @@ const ModelDetails = ({
 																			validationTechnique
 																		)}
 																	</td>
-																	<td>{passagesTested}</td>
+																	<td>{passagesTested ?? "Not provided"}</td>
 																	<td>{morphologicalFeatures}</td>
-																	<td>{snpAnalysis}</td>
 																	<td>{strAnalysis}</td>
 																	<td>{modelPurity}</td>
 																</tr>
@@ -1074,9 +942,9 @@ const ModelDetails = ({
 												</thead>
 												<tbody>
 													{molecularData &&
-														molecularData.map((data) => {
+														molecularData.map((data: MolecularData) => {
 															let sampleType,
-																rawDataExternalLinks: ExternalDbLinks[] = [],
+																rawDataExternalLinks: ExternalDbLink[] = [],
 																dataAvailableContent: JSX.Element;
 
 															switch (data.source) {

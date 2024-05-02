@@ -1,12 +1,13 @@
 import {
+	AllModelData,
 	ExtLinks,
-	IImmuneMarker,
-	IImmuneMarkers,
-	IModelImage,
-	IModelRelationships,
-	IMolecularData,
-	IPublication
-} from "../pages/data/models/[providerId]/[modelId]";
+	ImmuneMarker,
+	Marker,
+	ModelImage,
+	ModelRelationships,
+	MolecularData,
+	Publication
+} from "../types/ModelData.model";
 import { camelCase } from "../utils/dataUtils";
 
 interface IImmuneMarkerAPI {
@@ -53,7 +54,7 @@ export async function getProviderId(modelId: string) {
 	return response.json();
 }
 
-export async function getModelImages(modelId: string): Promise<IModelImage[]> {
+export async function getModelImages(modelId: string): Promise<ModelImage[]> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&select=model_images`
 	);
@@ -62,7 +63,7 @@ export async function getModelImages(modelId: string): Promise<IModelImage[]> {
 	}
 	return response.json().then((d) => {
 		if (d[0].model_images?.length) {
-			return d[0].model_images.map((imageObj: IModelImage) =>
+			return d[0].model_images.map((imageObj: ModelImage) =>
 				camelCase(imageObj)
 			);
 		} else {
@@ -79,7 +80,7 @@ export async function getModelRelationships(modelId: string): Promise<any> {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
-		const data: IModelRelationships = d[0].model_relationships;
+		const data: ModelRelationships = d[0].model_relationships;
 
 		return data;
 	});
@@ -132,7 +133,7 @@ export async function getModelExtLinks(
 	modelId: string
 ): Promise<ExtLinks> {
 	if (pdcmModelId !== 0 && !pdcmModelId) {
-		return {};
+		return {} as ExtLinks;
 	}
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/model_information?id=eq.${pdcmModelId}&select=id,contact_people(name_list,email_list),contact_form(form_url),source_database(database_url)`
@@ -184,31 +185,6 @@ export async function getMolecularData(modelId: string) {
 		return d.map((item: any) => {
 			return camelCase(item);
 		});
-	});
-}
-
-export async function getModelMolecularDataColumns(
-	molecularCharacterizationId: number,
-	dataType: string
-) {
-	if (!molecularCharacterizationId || dataType === "biomarker") {
-		return [];
-	}
-	const typeEndpointMap: any = {
-		mutation: "mutation_data_table_columns",
-		expression: "expression_data_table_columns",
-		"copy number alteration": "cna_data_table_columns",
-		biomarker: "biomarker_data_table_columns"
-	};
-	const endpoint = typeEndpointMap[dataType];
-	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?molecular_characterization_id=eq.${molecularCharacterizationId}`
-	);
-	if (!response.ok) {
-		throw new Error("Network response was not ok");
-	}
-	return response.json().then((d) => {
-		return d[0].not_empty_cols;
 	});
 }
 
@@ -283,7 +259,7 @@ export async function getModelMolecularDataDetails(
 }
 
 export async function getMolecularDataDownload(
-	molecularCharacterization: IMolecularData
+	molecularCharacterization: MolecularData
 ) {
 	if (!molecularCharacterization.molecularCharacterizationId) {
 		return [];
@@ -409,7 +385,7 @@ export async function getExpressionHeatmap(
 	});
 }
 
-async function getModelImmuneMarkers(modelId: string) {
+async function getModelImmuneMarkers(modelId: string): Promise<ImmuneMarker[]> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/immunemarker_data_extended?model_id=eq.${modelId}`
 	);
@@ -418,11 +394,11 @@ async function getModelImmuneMarkers(modelId: string) {
 	}
 
 	return response.json().then((d) => {
-		const parsedImmuneMarkers: IImmuneMarkers[] = d.reduce(
-			(result: IImmuneMarkers[], current: IImmuneMarkerAPI) => {
+		const parsedImmuneMarkers: ImmuneMarker[] = d.reduce(
+			(result: ImmuneMarker[], current: IImmuneMarkerAPI) => {
 				// Check for sample id and type, since there might be a marker of different type but same id
 				const existingSampleId = result.find(
-					(item: IImmuneMarkers) =>
+					(item: ImmuneMarker) =>
 						item.sampleId === current.sample_id &&
 						item.type === current.marker_type
 				);
@@ -435,7 +411,7 @@ async function getModelImmuneMarkers(modelId: string) {
 				if (existingSampleId) {
 					// Check if column exists in sample id
 					const existingName = existingSampleId.markers.find(
-						(item: IImmuneMarker) => item.name === current.marker_name
+						(item: Marker) => item.name === current.marker_name
 					);
 
 					// push to same (marker), add value
@@ -458,7 +434,7 @@ async function getModelImmuneMarkers(modelId: string) {
 			[]
 		);
 
-		const addMissingNames = (immuneMarker: IImmuneMarkers, type: string) => {
+		const addMissingNames = (immuneMarker: ImmuneMarker, type: string) => {
 			// create array with only unique names across all markers of x type
 			const uniqueNames = [
 				...new Set<string>(
@@ -475,21 +451,21 @@ async function getModelImmuneMarkers(modelId: string) {
 			uniqueNames.forEach((uniqueName: string) => {
 				if (
 					!immuneMarker.markers.some(
-						(marker: IImmuneMarker) => marker.name === uniqueName
+						(marker: Marker) => marker.name === uniqueName
 					) &&
 					immuneMarker.type === type
 				) {
 					immuneMarker.markers.push({
-						details: null,
+						details: "",
 						name: uniqueName,
-						value: null
+						value: []
 					});
 				}
 			});
 		};
 
 		// Add all missing names for table structure
-		parsedImmuneMarkers.forEach((immuneMarker: IImmuneMarkers) => {
+		parsedImmuneMarkers.forEach((immuneMarker: ImmuneMarker) => {
 			addMissingNames(immuneMarker, "HLA type");
 			addMissingNames(immuneMarker, "Model Genomics");
 
@@ -500,7 +476,10 @@ async function getModelImmuneMarkers(modelId: string) {
 	});
 }
 
-export const getAllModelData = async (modelId: string, providerId?: string) => {
+export const getAllModelData = async (
+	modelId: string,
+	providerId?: string
+): Promise<AllModelData> => {
 	const modelProviderId =
 		providerId ?? (await getProviderId(modelId))[0].data_source;
 	const metadata = await getModelDetailsMetadata(modelId, modelProviderId);
@@ -510,7 +489,7 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 	const molecularData = await getMolecularData(modelId);
 	const modelType = metadata.modelType;
 	const cellModelData =
-		modelType === "organoid" ? await getCellModelData(pdcmModelId) : {};
+		modelType !== "PDX" ? await getCellModelData(pdcmModelId) : {};
 	const engraftments = await getModelEngraftments(pdcmModelId, modelType);
 	const drugDosing = await getModelDrugDosing(pdcmModelId, modelType);
 	const patientTreatment = await getPatientTreatment(pdcmModelId);
@@ -581,7 +560,7 @@ export const getAllModelData = async (modelId: string, providerId?: string) => {
 		qualityData,
 		modelImages,
 		modelRelationships,
-		publications: [] as IPublication[]
+		publications: [] as Publication[]
 	};
 };
 
