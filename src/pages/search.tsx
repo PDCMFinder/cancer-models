@@ -1,34 +1,34 @@
-import SearchResults from "../components/SearchResults/SearchResults";
-import Select from "../components/Input/Select";
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
+import dynamic from "next/dynamic";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { NextPage } from "next/types";
 import React, { ChangeEvent, useEffect, useReducer, useState } from "react";
-import styles from "./search.module.scss";
-import Label from "../components/Input/Label";
-import SearchFilters from "../components/SearchFilters/SearchFilters";
+import { useQueries, useQuery } from "react-query";
 import { getModelCount } from "../apis/AggregatedData.api";
 import {
-	getSearchFacets,
-	getSearchResults,
 	getFacetOptions,
+	getSearchFacets,
+	getSearchResults
 } from "../apis/Search.api";
-import { useQueries, useQuery } from "react-query";
-import Loader from "../components/Loader/Loader";
-import SearchResultsLoader from "../components/SearchResults/SearchResultsLoader";
-import Pagination from "../components/Pagination/Pagination";
-import { useRouter } from "next/router";
 import Button from "../components/Button/Button";
-import SearchBar from "../components/SearchBar/SearchBar";
-import breakPoints from "../utils/breakpoints";
-import useWindowDimensions from "../hooks/useWindowDimensions";
-import ShowHide from "../components/ShowHide/ShowHide";
 import Card from "../components/Card/Card";
 import CloseIcon from "../components/CloseIcon/CloseIcon";
-import { NextPage } from "next/types";
-import dynamic from "next/dynamic";
-import { driver } from "driver.js";
-import { searchTourSteps } from "../utils/tourSteps";
-import "driver.js/dist/driver.css";
 import FloatingButton from "../components/FloatingWidget/FloatingButton";
-import Head from "next/head";
+import Label from "../components/Input/Label";
+import Select from "../components/Input/Select";
+import Loader from "../components/Loader/Loader";
+import Pagination from "../components/Pagination/Pagination";
+import SearchBar from "../components/SearchBar/SearchBar";
+import SearchFilters from "../components/SearchFilters/SearchFilters";
+import SearchResults from "../components/SearchResults/SearchResults";
+import SearchResultsLoader from "../components/SearchResults/SearchResultsLoader";
+import ShowHide from "../components/ShowHide/ShowHide";
+import useWindowDimensions from "../hooks/useWindowDimensions";
+import breakPoints from "../utils/breakpoints";
+import { searchTourSteps } from "../utils/tourSteps";
+import styles from "./search.module.scss";
 
 const DynamicModal = dynamic(import("../components/Modal/Modal"), {
 	loading: () => (
@@ -36,7 +36,7 @@ const DynamicModal = dynamic(import("../components/Modal/Modal"), {
 			<Loader />
 		</div>
 	),
-	ssr: false,
+	ssr: false
 });
 
 export interface onFilterChangeType {
@@ -47,18 +47,18 @@ const sortByOptions = [
 		{
 			value:
 				"scores->>data_score.desc.nullslast,scores->>pdx_metadata_score.desc.nullslast",
-			text: "Data available",
+			text: "Data available"
 		},
 		{ value: "external_model_id.asc.nullslast", text: "Model Id: A to Z" },
 		{ value: "external_model_id.desc.nullslast", text: "Model Id: Z to A" },
 		{
 			value: "scores->>pdx_metadata_score.asc.nullslast",
-			text: "Metadata: Ascending",
+			text: "Metadata: Ascending"
 		},
 		{
 			value: "scores->>pdx_metadata_score.desc.nullslast",
-			text: "Metadata: Descending",
-		},
+			text: "Metadata: Descending"
+		}
 	],
 	resultsPerPage = 10;
 
@@ -77,7 +77,7 @@ const Search: NextPage = () => {
 		showProgress: true,
 		prevBtnText: "← Prev",
 		steps: searchTourSteps,
-		onDestroyed: () => setModelsToCompare([]),
+		onDestroyed: () => setModelsToCompare([])
 	});
 
 	const changePage = (page: number) => {
@@ -86,7 +86,7 @@ const Search: NextPage = () => {
 			type: "substitute",
 			operator: "",
 			filterId: "page",
-			selection: page.toString(),
+			selection: page.toString()
 		});
 		window.scrollTo(0, 350);
 	};
@@ -107,7 +107,7 @@ const Search: NextPage = () => {
 				type,
 				filterId,
 				selection,
-				initialState: actionInitialState,
+				initialState: actionInitialState
 			} = action;
 			if (type === "init") {
 				if (actionInitialState) return actionInitialState;
@@ -122,8 +122,7 @@ const Search: NextPage = () => {
 
 			if (type === "add") {
 				newState[filterId].selection = [
-					// @ts-ignore
-					...new Set(state[filterId].selection.concat([selection])),
+					...new Set(state[filterId].selection.concat([selection]))
 				];
 			}
 
@@ -180,7 +179,7 @@ const Search: NextPage = () => {
 					? stateFromUrl[id]
 					: {
 							operator: "ANY",
-							selection: [],
+							selection: []
 					  };
 			};
 
@@ -197,12 +196,12 @@ const Search: NextPage = () => {
 				initialState: initialSearchFilterState,
 				selection: "",
 				filterId: "",
-				operator: "",
+				operator: ""
 			});
 		},
 		refetchOnWindowFocus: true,
 		// staleTime: 120000,
-		cacheTime: 100,
+		cacheTime: 100
 	});
 	const searchFacetSections = searchFacetSectionsQuery.data;
 
@@ -218,7 +217,7 @@ const Search: NextPage = () => {
 								facet?.type || ""
 							)
 								? () => []
-								: fn,
+								: fn
 						};
 					})
 			: []
@@ -245,11 +244,11 @@ const Search: NextPage = () => {
 				searchValues: [],
 				searchFilterState,
 				resultsPerPage,
-				sortBy,
-			},
+				sortBy
+			}
 		],
 		queryFn: async () =>
-			getSearchResults([], searchFilterState, resultsPerPage, sortBy),
+			getSearchResults([], searchFilterState, resultsPerPage, sortBy)
 	});
 
 	useEffect(() => {
@@ -290,7 +289,7 @@ const Search: NextPage = () => {
 			}
 			router.replace(
 				{
-					query: { ...router.query, filters: filterValues.join(" AND ") },
+					query: { ...router.query, filters: filterValues.join(" AND ") }
 				},
 				undefined,
 				{ scroll: false }
@@ -340,7 +339,7 @@ const Search: NextPage = () => {
 					type: "init",
 					selection: "",
 					filterId: "",
-					operator: "",
+					operator: ""
 				})
 			}
 		>
@@ -356,7 +355,7 @@ const Search: NextPage = () => {
 					filterId,
 					selection,
 					operator,
-					type,
+					type
 				});
 			}}
 		/>
@@ -431,7 +430,7 @@ const Search: NextPage = () => {
 										filterId,
 										selection,
 										operator,
-										type,
+										type
 									});
 								}}
 							/>

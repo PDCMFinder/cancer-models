@@ -1,14 +1,13 @@
-import InputAndLabel from "../Input/InputAndLabel";
-import { IFacetProps } from "../../types/Facet.model";
-import { IFacetSidebarSelection } from "../../types/Facet.model";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import Select from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
-import { useQuery } from "react-query";
-import { ChangeEvent, useEffect, useState } from "react";
-import typeaheadStyles from "../../utils/typeaheadStyles";
 import { onFilterChangeType } from "../../pages/search";
-import Fragment from "../Fragment/Fragment";
+import { IFacetProps, IFacetSidebarSelection } from "../../types/Facet.model";
 import { ethnicityCategories } from "../../utils/collapseEthnicity";
+import typeaheadStyles from "../../utils/typeaheadStyles";
+import Fragment from "../Fragment/Fragment";
+import InputAndLabel from "../Input/InputAndLabel";
 
 interface ISearchFilterContentProps {
 	data: IFacetProps[];
@@ -38,7 +37,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 		{
 			onSuccess(data) {
 				setTypeaheadData(data);
-			},
+			}
 		}
 	);
 
@@ -54,17 +53,18 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 	const optionSelectObj = (options: string[]): SelectOption[] => {
 		return options?.map((value: string) => ({
 			["label"]: value,
-			["value"]: value,
+			["value"]: value
 		}));
 	};
 
 	return (
 		<>
 			{props.data.map((facet: IFacetProps) => {
-				let facetContent = null,
-					facetName = facet.name,
+				let facetContent = null;
+				const facetName = facet.name,
 					facetType = facet.type,
 					facetOptions = facet.options,
+					isBoolean = facet.isBoolean,
 					selectedFacetObj =
 						props.facetSelection && props.facetSelection[facet.facetId],
 					selection = selectedFacetObj?.selection,
@@ -160,7 +160,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 							)}
 						</>
 					);
-				} else if (facetOptions && facetOptions.length > 10) {
+				} else if (facetType === "check" && (facetOptions ?? []).length >= 10) {
 					// Create select typeahead from options
 					// Get grouped ethnicity categories from dictionary
 					const optionsSelectObj =
@@ -200,37 +200,43 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 							styles={typeaheadStyles}
 						/>
 					);
-				} else {
+				} else if (facetType === "check") {
 					// Create checkbox per option
 					facetContent = (
 						<ul className="ul-noStyle m-0">
-							{facetOptions?.map((option) => (
-								<li key={option}>
-									<InputAndLabel
-										forId={option}
-										id={option}
-										name={`${option}-name`}
-										type="checkbox"
-										label={option}
-										checked={selection?.includes(option)}
-										onChange={(
-											e:
-												| ChangeEvent<HTMLInputElement>
-												| ChangeEvent<HTMLTextAreaElement>
-										): void => {
-											const target = e.target as HTMLInputElement;
-											const actionType = target.checked ? "add" : "remove";
+							{facetOptions?.map((option) => {
+								// if it's boolean, .split("="). First element is label, second element is passed as option value
+								const label: string = isBoolean ? option.split("=")[0] : option,
+									value = isBoolean ? option.split("=")[1] : option;
 
-											props.onFilterChange(
-												facet.facetId,
-												option,
-												operator,
-												actionType
-											);
-										}}
-									/>
-								</li>
-							))}
+								return (
+									<li key={label}>
+										<InputAndLabel
+											forId={label}
+											id={label}
+											name={`${label}-name`}
+											type="checkbox"
+											label={label}
+											checked={selection?.includes(value)} // no problem passing value since we're checking if it's boolean, if not, pass option as normally. This works for boolean filters
+											onChange={(
+												e:
+													| ChangeEvent<HTMLInputElement>
+													| ChangeEvent<HTMLTextAreaElement>
+											): void => {
+												const target = e.target as HTMLInputElement;
+												const actionType = target.checked ? "add" : "remove";
+
+												props.onFilterChange(
+													facet.facetId,
+													value,
+													operator,
+													actionType
+												);
+											}}
+										/>
+									</li>
+								);
+							})}
 						</ul>
 					);
 				}

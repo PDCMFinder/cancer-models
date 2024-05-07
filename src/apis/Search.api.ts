@@ -1,38 +1,12 @@
-import { useRouter } from "next/router";
-import {
-	IFacetProps,
-	IFacetSectionProps,
-	IFacetSidebarOperators,
-	IFacetSidebarSelection
-} from "../types/Facet.model";
+import { IFacetProps, IFacetSectionProps } from "../types/Facet.model";
 import { SearchResult } from "../types/Search.model";
 import { ethnicityCategories } from "../utils/collapseEthnicity";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export async function getSearchOptions() {
-	let response = await fetch(`${API_URL}/search_facet?facet_section=eq.search`);
-	if (!response.ok) {
-		throw new Error("Network response was not ok");
-	}
-	return response.json().then((d: any) => {
-		return d[0].facet_options
-			.filter((option: any) => option !== "")
-			.sort((a: String, b: String) =>
-				a.toLocaleLowerCase().trim() > b.toLocaleLowerCase().trim() ? 1 : -1
-			)
-			.map((option: any) => {
-				return {
-					key: option.replace(/[\W_]+/g, "_").toLowerCase(),
-					name: option.trim()
-				};
-			});
-	});
-}
-
 export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
 	let response = await fetch(
-		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example`
+		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example,facet_type,is_boolean`
 	);
 
 	const sections: any = {
@@ -202,140 +176,16 @@ export async function getSearchResults(
 }
 
 function mapApiFacet(apiFacet: any): IFacetProps {
-	const autocompleteFacets = ["external_model_id"];
-	const multiValuedFacets = [
-		"markers_with_mutation_data",
-		"markers_with_cna_data",
-		"markers_with_expression_data",
-		"markers_with_biomarker_data",
-		"treatment_list",
-		"model_treatment_list"
-	];
-	let facetType = "check";
-
-	if (autocompleteFacets.includes(apiFacet.facet_column))
-		facetType = "autocomplete";
-
-	if (multiValuedFacets.includes(apiFacet.facet_column))
-		facetType = "multivalued";
-
 	return {
 		facetId: apiFacet.facet_column,
 		name: apiFacet.facet_name,
-		type: facetType,
+		type: apiFacet.facet_type,
 		options: apiFacet.facet_options
 			? sortOptions(apiFacet.facet_column, apiFacet.facet_options)
 			: [],
-		placeholder: apiFacet.facet_example
+		placeholder: apiFacet.facet_example,
+		isBoolean: apiFacet.is_boolean
 	};
-}
-
-export function getSearchParams(
-	searchValues: Array<string>,
-	facetSelection: any,
-	facetOperators: any
-) {
-	let search = "";
-	if (searchValues?.length > 0) {
-		search +=
-			"?q=" +
-			searchValues.map((o) => encodeURIComponent('"' + o + '"')).join(",");
-	}
-	let facetString = "";
-
-	Object.keys(facetSelection).forEach((facetSectionKey) => {
-		Object.keys(facetSelection[facetSectionKey]).forEach((facetKey) => {
-			if (facetSelection[facetSectionKey][facetKey].length === 0) return;
-			facetString += `${
-				facetString === "" ? "" : " AND "
-			}${facetSectionKey}.${facetKey}:${
-				facetSelection[facetSectionKey][facetKey]
-			}`;
-		});
-	});
-	if (facetString !== "")
-		search += `${search === "" ? "?" : "&"}facets=${facetString}`;
-
-	let facetOperatorString = "";
-	Object.keys(facetOperators).forEach((facetSectionKey) => {
-		Object.keys(facetOperators[facetSectionKey]).forEach((facetKey) => {
-			if (
-				facetOperators[facetSectionKey][facetKey]?.length === 0 ||
-				facetOperators[facetSectionKey][facetKey] === undefined
-			)
-				return;
-			facetOperatorString += `${
-				facetOperatorString === "" ? "" : " AND "
-			}${facetSectionKey}.${facetKey}:${
-				facetOperators[facetSectionKey][facetKey]
-			}`;
-		});
-	});
-	if (facetOperatorString !== "")
-		search += `${
-			search === "" ? "?" : "&"
-		}facet.operators=${facetOperatorString}`;
-	return search;
-}
-
-// A custom hook that builds on useLocation to parse
-// the query string for you.
-export function useQueryParams() {
-	const { query } = useRouter();
-	let searchTermValues: Array<string> = [];
-	const queryParam = query.q as string,
-		queryFacets = query.facets as string,
-		queryFacetOperators = query["facet.operators"] as string;
-
-	if (queryParam !== null) {
-		searchTermValues = queryParam
-			?.split('","')
-			.map((o) => o.replace(/["]+/g, ""));
-	}
-	let facetSelection: any = {};
-	const facets = queryFacets?.split(" AND ") || [];
-	facets.forEach((facetString) => {
-		const [key, values] = facetString.split(":");
-		facetSelection[key] = values.split(",");
-	});
-	let facetOperators: any = {};
-	const facetOperatorParam = queryFacetOperators?.split(" AND ") || [];
-	facetOperatorParam.forEach((facetString) => {
-		const [key, value] = facetString.split(":");
-		facetOperators[key] = value;
-	});
-
-	return [searchTermValues, facetSelection, facetOperators];
-}
-
-export function parseSelectedFacetFromUrl(
-	facetsByKey: any
-): IFacetSidebarSelection {
-	const facetSidebarSelection: IFacetSidebarSelection = {};
-	// Object.keys(facetsByKey).forEach((compoundKey: string) => {
-	// 	const [sectionKey, facetKey] = compoundKey.split(".");
-	// 	const urlFacetSelection = facetsByKey[compoundKey];
-	// 	if (!facetSidebarSelection[sectionKey]) {
-	// 		facetSidebarSelection[sectionKey] = {};
-	// 	}
-	// 	facetSidebarSelection[sectionKey][facetKey] = urlFacetSelection || [];
-	// });
-	return facetSidebarSelection;
-}
-
-export function parseOperatorsFromUrl(
-	operatorsByKey: any
-): IFacetSidebarOperators {
-	const facetSidebarSelection: IFacetSidebarOperators = {};
-	Object.keys(operatorsByKey).forEach((compoundKey: string) => {
-		const [sectionKey, facetKey] = compoundKey.split(".");
-		const urlOperator = operatorsByKey[compoundKey];
-		if (!facetSidebarSelection[sectionKey]) {
-			facetSidebarSelection[sectionKey] = {};
-		}
-		facetSidebarSelection[sectionKey][facetKey] = urlOperator;
-	});
-	return facetSidebarSelection;
 }
 
 function sortOptions(facet_column: string, list: string[]) {
