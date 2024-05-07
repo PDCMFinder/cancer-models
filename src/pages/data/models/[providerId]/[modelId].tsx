@@ -33,6 +33,10 @@ import {
 	Publication
 } from "../../../../types/ModelData.model";
 import breakPoints from "../../../../utils/breakpoints";
+import {
+	constructCleanMolecularDataFilename,
+	constructMolecularDataFilename
+} from "../../../../utils/constructMolecularDataFilename";
 import parseRelationships from "../../../../utils/parseRelationships";
 import { modelTourSteps } from "../../../../utils/tourSteps";
 import styles from "./Model.module.scss";
@@ -65,6 +69,7 @@ export interface TypesMap {
 interface IDataFileConfig {
 	data: MolecularData;
 	filename: string;
+	id: string;
 }
 
 const ModelDetails = ({
@@ -180,28 +185,41 @@ const ModelDetails = ({
 	};
 
 	const toggleFromDownload = (data: MolecularData) => {
-		const filename: string = `CancerModelsOrg_${metadata.modelId}_${
-			data.dataType.split(" ").join("-") ?? ""
-		}_${data.sampleId ?? ""}_${
-			data.platformName.split(" ").join("-") ?? ""
-		}.tsv`; // if it changes, update in checkbox checked state
+		const id = data.molecularCharacterizationId.toString();
+		let filename = constructMolecularDataFilename(
+			metadata.modelId,
+			data.dataType,
+			data.sampleId,
+			data.platformName
+		);
 
-		if (dataToDownload.some((el) => el.filename === filename)) {
-			setDataToDownload((prev) =>
-				prev.filter((el) => el.filename !== filename)
-			);
+		if (dataToDownload.some((el) => el.id === id)) {
+			setDataToDownload((prev) => prev.filter((el) => el.id !== id));
 		} else {
+			if (dataToDownload.some((el) => el.filename === filename)) {
+				filename = constructMolecularDataFilename(
+					metadata.modelId,
+					data.dataType,
+					data.sampleId,
+					data.platformName,
+					id
+				);
+			}
 			setDataToDownload((prev) => [
 				...prev,
 				{
 					data,
-					filename
+					filename,
+					id
 				}
 			]);
 		}
 	};
 
-	const downloadData = async (data?: MolecularData) => {
+	const downloadData = async (
+		data = {} as MolecularData,
+		filename: string = ""
+	) => {
 		// Create new zip
 		let zip = new JSZip();
 
@@ -211,7 +229,7 @@ const ModelDetails = ({
 		// Add metadata file to zip
 		zip.file(metadataFileName, metadataBlob);
 		// If we pass some data, that means we just want to download that single data file
-		if (data) {
+		if (data.molecularCharacterizationId) {
 			const molecularData = await getMolecularDataDownload(data);
 
 			// Extract headers
@@ -227,14 +245,7 @@ const ModelDetails = ({
 				.concat(values.map((row: string[]) => row.join("\t")))
 				.join("\n");
 
-			zip.file(
-				`CancerModelsOrg_${metadata.modelId}_${
-					data.dataType.split(" ").join("-") ?? ""
-				}_${data.sampleId ?? ""}_${
-					data.platformName.split(" ").join("-") ?? ""
-				}.tsv`,
-				tsv
-			);
+			zip.file(filename, tsv);
 
 			// Adding 1 for metadata
 			ReactGA.event("download_data", {
@@ -260,7 +271,7 @@ const ModelDetails = ({
 
 						// Join headers and values using tab characters
 						const tsv = [headers.join("\t")]
-							.concat(values.map((row) => row.join("\t")))
+							.concat(values.map((row: string[]) => row.join("\t")))
 							.join("\n");
 
 						// Create file inside zip
@@ -946,7 +957,7 @@ const ModelDetails = ({
 												<tbody>
 													{molecularData &&
 														molecularData.map((data: MolecularData) => {
-															let sampleType,
+															let sampleType: string,
 																rawDataExternalLinks: ExternalDbLink[] = [],
 																dataAvailableContent: JSX.Element;
 
@@ -1019,23 +1030,13 @@ const ModelDetails = ({
 																			</Button>
 																			<InputAndLabel
 																				label="Add to batch download"
-																				name={`add-to-download-${data.sampleId}-${data.dataType}-${data.platformName}`}
+																				name={`add-to-download-${data.molecularCharacterizationId}`}
 																				type="checkbox"
-																				forId={`add-to-download-id-${data.sampleId}-${data.dataType}-${data.platformName}`}
+																				forId={`add-to-download-id-${data.molecularCharacterizationId}`}
 																				checked={dataToDownload.some(
 																					(batchData) =>
-																						batchData.filename ===
-																						`CancerModelsOrg_${
-																							metadata.modelId
-																						}_${
-																							data.dataType
-																								.split(" ")
-																								.join("-") ?? ""
-																						}_${data.sampleId ?? ""}_${
-																							data.platformName
-																								.split(" ")
-																								.join("-") ?? ""
-																						}.tsv` // if this changes, update in toggleFromDownload
+																						batchData.id ===
+																						data.molecularCharacterizationId.toString() // if this changes, update in toggleFromDownload
 																				)}
 																				onChange={() =>
 																					toggleFromDownload(data)
@@ -1424,11 +1425,13 @@ const ModelDetails = ({
 										<>
 											<b>Download selected data: </b>
 											{dataToDownload.map((data, idx) => {
-												const cleanFilename = data.filename
-														.split("_")
-														.slice(2)
-														.join("_")
-														.split(".")[0],
+												const cleanFilename =
+														constructCleanMolecularDataFilename(
+															metadata.modelId,
+															data.data.dataType,
+															data.data.sampleId,
+															data.data.platformName
+														),
 													clearX = (
 														<sup>
 															<Button
@@ -1438,9 +1441,7 @@ const ModelDetails = ({
 																style={{ padding: ".2rem .3rem" }}
 																onClick={() =>
 																	setDataToDownload((prev) =>
-																		prev.filter(
-																			(el) => el.filename !== data.filename
-																		)
+																		prev.filter((el) => el.id !== data.id)
 																	)
 																}
 															>
