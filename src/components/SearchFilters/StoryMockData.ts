@@ -10,6 +10,7 @@ export const mockData = [
 				options: ["cell line", "organoid", "PDX", "other"],
 				placeholder: null,
 				loading: true,
+				isBoolean: false
 			},
 			{
 				facetId: "external_model_id",
@@ -18,6 +19,7 @@ export const mockData = [
 				options: [],
 				placeholder: "TM00015",
 				loading: true,
+				isBoolean: false
 			},
 			{
 				facetId: "data_source",
@@ -56,10 +58,11 @@ export const mockData = [
 					"VHIO-CRC",
 					"VHIO-PC",
 					"Wistar-MDAnderson-Penn",
-					"WUSTL",
+					"WUSTL"
 				],
 				placeholder: null,
 				loading: true,
+				isBoolean: false
 			},
 			{
 				facetId: "dataset_available",
@@ -72,10 +75,11 @@ export const mockData = [
 					"expression",
 					"mutation",
 					"patient treatment",
-					"publication",
+					"publication"
 				],
 				placeholder: null,
 				loading: true,
+				isBoolean: false
 			},
 			{
 				facetId: "project_name",
@@ -84,8 +88,27 @@ export const mockData = [
 				options: ["EurOPDX", "HCMI", "PDXNet", "PIVOT"],
 				placeholder: null,
 				loading: true,
+				isBoolean: false
 			},
-		],
+			{
+				facetId: "has_relations",
+				name: "Related models",
+				type: "check",
+				options: ["related models=true"],
+				placeholder: null,
+				loading: true,
+				isBoolean: true
+			},
+			{
+				facetId: "paediatric",
+				name: "Paediatric",
+				type: "check",
+				options: ["paediatric=true"],
+				placeholder: null,
+				loading: true,
+				isBoolean: true
+			}
+		]
 	},
 	{
 		key: "molecular_data",
@@ -101,10 +124,11 @@ export const mockData = [
 					"HER2/ERBB2 negative",
 					"HER2/ERBB2 positive",
 					"PR/PGR negative",
-					"PR/PGR positive",
+					"PR/PGR positive"
 				],
 				placeholder: null,
 				loading: true,
+				isBoolean: false
 			},
 			{
 				facetId: "markers_with_biomarker_data",
@@ -113,6 +137,7 @@ export const mockData = [
 				options: [],
 				placeholder: "ESR1",
 				loading: true,
+				isBoolean: false
 			},
 			{
 				facetId: "markers_with_expression_data",
@@ -121,6 +146,7 @@ export const mockData = [
 				options: [],
 				placeholder: "BEST1",
 				loading: true,
+				isBoolean: false
 			},
 			{
 				facetId: "markers_with_cna_data",
@@ -129,6 +155,7 @@ export const mockData = [
 				options: [],
 				placeholder: "RTP3",
 				loading: true,
+				isBoolean: false
 			},
 			{
 				facetId: "markers_with_mutation_data",
@@ -137,8 +164,9 @@ export const mockData = [
 				options: [],
 				placeholder: "RTP3",
 				loading: true,
-			},
-		],
+				isBoolean: false
+			}
+		]
 	},
 	{
 		key: "patient_tumour",
@@ -539,10 +567,11 @@ export const mockData = [
 					"ventricular mass",
 					"vertebral bone",
 					"vulva",
-					"other",
+					"other"
 				],
 				placeholder: null,
 				loading: true,
+				isBoolean: false
 			},
 			{
 				facetId: "primary_site",
@@ -758,10 +787,11 @@ export const mockData = [
 					"ventricular mass",
 					"vulva",
 					"other",
-					"other (specify)",
+					"other (specify)"
 				],
 				placeholder: null,
 				loading: true,
+				isBoolean: false
 			},
 			{
 				facetId: "patient_ethnicity",
@@ -794,10 +824,11 @@ export const mockData = [
 					"White; Hispanic Or Latino",
 					"White; Not Hispanic Or Latino",
 					"Native Hawaiian Or Other Pacific Islander",
-					"Other",
+					"Other"
 				],
 				placeholder: null,
 				loading: true,
+				isBoolean: false
 			},
 			{
 				facetId: "cancer_system",
@@ -817,10 +848,11 @@ export const mockData = [
 					"Skin Cancer",
 					"Thoracic Cancer",
 					"Unclassified",
-					"Urinary System Cancer",
+					"Urinary System Cancer"
 				],
 				placeholder: null,
 				loading: true,
+				isBoolean: false
 			},
 			{
 				facetId: "patient_age",
@@ -838,10 +870,11 @@ export const mockData = [
 					"70 - 79",
 					"90 - 99",
 					"Not Provided",
-					"80 - 89",
+					"80 - 89"
 				],
 				placeholder: null,
 				loading: true,
+				isBoolean: false
 			},
 			{
 				facetId: "tumour_type",
@@ -852,10 +885,11 @@ export const mockData = [
 					"Pre-malignant",
 					"Primary",
 					"Recurrent",
-					"Refractory",
+					"Refractory"
 				],
 				placeholder: null,
 				loading: true,
+				isBoolean: false
 			},
 			{
 				facetId: "patient_sex",
@@ -864,8 +898,9 @@ export const mockData = [
 				options: ["female", "male", "Not Provided", "other"],
 				placeholder: null,
 				loading: true,
-			},
-		],
+				isBoolean: false
+			}
+		]
 	},
 	{
 		key: "treatment_drug_dosing",
@@ -878,6 +913,7 @@ export const mockData = [
 				options: [],
 				placeholder: "radiation therapy",
 				loading: true,
+				isBoolean: false
 			},
 			{
 				facetId: "model_treatment_list",
@@ -886,6 +922,7 @@ export const mockData = [
 				options: [],
 				placeholder: "cyclophosphamide",
 				loading: true,
+				isBoolean: false
 			},
 			{
 				facetId: "patient_treatment_status",
@@ -894,7 +931,8 @@ export const mockData = [
 				options: ["Not Provided", "Not treatment naive", "Treatment naive"],
 				placeholder: null,
 				loading: true,
-			},
-		],
-	},
+				isBoolean: false
+			}
+		]
+	}
 ];
