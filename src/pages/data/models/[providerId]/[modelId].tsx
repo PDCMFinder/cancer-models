@@ -37,7 +37,6 @@ import {
 	constructCleanMolecularDataFilename,
 	constructMolecularDataFilename
 } from "../../../../utils/constructMolecularDataFilename";
-import parseRelationships from "../../../../utils/parseRelationships";
 import { modelTourSteps } from "../../../../utils/tourSteps";
 import styles from "./Model.module.scss";
 
@@ -1294,11 +1293,10 @@ const ModelDetails = ({
 									<div className="col-12 mb-1">
 										<h2 className="mt-0 mb-4">Model relationships</h2>
 										<DynamicHierarchyTree
-											data={parseRelationships(
-												modelRelationships,
-												metadata.providerId,
-												metadata.modelId
-											)}
+											providerId={metadata.providerId}
+											modelId={metadata.modelId}
+											modelType={metadata.modelType}
+											data={modelRelationships}
 										/>
 									</div>
 								</div>

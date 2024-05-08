@@ -1,11 +1,16 @@
-import React, { useRef } from "react";
 import Dagre from "@dagrejs/dagre";
-import ReactFlow, { Node, Edge, ReactFlowRefType } from "reactflow";
+import { useRef } from "react";
+import ReactFlow, { Node, ReactFlowRefType } from "reactflow";
 import "reactflow/dist/style.css";
+import { ModelRelationships } from "../../types/ModelData.model";
+import parseRelationships from "../../utils/parseRelationships";
 import CustomNode from "./CustomNode";
 
 interface IHierarchyTreeProps {
-	data: { nodes: LayoutedNode[]; edges: Edge[] }; // TODO Update
+	data: ModelRelationships;
+	providerId: string;
+	modelId: string;
+	modelType: string;
 }
 
 export type LayoutedNode = Node & {
@@ -16,43 +21,55 @@ export type LayoutedNode = Node & {
 	data: {
 		label: string;
 		provider: string;
+		type: string;
 	};
 	classname?: string;
 };
 
 const nodeTypes = {
-	custom: CustomNode,
+	custom: CustomNode
 };
 
 const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 
-const HierarchyTree = ({ data }: IHierarchyTreeProps) => {
+const HierarchyTree = ({
+	data,
+	modelId: currentModelId,
+	providerId,
+	modelType: currentModelType
+}: IHierarchyTreeProps) => {
 	const flowRef = useRef<ReactFlowRefType>(null);
 	const reactFlowHeight = flowRef?.current?.scrollHeight;
+	const parsedData = parseRelationships(
+		data,
+		providerId,
+		currentModelId,
+		currentModelType
+	);
 
 	g.setGraph({ rankdir: "LR" }); // Could also be TB so the tree is vertical. Need to update custom node if using TB
 
-	data.edges.forEach((edge) => g.setEdge(edge.source, edge.target));
-	data.nodes.forEach((node) => g.setNode(node.id, node));
+	parsedData.edges.forEach((edge) => g.setEdge(edge.source, edge.target));
+	parsedData.nodes.forEach((node) => g.setNode(node.id, node));
 
 	Dagre.layout(g);
 
 	return (
 		<div style={{ height: reactFlowHeight, width: "100%" }} className="w-100">
 			<ReactFlow
-				nodes={data.nodes.map((node) => {
+				nodes={parsedData.nodes.map((node) => {
 					return {
 						...node,
 						position: {
 							x: node.x - node.width / 2,
-							y: node.y - node.height / 2,
-						},
+							y: node.y - node.height / 2
+						}
 					};
 				})}
-				edges={data.edges}
+				edges={parsedData.edges}
 				fitView
 				proOptions={{
-					hideAttribution: true,
+					hideAttribution: true
 				}}
 				draggable={false}
 				panOnDrag={false}

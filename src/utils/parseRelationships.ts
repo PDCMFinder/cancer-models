@@ -7,24 +7,28 @@ const commonNodeProperties = {
 	y: 0,
 	position: { x: 0, y: 0 },
 	type: "custom",
-	width: 150,
-	height: 45,
+	width: 230,
+	height: 45
 };
 
 const commonEdgeProperties = {
 	markerEnd: {
 		type: MarkerType.ArrowClosed,
+		width: 17,
+		height: 17,
+		color: "#003e48" // $color-primary-primary
 	},
-	type: "smoothstep",
+	type: "smoothstep"
 };
 
 const parseRelationships = (
 	data: ModelRelationships,
 	providerId: string,
 	currentId: string,
+	currentType: string,
 	parsedData: { nodes: LayoutedNode[]; edges: Edge[] } = {
 		nodes: [],
-		edges: [],
+		edges: []
 	} // don't pass as argument when calling function
 ): { nodes: LayoutedNode[]; edges: Edge[] } => {
 	if (data) {
@@ -34,8 +38,9 @@ const parseRelationships = (
 				data: {
 					label: data.external_model_id,
 					provider: providerId,
+					type: data.type || ""
 				},
-				...commonNodeProperties,
+				...commonNodeProperties
 			});
 		} else {
 			// if there's no external model id, then it's the current model
@@ -44,9 +49,10 @@ const parseRelationships = (
 				data: {
 					label: currentId,
 					provider: providerId,
+					type: currentType || ""
 				},
 				className: "current",
-				...commonNodeProperties,
+				...commonNodeProperties
 			});
 		}
 		if (data.parents) {
@@ -59,10 +65,16 @@ const parseRelationships = (
 						id: `e${parentId}-${childId}`,
 						source: parentId,
 						target: childId,
-						...commonEdgeProperties,
+						...commonEdgeProperties
 					});
 
-					parseRelationships(parent, providerId, currentId, parsedData);
+					parseRelationships(
+						parent,
+						providerId,
+						currentId,
+						currentType,
+						parsedData
+					);
 				});
 			}
 		}
@@ -76,9 +88,15 @@ const parseRelationships = (
 						id: `e${parentId}-${childId}`,
 						source: parentId,
 						target: childId,
-						...commonEdgeProperties,
+						...commonEdgeProperties
 					});
-					parseRelationships(child, providerId, currentId, parsedData);
+					parseRelationships(
+						child,
+						providerId,
+						currentId,
+						currentType,
+						parsedData
+					);
 				});
 			}
 		}
