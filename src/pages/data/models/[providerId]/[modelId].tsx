@@ -1574,7 +1574,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 	return {
 		props: {
 			metadata,
-			extLinks,
+			extLinks: JSON.parse(JSON.stringify(extLinks)),
 			molecularData,
 			immuneMarkers,
 			engraftments: JSON.parse(JSON.stringify(engraftments)),
