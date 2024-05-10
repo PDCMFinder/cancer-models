@@ -155,20 +155,51 @@ const ModelDetails = ({
 
 	const createMetadataFile = (download: boolean = false) => {
 		const filename = `CancerModelsOrg_${metadata.modelId}_metadata.tsv`;
+
+		const firstQualityData = qualityData[0] || {};
+		const firstEngraftmentData = engraftments[0] || {};
+
+		const contentA = {
+			modelId: metadataModelId,
+			...cellModelData,
+			...metadataFileData,
+			pdxModelPublications: pubmedIds
+		};
+		const combinedData = {
+			...contentA,
+			...(firstQualityData ?? {}),
+			...(firstEngraftmentData ?? {})
+		};
+		const columnHeaders = Object.keys(combinedData);
+		const contentALength = Object.keys(contentA).length;
+		const qualityDataLength = Object.keys(firstQualityData).length;
+		const engraftmentsHasMoreData =
+			qualityDataLength < Object.keys(firstEngraftmentData).length;
+
+		const contentCompensationEmptyCells = Array(
+			engraftmentsHasMoreData
+				? contentALength + qualityDataLength
+				: contentALength
+		).fill(""); // create empty cells
+
+		const maxAmountOfRows = Math.max(qualityData.length, engraftments.length);
+		let contentB = "";
+		for (let i = 1; i < maxAmountOfRows; i++) {
+			contentB +=
+				"\n" +
+				contentCompensationEmptyCells.join("\t") +
+				"\t" +
+				Object.values({
+					...(qualityData[i] ?? {}),
+					...(engraftments[i] ?? {})
+				}).join("\t");
+		}
+
 		const tsvData =
-			Object.keys({
-				...cellModelData,
-				...metadataFileData,
-				modelId: metadataModelId,
-				pdxModelPublications: pubmedIds
-			}).join("\t") +
+			columnHeaders.join("\t") +
 			"\n" +
-			Object.values({
-				...cellModelData,
-				...metadataFileData,
-				modelId: metadataModelId,
-				pdxModelPublications: pubmedIds
-			}).join("\t");
+			Object.values(combinedData).join("\t") +
+			contentB;
 
 		const blob = new Blob([tsvData], { type: "text/tsv" });
 
@@ -179,6 +210,10 @@ const ModelDetails = ({
 				category: "event",
 				value: 1
 			});
+
+			// exit early
+			// if we download, it doesn't matter what we return
+			return {} as Record<string, any>;
 		}
 
 		return { blob, filename };
@@ -807,8 +842,9 @@ const ModelDetails = ({
 														<td>{cellModelData?.growthProperties}</td>
 														<td
 															className={
-																cellModelData?.growthMedia.toLowerCase() !==
-																"not provided"
+																(
+																	cellModelData?.growthMedia ?? ""
+																).toLowerCase() !== "not provided"
 																	? "white-space-nowrap"
 																	: undefined
 															}
@@ -823,8 +859,9 @@ const ModelDetails = ({
 														<td>{cellModelData?.passageNumber}</td>
 														<td
 															className={
-																cellModelData?.growthMedia.toLowerCase() !==
-																"not provided"
+																(
+																	cellModelData?.growthMedia ?? ""
+																).toLowerCase() !== "not provided"
 																	? "white-space-nowrap"
 																	: undefined
 															}

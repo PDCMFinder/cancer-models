@@ -50,22 +50,6 @@ export type Metadata = {
 	patientSampleTreatedAtCollection: string;
 	patientSampleTreatedPriorToCollection: string;
 	pdxModelPublications: string;
-	validationTechnique: string;
-	description: string;
-	passagesTested: string;
-	validationHostStrainNomenclature: string;
-	morphologicalFeatures: string;
-	SNPAnalysis: string;
-	STRAnalysis: string;
-	tumourStatus: string;
-	modelPurity: string;
-	host_strain_name: string;
-	host_strain_nomenclature: string;
-	engraftment_site: string;
-	engraftment_type: string;
-	engraftment_sample_type: string;
-	engraftment_sample_state: string;
-	passage_number: string;
 };
 
 export type ExtLinks = {
@@ -126,7 +110,6 @@ export type CellModelData = {
 	mediaId: string;
 	parentId: string;
 	originPatientSampleId: string;
-	modelId: number;
 	plateCoating: string;
 	otherPlateCoating: string;
 	passageNumber: string;
