@@ -138,7 +138,7 @@ export type QualityData = {
 	passagesTested: string;
 	validationTechnique: string;
 	validationHostStrainNomenclature: string;
-	modelId: number;
+	modelId?: number | string;
 	morphologicalFeatures: string;
 	snpAnalysis: string;
 	strAnalysis: string;

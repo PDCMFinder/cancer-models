@@ -7,7 +7,8 @@ import {
 	ModelImage,
 	ModelRelationships,
 	MolecularData,
-	Publication
+	Publication,
+	QualityData
 } from "../types/ModelData.model";
 import { camelCase } from "../utils/dataUtils";
 
@@ -160,7 +161,9 @@ export async function getModelExtLinks(
 	});
 }
 
-export async function getModelQualityData(pdcmModelId: number) {
+export async function getModelQualityData(
+	pdcmModelId: number
+): Promise<QualityData[]> {
 	if (pdcmModelId !== 0 && !pdcmModelId) {
 		return [];
 	}
@@ -171,10 +174,7 @@ export async function getModelQualityData(pdcmModelId: number) {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
-		return d.map((item: any) => {
-			delete item.model_id;
-			return camelCase(item);
-		});
+		return d.map((item: QualityData) => camelCase(item));
 	});
 }
 
