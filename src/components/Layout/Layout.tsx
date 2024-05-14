@@ -7,6 +7,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import Button from "../Button/Button";
 import Card from "../Card/Card";
 import CloseIcon from "../CloseIcon/CloseIcon";
+import EMBLBanner from "../EMBLBanner/EMBLBanner";
 import FeedbackIcon from "../FeedbackIcon/FeedbackIcon";
 import FloatingButton from "../FloatingWidget/FloatingButton";
 import Loader from "../Loader/Loader";
@@ -55,6 +56,7 @@ const Layout = (props: ILayoutProps) => {
 	return (
 		<>
 			<QueryClientProvider client={queryClient}>
+				<EMBLBanner />
 				<Navbar />
 				<main>{props.children}</main>
 				{!cookies["cm_consent"] && <DynamicCookieConsent />}
