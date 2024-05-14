@@ -1,13 +1,14 @@
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import ReactGA from "react-ga4";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import Banner from "../Banner/Banner";
 import Button from "../Button/Button";
 import Card from "../Card/Card";
 import CloseIcon from "../CloseIcon/CloseIcon";
-import EMBLBanner from "../EMBLBanner/EMBLBanner";
 import FeedbackIcon from "../FeedbackIcon/FeedbackIcon";
 import FloatingButton from "../FloatingWidget/FloatingButton";
 import Loader from "../Loader/Loader";
@@ -37,8 +38,10 @@ interface ILayoutProps {
 }
 
 const Layout = (props: ILayoutProps) => {
+	const { asPath, isReady } = useRouter();
 	const [cookies, setCookie] = useCookies();
 	const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+	const [showBanner, setShowBanner] = useState(false);
 	const surveyHref =
 		"https://docs.google.com/forms/d/e/1FAIpQLSeRJQ7Xu1pMqegYvs4KVdA17bucM6XzW2zzA2yHaroPfSR7Sg/viewform";
 	const [queryClient] = useState(
@@ -53,10 +56,22 @@ const Layout = (props: ILayoutProps) => {
 			})
 	);
 
+	useEffect(() => {
+		if (isReady) {
+			const activePathname = new URL(asPath, location.href).pathname;
+
+			if (activePathname === "/") {
+				setShowBanner(true);
+			} else {
+				setShowBanner(false);
+			}
+		}
+	}, [asPath, isReady]);
+
 	return (
 		<>
 			<QueryClientProvider client={queryClient}>
-				<EMBLBanner />
+				{showBanner && <Banner />}
 				<Navbar />
 				<main>{props.children}</main>
 				{!cookies["cm_consent"] && <DynamicCookieConsent />}
