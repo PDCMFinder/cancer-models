@@ -624,7 +624,7 @@ const Search: NextPage = () => {
 					priority="secondary"
 					color="dark"
 				>
-					Take page tour
+					<p className="mb-0 lh-1">Take page tour</p>
 				</FloatingButton>
 			</ShowHide>
 		</>

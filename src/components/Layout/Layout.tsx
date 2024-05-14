@@ -71,7 +71,12 @@ const Layout = (props: ILayoutProps) => {
 					priority="primary"
 					color="dark"
 				>
-					<FeedbackIcon />
+					<div className="d-flex align-center">
+						<p className="mb-0 mr-2 text-small">
+							We&apos;d love your (quick) feedback!
+						</p>
+						<FeedbackIcon />
+					</div>
 				</FloatingButton>
 				<ReactQueryDevtools initialIsOpen={false} />
 				<DynamicFooter />

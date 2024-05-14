@@ -5,7 +5,7 @@ interface IFloatingButtonProps {
 	color: IButtonProps["color"];
 	position?: string;
 	className?: string;
-	children: string | JSX.Element;
+	children: JSX.Element;
 	onClick?: () => void;
 }
 
