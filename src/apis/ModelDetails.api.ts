@@ -7,7 +7,8 @@ import {
 	ModelImage,
 	ModelRelationships,
 	MolecularData,
-	Publication
+	Publication,
+	QualityData
 } from "../types/ModelData.model";
 import { camelCase } from "../utils/dataUtils";
 
@@ -29,7 +30,10 @@ export async function getCellModelData(pdcmModelId: number): Promise<any> {
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json().then((d) => camelCase(d[0]));
+	return response.json().then((d) => {
+		delete d[0].model_id;
+		return camelCase(d[0]);
+	});
 }
 
 export async function getModelDetailsMetadata(
@@ -157,7 +161,9 @@ export async function getModelExtLinks(
 	});
 }
 
-export async function getModelQualityData(pdcmModelId: number) {
+export async function getModelQualityData(
+	pdcmModelId: number
+): Promise<QualityData[]> {
 	if (pdcmModelId !== 0 && !pdcmModelId) {
 		return [];
 	}
@@ -168,7 +174,7 @@ export async function getModelQualityData(pdcmModelId: number) {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
-		return d.map((item: any) => camelCase(item));
+		return d.map((item: QualityData) => camelCase(item));
 	});
 }
 
@@ -495,13 +501,6 @@ export const getAllModelData = async (
 	const qualityData = await getModelQualityData(pdcmModelId);
 	const modelImages = await getModelImages(modelId);
 	const modelRelationships = await getModelRelationships(modelId);
-	const qualityAssuranceObj = metadata.qualityAssurance
-		? camelCase(metadata.qualityAssurance[0])
-		: {};
-	const xenograftModelSpecimensObj = metadata.xenograftModelSpecimens
-		? metadata.xenograftModelSpecimens[0]
-		: {};
-
 	let score: number = metadata.scores.pdx_metadata_score,
 		cellModelData = {} as CellModelData;
 
@@ -553,9 +552,7 @@ export const getAllModelData = async (
 				metadata.patientSampleTreatedAtCollection,
 			patientSampleTreatedPriorToCollection:
 				metadata.patientSampleTreatedPriorToCollection,
-			pdxModelPublications: metadata.pdxModelPublications,
-			...qualityAssuranceObj,
-			...xenograftModelSpecimensObj
+			pdxModelPublications: metadata.pdxModelPublications
 		},
 		extLinks,
 		molecularData,

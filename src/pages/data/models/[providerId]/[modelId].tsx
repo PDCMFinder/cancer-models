@@ -155,20 +155,38 @@ const ModelDetails = ({
 
 	const createMetadataFile = (download: boolean = false) => {
 		const filename = `CancerModelsOrg_${metadata.modelId}_metadata.tsv`;
+
+		const firstEngraftmentData = engraftments[0] || {};
+
+		const contentA = {
+			modelId: metadataModelId,
+			...cellModelData,
+			...metadataFileData,
+			pdxModelPublications: pubmedIds
+		};
+		const combinedData = {
+			...contentA,
+			...(firstEngraftmentData ?? {})
+		};
+		const columnHeaders = Object.keys(combinedData);
+
+		const contentALength = Object.keys(contentA).length;
+		const contentCompensationEmptyCells = Array(contentALength).fill(""); // create empty cells
+
+		let contentB = "";
+		for (let i = 1; i < engraftments.length; i++) {
+			contentB +=
+				"\n" +
+				contentCompensationEmptyCells.join("\t") +
+				"\t" +
+				Object.values(engraftments[i]).join("\t");
+		}
+
 		const tsvData =
-			Object.keys({
-				...cellModelData,
-				...metadataFileData,
-				modelId: metadataModelId,
-				pdxModelPublications: pubmedIds
-			}).join("\t") +
+			columnHeaders.join("\t") +
 			"\n" +
-			Object.values({
-				...cellModelData,
-				...metadataFileData,
-				modelId: metadataModelId,
-				pdxModelPublications: pubmedIds
-			}).join("\t");
+			Object.values(combinedData).join("\t") +
+			contentB;
 
 		const blob = new Blob([tsvData], { type: "text/tsv" });
 
@@ -179,6 +197,10 @@ const ModelDetails = ({
 				category: "event",
 				value: 1
 			});
+
+			// exit early
+			// if we download, it doesn't matter what we return
+			return {} as Record<string, any>;
 		}
 
 		return { blob, filename };
@@ -305,7 +327,7 @@ const ModelDetails = ({
 		});
 	};
 
-	const downloadAllData = async () => {
+	const downloadAllMolecularData = async () => {
 		let allDataZip = new JSZip();
 		let totalDownloadFiles = 0;
 
@@ -376,6 +398,54 @@ const ModelDetails = ({
 			totalFiles: 0,
 			downloadedFiles: 0,
 			isDownloading: false
+		});
+	};
+
+	const downloadAllQualityControlData = async () => {
+		let allDataZip = new JSZip();
+		let totalDownloadFiles = 1;
+
+		const { blob: metadataBlob, filename: metadataFileName } =
+			createMetadataFile();
+
+		allDataZip.file(metadataFileName, metadataBlob);
+
+		const modQualityData = qualityData.map((data) => {
+			delete data.modelId;
+
+			return {
+				modelId: metadataModelId,
+				...data
+			};
+		});
+
+		const headers = Object.keys(modQualityData[0]);
+
+		const values = modQualityData.map((data) => Object.values(data));
+
+		const tsv = [headers.join("\t")]
+			.concat(values.map((row) => row.join("\t")))
+			.join("\n");
+
+		allDataZip.file(
+			`CancerModelsOrg_${metadataModelId}_qualityControl.tsv`,
+			tsv
+		);
+
+		setFileDownloadStatus((prevState) => ({
+			...prevState,
+			downloadedFiles: prevState.downloadedFiles + 1
+		}));
+
+		allDataZip.generateAsync({ type: "blob" }).then(function (content) {
+			// Save file to users computer
+			FileSaver.saveAs(content, `CancerModelsOrg_${metadataModelId}-data.zip`);
+		});
+
+		// Adding 1 for metadata
+		ReactGA.event("download_data", {
+			category: "event",
+			value: totalDownloadFiles + 1
 		});
 	};
 
@@ -807,8 +877,9 @@ const ModelDetails = ({
 														<td>{cellModelData?.growthProperties}</td>
 														<td
 															className={
-																cellModelData?.growthMedia.toLowerCase() !==
-																"not provided"
+																(
+																	cellModelData?.growthMedia ?? ""
+																).toLowerCase() !== "not provided"
 																	? "white-space-nowrap"
 																	: undefined
 															}
@@ -823,8 +894,9 @@ const ModelDetails = ({
 														<td>{cellModelData?.passageNumber}</td>
 														<td
 															className={
-																cellModelData?.growthMedia.toLowerCase() !==
-																"not provided"
+																(
+																	cellModelData?.growthMedia ?? ""
+																).toLowerCase() !== "not provided"
 																	? "white-space-nowrap"
 																	: undefined
 															}
@@ -843,7 +915,16 @@ const ModelDetails = ({
 							{qualityData.length > 0 && (
 								<div id="quality-control" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
-										<h2 className="mt-0">Model quality control</h2>
+										<div className="d-flex justify-content-between align-center">
+											<h2 className="mt-0">Model quality control</h2>
+											<Button
+												priority="secondary"
+												color="dark"
+												onClick={() => downloadAllQualityControlData()}
+											>
+												Download all
+											</Button>
+										</div>
 										<div className="overflow-auto showScrollbar-vertical">
 											{metadata.modelType !== PDX_STRING ? (
 												<table>
@@ -935,7 +1016,7 @@ const ModelDetails = ({
 											<Button
 												priority="secondary"
 												color="dark"
-												onClick={() => downloadAllData()}
+												onClick={() => downloadAllMolecularData()}
 											>
 												Download all
 											</Button>
