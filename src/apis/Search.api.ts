@@ -52,7 +52,7 @@ export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
 
 export async function getFacetOperators(): Promise<IFacetOperator[]> {
 	let response = await fetch(
-		`${API_URL}/search_facet?facet_section=neq.search&select=facet_column,any_operator,all_operator,facet_type`
+		`${API_URL}/search_facet?facet_section=neq.search&select=facet_column,any_operator,all_operator`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
