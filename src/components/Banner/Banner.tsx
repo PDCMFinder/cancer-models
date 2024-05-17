@@ -16,11 +16,11 @@ const Banner = () => {
 						<p className="mb-0 text-small">
 							Survey link:{" "}
 							<a
-								href="https://www.surveymonkey.com/r/HJKYKTT?channel=www.cancermodels.org"
+								href="https://www.surveymonkey.com/r/HJKYKTT?channel=[website]"
 								target="_blank"
 								rel="noopener noreferrer"
 							>
-								https://www.surveymonkey.com/r/HJKYKTT?channel=www.cancermodels.org
+								https://www.surveymonkey.com/r/HJKYKTT
 							</a>
 						</p>
 					</div>
