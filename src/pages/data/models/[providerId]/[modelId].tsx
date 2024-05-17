@@ -412,6 +412,7 @@ const ModelDetails = ({
 
 		const modQualityData = qualityData.map((data) => {
 			delete data.modelId;
+			delete data.id;
 
 			return {
 				modelId: metadataModelId,
@@ -1618,7 +1619,7 @@ const ModelDetails = ({
 					priority="secondary"
 					color="dark"
 				>
-					Take page tour
+					<p className="mb-0 lh-1">Take page tour</p>
 				</FloatingButton>
 			</ShowHide>
 		</>

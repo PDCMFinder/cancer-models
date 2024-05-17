@@ -133,7 +133,7 @@ export type PatientTreatment = {
 };
 
 export type QualityData = {
-	id: number;
+	id?: number;
 	description: string;
 	passagesTested: string;
 	validationTechnique: string;
