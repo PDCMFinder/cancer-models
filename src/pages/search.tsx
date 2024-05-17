@@ -367,7 +367,6 @@ const Search: NextPage = () => {
 			data={searchFacetSectionsQuery.data ?? []}
 			selection={searchFilterState}
 			onFilterChange={(filterId, selection, operator, type) => {
-				console.log({ filterId, selection, operator, type });
 				searchFilterDispatch({
 					filterId,
 					selection,

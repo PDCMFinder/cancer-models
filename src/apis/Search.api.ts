@@ -11,7 +11,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
 	let response = await fetch(
-		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example,facet_type,is_boolean,any_operator,all_operator`
+		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example,facet_type,is_boolean`
 	);
 
 	const sections: any = {
