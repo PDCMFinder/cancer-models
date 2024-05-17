@@ -1,12 +1,17 @@
-import { IFacetProps, IFacetSectionProps } from "../types/Facet.model";
+import {
+	IFacetOperator,
+	IFacetProps,
+	IFacetSectionProps
+} from "../types/Facet.model";
 import { SearchResult } from "../types/Search.model";
 import { ethnicityCategories } from "../utils/collapseEthnicity";
+import { camelCase } from "../utils/dataUtils";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
 	let response = await fetch(
-		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example,facet_type,is_boolean`
+		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example,facet_type,is_boolean,any_operator,all_operator`
 	);
 
 	const sections: any = {
@@ -45,6 +50,18 @@ export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
 	});
 }
 
+export async function getFacetOperators(): Promise<IFacetOperator[]> {
+	let response = await fetch(
+		`${API_URL}/search_facet?facet_section=neq.search&select=facet_column,any_operator,all_operator,facet_type`
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+	return response
+		.json()
+		.then((data) => data.map((d: IFacetOperator) => camelCase(d)));
+}
+
 export async function getFacetOptions(facetColumn: string) {
 	let response = await fetch(
 		`${API_URL}/search_facet?facet_column=eq.${facetColumn}`
@@ -71,72 +88,57 @@ export async function autoCompleteFacetOptions(
 }
 
 export async function getSearchResults(
-	searchValues: Array<string> = [],
+	searchValues: string[] = [],
 	searchFilterSelection: any,
 	pageSize: number = 10,
-	sortBy: string
+	sortBy: string,
+	facetOperators: IFacetOperator[]
 ): Promise<[number, SearchResult[]]> {
 	if (!searchFilterSelection && !searchValues.length) {
 		return Promise.resolve([0, []]);
 	}
-
 	let query =
 		searchValues.length > 0
 			? `search_terms=ov.{${searchValues.join(",")}}`
 			: "";
 
-	for (const filterId in searchFilterSelection) {
+	for (const facetId in searchFilterSelection) {
 		if (
-			searchFilterSelection[filterId].selection?.length &&
-			filterId !== "page"
+			searchFilterSelection[facetId].selection?.length &&
+			facetId !== "page"
 		) {
-			const multiValuedFacets = [
-				"search_terms",
-				"dataset_available",
-				"breast_cancer_biomarkers",
-				"treatment_list",
-				"model_treatment_list",
-				"markers_with_cna_data",
-				"markers_with_mutation_data",
-				"markers_with_expression_data",
-				"markers_with_biomarker_data",
-				"custom_treatment_type_list",
-				"hla_types",
-				"msi_status"
-			];
-			let options: string[] = searchFilterSelection[filterId].selection.map(
+			const currentFacetOperators = facetOperators.find(
+				(obj) => obj.facetColumn === facetId
+			);
+			let options: string[] = searchFilterSelection[facetId].selection.map(
 				(d: string) => `"${d}"`
 			);
 
 			// Handle filtering of subcategories while selecting top category
-			if (filterId === "patient_ethnicity") {
+			if (facetId === "patient_ethnicity") {
 				for (let key in ethnicityCategories) {
-					if (searchFilterSelection[filterId].selection.includes(key)) {
+					if (searchFilterSelection[facetId].selection.includes(key)) {
 						options = ethnicityCategories[key].map((d: string) => `"${d}"`);
 					}
 				}
 			}
 
-			let apiOperator = "in";
+			let apiOperator;
 
-			if (
-				multiValuedFacets.includes(filterId) &&
-				searchFilterSelection[filterId].operator === "ANY"
-			)
-				apiOperator = "ov";
+			if (searchFilterSelection[facetId].operator === "ANY")
+				apiOperator = currentFacetOperators?.anyOperator ?? "";
 
-			if (searchFilterSelection[filterId].operator === "ALL")
-				apiOperator = "cs";
+			if (searchFilterSelection[facetId].operator === "ALL")
+				apiOperator = currentFacetOperators?.allOperator ?? "";
 
 			let optionsQuery =
 				apiOperator === "in"
 					? `(${encodeURIComponent(options.join(","))})`
 					: `{${encodeURIComponent(options.join(","))}}`;
 
-			query += `&${filterId}=${apiOperator}.${optionsQuery}`;
+			query += `&${facetId}=${apiOperator}.${optionsQuery}`;
 		}
 	}
-
 	let response = await fetch(
 		`${API_URL}/search_index?${query}&limit=${pageSize}&offset=${
 			(searchFilterSelection["page"].selection[0] - 1) * pageSize
