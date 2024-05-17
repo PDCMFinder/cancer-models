@@ -8,6 +8,7 @@ import React, { ChangeEvent, useEffect, useReducer, useState } from "react";
 import { useQueries, useQuery } from "react-query";
 import { getModelCount } from "../apis/AggregatedData.api";
 import {
+	getFacetOperators,
 	getFacetOptions,
 	getSearchFacets,
 	getSearchResults
@@ -205,6 +206,15 @@ const Search: NextPage = () => {
 	});
 	const searchFacetSections = searchFacetSectionsQuery.data;
 
+	const searchFacetOperatorsQuery = useQuery({
+		queryKey: "searchFacetOperators",
+		queryFn: async () => getFacetOperators()
+	});
+	const searchFacetOperators =
+		!searchFacetOperatorsQuery.isLoading && searchFacetOperatorsQuery.data
+			? searchFacetOperatorsQuery.data
+			: [];
+
 	const searchFacetQueries = useQueries(
 		searchFacetSections
 			? searchFacetSections
@@ -248,7 +258,13 @@ const Search: NextPage = () => {
 			}
 		],
 		queryFn: async () =>
-			getSearchResults([], searchFilterState, resultsPerPage, sortBy)
+			getSearchResults(
+				[],
+				searchFilterState,
+				resultsPerPage,
+				sortBy,
+				searchFacetOperators
+			)
 	});
 
 	useEffect(() => {
