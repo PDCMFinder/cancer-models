@@ -681,13 +681,13 @@ const ModelDetails = ({
 											Array.isArray(modelRelationships?.children) ? (
 												<Link
 													replace
-													href="#model-relationships"
+													href="#related-models"
 													className="text-primary-primary"
 												>
-													Relationships
+													Related Models
 												</Link>
 											) : (
-												"Relationships"
+												"Related Models"
 											)}
 										</li>
 										<li className="mb-2">
@@ -1372,9 +1372,9 @@ const ModelDetails = ({
 							)}
 							{(Array.isArray(modelRelationships?.parents) ||
 								Array.isArray(modelRelationships?.children)) && (
-								<div id="model-relationships" className="row mb-5 pt-3">
+								<div id="related-models" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
-										<h2 className="mt-0 mb-4">Model relationships</h2>
+										<h2 className="mt-0 mb-4">Related models</h2>
 										<DynamicHierarchyTree
 											data={parseRelationships(
 												modelRelationships,
