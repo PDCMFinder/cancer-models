@@ -5,8 +5,8 @@ const Banner = () => {
 				<div className="row">
 					<div className="col-12 text-center">
 						<p className="text-family-primary">
-							Do data resources managed by EMBL-EBI and our collaborators make
-							a-primary-quaternary difference to your work?
+							Do data resources managed by EMBL-EBI and our collaborators make a
+							difference to your work?
 						</p>
 						<p className="text-small">
 							Please take 10 minutes to fill in our annual user survey, and help
