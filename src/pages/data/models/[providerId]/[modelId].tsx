@@ -249,6 +249,13 @@ const ModelDetails = ({
 			createMetadataFile();
 		// Add metadata file to zip
 		zip.file(metadataFileName, metadataBlob);
+
+		// Create quality control file
+		const { blob: qualityControlBlob, filename: qualityControlFileName } =
+			createQualityControlFile();
+		// Add quality control file to zip
+		zip.file(qualityControlFileName, qualityControlBlob);
+
 		// If we pass some data, that means we just want to download that single data file
 		if (data.molecularCharacterizationId) {
 			const molecularData = await getMolecularDataDownload(data);
@@ -336,6 +343,12 @@ const ModelDetails = ({
 		// Add metadata file to zip
 		allDataZip.file(metadataFileName, metadataBlob);
 
+		const { blob: qualityControlBlob, filename: qualityControlFileName } =
+			createQualityControlFile();
+
+		// Add metadata file to zip
+		allDataZip.file(qualityControlFileName, qualityControlBlob);
+
 		for (const data of molecularData) {
 			if (data.dataExists === "TRUE") {
 				if (data.dataRestricted === "FALSE") {
@@ -400,15 +413,8 @@ const ModelDetails = ({
 		});
 	};
 
-	const downloadAllQualityControlData = async () => {
-		let allDataZip = new JSZip();
-		let totalDownloadFiles = 1;
-
-		const { blob: metadataBlob, filename: metadataFileName } =
-			createMetadataFile();
-
-		allDataZip.file(metadataFileName, metadataBlob);
-
+	const createQualityControlFile = () => {
+		const filename = `CancerModelsOrg_${metadataModelId}_qualityControl.tsv`;
 		const modQualityData = qualityData.map((data) => {
 			delete data.modelId;
 			delete data.id;
@@ -427,10 +433,24 @@ const ModelDetails = ({
 			.concat(values.map((row) => row.join("\t")))
 			.join("\n");
 
-		allDataZip.file(
-			`CancerModelsOrg_${metadataModelId}_qualityControl.tsv`,
-			tsv
-		);
+		const blob = new Blob([tsv], { type: "text/tsv" });
+
+		return { blob, filename };
+	};
+
+	const downloadAllQualityControlData = async () => {
+		let allDataZip = new JSZip();
+		let totalDownloadFiles = 1;
+
+		const { blob: metadataBlob, filename: metadataFileName } =
+			createMetadataFile();
+
+		allDataZip.file(metadataFileName, metadataBlob);
+
+		const { blob: qualityControlBlob, filename: qualityControlFileName } =
+			createQualityControlFile();
+
+		allDataZip.file(qualityControlFileName, qualityControlBlob);
 
 		setFileDownloadStatus((prevState) => ({
 			...prevState,
