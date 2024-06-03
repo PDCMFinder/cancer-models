@@ -51,15 +51,19 @@ export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
 }
 
 export async function getFacetOperators(): Promise<IFacetOperator[]> {
-	let response = await fetch(
-		`${API_URL}/search_facet?select=facet_column,any_operator,all_operator`
-	);
-	if (!response.ok) {
-		throw new Error("Network response was not ok");
+	try {
+		const response = await fetch(
+			`${API_URL}/search_facet?select=facet_column,any_operator,all_operator`
+		);
+		if (!response.ok) {
+			throw new Error(`Network response was not ok: ${response.statusText}`);
+		}
+		const data = await response.json();
+		return data.map((d: IFacetOperator) => camelCase(d));
+	} catch (error) {
+		console.error("Error fetching facet operators:", error);
+		throw new Error("Failed to fetch facet operators");
 	}
-	return response
-		.json()
-		.then((data) => data.map((d: IFacetOperator) => camelCase(d)));
 }
 
 export async function getFacetOptions(facetColumn: string) {
@@ -126,10 +130,12 @@ export async function getSearchResults(
 			let apiOperator;
 
 			if (searchFilterSelection[facetId].operator === "ANY")
-				apiOperator = currentFacetOperators?.anyOperator ?? "";
+				// apiOperator = currentFacetOperators?.anyOperator ?? "ov";
+				apiOperator = currentFacetOperators?.anyOperator ?? "ov";
 
 			if (searchFilterSelection[facetId].operator === "ALL")
-				apiOperator = currentFacetOperators?.allOperator ?? "";
+				// apiOperator = currentFacetOperators?.allOperator ?? "cs";
+				apiOperator = currentFacetOperators?.allOperator ?? "cs";
 
 			let optionsQuery =
 				apiOperator === "in"

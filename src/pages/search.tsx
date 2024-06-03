@@ -5,7 +5,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { NextPage } from "next/types";
 import React, { ChangeEvent, useEffect, useReducer, useState } from "react";
-import { useQueries, useQuery } from "react-query";
+import { useQueries, useQuery, useQueryClient } from "react-query";
 import { getModelCount } from "../apis/AggregatedData.api";
 import {
 	getFacetOperators,
@@ -72,6 +72,7 @@ const Search: NextPage = () => {
 	const [hasSelection, setHasSelection] = useState<boolean>(false);
 	const [modelsToCompare, setModelsToCompare] = useState<string[]>([]);
 	const router = useRouter();
+	const { query: routerQuery } = router;
 	const ignoredFilterValues = ["page", "search_terms"];
 
 	const driverObj = driver({
@@ -163,8 +164,8 @@ const Search: NextPage = () => {
 		onSuccess(data) {
 			const initialSearchFilterState: any = {};
 			const stateFromUrl: any = {};
-			const filters = router.query["filters"]
-				? (router.query["filters"] as string).split(" AND ")
+			const filters = routerQuery["filters"]
+				? (routerQuery["filters"] as string).split(" AND ")
 				: [];
 			filters.forEach((filterStr) => {
 				const filterOperatorStr = filterStr.split(":")[0];
@@ -264,7 +265,8 @@ const Search: NextPage = () => {
 				resultsPerPage,
 				sortBy,
 				searchFacetOperators
-			)
+			),
+		enabled: searchFilterState !== null // Only enable when `searchFilterState` is ready
 	});
 
 	useEffect(() => {
@@ -305,7 +307,7 @@ const Search: NextPage = () => {
 			}
 			router.replace(
 				{
-					query: { ...router.query, filters: filterValues.join(" AND ") }
+					query: { ...routerQuery, filters: filterValues.join(" AND ") }
 				},
 				undefined,
 				{ scroll: false }
@@ -314,20 +316,23 @@ const Search: NextPage = () => {
 			setHasSelection(false);
 			router.replace("/search", undefined, { shallow: true });
 		}
-	}, [searchFilterState]);
+	}, []);
 
 	const compareModel = (id: string): void => {
-		if (modelsToCompare.includes(id)) {
-			setModelsToCompare((prev) => prev.filter((model) => model !== id));
-		} else {
-			if (modelsToCompare.length === 4) {
-				alert(
-					"You've reached the maximum amount of models to compare. Remove a model to add another."
-				);
+		setModelsToCompare((prev) => {
+			if (prev.includes(id)) {
+				return prev.filter((model) => model !== id);
 			} else {
-				setModelsToCompare((prev) => [...prev, id]);
+				if (prev.length === 4) {
+					alert(
+						"You've reached the maximum amount of models to compare. Remove a model to add another."
+					);
+					return prev;
+				} else {
+					return [...prev, id];
+				}
 			}
-		}
+		});
 	};
 
 	const compareModels = () => {
@@ -409,6 +414,24 @@ const Search: NextPage = () => {
 		return getModelCount();
 	});
 
+	const queryClient = useQueryClient();
+
+	const handleFilterChange = (
+		filterId: string,
+		selection: string,
+		operator: string,
+		type: onFilterChangeType["type"]
+	) => {
+		searchFilterDispatch({
+			filterId,
+			selection,
+			operator,
+			type
+		});
+
+		queryClient.invalidateQueries("search-results");
+	};
+
 	return (
 		<>
 			{/* page metadata */}
@@ -441,14 +464,7 @@ const Search: NextPage = () => {
 								name="searchBar-name"
 								isMulti
 								selection={searchFilterState}
-								onFilterChange={(filterId, selection, operator, type) => {
-									searchFilterDispatch({
-										filterId,
-										selection,
-										operator,
-										type
-									});
-								}}
+								onFilterChange={handleFilterChange}
 							/>
 						</div>
 					</div>

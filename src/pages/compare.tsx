@@ -336,7 +336,7 @@ const Compare: NextPage = () => {
 							) ? (
 								<div
 									className={`row ${styles.Compare_table}`}
-									id="tour_compare-derivation"
+									id="tour_compare-engraftment"
 								>
 									<div className={`col-12 ${styles.Compare_table_title}`}>
 										<h3>PDX Model Engraftment</h3>
