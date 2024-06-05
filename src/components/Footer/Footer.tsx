@@ -29,7 +29,7 @@ const Footer = () => {
 							<Logotype color="white" />
 						</Link>
 					</div>
-					<div className="col-12 col-md-4 col-xl-3">
+					<div className="col-12 col-md-4">
 						<div className="row">
 							<div className="col-12 col-lg-6">
 								<ul className={`ul-noStyle ${styles.Footer_nav_firstRow}`}>
@@ -113,7 +113,7 @@ const Footer = () => {
 							</div>
 						</div>
 					</div>
-					<div className="col-12 col-md-7 col-lg-5 col-xl-4 offset-lg-1 offset-xl-3 d-flex flex-column justify-content-between">
+					<div className="col-12 col-md-7 col-lg-5 col-xl-4 offset-lg-1 offset-xl-2 d-flex flex-column justify-content-between">
 						<p>
 							<Link
 								className="link-text-light"
