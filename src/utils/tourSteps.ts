@@ -63,7 +63,7 @@ export const searchTourSteps: DriveStep[] = [
 	{
 		popover: {
 			description:
-				"More detailed information can be found at our <a href='/tutorials' target='_blank'>tutorials page</a>",
+				"More detailed information can be found at our <a href='/tutorials' target='_blank'>tutorials page</a>.",
 			side: "left",
 			align: "center"
 		}
@@ -103,6 +103,16 @@ export const compareTourSteps: DriveStep[] = [
 		}
 	},
 	{
+		element: "#tour_compare-derivation",
+		popover: {
+			title: "In-vitro model derivation",
+			description:
+				"This section provides details about the successful model development of Patient-Derived {Cell line/Organoid} (based on the model type) models such as the growth properties, growth media and supplements, and other relevant details for model development.",
+			side: "top",
+			align: "center"
+		}
+	},
+	{
 		element: "#tour_compare-qualityControl",
 		popover: {
 			title: "Model quality control",
@@ -135,7 +145,7 @@ export const compareTourSteps: DriveStep[] = [
 	{
 		popover: {
 			description:
-				"More detailed information can be found at our <a href='/tutorials' target='_blank'>tutorials page</a>",
+				"More detailed information can be found at our <a href='/tutorials' target='_blank'>tutorials page</a>.",
 			side: "left",
 			align: "center"
 		}
@@ -289,7 +299,7 @@ export const modelTourSteps: DriveStep[] = [
 	{
 		popover: {
 			description:
-				"More detailed information can be found at our <a href='/tutorials' target='_blank'>training page</a>",
+				"More detailed information can be found at our <a href='/tutorials' target='_blank'>tutorials page</a>.",
 			side: "left",
 			align: "center"
 		}
