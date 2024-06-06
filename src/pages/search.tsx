@@ -316,7 +316,7 @@ const Search: NextPage = () => {
 			setHasSelection(false);
 			router.replace("/search", undefined, { shallow: true });
 		}
-	}, []);
+	}, [searchFilterState]);
 
 	const compareModel = (id: string): void => {
 		setModelsToCompare((prev) => {
