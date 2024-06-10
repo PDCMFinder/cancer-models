@@ -12,6 +12,7 @@ import { useQueries, useQuery } from "react-query";
 import {
 	getAllModelData,
 	getModelPubmedIds,
+	getMolecularData,
 	getMolecularDataDownload,
 	getPublicationData
 } from "../../../../apis/ModelDetails.api";
@@ -75,7 +76,6 @@ const ModelDetails = ({
 	metadata,
 	extLinks,
 	immuneMarkers,
-	molecularData,
 	drugDosing,
 	patientTreatment,
 	qualityData,
@@ -88,6 +88,12 @@ const ModelDetails = ({
 		MODEL_GENOMICS_STRING = "Model Genomics",
 		HLA_TYPE_STRING = "HLA type",
 		PDX_STRING = "PDX";
+
+	// Client side mol data so we have latest molecular_characterization_id that changes on every etl execution
+	const { data: molecularData, isLoading: molecularDataIsLoading } = useQuery(
+		["molecular-data", metadata.modelId],
+		() => getMolecularData(metadata.modelId)
+	);
 	const [selectedMolecularViewData, setSelectedMolecularViewData] =
 		useState<MolecularData>();
 	const [dataToDownload, setDataToDownload] = useState<IDataFileConfig[]>([]);
@@ -349,7 +355,7 @@ const ModelDetails = ({
 		// Add metadata file to zip
 		allDataZip.file(qualityControlFileName, qualityControlBlob);
 
-		for (const data of molecularData) {
+		for (const data of molecularData ?? []) {
 			if (data.dataExists === "TRUE") {
 				if (data.dataRestricted === "FALSE") {
 					totalDownloadFiles++;
@@ -363,7 +369,7 @@ const ModelDetails = ({
 			isDownloading: true
 		}));
 
-		for (const data of molecularData) {
+		for (const data of molecularData ?? []) {
 			await getMolecularDataDownload(data).then((d: MolecularData[]) => {
 				if (d.length > 0) {
 					// Extract headers
@@ -644,7 +650,7 @@ const ModelDetails = ({
 											)}
 										</li>
 										<li className="mb-2">
-											{molecularData.length ? (
+											{!molecularDataIsLoading && molecularData.length ? (
 												<Link
 													replace
 													href="#molecular-data"
@@ -1028,18 +1034,26 @@ const ModelDetails = ({
 									</div>
 								</div>
 							)}
-							{molecularData.length > 0 && (
+							{!molecularDataIsLoading && molecularData.length > 0 && (
 								<div id="molecular-data" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<div className="d-flex justify-content-between align-center">
 											<h2 className="mt-0">Molecular data</h2>
-											<Button
-												priority="secondary"
-												color="dark"
-												onClick={() => downloadAllMolecularData()}
-											>
-												Download all
-											</Button>
+											{!molecularDataIsLoading &&
+												molecularData &&
+												molecularData.some(
+													(data: MolecularData) =>
+														data.dataExists === "TRUE" &&
+														data.dataRestricted !== "TRUE"
+												) && (
+													<Button
+														priority="secondary"
+														color="dark"
+														onClick={() => downloadAllMolecularData()}
+													>
+														Download all
+													</Button>
+												)}
 										</div>
 										<div className="overflow-auto showScrollbar-vertical">
 											<table>
@@ -1056,7 +1070,8 @@ const ModelDetails = ({
 													</tr>
 												</thead>
 												<tbody>
-													{molecularData &&
+													{!molecularDataIsLoading &&
+														molecularData &&
 														molecularData.map((data: MolecularData) => {
 															let sampleType: string,
 																rawDataExternalLinks: ExternalDbLink[] = [],
@@ -1657,7 +1672,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 	const {
 		metadata,
 		extLinks,
-		molecularData,
 		immuneMarkers,
 		engraftments,
 		cellModelData,
@@ -1675,7 +1689,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		props: {
 			metadata,
 			extLinks: JSON.parse(JSON.stringify(extLinks)),
-			molecularData,
 			immuneMarkers,
 			engraftments: JSON.parse(JSON.stringify(engraftments)),
 			cellModelData,

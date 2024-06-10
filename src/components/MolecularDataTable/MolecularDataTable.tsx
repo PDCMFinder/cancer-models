@@ -4,7 +4,8 @@ import ReactGA from "react-ga4";
 import { useQuery } from "react-query";
 import {
 	getAvailableDataColumns,
-	getModelMolecularDataDetails
+	getModelMolecularDataDetails,
+	getMolecularCharacterizationId
 } from "../../apis/ModelDetails.api";
 import { MolecularData } from "../../types/ModelData.model";
 import Button from "../Button/Button";
@@ -45,6 +46,11 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 		["get-molecular-data-detail-cols", data.dataSource, data.dataType],
 		() => getAvailableDataColumns(data.dataSource, data.dataType)
 	);
+	const { data: molCharIdData } = useQuery(
+		["get-molecular-characterization-id", "Curie-BC", "HBCx-92"],
+		() => getMolecularCharacterizationId("TM00025", "JAX")
+	);
+
 	const { data: dataDetails, isLoading } = useQuery(
 		[
 			"get-molecular-data-detail",
