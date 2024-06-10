@@ -23,6 +23,7 @@ import FloatingButton from "../../../../components/FloatingWidget/FloatingButton
 import InputAndLabel from "../../../../components/Input/InputAndLabel";
 import Loader from "../../../../components/Loader/Loader";
 import MolecularDataTable from "../../../../components/MolecularDataTable/MolecularDataTable";
+import Publication from "../../../../components/Publication/Publication";
 import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
 import ShowHide from "../../../../components/ShowHide/ShowHide";
 import Tooltip from "../../../../components/Tooltip/Tooltip";
@@ -30,8 +31,8 @@ import useWindowDimensions from "../../../../hooks/useWindowDimensions";
 import {
 	AllModelData,
 	ExternalDbLink,
-	MolecularData,
-	Publication
+	Publication as IPublication,
+	MolecularData
 } from "../../../../types/ModelData.model";
 import breakPoints from "../../../../utils/breakpoints";
 import {
@@ -145,7 +146,7 @@ const ModelDetails = ({
 
 	const pubmedIds = pubmedIdsQuery.data || [];
 
-	const publicationsQuery = useQueries<Publication[]>(
+	const publicationsQuery = useQueries<IPublication[]>(
 		pubmedIds.map((p: string) => {
 			return {
 				queryKey: ["publication-data", p],
@@ -154,8 +155,8 @@ const ModelDetails = ({
 		})
 	);
 
-	const publications: Publication[] = publicationsQuery
-		.map((q) => q.data as Publication)
+	const publications: IPublication[] = publicationsQuery
+		.map((q) => q.data as IPublication)
 		.filter((d) => d !== undefined);
 
 	const createMetadataFile = (download: boolean = false) => {
@@ -1465,57 +1466,10 @@ const ModelDetails = ({
 												idx !== publications.length - 1;
 
 											return (
-												<div key={publication.pmid}>
-													{publication.title && (
-														<h3>
-															{publication.title.replace(/<[^>]+>/g, " ")}
-														</h3>
-													)}
-													<p className="text-muted text-small">
-														{publication.authorString}
-													</p>
-													<p className="mb-3 text-small">
-														{publication.journalTitle} - {publication.pubYear}
-													</p>
-													<ul className="ul-noStyle text-small d-md-flex">
-														{publication.pmid && (
-															<li className="mr-md-3">
-																<Link
-																	href={`https://europepmc.org/article/MED/${publication.pmid}`}
-																	target="_blank"
-																	rel="noreferrer noopener"
-																>
-																	View at EuropePMC
-																</Link>
-															</li>
-														)}
-														{publication.doi && (
-															<li className="mr-md-3">
-																<Link
-																	href={`https://doi.org/${publication.doi}`}
-																	target="_blank"
-																	rel="noreferrer noopener"
-																>
-																	DOI:{publication.doi}
-																</Link>
-															</li>
-														)}
-														{publication.pmid && (
-															<li>
-																<Link
-																	href={`https://pubmed.ncbi.nlm.nih.gov/${publication.pmid}`}
-																	target="_blank"
-																	rel="noreferrer noopener"
-																>
-																	PubMed
-																</Link>
-															</li>
-														)}
-													</ul>
-													{needsSeparator && (
-														<hr style={{ backgroundColor: "#d2d2d2" }} />
-													)}
-												</div>
+												<Publication
+													data={publication}
+													needsSeparator={needsSeparator}
+												/>
 											);
 										})}
 									</div>
