@@ -93,7 +93,9 @@ export async function getModelImages(modelId: string): Promise<ModelImage[]> {
 	});
 }
 
-export async function getModelRelationships(modelId: string): Promise<any> {
+export async function getModelRelationships(
+	modelId: string
+): Promise<ModelRelationships> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&select=model_relationships`
 	);
@@ -110,7 +112,7 @@ export async function getModelRelationships(modelId: string): Promise<any> {
 export async function getModelPubmedIds(
 	modelId: string = "",
 	providerId: string
-): Promise<any> {
+): Promise<string[]> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/model_information?external_model_id=eq.${modelId}&data_source=eq.${providerId}&select=publication_group(pubmed_ids)`
 	);
