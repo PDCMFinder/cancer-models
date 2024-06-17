@@ -1,45 +1,45 @@
-import Card from "../../Card/Card";
-import styles from "./SearchResult.module.scss";
 import Link from "next/link";
-import { SearchResult as SearchResultType } from "../../../types/Search.model";
-import QualityBadge from "../../QualityBadge/QualityBadge";
-import useWindowDimensions from "../../../hooks/useWindowDimensions";
-import breakPoints from "../../../utils/breakpoints";
-import ShowHide from "../../ShowHide/ShowHide";
-import InputAndLabel from "../../Input/InputAndLabel";
 import { ChangeEvent } from "react";
+import useWindowDimensions from "../../../hooks/useWindowDimensions";
+import { SearchResult as SearchResultType } from "../../../types/Search.model";
+import breakPoints from "../../../utils/breakpoints";
+import Card from "../../Card/Card";
+import InputAndLabel from "../../Input/InputAndLabel";
+import QualityBadge from "../../QualityBadge/QualityBadge";
+import ShowHide from "../../ShowHide/ShowHide";
+import styles from "./SearchResult.module.scss";
 
 const dataTypes = [
 	{
 		key: "copy number alteration",
 		name: "CNA",
-		sectionLink: "molecular-data",
+		sectionLink: "molecular-data"
 	},
 	{
 		key: "expression",
 		name: "Expression",
-		sectionLink: "molecular-data",
+		sectionLink: "molecular-data"
 	},
 	{
 		key: "bio markers",
 		name: "Bio Markers",
-		sectionLink: "molecular-data",
+		sectionLink: "molecular-data"
 	},
 	{
 		key: "mutation",
 		name: "Gene Mutation",
-		sectionLink: "molecular-data",
+		sectionLink: "molecular-data"
 	},
 	{
 		key: "dosing studies",
 		name: "Dosing Studies",
-		sectionLink: "dosing-studies",
+		sectionLink: "dosing-studies"
 	},
 	{
 		key: "patient treatment",
 		name: "Patient Treatment",
-		sectionLink: "patient-treatment",
-	},
+		sectionLink: "patient-treatment"
+	}
 ];
 
 interface ISearchResultProps {
@@ -66,7 +66,7 @@ const SearchResult = (props: ISearchResultProps) => {
 		modelType,
 		patientAge,
 		patientSex,
-		score,
+		score
 	} = props.data;
 
 	const metadata = [
@@ -75,7 +75,7 @@ const SearchResult = (props: ISearchResultProps) => {
 		{ name: "Primary Site", data: primarySite },
 		{ name: "Collection Site", data: collectionSite },
 		{ name: "Patient Sex", data: patientSex },
-		{ name: "Patient Age", data: patientAge },
+		{ name: "Patient Age", data: patientAge }
 	];
 
 	const modelLink = `/data/models/${sourceId}/${pdcmId}`;
@@ -101,6 +101,7 @@ const SearchResult = (props: ISearchResultProps) => {
 							<QualityBadge
 								score={score}
 								containerClassName="text-muted"
+								style={{ width: "10em" }}
 								className="w-50"
 							/>
 						)}

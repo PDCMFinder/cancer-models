@@ -44,7 +44,6 @@ body {
 }
 p {
 	margin: 0 0 2rem;
-	margin: 0 0 2rem;
 }
 svg,
 img {
@@ -191,6 +190,9 @@ img {
 	}
 	&-auto {
 		width: auto;
+	}
+	&-min {
+		width: min-content;
 	}
 }
 button {
