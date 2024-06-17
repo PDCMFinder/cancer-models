@@ -1,18 +1,14 @@
-import Logotype from "../Logotype/Logotype";
-import { routes, routesWithGAEvents } from "../../utils/routes";
-import { IRoute } from "../../../types/globalTypes";
-import ActiveLink from "../ActiveLink/ActiveLink";
-import styles from "./Footer.module.scss";
 import Link from "next/link";
-import { useQuery } from "react-query";
-import { getLatestDataReleaseInformation } from "../../apis/AggregatedData.api";
 import ReactGA from "react-ga4";
+import { useQuery } from "react-query";
+import { IRoute } from "../../../types/globalTypes";
+import { getLatestDataReleaseInformation } from "../../apis/AggregatedData.api";
+import { routes, routesWithGAEvents } from "../../utils/routes";
+import ActiveLink from "../ActiveLink/ActiveLink";
+import Logotype from "../Logotype/Logotype";
+import styles from "./Footer.module.scss";
 
-interface IFooterProps {
-	cookieConsentHeight: number;
-}
-
-const Footer = (props: IFooterProps) => {
+const Footer = () => {
 	let latestDataReleaseInfo = useQuery("latestDataReleaseInfo", () => {
 		return getLatestDataReleaseInformation();
 	});
@@ -20,7 +16,7 @@ const Footer = (props: IFooterProps) => {
 	return (
 		<footer
 			className={`${styles.Footer} text-white`}
-			style={{ paddingBottom: `calc(${props.cookieConsentHeight}px + 3.5rem)` }}
+			style={{ paddingBottom: "3.5rem" }}
 		>
 			<div className="container">
 				<div className={`row ${styles["Footer_row-main"]}`}>
@@ -33,7 +29,7 @@ const Footer = (props: IFooterProps) => {
 							<Logotype color="white" />
 						</Link>
 					</div>
-					<div className="col-12 col-md-4 col-xl-3">
+					<div className="col-12 col-md-4">
 						<div className="row">
 							<div className="col-12 col-lg-6">
 								<ul className={`ul-noStyle ${styles.Footer_nav_firstRow}`}>
@@ -75,7 +71,7 @@ const Footer = (props: IFooterProps) => {
 												if (childGAEvent) {
 													onClickProp = () =>
 														ReactGA.event(childGAEvent.eventName, {
-															category: "event",
+															category: "event"
 														});
 												}
 
@@ -117,7 +113,7 @@ const Footer = (props: IFooterProps) => {
 							</div>
 						</div>
 					</div>
-					<div className="col-12 col-md-7 col-lg-5 col-xl-4 offset-lg-1 offset-xl-3 d-flex flex-column justify-content-between">
+					<div className="col-12 col-md-7 col-lg-5 col-xl-4 offset-lg-1 offset-xl-2 d-flex flex-column justify-content-between">
 						<p>
 							<Link
 								className="link-text-light"

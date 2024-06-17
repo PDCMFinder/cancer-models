@@ -9,8 +9,8 @@ export const searchTourSteps: DriveStep[] = [
 			description:
 				"Search bar where you can input and search by cancer diagnosis Eg. Melanoma.",
 			side: "bottom",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#tour_filters",
@@ -19,8 +19,8 @@ export const searchTourSteps: DriveStep[] = [
 			description:
 				"Narrow your search results to suit your needs using one or multiple filter options.",
 			side: "right",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#sortBy",
@@ -28,8 +28,8 @@ export const searchTourSteps: DriveStep[] = [
 			title: "Change sorting order",
 			description: "Sort the current search results by different criteria.",
 			side: "left",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#tour_searchResult",
@@ -38,8 +38,8 @@ export const searchTourSteps: DriveStep[] = [
 			description:
 				"Individual cancer model based on your search query and/or filtering.",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#tour_searchResult",
@@ -47,8 +47,8 @@ export const searchTourSteps: DriveStep[] = [
 			description:
 				"Check the bottom right checkbox ('Add to compare') to continue.",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#tour_compareCard",
@@ -57,17 +57,17 @@ export const searchTourSteps: DriveStep[] = [
 			description:
 				"Includes the models you've chosen to compare. Keep checking more boxes to add and then compare.",
 			side: "left",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		popover: {
 			description:
-				"More detailed information can be found at our <a href='/training' target='_blank'>training page</a>",
+				"More detailed information can be found at our <a href='/tutorials' target='_blank'>tutorials page</a>.",
 			side: "left",
-			align: "center",
-		},
-	},
+			align: "center"
+		}
+	}
 ];
 
 // /compare
@@ -79,8 +79,8 @@ export const compareTourSteps: DriveStep[] = [
 			description:
 				"This are the models that have their data being compared. You can remove models you don't want to compare anymore. At least 2 models are needed at all times.",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#tour_compare-metadata",
@@ -89,8 +89,8 @@ export const compareTourSteps: DriveStep[] = [
 			description:
 				"This section provides information about the patient and tumour. It includes clinical information such as patient demographics, and tumour characteristics.",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#tour_compare-engraftment",
@@ -99,8 +99,18 @@ export const compareTourSteps: DriveStep[] = [
 			description:
 				"This section provides details about the successful engraftment of Patient-Derived Xenograft (PDX) models such as the establishment of the model, engraftment success rates, and relevant details about the transplantation process.",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
+	},
+	{
+		element: "#tour_compare-derivation",
+		popover: {
+			title: "In-vitro model derivation",
+			description:
+				"This section provides details about the successful model development of Patient-Derived {Cell line/Organoid} (based on the model type) models such as the growth properties, growth media and supplements, and other relevant details for model development.",
+			side: "top",
+			align: "center"
+		}
 	},
 	{
 		element: "#tour_compare-qualityControl",
@@ -109,8 +119,8 @@ export const compareTourSteps: DriveStep[] = [
 			description:
 				"This section provides information on methods/protocols used to ensure the quality and reliability of the data and models.",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#tour_compare-availableData",
@@ -119,8 +129,8 @@ export const compareTourSteps: DriveStep[] = [
 			description:
 				"Data that's available for this models. More data for this sections can be found in each individual model page.",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#tour_compare-buttons",
@@ -129,17 +139,17 @@ export const compareTourSteps: DriveStep[] = [
 			description:
 				"Click any of the corresponding model buttons to view more detailed information",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		popover: {
 			description:
-				"More detailed information can be found at our <a href='/training' target='_blank'>training page</a>",
+				"More detailed information can be found at our <a href='/tutorials' target='_blank'>tutorials page</a>.",
 			side: "left",
-			align: "center",
-		},
-	},
+			align: "center"
+		}
+	}
 ];
 
 // /data/models/[provider]/[modelId]
@@ -150,8 +160,8 @@ export const modelTourSteps: DriveStep[] = [
 			title: "Model histology and type",
 			description: "[histology] - [type]",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#tour_model-id",
@@ -159,8 +169,8 @@ export const modelTourSteps: DriveStep[] = [
 			title: "Model id",
 			description: "Model unique identifier given by CancerModels.Org",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#tour_model-score",
@@ -169,8 +179,8 @@ export const modelTourSteps: DriveStep[] = [
 			description:
 				"Score related to the amount of information available about the model, not the quality of the model.",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#tour_model-providerInfo",
@@ -178,8 +188,8 @@ export const modelTourSteps: DriveStep[] = [
 			title: "Model provider",
 			description: "Provider information and contact",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#metadata",
@@ -188,8 +198,8 @@ export const modelTourSteps: DriveStep[] = [
 			description:
 				"This section provides information about the patient and tumour. It includes clinical information such as patient demographics, and tumour characteristics.",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 		// onHighlightStarted: (element) => {
 		// 	if (!element) {
 		// 		driverObj.moveNext();
@@ -203,8 +213,18 @@ export const modelTourSteps: DriveStep[] = [
 			description:
 				"This section provides details about the successful engraftment of Patient-Derived Xenograft (PDX) models such as the establishment of the model, engraftment success rates, and relevant details about the transplantation process.",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
+	},
+	{
+		element: "#derivation",
+		popover: {
+			title: "In-vitro model derivation",
+			description:
+				"This section provides details about the successful model development of Patient-Derived {Cell line/Organoid} (based on the model type) models such as the growth properties, growth media and supplements, and other relevant details for model development.",
+			side: "top",
+			align: "center"
+		}
 	},
 	{
 		element: "#quality-control",
@@ -213,8 +233,8 @@ export const modelTourSteps: DriveStep[] = [
 			description:
 				"This section provides information on methods/protocols used to ensure the quality and reliability of the data and models.",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#molecular-data",
@@ -223,8 +243,8 @@ export const modelTourSteps: DriveStep[] = [
 			description:
 				"This section provides information about molecular characterization of cancer models, such as expression, copy number alteration, mutation, biomarkers data. This provides an insight into the genetic makeup of tumour. ",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#immune-markers",
@@ -233,8 +253,8 @@ export const modelTourSteps: DriveStep[] = [
 			description:
 				"This section provides information about the immune response within the tumour microenvironment.  ",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#dosing-studies",
@@ -243,8 +263,8 @@ export const modelTourSteps: DriveStep[] = [
 			description:
 				"This section provides information about the drug dosage and response of the drug in the cancer models, which provides insights into understanding the drug efficacy.",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#patient-treatment",
@@ -253,8 +273,8 @@ export const modelTourSteps: DriveStep[] = [
 			description:
 				"This section provides information about the treatment dosage and response of the treatment in the cancer models, which provides insights into understanding the treatment efficacy.",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#histology-images",
@@ -263,8 +283,8 @@ export const modelTourSteps: DriveStep[] = [
 			description:
 				"This section provides histology images associated with models, which provides deeper understanding of the tumour morphology.",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		element: "#publications",
@@ -273,15 +293,15 @@ export const modelTourSteps: DriveStep[] = [
 			description:
 				"This section provides relevant publications associated with the cancer models.",
 			side: "top",
-			align: "center",
-		},
+			align: "center"
+		}
 	},
 	{
 		popover: {
 			description:
-				"More detailed information can be found at our <a href='/training' target='_blank'>training page</a>",
+				"More detailed information can be found at our <a href='/tutorials' target='_blank'>tutorials page</a>.",
 			side: "left",
-			align: "center",
-		},
-	},
+			align: "center"
+		}
+	}
 ];

@@ -1,34 +1,35 @@
-import SearchResults from "../components/SearchResults/SearchResults";
-import Select from "../components/Input/Select";
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
+import dynamic from "next/dynamic";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { NextPage } from "next/types";
 import React, { ChangeEvent, useEffect, useReducer, useState } from "react";
-import styles from "./search.module.scss";
-import Label from "../components/Input/Label";
-import SearchFilters from "../components/SearchFilters/SearchFilters";
+import { useQueries, useQuery, useQueryClient } from "react-query";
 import { getModelCount } from "../apis/AggregatedData.api";
 import {
-	getSearchFacets,
-	getSearchResults,
+	getFacetOperators,
 	getFacetOptions,
+	getSearchFacets,
+	getSearchResults
 } from "../apis/Search.api";
-import { useQueries, useQuery } from "react-query";
-import Loader from "../components/Loader/Loader";
-import SearchResultsLoader from "../components/SearchResults/SearchResultsLoader";
-import Pagination from "../components/Pagination/Pagination";
-import { useRouter } from "next/router";
 import Button from "../components/Button/Button";
-import SearchBar from "../components/SearchBar/SearchBar";
-import breakPoints from "../utils/breakpoints";
-import useWindowDimensions from "../hooks/useWindowDimensions";
-import ShowHide from "../components/ShowHide/ShowHide";
 import Card from "../components/Card/Card";
 import CloseIcon from "../components/CloseIcon/CloseIcon";
-import { NextPage } from "next/types";
-import dynamic from "next/dynamic";
-import { driver } from "driver.js";
-import { searchTourSteps } from "../utils/tourSteps";
-import "driver.js/dist/driver.css";
 import FloatingButton from "../components/FloatingWidget/FloatingButton";
-import Head from "next/head";
+import Label from "../components/Input/Label";
+import Select from "../components/Input/Select";
+import Loader from "../components/Loader/Loader";
+import Pagination from "../components/Pagination/Pagination";
+import SearchBar from "../components/SearchBar/SearchBar";
+import SearchFilters from "../components/SearchFilters/SearchFilters";
+import SearchResults from "../components/SearchResults/SearchResults";
+import SearchResultsLoader from "../components/SearchResults/SearchResultsLoader";
+import ShowHide from "../components/ShowHide/ShowHide";
+import useWindowDimensions from "../hooks/useWindowDimensions";
+import breakPoints from "../utils/breakpoints";
+import { searchTourSteps } from "../utils/tourSteps";
+import styles from "./search.module.scss";
 
 const DynamicModal = dynamic(import("../components/Modal/Modal"), {
 	loading: () => (
@@ -36,7 +37,7 @@ const DynamicModal = dynamic(import("../components/Modal/Modal"), {
 			<Loader />
 		</div>
 	),
-	ssr: false,
+	ssr: false
 });
 
 export interface onFilterChangeType {
@@ -47,18 +48,18 @@ const sortByOptions = [
 		{
 			value:
 				"scores->>data_score.desc.nullslast,scores->>pdx_metadata_score.desc.nullslast",
-			text: "Data available",
+			text: "Data available"
 		},
 		{ value: "external_model_id.asc.nullslast", text: "Model Id: A to Z" },
 		{ value: "external_model_id.desc.nullslast", text: "Model Id: Z to A" },
 		{
 			value: "scores->>pdx_metadata_score.asc.nullslast",
-			text: "Metadata: Ascending",
+			text: "Metadata: Ascending"
 		},
 		{
 			value: "scores->>pdx_metadata_score.desc.nullslast",
-			text: "Metadata: Descending",
-		},
+			text: "Metadata: Descending"
+		}
 	],
 	resultsPerPage = 10;
 
@@ -71,13 +72,14 @@ const Search: NextPage = () => {
 	const [hasSelection, setHasSelection] = useState<boolean>(false);
 	const [modelsToCompare, setModelsToCompare] = useState<string[]>([]);
 	const router = useRouter();
+	const { query: routerQuery } = router;
 	const ignoredFilterValues = ["page", "search_terms"];
 
 	const driverObj = driver({
 		showProgress: true,
 		prevBtnText: "← Prev",
 		steps: searchTourSteps,
-		onDestroyed: () => setModelsToCompare([]),
+		onDestroyed: () => setModelsToCompare([])
 	});
 
 	const changePage = (page: number) => {
@@ -86,7 +88,7 @@ const Search: NextPage = () => {
 			type: "substitute",
 			operator: "",
 			filterId: "page",
-			selection: page.toString(),
+			selection: page.toString()
 		});
 		window.scrollTo(0, 350);
 	};
@@ -107,7 +109,7 @@ const Search: NextPage = () => {
 				type,
 				filterId,
 				selection,
-				initialState: actionInitialState,
+				initialState: actionInitialState
 			} = action;
 			if (type === "init") {
 				if (actionInitialState) return actionInitialState;
@@ -122,8 +124,7 @@ const Search: NextPage = () => {
 
 			if (type === "add") {
 				newState[filterId].selection = [
-					// @ts-ignore
-					...new Set(state[filterId].selection.concat([selection])),
+					...new Set(state[filterId].selection.concat([selection]))
 				];
 			}
 
@@ -163,8 +164,8 @@ const Search: NextPage = () => {
 		onSuccess(data) {
 			const initialSearchFilterState: any = {};
 			const stateFromUrl: any = {};
-			const filters = router.query["filters"]
-				? (router.query["filters"] as string).split(" AND ")
+			const filters = routerQuery["filters"]
+				? (routerQuery["filters"] as string).split(" AND ")
 				: [];
 			filters.forEach((filterStr) => {
 				const filterOperatorStr = filterStr.split(":")[0];
@@ -180,7 +181,7 @@ const Search: NextPage = () => {
 					? stateFromUrl[id]
 					: {
 							operator: "ANY",
-							selection: [],
+							selection: []
 					  };
 			};
 
@@ -197,14 +198,23 @@ const Search: NextPage = () => {
 				initialState: initialSearchFilterState,
 				selection: "",
 				filterId: "",
-				operator: "",
+				operator: ""
 			});
 		},
 		refetchOnWindowFocus: true,
 		// staleTime: 120000,
-		cacheTime: 100,
+		cacheTime: 100
 	});
 	const searchFacetSections = searchFacetSectionsQuery.data;
+
+	const searchFacetOperatorsQuery = useQuery({
+		queryKey: "searchFacetOperators",
+		queryFn: async () => getFacetOperators()
+	});
+	const searchFacetOperators =
+		!searchFacetOperatorsQuery.isLoading && searchFacetOperatorsQuery.data
+			? searchFacetOperatorsQuery.data
+			: [];
 
 	const searchFacetQueries = useQueries(
 		searchFacetSections
@@ -218,7 +228,7 @@ const Search: NextPage = () => {
 								facet?.type || ""
 							)
 								? () => []
-								: fn,
+								: fn
 						};
 					})
 			: []
@@ -245,11 +255,18 @@ const Search: NextPage = () => {
 				searchValues: [],
 				searchFilterState,
 				resultsPerPage,
-				sortBy,
-			},
+				sortBy
+			}
 		],
 		queryFn: async () =>
-			getSearchResults([], searchFilterState, resultsPerPage, sortBy),
+			getSearchResults(
+				[],
+				searchFilterState,
+				resultsPerPage,
+				sortBy,
+				searchFacetOperators
+			),
+		enabled: searchFilterState !== null // Only enable when `searchFilterState` is ready
 	});
 
 	useEffect(() => {
@@ -290,7 +307,7 @@ const Search: NextPage = () => {
 			}
 			router.replace(
 				{
-					query: { ...router.query, filters: filterValues.join(" AND ") },
+					query: { ...routerQuery, filters: filterValues.join(" AND ") }
 				},
 				undefined,
 				{ scroll: false }
@@ -302,17 +319,20 @@ const Search: NextPage = () => {
 	}, [searchFilterState]);
 
 	const compareModel = (id: string): void => {
-		if (modelsToCompare.includes(id)) {
-			setModelsToCompare((prev) => prev.filter((model) => model !== id));
-		} else {
-			if (modelsToCompare.length === 4) {
-				alert(
-					"You've reached the maximum amount of models to compare. Remove a model to add another."
-				);
+		setModelsToCompare((prev) => {
+			if (prev.includes(id)) {
+				return prev.filter((model) => model !== id);
 			} else {
-				setModelsToCompare((prev) => [...prev, id]);
+				if (prev.length === 4) {
+					alert(
+						"You've reached the maximum amount of models to compare. Remove a model to add another."
+					);
+					return prev;
+				} else {
+					return [...prev, id];
+				}
 			}
-		}
+		});
 	};
 
 	const compareModels = () => {
@@ -340,7 +360,7 @@ const Search: NextPage = () => {
 					type: "init",
 					selection: "",
 					filterId: "",
-					operator: "",
+					operator: ""
 				})
 			}
 		>
@@ -356,7 +376,7 @@ const Search: NextPage = () => {
 					filterId,
 					selection,
 					operator,
-					type,
+					type
 				});
 			}}
 		/>
@@ -394,6 +414,24 @@ const Search: NextPage = () => {
 		return getModelCount();
 	});
 
+	const queryClient = useQueryClient();
+
+	const handleFilterChange = (
+		filterId: string,
+		selection: string,
+		operator: string,
+		type: onFilterChangeType["type"]
+	) => {
+		searchFilterDispatch({
+			filterId,
+			selection,
+			operator,
+			type
+		});
+
+		queryClient.invalidateQueries("search-results");
+	};
+
 	return (
 		<>
 			{/* page metadata */}
@@ -426,14 +464,7 @@ const Search: NextPage = () => {
 								name="searchBar-name"
 								isMulti
 								selection={searchFilterState}
-								onFilterChange={(filterId, selection, operator, type) => {
-									searchFilterDispatch({
-										filterId,
-										selection,
-										operator,
-										type,
-									});
-								}}
+								onFilterChange={handleFilterChange}
 							/>
 						</div>
 					</div>
@@ -625,7 +656,7 @@ const Search: NextPage = () => {
 					priority="secondary"
 					color="dark"
 				>
-					Take page tour
+					<p className="mb-0 lh-1">Take page tour</p>
 				</FloatingButton>
 			</ShowHide>
 		</>

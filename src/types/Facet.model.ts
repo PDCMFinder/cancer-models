@@ -12,6 +12,13 @@ export interface IFacetSidebarProps {
 	onReset(): void;
 }
 
+export interface IFacetOperator {
+	facetColumn: string;
+	anyOperator: string | null;
+	allOperator: string | null;
+	facetType: "multivalued" | "autocomplete" | "check";
+}
+
 export interface IFacetSidebarOperators {
 	[section: string]: { [facet: string]: string };
 }
@@ -49,6 +56,7 @@ export interface IFacetProps {
 	displayOperators?: boolean;
 	placeholder?: string | null;
 	onSelectionChange?(selection: string[], operator: string): void;
+	isBoolean: boolean;
 }
 
 export interface IOptionProps {

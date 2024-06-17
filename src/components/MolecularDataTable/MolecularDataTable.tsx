@@ -1,20 +1,21 @@
-import { IMolecularData } from "../../pages/data/models/[providerId]/[modelId]";
-import Button from "../Button/Button";
+import Link from "next/link";
+import { useState } from "react";
+import ReactGA from "react-ga4";
 import { useQuery } from "react-query";
 import {
 	getAvailableDataColumns,
 	getModelMolecularDataDetails,
+	getMolecularCharacterizationId
 } from "../../apis/ModelDetails.api";
+import { MolecularData } from "../../types/ModelData.model";
+import Button from "../Button/Button";
+import InputAndLabel from "../Input/InputAndLabel";
 import Loader from "../Loader/Loader";
 import Pagination from "../Pagination/Pagination";
-import { useState } from "react";
-import InputAndLabel from "../Input/InputAndLabel";
-import Link from "next/link";
-import ReactGA from "react-ga4";
 
 interface IMolecularDataTableProps {
-	data: IMolecularData;
-	handleDownload: (data: IMolecularData) => void;
+	data: MolecularData;
+	handleDownload: (data: MolecularData) => void;
 }
 
 interface DataDetailsRow {
@@ -45,6 +46,11 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 		["get-molecular-data-detail-cols", data.dataSource, data.dataType],
 		() => getAvailableDataColumns(data.dataSource, data.dataType)
 	);
+	const { data: molCharIdData } = useQuery(
+		["get-molecular-characterization-id", "Curie-BC", "HBCx-92"],
+		() => getMolecularCharacterizationId("TM00025", "JAX")
+	);
+
 	const { data: dataDetails, isLoading } = useQuery(
 		[
 			"get-molecular-data-detail",
@@ -54,7 +60,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 			currentPage,
 			pageSize,
 			sortColumn,
-			sortDirection,
+			sortDirection
 		],
 		() =>
 			getModelMolecularDataDetails(
@@ -79,7 +85,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 					{ key: "allele_frequency", name: "Allele Frequency" },
 					{ key: "seq_start_position", name: "Seq. Start Position" },
 					{ key: "ref_allele", name: "Ref. Allele" },
-					{ key: "alt_allele", name: "Alt. Allele" },
+					{ key: "alt_allele", name: "Alt. Allele" }
 				].filter((column) => columns.includes(column.key));
 				break;
 			case "expression":
@@ -94,9 +100,9 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 					{ key: "illumina_hgea_probe_id", name: "Illumina HGEA Probe" },
 					{
 						key: "illumina_hgea_expression_value",
-						name: "Illumina HGEA Exp. Value",
+						name: "Illumina HGEA Exp. Value"
 					},
-					{ key: "z_score", name: "Z Score" },
+					{ key: "z_score", name: "Z Score" }
 				].filter(
 					(column) =>
 						columns.includes(column.key) || column.key === "hgnc_symbol"
@@ -117,13 +123,13 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 					{ key: "allele_frequency", name: "Allele Frequency" },
 					{ key: "seq_start_position", name: "Seq. Start Position" },
 					{ key: "ref_allele", name: "Ref. Allele" },
-					{ key: "alt_allele", name: "Alt. Allele" },
+					{ key: "alt_allele", name: "Alt. Allele" }
 				].filter((column) => columns.includes(column.key));
 				break;
 			case "bio markers":
 				columnsToDisplay = [
 					{ key: "biomarker", name: "Biomarker" },
-					{ key: "result", name: "Result" },
+					{ key: "result", name: "Result" }
 				].filter((column) => columns.includes(column.key));
 				break;
 		}
@@ -227,7 +233,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 																				onClick={() =>
 																					ReactGA.event("external_provider", {
 																						category: "event",
-																						resource: l.resource,
+																						resource: l.resource
 																					})
 																				}
 																			>

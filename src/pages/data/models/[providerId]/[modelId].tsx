@@ -1,40 +1,53 @@
-import React, { useState } from "react";
-import { GetStaticProps, GetStaticPaths } from "next";
-import Button from "../../../../components/Button/Button";
-import Link from "next/link";
-import ShowHide from "../../../../components/ShowHide/ShowHide";
-import breakPoints from "../../../../utils/breakpoints";
-import useWindowDimensions from "../../../../hooks/useWindowDimensions";
-import styles from "./Model.module.scss";
-import Card from "../../../../components/Card/Card";
-import MolecularDataTable from "../../../../components/MolecularDataTable/MolecularDataTable";
-import {
-	getModelPubmedIds,
-	getMolecularDataDownload,
-	getPublicationData,
-} from "../../../../apis/ModelDetails.api";
-import CloseIcon from "../../../../components/CloseIcon/CloseIcon";
-import Tooltip from "../../../../components/Tooltip/Tooltip";
-import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
-import { useQueries, useQuery } from "react-query";
-import Head from "next/head";
-import { getAllModelData } from "../../../../apis/ModelDetails.api";
-import dynamic from "next/dynamic";
-import Loader from "../../../../components/Loader/Loader";
-import InputAndLabel from "../../../../components/Input/InputAndLabel";
-import JSZip from "jszip";
-import FileSaver from "file-saver";
-import ReactGA from "react-ga4";
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
+import FileSaver from "file-saver";
+import JSZip from "jszip";
+import { GetStaticPaths, GetStaticProps } from "next";
+import dynamic from "next/dynamic";
+import Head from "next/head";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import ReactGA from "react-ga4";
+import { useQueries, useQuery } from "react-query";
+import {
+	getAllModelData,
+	getModelPubmedIds,
+	getMolecularData,
+	getMolecularDataDownload,
+	getPublicationData
+} from "../../../../apis/ModelDetails.api";
+import Button from "../../../../components/Button/Button";
+import Card from "../../../../components/Card/Card";
+import CloseIcon from "../../../../components/CloseIcon/CloseIcon";
 import FloatingButton from "../../../../components/FloatingWidget/FloatingButton";
+import ImageChecker from "../../../../components/ImageChecker/ImageChecker";
+import InputAndLabel from "../../../../components/Input/InputAndLabel";
+import Loader from "../../../../components/Loader/Loader";
+import MolecularDataTable from "../../../../components/MolecularDataTable/MolecularDataTable";
+import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
+import ShowHide from "../../../../components/ShowHide/ShowHide";
+import Tooltip from "../../../../components/Tooltip/Tooltip";
+import useWindowDimensions from "../../../../hooks/useWindowDimensions";
+import {
+	AllModelData,
+	ExternalDbLink,
+	ModelImage,
+	MolecularData,
+	Publication
+} from "../../../../types/ModelData.model";
+import breakPoints from "../../../../utils/breakpoints";
+import {
+	constructCleanMolecularDataFilename,
+	constructMolecularDataFilename
+} from "../../../../utils/constructMolecularDataFilename";
+import imageIsBrokenChecker from "../../../../utils/imageIsBrokenChecker";
 import { modelTourSteps } from "../../../../utils/tourSteps";
-import parseRelationships from "../../../../utils/parseRelationships";
+import styles from "./Model.module.scss";
 
 const DynamicModal = dynamic(
 	() => import("../../../../components/Modal/Modal"),
 	{
-		loading: () => <Loader />,
+		loading: () => <Loader />
 	}
 );
 
@@ -45,135 +58,9 @@ const DynamicHierarchyTree = dynamic(
 			<div style={{ height: "100px" }}>
 				<Loader />
 			</div>
-		),
+		)
 	}
 );
-
-export interface IModelRelationships {
-	type?: string;
-	parents?: IModelRelationships[];
-	children?: IModelRelationships[];
-	external_model_id?: string;
-}
-
-interface IModelDetailsProps {
-	metadata: Metadata;
-	extLinks: ExtLinks;
-	immuneMarkers: IImmuneMarkers[];
-	molecularData: IMolecularData[];
-	drugDosing: any[];
-	patientTreatment: PatientTreatment[];
-	qualityData: QualityData[];
-	className: string;
-	modelId: string;
-	providerId: string;
-	engraftments?: IEngraftment[];
-	modelImages: IModelImage[];
-	modelRelationships: IModelRelationships;
-}
-
-export interface IModelImage {
-	url: string;
-	description: string;
-	sampleType: string;
-	passage: string;
-	magnification: string;
-	staining: string;
-}
-
-export interface IImmuneMarkers {
-	sampleId: string;
-	type: "HLA type" | "Model Genomics";
-	markers: IImmuneMarker[];
-}
-
-export interface IImmuneMarker {
-	name: string;
-	value: string[] | null;
-	details: string | null;
-}
-
-export interface IMolecularData {
-	modelId: string;
-	dataSource: string;
-	source: string;
-	sampleId: string;
-	xenograftPassage: string;
-	rawDataUrl: any;
-	dataType: string;
-	platformName: string;
-	dataExists: string;
-	dataRestricted: string;
-	molecularCharacterizationId: number;
-	externalDbLinks: ExternalDbLinks[];
-	[key: string]: any;
-}
-
-interface PatientTreatment {
-	treatmentDose: string;
-	treatmentName: string;
-	treatmentResponse: string;
-}
-
-interface ExternalDbLinks {
-	column: string;
-	link: string;
-	resource: string;
-}
-
-export interface QualityData {
-	id: number;
-	description: string;
-	passagesTested: string;
-	validationTechnique: string;
-	validationHostStrainNomenclature: string;
-	modelId: number;
-}
-
-interface Metadata {
-	histology: string;
-	providerName: string;
-	cancerSystem: string;
-	modelType: string;
-	patientSex: string;
-	patientAge: string;
-	patientEthnicity: string;
-	modelId: string;
-	providerId: string;
-	tumourType: string;
-	cancerGrade: string;
-	cancerStage: string;
-	primarySite: string;
-	collectionSite: string;
-	licenseName: string;
-	licenseUrl: string;
-	score: number;
-	pdcmModelId: number;
-}
-
-export interface ExtLinks {
-	contactLink?: string;
-	sourceDatabaseUrl?: string;
-}
-
-export interface IPublication {
-	pmid: string;
-	doi: string;
-	pubYear: string;
-	title: string;
-	authorString: string;
-	journalTitle: string;
-}
-
-export interface IEngraftment {
-	passageNumber: string;
-	hostStrain: string;
-	engraftmentSite: string;
-	engraftmentType: string;
-	engraftmentSampleType: string;
-	engraftmentSampleState: string;
-	hostStrainNomenclature: string;
-}
 
 export interface TypesMap {
 	expression_molecular_data: string;
@@ -183,32 +70,40 @@ export interface TypesMap {
 }
 
 interface IDataFileConfig {
-	data: IMolecularData;
+	data: MolecularData;
 	filename: string;
+	id: string;
 }
 
 const ModelDetails = ({
 	metadata,
 	extLinks,
 	immuneMarkers,
-	molecularData,
 	drugDosing,
 	patientTreatment,
 	qualityData,
+	cellModelData,
 	engraftments,
 	modelImages,
-	modelRelationships,
-}: IModelDetailsProps) => {
+	modelRelationships
+}: AllModelData) => {
 	const NA_STRING = "N/A",
 		MODEL_GENOMICS_STRING = "Model Genomics",
-		HLA_TYPE_STRING = "HLA type";
+		HLA_TYPE_STRING = "HLA type",
+		PDX_STRING = "PDX";
+
+	// Client side mol data so we have latest molecular_characterization_id that changes on every etl execution
+	const { data: molecularData, isLoading: molecularDataIsLoading } = useQuery(
+		["molecular-data", metadata.modelId],
+		() => getMolecularData(metadata.modelId)
+	);
 	const [selectedMolecularViewData, setSelectedMolecularViewData] =
-		useState<IMolecularData>();
+		useState<MolecularData>();
 	const [dataToDownload, setDataToDownload] = useState<IDataFileConfig[]>([]);
 	const [fileDownloadStatus, setFileDownloadStatus] = useState({
 		totalFiles: 0,
 		downloadedFiles: 0,
-		isDownloading: false,
+		isDownloading: false
 	});
 
 	const { windowWidth } = useWindowDimensions();
@@ -221,8 +116,20 @@ const ModelDetails = ({
 		{ label: "Cancer Grade", value: metadata.cancerGrade },
 		{ label: "Cancer Stage", value: metadata.cancerStage },
 		{ label: "Primary Site", value: metadata.primarySite },
-		{ label: "Collection Site", value: metadata.collectionSite },
+		{ label: "Collection Site", value: metadata.collectionSite }
 	];
+
+	const [validHistologyImages, setValidHistologyImages] = useState<
+		ModelImage[]
+	>([]);
+	const checkImages = async (modelImages: ModelImage[]) => {
+		const checkedImages = await imageIsBrokenChecker(modelImages);
+		setValidHistologyImages(checkedImages);
+	};
+	useEffect(() => {
+		checkImages(modelImages);
+	}, []);
+
 	const driverObj = driver({
 		showProgress: true,
 		prevBtnText: "← Prev",
@@ -238,7 +145,7 @@ const ModelDetails = ({
 		},
 		onDestroyed: () => {
 			window.scrollTo(0, 0);
-		},
+		}
 	});
 	// New metadata object without the "score" property to use in metadata file download; take out modelId to rearrange
 	const { score: _, modelId: metadataModelId, ...metadataFileData } = metadata;
@@ -246,40 +153,60 @@ const ModelDetails = ({
 	const pubmedIdsQuery = useQuery(
 		[
 			"pubmed-ids-data",
-			{ modelId: metadata.modelId, providerId: metadata.providerId },
+			{ modelId: metadata.modelId, providerId: metadata.providerId }
 		],
 		() => getModelPubmedIds(metadata.modelId, metadata.providerId)
 	);
 
 	const pubmedIds = pubmedIdsQuery.data || [];
 
-	const publicationsQuery = useQueries<IPublication[]>(
+	const publicationsQuery = useQueries<Publication[]>(
 		pubmedIds.map((p: string) => {
 			return {
 				queryKey: ["publication-data", p],
-				queryFn: () => getPublicationData(p),
+				queryFn: () => getPublicationData(p)
 			};
 		})
 	);
 
-	const publications: IPublication[] = publicationsQuery
-		.map((q) => q.data as IPublication)
+	const publications: Publication[] = publicationsQuery
+		.map((q) => q.data as Publication)
 		.filter((d) => d !== undefined);
 
 	const createMetadataFile = (download: boolean = false) => {
 		const filename = `CancerModelsOrg_${metadata.modelId}_metadata.tsv`;
+
+		const firstEngraftmentData = engraftments[0] || {};
+
+		const contentA = {
+			modelId: metadataModelId,
+			...cellModelData,
+			...metadataFileData,
+			pdxModelPublications: pubmedIds
+		};
+		const combinedData = {
+			...contentA,
+			...(firstEngraftmentData ?? {})
+		};
+		const columnHeaders = Object.keys(combinedData);
+
+		const contentALength = Object.keys(contentA).length;
+		const contentCompensationEmptyCells = Array(contentALength).fill(""); // create empty cells
+
+		let contentB = "";
+		for (let i = 1; i < engraftments.length; i++) {
+			contentB +=
+				"\n" +
+				contentCompensationEmptyCells.join("\t") +
+				"\t" +
+				Object.values(engraftments[i]).join("\t");
+		}
+
 		const tsvData =
-			Object.keys({
-				modelId: metadataModelId,
-				...metadataFileData,
-				pdxModelPublications: pubmedIds,
-			}).join("\t") +
+			columnHeaders.join("\t") +
 			"\n" +
-			Object.values({
-				modelId: metadataModelId,
-				...metadataFileData,
-				pdxModelPublications: pubmedIds,
-			}).join("\t");
+			Object.values(combinedData).join("\t") +
+			contentB;
 
 		const blob = new Blob([tsvData], { type: "text/tsv" });
 
@@ -288,36 +215,53 @@ const ModelDetails = ({
 
 			ReactGA.event("download_data", {
 				category: "event",
-				value: 1,
+				value: 1
 			});
+
+			// exit early
+			// if we download, it doesn't matter what we return
+			return {} as Record<string, any>;
 		}
 
 		return { blob, filename };
 	};
 
-	const toggleFromDownload = (data: IMolecularData) => {
-		const filename: string = `CancerModelsOrg_${metadata.modelId}_${
-			data.dataType.split(" ").join("-") ?? ""
-		}_${data.sampleId ?? ""}_${
-			data.platformName.split(" ").join("-") ?? ""
-		}.tsv`; // if it changes, update in checkbox checked state
+	const toggleFromDownload = (data: MolecularData) => {
+		const id = data.molecularCharacterizationId.toString();
+		let filename = constructMolecularDataFilename(
+			metadata.modelId,
+			data.dataType,
+			data.sampleId,
+			data.platformName
+		);
 
-		if (dataToDownload.some((el) => el.filename === filename)) {
-			setDataToDownload((prev) =>
-				prev.filter((el) => el.filename !== filename)
-			);
+		if (dataToDownload.some((el) => el.id === id)) {
+			setDataToDownload((prev) => prev.filter((el) => el.id !== id));
 		} else {
+			if (dataToDownload.some((el) => el.filename === filename)) {
+				filename = constructMolecularDataFilename(
+					metadata.modelId,
+					data.dataType,
+					data.sampleId,
+					data.platformName,
+					id
+				);
+			}
 			setDataToDownload((prev) => [
 				...prev,
 				{
 					data,
 					filename,
-				},
+					id
+				}
 			]);
 		}
 	};
 
-	const downloadData = async (data?: IMolecularData) => {
+	const downloadData = async (
+		data = {} as MolecularData,
+		filename: string = ""
+	) => {
 		// Create new zip
 		let zip = new JSZip();
 
@@ -326,8 +270,15 @@ const ModelDetails = ({
 			createMetadataFile();
 		// Add metadata file to zip
 		zip.file(metadataFileName, metadataBlob);
+
+		// Create quality control file
+		const { blob: qualityControlBlob, filename: qualityControlFileName } =
+			createQualityControlFile();
+		// Add quality control file to zip
+		zip.file(qualityControlFileName, qualityControlBlob);
+
 		// If we pass some data, that means we just want to download that single data file
-		if (data) {
+		if (data.molecularCharacterizationId) {
 			const molecularData = await getMolecularDataDownload(data);
 
 			// Extract headers
@@ -343,61 +294,50 @@ const ModelDetails = ({
 				.concat(values.map((row: string[]) => row.join("\t")))
 				.join("\n");
 
-			zip.file(
-				`CancerModelsOrg_${metadata.modelId}_${
-					data.dataType.split(" ").join("-") ?? ""
-				}_${data.sampleId ?? ""}_${
-					data.platformName.split(" ").join("-") ?? ""
-				}.tsv`,
-				tsv
-			);
+			zip.file(filename, tsv);
 
 			// Adding 1 for metadata
 			ReactGA.event("download_data", {
 				category: "event",
-				value: 1 + 1,
+				value: 1 + 1
 			});
 		} else {
 			setFileDownloadStatus((prevState) => ({
 				...prevState,
 				totalFiles: dataToDownload.length,
-				isDownloading: true,
+				isDownloading: true
 			}));
 
 			// Create files and add to zip for each data added
 			for (const data of dataToDownload) {
-				await getMolecularDataDownload(data.data).then(
-					(d: IMolecularData[]) => {
-						if (d.length > 0) {
-							// Extract headers
-							const headers = Object.keys(d[0]);
+				await getMolecularDataDownload(data.data).then((d: MolecularData[]) => {
+					if (d.length > 0) {
+						// Extract headers
+						const headers = Object.keys(d[0]);
 
-							// Convert object values to array of arrays
-							const values = d.map((obj) =>
-								headers.map((header) => obj[header])
-							);
+						// Convert object values to array of arrays
+						const values = d.map(Object.values);
 
-							// Join headers and values using tab characters
-							const tsv = [headers.join("\t")]
-								.concat(values.map((row) => row.join("\t")))
-								.join("\n");
+						// Join headers and values using tab characters
+						const tsv = [headers.join("\t")]
+							.concat(values.map((row: string[]) => row.join("\t")))
+							.join("\n");
 
-							// Create file inside zip
-							zip.file(data.filename, tsv);
+						// Create file inside zip
+						zip.file(data.filename, tsv);
 
-							setFileDownloadStatus((prevState) => ({
-								...prevState,
-								downloadedFiles: prevState.downloadedFiles + 1,
-							}));
-						}
+						setFileDownloadStatus((prevState) => ({
+							...prevState,
+							downloadedFiles: prevState.downloadedFiles + 1
+						}));
 					}
-				);
+				});
 			}
 
 			// Adding 1 for metadata
 			ReactGA.event("download_data", {
 				category: "event",
-				value: dataToDownload.length + 1,
+				value: dataToDownload.length + 1
 			});
 		}
 
@@ -410,11 +350,11 @@ const ModelDetails = ({
 		setFileDownloadStatus({
 			totalFiles: 0,
 			downloadedFiles: 0,
-			isDownloading: false,
+			isDownloading: false
 		});
 	};
 
-	const downloadAllData = async () => {
+	const downloadAllMolecularData = async () => {
 		let allDataZip = new JSZip();
 		let totalDownloadFiles = 0;
 
@@ -424,7 +364,13 @@ const ModelDetails = ({
 		// Add metadata file to zip
 		allDataZip.file(metadataFileName, metadataBlob);
 
-		for (const data of molecularData) {
+		const { blob: qualityControlBlob, filename: qualityControlFileName } =
+			createQualityControlFile();
+
+		// Add metadata file to zip
+		allDataZip.file(qualityControlFileName, qualityControlBlob);
+
+		for (const data of molecularData ?? []) {
 			if (data.dataExists === "TRUE") {
 				if (data.dataRestricted === "FALSE") {
 					totalDownloadFiles++;
@@ -435,17 +381,17 @@ const ModelDetails = ({
 		setFileDownloadStatus((prevState) => ({
 			...prevState,
 			totalFiles: totalDownloadFiles,
-			isDownloading: true,
+			isDownloading: true
 		}));
 
-		for (const data of molecularData) {
-			await getMolecularDataDownload(data).then((d: IMolecularData[]) => {
+		for (const data of molecularData ?? []) {
+			await getMolecularDataDownload(data).then((d: MolecularData[]) => {
 				if (d.length > 0) {
 					// Extract headers
 					const headers = Object.keys(d[0]);
 
 					// Convert object values to array of arrays
-					const values = d.map((obj) => headers.map((header) => obj[header]));
+					const values = d.map(Object.values);
 
 					// Join headers and values using tab characters
 					const tsv = [headers.join("\t")]
@@ -464,7 +410,7 @@ const ModelDetails = ({
 
 					setFileDownloadStatus((prevState) => ({
 						...prevState,
-						downloadedFiles: prevState.downloadedFiles + 1,
+						downloadedFiles: prevState.downloadedFiles + 1
 					}));
 				}
 			});
@@ -478,13 +424,69 @@ const ModelDetails = ({
 		// Adding 1 for metadata
 		ReactGA.event("download_data", {
 			category: "event",
-			value: totalDownloadFiles + 1,
+			value: totalDownloadFiles + 1
 		});
 
 		setFileDownloadStatus({
 			totalFiles: 0,
 			downloadedFiles: 0,
-			isDownloading: false,
+			isDownloading: false
+		});
+	};
+
+	const createQualityControlFile = () => {
+		const filename = `CancerModelsOrg_${metadataModelId}_qualityControl.tsv`;
+		const modQualityData = qualityData.map((data) => {
+			delete data.modelId;
+			delete data.id;
+
+			return {
+				modelId: metadataModelId,
+				...data
+			};
+		});
+
+		const headers = Object.keys(modQualityData[0]);
+
+		const values = modQualityData.map((data) => Object.values(data));
+
+		const tsv = [headers.join("\t")]
+			.concat(values.map((row) => row.join("\t")))
+			.join("\n");
+
+		const blob = new Blob([tsv], { type: "text/tsv" });
+
+		return { blob, filename };
+	};
+
+	const downloadAllQualityControlData = async () => {
+		let allDataZip = new JSZip();
+		let totalDownloadFiles = 1;
+
+		const { blob: metadataBlob, filename: metadataFileName } =
+			createMetadataFile();
+
+		allDataZip.file(metadataFileName, metadataBlob);
+
+		const { blob: qualityControlBlob, filename: qualityControlFileName } =
+			createQualityControlFile();
+
+		allDataZip.file(qualityControlFileName, qualityControlBlob);
+
+		setFileDownloadStatus((prevState) => ({
+			...prevState,
+			downloadedFiles: prevState.downloadedFiles + 1
+		}));
+
+		allDataZip.generateAsync({ type: "blob" }).then(function (content) {
+			// Save file to users computer
+			FileSaver.saveAs(content, `CancerModelsOrg_${metadataModelId}-data.zip`);
+		});
+
+		// Adding 1 for metadata
+		ReactGA.event("download_data", {
+			category: "event",
+			value: totalDownloadFiles + 1
 		});
 	};
 
@@ -495,15 +497,18 @@ const ModelDetails = ({
 		(markerRow) => markerRow.type === HLA_TYPE_STRING
 	);
 
-	// Send Ploity to the end of the model genomics markers array
+	// Send ploidy to the end of the model genomics markers array
 	if (modelGenomicsImmuneMarkers.length > 0) {
 		modelGenomicsImmuneMarkers.forEach((genomicMarker) => {
 			const index = genomicMarker.markers.findIndex(
-				(marker) => marker.name.toLocaleLowerCase() === "ploity"
+				(marker) => marker.name.toLocaleLowerCase() === "ploidy"
 			);
 			if (index !== -1) {
-				const [removed] = modelGenomicsImmuneMarkers.splice(index, 1);
-				modelGenomicsImmuneMarkers.push(removed);
+				const [removed] = modelGenomicsImmuneMarkers[0].markers.splice(
+					index,
+					1
+				);
+				modelGenomicsImmuneMarkers[0].markers.push(removed);
 			}
 		});
 	}
@@ -561,7 +566,7 @@ const ModelDetails = ({
 										onClick={() =>
 											ReactGA.event("provider_view_data", {
 												category: "event",
-												provider: metadata.providerId,
+												provider: metadata.providerId
 											})
 										}
 									>
@@ -577,7 +582,7 @@ const ModelDetails = ({
 									onClick={() =>
 										ReactGA.event("provider_contact", {
 											category: "event",
-											provider: metadata.providerId,
+											provider: metadata.providerId
 										})
 									}
 								>
@@ -621,7 +626,20 @@ const ModelDetails = ({
 											</Link>
 										</li>
 										<li className="mb-2">
-											{metadata.modelType === "PDX" && engraftments?.length ? (
+											{metadata.modelType !== PDX_STRING ? (
+												cellModelData?.id ? (
+													<Link
+														replace
+														href="#derivation"
+														className="text-primary-primary"
+													>
+														Model derivation
+													</Link>
+												) : (
+													"Model derivation"
+												)
+											) : metadata.modelType === PDX_STRING &&
+											  engraftments?.length ? (
 												<Link
 													replace
 													href="#engraftments"
@@ -647,7 +665,7 @@ const ModelDetails = ({
 											)}
 										</li>
 										<li className="mb-2">
-											{molecularData.length ? (
+											{!molecularDataIsLoading && molecularData.length ? (
 												<Link
 													replace
 													href="#molecular-data"
@@ -703,17 +721,17 @@ const ModelDetails = ({
 											Array.isArray(modelRelationships?.children) ? (
 												<Link
 													replace
-													href="#model-relationships"
+													href="#related-models"
 													className="text-primary-primary"
 												>
-													Relationships
+													Related Models
 												</Link>
 											) : (
-												"Relationships"
+												"Related Models"
 											)}
 										</li>
 										<li className="mb-2">
-											{modelImages.length ? (
+											{validHistologyImages.length ? (
 												<Link
 													replace
 													href="#histology-images"
@@ -777,96 +795,158 @@ const ModelDetails = ({
 									</Button>
 								</div>
 							</div>
-							{engraftments && engraftments?.length > 0 && (
-								<div id="engraftments" className="row mb-5 pt-3">
+							{metadata.modelType === PDX_STRING &&
+								engraftments &&
+								engraftments?.length > 0 && (
+									<div id="engraftments" className="row mb-5 pt-3">
+										<div className="col-12 mb-1">
+											<h2 className="mt-0">PDX model engraftment</h2>
+											<div className="overflow-auto showScrollbar-vertical">
+												<table>
+													<caption>PDX model engraftment</caption>
+													<thead>
+														<tr>
+															<th>HOST STRAIN NAME</th>
+															<th>SITE</th>
+															<th>TYPE</th>
+															<th>MATERIAL</th>
+															<th>MATERIAL STATUS</th>
+															<th>PASSAGE</th>
+														</tr>
+													</thead>
+													<tbody>
+														{engraftments?.map((engraftment) => {
+															const hostStrainNomenclatures =
+																engraftment.hostStrainNomenclature
+																	.split(" ")
+																	.map((h) => {
+																		const regExp = /(.*)<sup>(.*)<\/sup>(.*)/gm,
+																			matches = regExp.exec(h) || [],
+																			strainPrefix = matches[1] || "",
+																			strainSup = matches[2] || "",
+																			strainSuffix = matches[3] || "";
+
+																		return {
+																			strainPrefix,
+																			strainSup,
+																			strainSuffix
+																		};
+																	});
+
+															return (
+																<tr key={engraftment.hostStrainNomenclature}>
+																	<td className="white-space-nowrap">
+																		<Tooltip
+																			content={hostStrainNomenclatures.map(
+																				({
+																					strainPrefix,
+																					strainSup,
+																					strainSuffix
+																				}: {
+																					strainPrefix: string;
+																					strainSup: string;
+																					strainSuffix: string;
+																				}) => (
+																					<span
+																						className="text-small"
+																						key={
+																							strainPrefix +
+																							strainSup +
+																							strainSuffix
+																						}
+																					>
+																						{strainPrefix}
+																						<sup>{strainSup}</sup>
+																						{strainSuffix}{" "}
+																					</span>
+																				)
+																			)}
+																		>
+																			<span className="text-uppercase">
+																				{engraftment.hostStrain}
+																			</span>
+																		</Tooltip>
+																	</td>
+																	<td>
+																		{engraftment.engraftmentSite ?? NA_STRING}
+																	</td>
+																	<td>
+																		{engraftment.engraftmentType ?? NA_STRING}
+																	</td>
+																	<td>
+																		{engraftment.engraftmentSampleType ??
+																			NA_STRING}
+																	</td>
+																	<td>
+																		{engraftment.engraftmentSampleState ??
+																			NA_STRING}
+																	</td>
+																	<td>
+																		{engraftment.passageNumber ?? NA_STRING}
+																	</td>
+																</tr>
+															);
+														})}
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								)}
+							{metadata.modelType !== PDX_STRING && cellModelData?.id && (
+								<div id="derivation" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
-										<h2 className="mt-0">PDX model engraftment</h2>
+										<h2 className="mt-0">Model derivation</h2>
 										<div className="overflow-auto showScrollbar-vertical">
 											<table>
-												<caption>PDX model engraftment</caption>
+												<caption>Model derivation</caption>
 												<thead>
 													<tr>
-														<th>HOST STRAIN NAME</th>
-														<th>SITE</th>
-														<th>TYPE</th>
-														<th>MATERIAL</th>
-														<th>MATERIAL STATUS</th>
+														<th>GROWTH PROPERTIES</th>
+														<th>GROWTH MEDIA</th>
+														<th>PLATE COATING</th>
+														{qualityData.length > 0 &&
+															qualityData[0].tumourStatus && <th>STATUS</th>}
 														<th>PASSAGE</th>
+														<th>SUPPLEMENTS</th>
+														<th>CONTAMINATED</th>
+														<th>CONTAMINATION DETAILS</th>
 													</tr>
 												</thead>
 												<tbody>
-													{engraftments?.map((engraftment) => {
-														const hostStrainNomenclatures =
-															engraftment.hostStrainNomenclature
-																.split(" ")
-																.map((h) => {
-																	const regExp = /(.*)<sup>(.*)<\/sup>(.*)/gm,
-																		matches = regExp.exec(h) || [],
-																		strainPrefix = matches[1] || "",
-																		strainSup = matches[2] || "",
-																		strainSuffix = matches[3] || "";
-
-																	return {
-																		strainPrefix,
-																		strainSup,
-																		strainSuffix,
-																	};
-																});
-
-														return (
-															<tr key={engraftment.hostStrainNomenclature}>
-																<td className="white-space-nowrap">
-																	<Tooltip
-																		content={hostStrainNomenclatures.map(
-																			({
-																				strainPrefix,
-																				strainSup,
-																				strainSuffix,
-																			}: {
-																				strainPrefix: string;
-																				strainSup: string;
-																				strainSuffix: string;
-																			}) => (
-																				<span
-																					className="text-small"
-																					key={
-																						strainPrefix +
-																						strainSup +
-																						strainSuffix
-																					}
-																				>
-																					{strainPrefix}
-																					<sup>{strainSup}</sup>
-																					{strainSuffix}{" "}
-																				</span>
-																			)
-																		)}
-																	>
-																		<span className="text-uppercase">
-																			{engraftment.hostStrain}
-																		</span>
-																	</Tooltip>
-																</td>
-																<td>
-																	{engraftment.engraftmentSite ?? NA_STRING}
-																</td>
-																<td>
-																	{engraftment.engraftmentType ?? NA_STRING}
-																</td>
-																<td>
-																	{engraftment.engraftmentSampleType ??
-																		NA_STRING}
-																</td>
-																<td>
-																	{engraftment.engraftmentSampleState ??
-																		NA_STRING}
-																</td>
-																<td>
-																	{engraftment.passageNumber ?? NA_STRING}
-																</td>
-															</tr>
-														);
-													})}
+													<tr>
+														<td>{cellModelData?.growthProperties}</td>
+														<td
+															className={
+																(
+																	cellModelData?.growthMedia ?? ""
+																).toLowerCase() !== "not provided"
+																	? "white-space-nowrap"
+																	: undefined
+															}
+														>
+															{cellModelData?.growthMedia}
+														</td>
+														<td>{cellModelData?.plateCoating}</td>
+														{qualityData.length > 0 &&
+															qualityData[0].tumourStatus && (
+																<td>{qualityData[0].tumourStatus}</td>
+															)}
+														<td>{cellModelData?.passageNumber}</td>
+														<td
+															className={
+																(
+																	cellModelData?.growthMedia ?? ""
+																).toLowerCase() !== "not provided"
+																	? "white-space-nowrap"
+																	: undefined
+															}
+														>
+															{cellModelData?.supplements}
+														</td>
+														<td>{cellModelData?.contaminated}</td>
+														<td>{cellModelData?.contaminationDetails}</td>
+													</tr>
 												</tbody>
 											</table>
 										</div>
@@ -876,53 +956,119 @@ const ModelDetails = ({
 							{qualityData.length > 0 && (
 								<div id="quality-control" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
-										<h2 className="mt-0">Model quality control</h2>
+										<div className="d-flex justify-content-between align-center">
+											<h2 className="mt-0">Model quality control</h2>
+											<Button
+												priority="secondary"
+												color="dark"
+												onClick={() => downloadAllQualityControlData()}
+											>
+												Download all
+											</Button>
+										</div>
 										<div className="overflow-auto showScrollbar-vertical">
-											<table>
-												<caption>Model quality control</caption>
-												<thead>
-													<tr>
-														<th>TECHNIQUE</th>
-														<th>DESCRIPTION</th>
-														<th>PASSAGE</th>
-													</tr>
-												</thead>
-												<tbody>
-													{qualityData.map(
-														({
-															validationTechnique,
-															description,
-															passagesTested,
-														}: {
-															validationTechnique: string;
-															description: string;
-															passagesTested: string;
-														}) => (
-															<tr key={validationTechnique}>
-																<td>{validationTechnique}</td>
-																<td>{description}</td>
-																<td>{passagesTested}</td>
-															</tr>
-														)
-													)}
-												</tbody>
-											</table>
+											{metadata.modelType !== PDX_STRING ? (
+												<table>
+													<caption>Model quality control</caption>
+													<thead>
+														<tr>
+															<th>TECHNIQUE</th>
+															<th>PASSAGE</th>
+															<th>MORPHOLOGICAL FEATURES</th>
+															<th>STR ANALYSIS</th>
+															<th>MODEL PURITY</th>
+														</tr>
+													</thead>
+													<tbody>
+														{qualityData.map(
+															({
+																validationTechnique,
+																description,
+																passagesTested,
+																morphologicalFeatures,
+																strAnalysis,
+																modelPurity
+															}) => (
+																<tr key={validationTechnique}>
+																	<td>
+																		{description !== "Not provided" ? (
+																			<Tooltip
+																				content={
+																					<p className="text-small m-0">
+																						{description}
+																					</p>
+																				}
+																			>
+																				{validationTechnique}
+																			</Tooltip>
+																		) : (
+																			validationTechnique
+																		)}
+																	</td>
+																	<td>{passagesTested ?? "Not provided"}</td>
+																	<td>{morphologicalFeatures}</td>
+																	<td>{strAnalysis}</td>
+																	<td>{modelPurity}</td>
+																</tr>
+															)
+														)}
+													</tbody>
+												</table>
+											) : (
+												<table>
+													<caption>Model quality control</caption>
+													<thead>
+														<tr>
+															<th>TECHNIQUE</th>
+															<th>DESCRIPTION</th>
+															<th>PASSAGE</th>
+														</tr>
+													</thead>
+													<tbody>
+														{qualityData.map(
+															({
+																validationTechnique,
+																description,
+																passagesTested
+															}: {
+																validationTechnique: string;
+																description: string;
+																passagesTested: string;
+															}) => (
+																<tr key={validationTechnique}>
+																	<td>{validationTechnique}</td>
+																	<td>{description}</td>
+																	<td>{passagesTested ?? "Not provided"}</td>
+																</tr>
+															)
+														)}
+													</tbody>
+												</table>
+											)}
 										</div>
 									</div>
 								</div>
 							)}
-							{molecularData.length > 0 && (
+							{!molecularDataIsLoading && molecularData.length > 0 && (
 								<div id="molecular-data" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<div className="d-flex justify-content-between align-center">
 											<h2 className="mt-0">Molecular data</h2>
-											<Button
-												priority="secondary"
-												color="dark"
-												onClick={() => downloadAllData()}
-											>
-												Download all
-											</Button>
+											{!molecularDataIsLoading &&
+												molecularData &&
+												molecularData.some(
+													(data: MolecularData) =>
+														data.dataExists === "TRUE" &&
+														data.dataRestricted !== "TRUE"
+												) && (
+													<Button
+														priority="secondary"
+														color="dark"
+														onClick={() => downloadAllMolecularData()}
+													>
+														Download all
+													</Button>
+												)}
 										</div>
 										<div className="overflow-auto showScrollbar-vertical">
 											<table>
@@ -939,10 +1085,11 @@ const ModelDetails = ({
 													</tr>
 												</thead>
 												<tbody>
-													{molecularData &&
-														molecularData.map((data) => {
-															let sampleType,
-																rawDataExternalLinks: ExternalDbLinks[] = [],
+													{!molecularDataIsLoading &&
+														molecularData &&
+														molecularData.map((data: MolecularData) => {
+															let sampleType: string,
+																rawDataExternalLinks: ExternalDbLink[] = [],
 																dataAvailableContent: JSX.Element;
 
 															switch (data.source) {
@@ -978,7 +1125,7 @@ const ModelDetails = ({
 																			onClick={() =>
 																				ReactGA.event("provider_request_data", {
 																					category: "event",
-																					provider: metadata.providerId,
+																					provider: metadata.providerId
 																				})
 																			}
 																		>
@@ -995,7 +1142,7 @@ const ModelDetails = ({
 																				onClick={() => {
 																					setSelectedMolecularViewData(data);
 																					ReactGA.event("view_data", {
-																						category: "event",
+																						category: "event"
 																					});
 																				}}
 																			>
@@ -1014,23 +1161,13 @@ const ModelDetails = ({
 																			</Button>
 																			<InputAndLabel
 																				label="Add to batch download"
-																				name={`add-to-download-${data.sampleId}-${data.dataType}-${data.platformName}`}
+																				name={`add-to-download-${data.molecularCharacterizationId}`}
 																				type="checkbox"
-																				forId={`add-to-download-id-${data.sampleId}-${data.dataType}-${data.platformName}`}
+																				forId={`add-to-download-id-${data.molecularCharacterizationId}`}
 																				checked={dataToDownload.some(
 																					(batchData) =>
-																						batchData.filename ===
-																						`CancerModelsOrg_${
-																							metadata.modelId
-																						}_${
-																							data.dataType
-																								.split(" ")
-																								.join("-") ?? ""
-																						}_${data.sampleId ?? ""}_${
-																							data.platformName
-																								.split(" ")
-																								.join("-") ?? ""
-																						}.tsv` // if this changes, update in toggleFromDownload
+																						batchData.id ===
+																						data.molecularCharacterizationId.toString() // if this changes, update in toggleFromDownload
 																				)}
 																				onChange={() =>
 																					toggleFromDownload(data)
@@ -1233,7 +1370,7 @@ const ModelDetails = ({
 														({
 															treatmentName: name,
 															treatmentDose: dose,
-															treatmentResponse: response,
+															treatmentResponse: response
 														}) => (
 															<tr key={name + dose}>
 																<td>{name}</td>
@@ -1267,7 +1404,7 @@ const ModelDetails = ({
 														({
 															treatmentName: name,
 															treatmentDose: dose,
-															treatmentResponse: response,
+															treatmentResponse: response
 														}) => (
 															<tr key={name}>
 																<td className="white-space-unset">{name}</td>
@@ -1284,51 +1421,51 @@ const ModelDetails = ({
 							)}
 							{(Array.isArray(modelRelationships?.parents) ||
 								Array.isArray(modelRelationships?.children)) && (
-								<div id="model-relationships" className="row mb-5 pt-3">
+								<div id="related-models" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
-										<h2 className="mt-0 mb-4">Model relationships</h2>
+										<h2 className="mt-0 mb-4">Related models</h2>
 										<DynamicHierarchyTree
-											data={parseRelationships(
-												modelRelationships,
-												metadata.providerId,
-												metadata.modelId
-											)}
+											providerId={metadata.providerId}
+											modelId={metadata.modelId}
+											modelType={metadata.modelType}
+											data={modelRelationships}
 										/>
 									</div>
 								</div>
 							)}
-							{modelImages.length > 0 && (
+							{validHistologyImages.length > 0 && (
 								<div id="histology-images" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Histology images</h2>
 									</div>
 									<div className="col-12">
 										<div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-gap-3">
-											{modelImages.map(({ url, description }) => (
-												<div key={url} className="col">
-													<div className="ar-16-9 overflow-hidden mb-1">
-														<Link
-															href={url}
-															target="_blank"
-															rel="noopener"
-															onClick={() =>
-																ReactGA.event("histologyImg_click", {
-																	category: "event",
-																})
-															}
-														>
-															{/* Image component isnt working for external source */}
-															<img
-																src={url}
-																alt={description}
-																width={500}
-																height={300}
-																className="mb-1 h-auto w-100 object-fit-cover"
-															/>
-														</Link>
+											{validHistologyImages.map(({ url, description }) => (
+												<ImageChecker src={url} key={url}>
+													<div className="col">
+														<div className="ar-16-9 overflow-hidden mb-1">
+															<Link
+																href={url}
+																target="_blank"
+																rel="noopener"
+																onClick={() =>
+																	ReactGA.event("histologyImg_click", {
+																		category: "event"
+																	})
+																}
+															>
+																<img
+																	src={url}
+																	alt={description}
+																	width={500}
+																	height={300}
+																	className="mb-1 h-auto w-100 object-fit-cover"
+																/>
+															</Link>
+														</div>
+														<p className="text-small mb-0">{description}</p>
 													</div>
-													<p className="text-small mb-0">{description}</p>
-												</div>
+												</ImageChecker>
 											))}
 										</div>
 									</div>
@@ -1419,11 +1556,13 @@ const ModelDetails = ({
 										<>
 											<b>Download selected data: </b>
 											{dataToDownload.map((data, idx) => {
-												const cleanFilename = data.filename
-														.split("_")
-														.slice(2)
-														.join("_")
-														.split(".")[0],
+												const cleanFilename =
+														constructCleanMolecularDataFilename(
+															metadata.modelId,
+															data.data.dataType,
+															data.data.sampleId,
+															data.data.platformName
+														),
 													clearX = (
 														<sup>
 															<Button
@@ -1433,9 +1572,7 @@ const ModelDetails = ({
 																style={{ padding: ".2rem .3rem" }}
 																onClick={() =>
 																	setDataToDownload((prev) =>
-																		prev.filter(
-																			(el) => el.filename !== data.filename
-																		)
+																		prev.filter((el) => el.id !== data.id)
 																	)
 																}
 															>
@@ -1531,7 +1668,7 @@ const ModelDetails = ({
 					priority="secondary"
 					color="dark"
 				>
-					Take page tour
+					<p className="mb-0 lh-1">Take page tour</p>
 				</FloatingButton>
 			</ShowHide>
 		</>
@@ -1543,7 +1680,7 @@ export default ModelDetails;
 export const getStaticPaths: GetStaticPaths = async () => {
 	return {
 		paths: [],
-		fallback: "blocking",
+		fallback: "blocking"
 	};
 };
 
@@ -1551,14 +1688,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 	const {
 		metadata,
 		extLinks,
-		molecularData,
 		immuneMarkers,
 		engraftments,
+		cellModelData,
 		drugDosing,
 		patientTreatment,
 		qualityData,
 		modelImages,
-		modelRelationships,
+		modelRelationships
 	} = await getAllModelData(
 		params!.modelId as string,
 		params!.providerId as string
@@ -1567,16 +1704,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 	return {
 		props: {
 			metadata,
-			extLinks,
-			molecularData,
+			extLinks: JSON.parse(JSON.stringify(extLinks)),
 			immuneMarkers,
 			engraftments: JSON.parse(JSON.stringify(engraftments)),
+			cellModelData,
 			drugDosing,
 			patientTreatment,
 			qualityData,
 			modelImages,
-			modelRelationships,
+			modelRelationships
 		},
-		revalidate: 600,
+		revalidate: 600
 	};
 };
