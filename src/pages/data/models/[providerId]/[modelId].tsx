@@ -538,7 +538,7 @@ const ModelDetails = ({
 								<QualityBadge
 									score={metadata.score}
 									containerClassName="text-white"
-									className="w-50"
+									style={{ width: "10em" }}
 									id="tour_model-score"
 								/>
 							)}
