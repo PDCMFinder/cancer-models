@@ -36,7 +36,7 @@ if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
 function CancerModels({ Component, pageProps }: AppProps) {
 	const { asPath } = useRouter();
 	// hardcode envhost so we don't have to use getserverprops on whole app
-	const envHost = "https://www.cancermodels.org/";
+	const envHost = "https://www.cancermodels.org";
 
 	useEffect(() => {
 		handleBodyClass([USERNAVIGATION_MOUSE], ADD);
