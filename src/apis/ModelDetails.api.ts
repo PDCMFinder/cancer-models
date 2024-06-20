@@ -49,22 +49,6 @@ export async function getModelDetailsMetadata(
 	return response.json().then((d) => camelCase(d[0]));
 }
 
-export async function getMolecularCharacterizationId(
-	modelId: string,
-	providerId: string
-): Promise<any> {
-	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&data_source=eq.${providerId}&select=molecular_characterization_id`
-	);
-	if (!response.ok) {
-		throw new Error("Network response was not ok");
-	}
-	return response.json().then((d) => {
-		console.log(d);
-		camelCase(d[0]);
-	});
-}
-
 export async function getProviderId(modelId: string) {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&select=data_source`
