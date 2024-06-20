@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
-import styles from "./Provider.module.scss";
-import { getAllProvidersId, getProviderData } from "../../../utils/providers";
-import { GetStaticProps, GetStaticPaths } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
+import Head from "next/head";
 import Image from "next/image";
 import Button from "../../../components/Button/Button";
-import Head from "next/head";
+import { getProviderData } from "../../../utils/providers";
+import styles from "./Provider.module.scss";
 
 interface IProviderProps {
 	providerData: {
@@ -16,7 +16,7 @@ interface IProviderProps {
 }
 
 const Provider: NextPage<IProviderProps> = ({
-	providerData,
+	providerData
 }: IProviderProps) => {
 	return (
 		<>
@@ -78,7 +78,7 @@ export default Provider;
 export const getStaticPaths: GetStaticPaths = async () => {
 	return {
 		paths: [],
-		fallback: "blocking",
+		fallback: "blocking"
 	};
 };
 
@@ -88,7 +88,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 	return {
 		props: {
 			providerData,
-			revalidate: 600,
-		},
+			revalidate: 600
+		}
 	};
 };
