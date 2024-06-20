@@ -77,7 +77,9 @@ export async function getModelImages(modelId: string): Promise<ModelImage[]> {
 	});
 }
 
-export async function getModelRelationships(modelId: string): Promise<any> {
+export async function getModelRelationships(
+	modelId: string
+): Promise<ModelRelationships> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&select=model_relationships`
 	);
@@ -94,7 +96,7 @@ export async function getModelRelationships(modelId: string): Promise<any> {
 export async function getModelPubmedIds(
 	modelId: string = "",
 	providerId: string
-): Promise<any> {
+): Promise<string[]> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/model_information?external_model_id=eq.${modelId}&data_source=eq.${providerId}&select=publication_group(pubmed_ids)`
 	);
@@ -512,47 +514,47 @@ export const getAllModelData = async (
 	return {
 		// deconstruct metadata object so we dont pass more props than we need/should
 		metadata: {
-			histology: metadata.histology,
-			providerName: metadata.providerName,
-			cancerSystem: metadata.cancerSystem,
-			modelType: metadata.modelType,
-			patientSex: metadata.patientSex,
-			patientAge: metadata.patientAge,
-			patientEthnicity: metadata.patientEthnicity,
-			tumourType: metadata.tumourType,
 			cancerGrade: metadata.cancerGrade,
 			cancerStage: metadata.cancerStage,
-			primarySite: metadata.primarySite,
+			cancerSystem: metadata.cancerSystem,
 			collectionSite: metadata.collectionSite,
+			histology: metadata.histology,
 			licenseName: metadata.licenseName ?? "",
 			licenseUrl: metadata.licenseUrl ?? "",
-			score: score ?? 0,
-			pdcmModelId,
 			modelId,
+			modelType: metadata.modelType,
+			patientAge: metadata.patientAge,
+			patientEthnicity: metadata.patientEthnicity,
+			patientSex: metadata.patientSex,
+			pdcmModelId,
+			primarySite: metadata.primarySite,
 			providerId: modelProviderId,
+			providerName: metadata.providerName,
+			score: score ?? 0,
+			tumourType: metadata.tumourType,
 			// Extras for metadata file
-			externalModelId: metadata.externalModelId,
-			projectName: metadata.projectName,
-			datasetAvailable: metadata.datasetAvailable,
 			cancerGradingSystem: metadata.cancerGradingSystem,
 			cancerStagingSystem: metadata.cancerStagingSystem,
-			patientHistory: metadata.patientHistory,
+			datasetAvailable: metadata.datasetAvailable,
+			externalModelId: metadata.externalModelId,
+			patientAgeAtInitialDiagnosis: metadata.patientAgeAtInitialDiagnosis,
 			patientEthnicityAssessmentMethod:
 				metadata.patientEthnicityAssessmentMethod,
+			patientHistory: metadata.patientHistory,
 			patientInitialDiagnosis: metadata.patientInitialDiagnosis,
-			patientAgeAtInitialDiagnosis: metadata.patientAgeAtInitialDiagnosis,
-			patientSampleId: metadata.patientSampleId,
 			patientSampleCollectionDate: metadata.patientSampleCollectionDate,
 			patientSampleCollectionEvent: metadata.patientSampleCollectionEvent,
+			patientSampleId: metadata.patientSampleId,
 			patientSampleMonthsSinceCollection:
 				metadata.patientSampleMonthsSinceCollection1,
-			patientSampleVirologyStatus: metadata.patientSampleVirologyStatus,
 			patientSampleSharable: metadata.patientSampleSharable,
 			patientSampleTreatedAtCollection:
 				metadata.patientSampleTreatedAtCollection,
 			patientSampleTreatedPriorToCollection:
 				metadata.patientSampleTreatedPriorToCollection,
-			pdxModelPublications: metadata.pdxModelPublications
+			patientSampleVirologyStatus: metadata.patientSampleVirologyStatus,
+			pdxModelPublications: metadata.pdxModelPublications,
+			projectName: metadata.projectName
 		},
 		extLinks,
 		molecularData,

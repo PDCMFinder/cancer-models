@@ -45,6 +45,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 		["get-molecular-data-detail-cols", data.dataSource, data.dataType],
 		() => getAvailableDataColumns(data.dataSource, data.dataType)
 	);
+
 	const { data: dataDetails, isLoading } = useQuery(
 		[
 			"get-molecular-data-detail",

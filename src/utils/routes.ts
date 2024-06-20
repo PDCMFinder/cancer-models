@@ -26,7 +26,7 @@ export const routes = [
 			},
 			{
 				path: "/validation/validator",
-				name: "Data Validator"
+				name: "Metadata Validator"
 			},
 			{
 				path: "https://documenter.getpostman.com/view/6493399/2s8ZDbX1e7",
@@ -51,6 +51,7 @@ export const routes = [
 	}
 ];
 
+// use same route name as above
 export const routesWithGAEvents = [
 	{
 		routeName: "API",

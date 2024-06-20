@@ -1,14 +1,14 @@
+import { promises as fs } from "fs";
+import matter from "gray-matter";
 import type { NextPage } from "next";
 import { GetStaticProps } from "next";
-import Link from "next/link";
 import Image from "next/image";
-import styles from "./providers.module.scss";
+import Link from "next/link";
+import path from "path";
 import { remark } from "remark";
 import remarkHtml from "remark-html";
 import Button from "../../../components/Button/Button";
-import { promises as fs } from "fs";
-import path from "path";
-import matter from "gray-matter";
+import styles from "./providers.module.scss";
 
 interface IProvidersProps {
 	allProvidersBasics: {
@@ -21,7 +21,7 @@ interface IProvidersProps {
 }
 
 const Providers: NextPage<IProvidersProps> = ({
-	allProvidersBasics,
+	allProvidersBasics
 }: IProvidersProps) => {
 	return (
 		<>
@@ -46,13 +46,15 @@ const Providers: NextPage<IProvidersProps> = ({
 								<div className="col-12 mb-3" key={providerId}>
 									<div className="row">
 										<div className="col-12 col-md-2 text-center">
-											<Image
-												src={`/${provider.logo}`}
-												alt={`${providerName} logo`}
-												width={150}
-												height={150}
-												className={`mx-auto mb-2 w-auto h-auto ${styles.Providers_logo}`}
-											/>
+											{provider.logo && (
+												<Image
+													src={`/${provider.logo}`}
+													alt={`${providerName} logo`}
+													width={150}
+													height={150}
+													className={`mx-auto mb-2 w-auto h-auto ${styles.Providers_logo}`}
+												/>
+											)}
 										</div>
 										<div className="col-12 col-md-9 mb-5">
 											<div className="row">
@@ -60,23 +62,25 @@ const Providers: NextPage<IProvidersProps> = ({
 													<h2 className="h3 mt-0 mr-3">{providerName}</h2>
 												</div>
 											</div>
-											<div className="row mb-3">
-												<div className="col-12">
-													<div className={styles.Providers_content}>
-														<div
-															dangerouslySetInnerHTML={{
-																__html: provider.parsedContent,
-															}}
-														/>
+											{provider.parsedContent && (
+												<div className="row mb-3">
+													<div className="col-12">
+														<div className={styles.Providers_content}>
+															<div
+																dangerouslySetInnerHTML={{
+																	__html: provider.parsedContent
+																}}
+															/>
+														</div>
+														<Link
+															href={`/about/providers/${providerId}`}
+															className="mt-0"
+														>
+															Continue reading...
+														</Link>
 													</div>
-													<Link
-														href={`/about/providers/${providerId}`}
-														className="mt-0"
-													>
-														Continue reading...
-													</Link>
 												</div>
-											</div>
+											)}
 											<div className="row">
 												<div className="col-12">
 													<h4 className="mb-0 d-inline mr-2">
@@ -143,14 +147,14 @@ export const getStaticProps: GetStaticProps = async () => {
 					abbreviation: string;
 					logo: string;
 					name: string;
-				}),
+				})
 			};
 		}
 	);
 
 	return {
 		props: {
-			allProvidersBasics: await Promise.all(allProvidersBasicsFirst),
-		},
+			allProvidersBasics: await Promise.all(allProvidersBasicsFirst)
+		}
 	};
 };

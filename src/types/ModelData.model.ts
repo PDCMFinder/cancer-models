@@ -154,6 +154,7 @@ export type ModelImage = {
 	passage: string;
 	magnification: string;
 	staining: string;
+	isBroken: boolean;
 };
 
 export type ModelRelationships = {
