@@ -35,14 +35,16 @@ const Provider: NextPage<IProviderProps> = ({
 							<h1 className="m-0">{providerData.name}</h1>
 						</div>
 						<div className="col-12 col-md-3">
-							<Image
-								src={`/${providerData.logo}`}
-								alt={`${providerData.name} logo`}
-								width={3500}
-								height={3500}
-								className={`w-auto h-auto mx-auto ${styles.Provider_logo}`}
-								priority={false}
-							/>
+							{providerData.logo && (
+								<Image
+									src={`/${providerData.logo}`}
+									alt={`${providerData.name} logo`}
+									width={3500}
+									height={3500}
+									className={`w-auto h-auto mx-auto ${styles.Provider_logo}`}
+									priority={false}
+								/>
+							)}
 						</div>
 					</div>
 					<div className="row">
