@@ -255,7 +255,8 @@ const Search: NextPage = () => {
 				searchValues: [],
 				searchFilterState,
 				resultsPerPage,
-				sortBy
+				sortBy,
+				searchFacetOperators
 			}
 		],
 		queryFn: async () =>
@@ -266,7 +267,8 @@ const Search: NextPage = () => {
 				sortBy,
 				searchFacetOperators
 			),
-		enabled: searchFilterState !== null || searchFacetOperators.length > 0 // Only enable when `searchFilterState` and facet operators are ready
+		enabled:
+			searchFilterState !== null || Boolean(searchFacetOperatorsQuery.data) // Only enable when `searchFilterState` and facet operators are ready
 	});
 
 	useEffect(() => {
