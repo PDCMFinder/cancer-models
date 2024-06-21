@@ -266,7 +266,7 @@ const Search: NextPage = () => {
 				sortBy,
 				searchFacetOperators
 			),
-		enabled: searchFilterState !== null // Only enable when `searchFilterState` is ready
+		enabled: searchFilterState !== null || searchFacetOperators.length > 0 // Only enable when `searchFilterState` and facet operators are ready
 	});
 
 	useEffect(() => {
