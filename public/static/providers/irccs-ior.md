@@ -12,5 +12,5 @@ The research activity of the Experimental Oncology Laboratory is aimed to improv
 3. Study the interaction between tumor cell and bone microenvironment both in basal conditions and after treatment with drugs capable of damaging DNA.
 4. Evaluate epigenetic mediators of relevance in bone sarcomas and the efficacy of drugs with an impact on the epigenetic regulation of gene expression as a basis for the design of differentiating therapies.
    
-For more information, please (click here)[https://www.ior.it/en/laboratori/lab-di-oncol-sperim/laboratorio-di-oncologia-sperimentale/laboratory-experimental-oncology]
+For more information, please [click here](https://www.ior.it/en/laboratori/lab-di-oncol-sperim/laboratorio-di-oncologia-sperimentale/laboratory-experimental-oncology)
 
