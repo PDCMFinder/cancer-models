@@ -1,7 +1,7 @@
 ---
 name: Istituto Ortopedico Rizzoli
 abbreviation: IOR-IRCCS
-logo: img/providers/IOR-IRCCS.png
+logo: img/providers/IRCCS-IOR.png
 ---
 
 The Rizzoli Orthopaedic Institute is a highly specialised hospital and research institute in the field of orthopaedics and traumatology. As IRCCS (title granted by the Italian Ministry of Health to biomedical institutions of relevant national interest), the mission of the Rizzoli Orthopaedic Institute is the development of translational research on musculoskeletal disorders. The institute's strength lies in the close integration between the treatment activities and the scientific research activities operating in 10 research laboratories. The institute is also a university teaching centre.
