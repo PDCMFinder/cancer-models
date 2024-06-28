@@ -1542,8 +1542,8 @@ const ModelDetails = ({
 				</div>
 			</section>
 
-			{/* floating card */}
-			{dataToDownload.length > 0 ? (
+			{/* file floating card */}
+			{dataToDownload.length > 0 && !fileDownloadStatus.isDownloading ? (
 				<div className="row position-sticky bottom-0 mt-5">
 					<div className="col-10 offset-1">
 						<Card
@@ -1552,63 +1552,43 @@ const ModelDetails = ({
 						>
 							<div className="d-flex align-center justify-content-between">
 								<p className="m-0">
-									{!fileDownloadStatus.isDownloading ? (
-										<>
-											<b>Download selected data: </b>
-											{dataToDownload.map((data, idx) => {
-												const cleanFilename =
-														constructCleanMolecularDataFilename(
-															metadata.modelId,
-															data.data.dataType,
-															data.data.sampleId,
-															data.data.platformName
-														),
-													clearX = (
-														<sup>
-															<Button
-																color="dark"
-																priority="secondary"
-																className="text-underline m-0 ml-1"
-																style={{ padding: ".2rem .3rem" }}
-																onClick={() =>
-																	setDataToDownload((prev) =>
-																		prev.filter((el) => el.id !== data.id)
-																	)
-																}
-															>
-																X
-															</Button>
-														</sup>
-													);
+									<b>Download selected data: </b>
+									{dataToDownload.map((data, idx) => {
+										const cleanFilename = constructCleanMolecularDataFilename(
+												metadata.modelId,
+												data.data.dataType,
+												data.data.sampleId,
+												data.data.platformName
+											),
+											clearX = (
+												<sup>
+													<Button
+														color="dark"
+														priority="secondary"
+														className="text-underline m-0 ml-1"
+														style={{ padding: ".2rem .3rem" }}
+														onClick={() =>
+															setDataToDownload((prev) =>
+																prev.filter((el) => el.id !== data.id)
+															)
+														}
+													>
+														X
+													</Button>
+												</sup>
+											);
 
-												if (idx === 0) {
-													return (
-														<React.Fragment key={cleanFilename}>
-															{cleanFilename}
-															{clearX}
-														</React.Fragment>
-													);
-												}
-
-												return (
-													<React.Fragment key={cleanFilename}>
-														{" "}
-														<span className="text-primary-tertiary">
-															+
-														</span>{" "}
-														{cleanFilename}
-														{clearX}
-													</React.Fragment>
-												);
-											})}
-										</>
-									) : (
-										<>
-											<b>Fetching files: </b>
-											{fileDownloadStatus.downloadedFiles + 1}/
-											{fileDownloadStatus.totalFiles}
-										</>
-									)}
+										return (
+											<React.Fragment key={cleanFilename}>
+												{" "}
+												{idx > 0 && (
+													<span className="text-primary-tertiary">+</span>
+												)}{" "}
+												{cleanFilename}
+												{clearX}
+											</React.Fragment>
+										);
+									})}
 								</p>
 								<div className="d-flex">
 									<Button
@@ -1628,6 +1608,26 @@ const ModelDetails = ({
 										Clear
 									</Button>
 								</div>
+							</div>
+						</Card>
+					</div>
+				</div>
+			) : null}
+
+			{/* file count downloading floating card */}
+			{fileDownloadStatus.isDownloading ? (
+				<div className="row position-sticky bottom-0 mt-5">
+					<div className="col-10 offset-1">
+						<Card
+							className="bg-primary-quaternary mb-2"
+							contentClassName="py-2"
+						>
+							<div className="d-flex align-center justify-content-between">
+								<p className="m-0">
+									<b>Fetching files: </b>
+									{fileDownloadStatus.downloadedFiles + 1}/
+									{fileDownloadStatus.totalFiles}
+								</p>
 							</div>
 						</Card>
 					</div>
