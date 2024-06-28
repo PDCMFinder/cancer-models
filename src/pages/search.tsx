@@ -603,21 +603,11 @@ const Search: NextPage = () => {
 													</sup>
 												);
 
-												if (idx === 0) {
-													return (
-														<React.Fragment key={model}>
-															{model}
-															{clearX}
-														</React.Fragment>
-													);
-												}
-
 												return (
 													<React.Fragment key={model}>
-														{" "}
-														<span className="text-primary-tertiary">
-															+
-														</span>{" "}
+														{idx > 0 && (
+															<span className="text-primary-tertiary"> + </span>
+														)}
 														{model}
 														{clearX}
 													</React.Fragment>
