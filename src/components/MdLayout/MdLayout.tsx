@@ -15,11 +15,11 @@ const MdLayout = ({ children, meta }: IMdLayoutProps) => {
 		<>
 			{/* page metadata */}
 			<Head>
-				{meta.metaTitle ?? <title>{meta.metaTitle}</title>}
-				{meta.metaDescription ?? (
+				{meta.metaTitle && <title>{meta.metaTitle}</title>}
+				{meta.metaDescription && (
 					<meta name="description" content={meta.metaDescription} />
 				)}
-				{meta.metaKeywords ?? (
+				{meta.metaKeywords && (
 					<meta name="keywords" content={meta.metaKeywords} />
 				)}
 			</Head>
