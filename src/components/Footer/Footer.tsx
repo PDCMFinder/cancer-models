@@ -115,7 +115,7 @@ const Footer = () => {
 						</div>
 					</div>
 					<div className="col-12 col-md-7 col-lg-5 col-xl-4 offset-lg-1 offset-xl-2 d-flex flex-column justify-content-between">
-						<p className={styles.Footer_portalInfo}>
+						<p>
 							<Link
 								className="link-text-light"
 								href="https://www.ebi.ac.uk/"
@@ -137,7 +137,7 @@ const Footer = () => {
 							CA204781, U24 CA253539 and R01 CA089713.
 						</p>
 						<div className="d-flex justify-content-between">
-							<p className="mb-0 lh-1">
+							<p className="mb-0">
 								<a
 									href="https://www.linkedin.com/company/cancermodelsorg/"
 									target="_blank"
@@ -147,7 +147,7 @@ const Footer = () => {
 									<LinkedinIcon />
 								</a>
 							</p>
-							<p className="mb-0 lh-1">
+							<p className="mb-0">
 								<a
 									href="mailto:info@cancermodels.org"
 									className="link-text-light"
