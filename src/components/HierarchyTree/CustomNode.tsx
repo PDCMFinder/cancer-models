@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { Handle, Node, Position } from "reactflow";
-import CavendishIcon from "../ModelTypeIcons/CavendishIcon";
-import MouseIcon from "../ModelTypeIcons/MouseIcon";
-import OrganoidIcon from "../ModelTypeIcons/OrganoidIcon";
+import CavendishIcon from "../Icons/CavendishIcon";
+import MouseIcon from "../Icons/MouseIcon";
+import OrganoidIcon from "../Icons/OrganoidIcon";
 
 const CustomNode = ({ data }: Node["data"]) => {
 	let modelTypeIcon: JSX.Element;

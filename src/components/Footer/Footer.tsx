@@ -5,6 +5,7 @@ import { IRoute } from "../../../types/globalTypes";
 import { getLatestDataReleaseInformation } from "../../apis/AggregatedData.api";
 import { routes, routesWithGAEvents } from "../../utils/routes";
 import ActiveLink from "../ActiveLink/ActiveLink";
+import LinkedinIcon from "../Icons/LinkedinIcon";
 import Logotype from "../Logotype/Logotype";
 import styles from "./Footer.module.scss";
 
@@ -135,14 +136,26 @@ const Footer = () => {
 							the National Institutes of Health/National Cancer Institute U24
 							CA204781, U24 CA253539 and R01 CA089713.
 						</p>
-						<p className="mb-0">
-							<a
-								href="mailto:info@cancermodels.org"
-								className="link-text-light mt-2"
-							>
-								info@cancermodels.org
-							</a>
-						</p>
+						<div className="d-flex justify-content-between">
+							<p className="mb-0">
+								<a
+									href="https://www.linkedin.com/company/cancermodelsorg/"
+									target="_blank"
+									rel="noopener noreferrer"
+									className="link-text-light"
+								>
+									<LinkedinIcon />
+								</a>
+							</p>
+							<p className="mb-0">
+								<a
+									href="mailto:info@cancermodels.org"
+									className="link-text-light"
+								>
+									info@cancermodels.org
+								</a>
+							</p>
+						</div>
 					</div>
 				</div>
 				<div className="row">
