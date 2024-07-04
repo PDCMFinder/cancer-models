@@ -18,8 +18,8 @@ import {
 } from "../../../../apis/ModelDetails.api";
 import Button from "../../../../components/Button/Button";
 import Card from "../../../../components/Card/Card";
-import CloseIcon from "../../../../components/CloseIcon/CloseIcon";
 import FloatingButton from "../../../../components/FloatingWidget/FloatingButton";
+import CloseIcon from "../../../../components/Icons/CloseIcon/CloseIcon";
 import ImageChecker from "../../../../components/ImageChecker/ImageChecker";
 import InputAndLabel from "../../../../components/Input/InputAndLabel";
 import Loader from "../../../../components/Loader/Loader";
@@ -122,12 +122,12 @@ const ModelDetails = ({
 	const [validHistologyImages, setValidHistologyImages] = useState<
 		ModelImage[]
 	>([]);
-	const checkImages = async (modelImages: ModelImage[]) => {
+	const checkImages = async () => {
 		const checkedImages = await imageIsBrokenChecker(modelImages);
 		setValidHistologyImages(checkedImages);
 	};
 	useEffect(() => {
-		checkImages(modelImages);
+		checkImages();
 	}, []);
 
 	const driverObj = driver({

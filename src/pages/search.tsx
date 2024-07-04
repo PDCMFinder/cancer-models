@@ -15,8 +15,8 @@ import {
 } from "../apis/Search.api";
 import Button from "../components/Button/Button";
 import Card from "../components/Card/Card";
-import CloseIcon from "../components/CloseIcon/CloseIcon";
 import FloatingButton from "../components/FloatingWidget/FloatingButton";
+import CloseIcon from "../components/Icons/CloseIcon/CloseIcon";
 import Label from "../components/Input/Label";
 import Select from "../components/Input/Select";
 import Loader from "../components/Loader/Loader";

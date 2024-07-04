@@ -5,6 +5,7 @@ import { IRoute } from "../../../types/globalTypes";
 import { getLatestDataReleaseInformation } from "../../apis/AggregatedData.api";
 import { routes, routesWithGAEvents } from "../../utils/routes";
 import ActiveLink from "../ActiveLink/ActiveLink";
+import LinkedinIcon from "../Icons/LinkedinIcon";
 import Logotype from "../Logotype/Logotype";
 import styles from "./Footer.module.scss";
 
@@ -114,7 +115,7 @@ const Footer = () => {
 						</div>
 					</div>
 					<div className="col-12 col-md-7 col-lg-5 col-xl-4 offset-lg-1 offset-xl-2 d-flex flex-column justify-content-between">
-						<p>
+						<p className={styles.Footer_portalInfo}>
 							<Link
 								className="link-text-light"
 								href="https://www.ebi.ac.uk/"
@@ -135,14 +136,26 @@ const Footer = () => {
 							the National Institutes of Health/National Cancer Institute U24
 							CA204781, U24 CA253539 and R01 CA089713.
 						</p>
-						<p className="mb-0">
-							<a
-								href="mailto:info@cancermodels.org"
-								className="link-text-light mt-2"
-							>
-								info@cancermodels.org
-							</a>
-						</p>
+						<div className="d-flex justify-content-between">
+							<p className="mb-0 lh-1">
+								<a
+									href="https://www.linkedin.com/company/cancermodelsorg/"
+									target="_blank"
+									rel="noopener noreferrer"
+									className="link-text-light"
+								>
+									<LinkedinIcon />
+								</a>
+							</p>
+							<p className="mb-0 lh-1">
+								<a
+									href="mailto:info@cancermodels.org"
+									className="link-text-light"
+								>
+									info@cancermodels.org
+								</a>
+							</p>
+						</div>
 					</div>
 				</div>
 				<div className="row">

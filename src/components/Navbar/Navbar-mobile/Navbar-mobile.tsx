@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import CloseIcon from "../../CloseIcon/CloseIcon";
-import Logotype from "../../Logotype/Logotype";
-import handleBodyClass from "../../../utils/handleBodyClass";
-import { INavProps, IRoute } from "../../../../types/globalTypes";
-import ActiveLink from "../../ActiveLink/ActiveLink";
 import Link from "next/link";
-import styles from "./Navbar-mobile.module.scss";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import ReactGA from "react-ga4";
+import { INavProps, IRoute } from "../../../../types/globalTypes";
+import handleBodyClass from "../../../utils/handleBodyClass";
 import { routesWithGAEvents } from "../../../utils/routes";
+import ActiveLink from "../../ActiveLink/ActiveLink";
+import CloseIcon from "../../Icons/CloseIcon/CloseIcon";
+import Logotype from "../../Logotype/Logotype";
+import styles from "./Navbar-mobile.module.scss";
 
 const ADD = "add",
 	REMOVE = "remove";
@@ -78,7 +78,7 @@ const NavMobile = (props: INavProps) => {
 												if (childGAEvent) {
 													onClickProp = () =>
 														ReactGA.event(childGAEvent.eventName, {
-															category: "event",
+															category: "event"
 														});
 												}
 
