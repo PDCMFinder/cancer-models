@@ -1,6 +1,6 @@
 ---
 name: Istituto Ortopedico Rizzoli
-abbreviation: IOR-IRCCS
+abbreviation: IRCCS-IOR
 logo: img/providers/IRCCS-IOR.png
 ---
 
