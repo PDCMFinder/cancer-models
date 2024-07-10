@@ -112,6 +112,7 @@ const SearchResult = (props: ISearchResultProps) => {
 							<QualityBadge
 								score={score}
 								containerClassName="text-muted"
+								style={{ width: "10em" }}
 								className="w-50"
 							/>
 						)}
