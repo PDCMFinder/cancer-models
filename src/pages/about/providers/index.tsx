@@ -72,12 +72,11 @@ const Providers: NextPage<IProvidersProps> = ({
 																}}
 															/>
 														</div>
-														<Link
-															href={`/about/providers/${providerId}`}
-															className="mt-0"
-														>
-															Continue reading...
-														</Link>
+														<p className="mt-1">
+															<Link href={`/about/providers/${providerId}`}>
+																Continue reading...
+															</Link>
+														</p>
 													</div>
 												</div>
 											)}

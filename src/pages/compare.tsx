@@ -155,7 +155,12 @@ const Compare: NextPage = () => {
 													</h1>
 													<h2 className="p mt-0">{metadata.histology}</h2>
 												</div>
-												<QualityBadge className="w-50" score={metadata.score} />
+												<QualityBadge
+													className="w-50"
+													score={metadata.score}
+													style={{ width: "10em" }}
+													containerClassName="text-muted"
+												/>
 											</div>
 										</div>
 									) : null;

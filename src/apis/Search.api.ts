@@ -167,7 +167,7 @@ export async function getSearchResults(
 					pdcmId: result.external_model_id,
 					sourceId: result.data_source,
 					datasource: "",
-					providerName: result.provider_name,
+					providerName: result.provider_name.replace("u00f9", "ù"), // remove .replace after API fix
 					histology: result.histology,
 					primarySite: result.primary_site,
 					collectionSite: result.collection_site,

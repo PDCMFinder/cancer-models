@@ -89,7 +89,10 @@ const SearchResult = (props: ISearchResultProps) => {
 							<Link href={modelLink}>{pdcmId}</Link>
 						</h2>
 						<p className="text-capitalize mb-0">
-							<Link href={`/about/providers/${sourceId?.toLowerCase()}`}>
+							<Link
+								href={`/about/providers/${sourceId?.toLowerCase()}`}
+								title={providerName}
+							>
 								{`${providerName?.substring(0, 50)}${
 									providerName?.length > 50 ? "..." : ""
 								}`}
@@ -112,6 +115,7 @@ const SearchResult = (props: ISearchResultProps) => {
 							<QualityBadge
 								score={score}
 								containerClassName="text-muted"
+								style={{ width: "10em" }}
 								className="w-50"
 							/>
 						)}

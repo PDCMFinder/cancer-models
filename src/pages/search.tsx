@@ -15,8 +15,8 @@ import {
 } from "../apis/Search.api";
 import Button from "../components/Button/Button";
 import Card from "../components/Card/Card";
-import CloseIcon from "../components/CloseIcon/CloseIcon";
 import FloatingButton from "../components/FloatingWidget/FloatingButton";
+import CloseIcon from "../components/Icons/CloseIcon/CloseIcon";
 import Label from "../components/Input/Label";
 import Select from "../components/Input/Select";
 import Loader from "../components/Loader/Loader";
@@ -603,21 +603,11 @@ const Search: NextPage = () => {
 													</sup>
 												);
 
-												if (idx === 0) {
-													return (
-														<React.Fragment key={model}>
-															{model}
-															{clearX}
-														</React.Fragment>
-													);
-												}
-
 												return (
 													<React.Fragment key={model}>
-														{" "}
-														<span className="text-primary-tertiary">
-															+
-														</span>{" "}
+														{idx > 0 && (
+															<span className="text-primary-tertiary"> + </span>
+														)}
 														{model}
 														{clearX}
 													</React.Fragment>
