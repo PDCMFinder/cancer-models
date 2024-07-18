@@ -16,4 +16,4 @@ Research can be summarized as follows:
 4. Identification of new prognostic and/or predictive markers of response using flow cytometry, Seahorse flux analysis, metabolomics, lipidomics and proteomics, isolation of extra-cellular vesicles and systems biology;
 5. “In silico” analysis (molecular modeling and virtual screening).
 
-For more information, please [click here](https://newportal.istitutotumori.na.it/dipartimenti/dipartimento-di-ricerca-traslazionale-a- supporto-dei-percorsi-oncologici/sc-farmacologia-sperimentale/)
+For more information, please [click here](https://newportal.istitutotumori.na.it/dipartimenti/dipartimento-di-ricerca-traslazionale-a-supporto-dei-percorsi-oncologici/sc-farmacologia-sperimentale/)
