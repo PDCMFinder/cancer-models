@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { CSSProperties, useState } from "react";
-import ArrowIcon from "../ArrowIcon/ArrowIcon";
+import { CSSProperties, MouseEvent, useState } from "react";
+import ArrowIcon, { IArrowIconProps } from "../ArrowIcon/ArrowIcon";
 import styles from "./Button.module.scss";
-import { IArrowIconProps } from "../ArrowIcon/ArrowIcon";
 
 const RIGHT = "right",
 	DOWN = "down";
@@ -22,6 +21,12 @@ export interface IButtonProps {
 	arrowDirection?: IArrowIconProps["direction"];
 	"aria-controls"?: string;
 	onClick?: () => void;
+	onMouseEnter?: (
+		e: MouseEvent<HTMLDivElement | HTMLAnchorElement | HTMLButtonElement>
+	) => void;
+	onMouseLeave?: (
+		e: MouseEvent<HTMLDivElement | HTMLAnchorElement | HTMLButtonElement>
+	) => void;
 }
 
 const Button = (props: IButtonProps) => {
@@ -57,7 +62,7 @@ const Button = (props: IButtonProps) => {
 		const externalLinkProps = href.includes("http")
 			? {
 					target: "_blank",
-					rel: "noopener noreferrer",
+					rel: "noopener noreferrer"
 			  }
 			: null;
 
@@ -86,6 +91,8 @@ const Button = (props: IButtonProps) => {
 			type={props.type ?? "button"}
 			className={classNames}
 			onClick={handleOnClick}
+			onMouseEnter={(e) => props.onMouseEnter && props.onMouseEnter(e)}
+			onMouseLeave={(e) => props.onMouseLeave && props.onMouseLeave(e)}
 		>
 			{children}
 			{showArrow && <ArrowIcon direction={arrowDirection} />}

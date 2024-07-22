@@ -5,8 +5,10 @@ import { GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import path from "path";
+import { useState } from "react";
 import { remark } from "remark";
 import remarkHtml from "remark-html";
+import projectsData from "../../../../public/static/projects.json";
 import Button from "../../../components/Button/Button";
 import styles from "./providers.module.scss";
 
@@ -23,6 +25,10 @@ interface IProvidersProps {
 const Providers: NextPage<IProvidersProps> = ({
 	allProvidersBasics
 }: IProvidersProps) => {
+	const [activeProject, setActiveProject] = useState(
+		projectsData[0].project_name
+	);
+
 	return (
 		<>
 			<header className="bg-primary-primary text-white mb-5 py-5">
@@ -36,6 +42,47 @@ const Providers: NextPage<IProvidersProps> = ({
 			</header>
 			<section>
 				<div className="container">
+					<div className="row">
+						<div
+							className="col-12 d-flex align-center justify-content-between"
+							style={{ columnGap: "1rem" }}
+						>
+							{projectsData.map((project) => {
+								const projectName = project.project_name,
+									initialBackgroundColor = "#ebebeb",
+									initialTextColor = "#003e48";
+
+								return (
+									<Button
+										key={projectName}
+										priority="secondary"
+										color="dark"
+										className="border-none justify-content-center"
+										style={{
+											flex: "1 1 0",
+											backgroundColor: initialBackgroundColor,
+											color: initialTextColor
+										}}
+										onMouseEnter={(e) => {
+											const target = e.target as HTMLElement;
+											target.style.backgroundColor =
+												project.project_settings.main_color;
+											target.style.color =
+												project.project_settings.secondary_color;
+										}}
+										onMouseLeave={(e) => {
+											const target = e.target as HTMLElement;
+											target.style.backgroundColor = initialBackgroundColor;
+											target.style.color = initialTextColor;
+										}}
+										onClick={() => setActiveProject(projectName)}
+									>
+										{projectName}
+									</Button>
+								);
+							})}
+						</div>
+					</div>
 					<div className="row">
 						{allProvidersBasics?.map((provider) => {
 							const parsedProvider = provider.abbreviation.replace(" ", "-"),

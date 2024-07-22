@@ -1,0 +1,110 @@
+[
+	{
+		"project_name": "ACC-PCMC",
+		"project_settings": {
+			"main_color": "#008F30",
+			"secondary_color": "#FFFFFF",
+			"logo": "img/providers/ACC-PCMC.png"
+		},
+		"providers": [
+			"IDI-IRCCS",
+			"IRCCS-DEB",
+			"IRCCS-HSM-GE",
+			"IRCCS-ICH",
+			"IRCCS-IOR",
+			"IRCCS-IRE",
+			"IRCCS-IRFMN",
+			"IRCCS-IRST",
+			"IRCCS-ITGPII",
+			"IRCCS-PAS"
+		]
+	},
+	{
+		"project_name": "EurOPDX",
+		"project_settings": {
+			"main_color": "#6D4694",
+			"secondary_color": "#FFFFFF",
+			"logo": "img/providers/europdx.png"
+		},
+		"providers": [
+			"Curie-BC",
+			"Curie-LC",
+			"Curie-OC",
+			"IRCC-CRC",
+			"IRCC-GC",
+			"LIH",
+			"NKI",
+			"TRACE",
+			"UMCG",
+			"UOC-BC"
+		]
+	},
+	{
+		"project_name": "HCMI",
+		"project_settings": {
+			"main_color": "#FF6C01",
+			"secondary_color": "#000000",
+			"logo": "img/providers/HCMI.png"
+		},
+		"providers": ["BROD", "CSHL", "SANG", "WCMC"]
+	},
+	{
+		"project_name": "PDXNet",
+		"project_settings": {
+			"main_color": "#47E4C2",
+			"secondary_color": "#000000",
+			"logo": "img/providers/pdxnet.png"
+		},
+		"providers": [
+			"HCI-BCM",
+			"MDAnderson",
+			"UCD",
+			"WUSTL",
+			"Wistar-MDAnderson-Penn"
+		]
+	},
+	{
+		"project_name": "PIVOT",
+		"project_settings": {
+			"main_color": "#5065A7",
+			"secondary_color": "#FFFFFF",
+			"logo": "img/providers/pivot.jpg"
+		},
+		"providers": [
+			"CCIA",
+			"CHOP",
+			"GCCRI",
+			"LurieChildrens",
+			"MDAnderson-CCH",
+			"SJCRH"
+		]
+	},
+	{
+		"project_name": "STCC",
+		"project_settings": {
+			"main_color": "#213C83",
+			"secondary_color": "#FFFFFF",
+			"logo": "img/providers/STCC.jpg"
+		},
+		"providers": ["CDH"]
+	},
+	{
+		"project_name": "Other",
+		"project_settings": {
+			"main_color": "#003e48",
+			"secondary_color": "#FFFFFF"
+		},
+		"providers": [
+			"CMP",
+			"CRL",
+			"CUIMC",
+			"DFCI CPDM",
+			"HKU",
+			"JAX",
+			"PDMR",
+			"PMLB",
+			"PMLB-Organoid",
+			"UMCU"
+		]
+	}
+]
