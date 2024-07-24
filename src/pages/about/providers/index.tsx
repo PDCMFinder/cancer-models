@@ -5,12 +5,17 @@ import { GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import path from "path";
-import { useState } from "react";
+import React, { memo, useState } from "react";
+import { useQuery } from "react-query";
 import { remark } from "remark";
 import remarkHtml from "remark-html";
-import projectsData from "../../../../public/static/projects.json";
+import { getDataSourcesByProject } from "../../../apis/Search.api";
 import Button from "../../../components/Button/Button";
-import styles from "./providers.module.scss";
+import Card from "../../../components/Card/Card";
+import Loader from "../../../components/Loader/Loader";
+import ProviderInfo from "../../../components/ProviderInfo/ProviderInfo";
+import { addProvidersToProjectData } from "../../../utils/projects";
+import projectsSettings from "../../../utils/projectSettings.json";
 
 interface IProvidersProps {
 	allProvidersBasics: {
@@ -22,142 +27,213 @@ interface IProvidersProps {
 	}[];
 }
 
-const Providers: NextPage<IProvidersProps> = ({
-	allProvidersBasics
-}: IProvidersProps) => {
-	const [activeProject, setActiveProject] = useState(
-		projectsData[0].project_name
+export interface IProjectData {
+	project_name: string;
+	project_full_name?: string;
+	providers?: string[];
+	project_settings: {
+		main_color: string;
+		secondary_color: string;
+		logo?: string;
+	};
+	project_description?: string;
+}
+
+interface IProjectButtonProps {
+	projectName: string;
+	isActive: boolean;
+	mainColor: string;
+	secondaryColor: string;
+	onClick: () => void;
+}
+
+interface IProjectButtonsProps {
+	activeProject: string;
+	setActiveProject: (name: string) => void;
+}
+
+const getButtonColors = (
+	isActive: boolean,
+	mainColor: string,
+	secondaryColor: string
+) => {
+	return isActive
+		? { backgroundColor: mainColor, color: secondaryColor }
+		: { backgroundColor: "#ebebeb", color: "#003e48" };
+};
+
+const handleMouseEnter = (
+	e: React.MouseEvent<HTMLElement>,
+	isActive: boolean,
+	mainColor: string,
+	secondaryColor: string
+) => {
+	if (!isActive) {
+		const target = e.target as HTMLElement;
+		target.style.backgroundColor = mainColor;
+		target.style.color = secondaryColor;
+	}
+};
+
+const handleMouseLeave = (
+	e: React.MouseEvent<HTMLElement>,
+	isActive: boolean
+) => {
+	if (!isActive) {
+		const target = e.target as HTMLElement;
+		target.style.backgroundColor = "#ebebeb";
+		target.style.color = "#003e48";
+	}
+};
+
+const ProjectButton = ({
+	projectName,
+	isActive,
+	mainColor,
+	secondaryColor,
+	onClick
+}: IProjectButtonProps) => {
+	const buttonColors = getButtonColors(isActive, mainColor, secondaryColor);
+
+	return (
+		<Button
+			key={projectName}
+			priority="secondary"
+			color="dark"
+			className="mx-0 my-1 my-md-3 border-none justify-content-center"
+			style={{ flex: "1 1 0", ...buttonColors }}
+			onMouseEnter={(e) =>
+				handleMouseEnter(e, isActive, mainColor, secondaryColor)
+			}
+			onMouseLeave={(e) => handleMouseLeave(e, isActive)}
+			onClick={onClick}
+		>
+			{projectName}
+		</Button>
 	);
+};
+
+const Header = () => (
+	<header className="bg-primary-primary text-white mb-5 py-5">
+		<div className="container">
+			<div className="row py-5">
+				<div className="col-12">
+					<h1 className="m-0">Our data providers</h1>
+				</div>
+			</div>
+		</div>
+	</header>
+);
+
+const ProjectButtons = memo(
+	({ activeProject, setActiveProject }: IProjectButtonsProps) => (
+		<div className="row mb-5">
+			<div
+				className="col-12 d-flex flex-column flex-md-row align-md-center justify-content-between"
+				style={{ columnGap: "1rem" }}
+			>
+				{projectsSettings.map(
+					({
+						project_name,
+						project_settings: { main_color, secondary_color }
+					}) => (
+						<ProjectButton
+							key={project_name}
+							projectName={project_name}
+							isActive={activeProject === project_name}
+							mainColor={main_color}
+							secondaryColor={secondary_color}
+							onClick={() => setActiveProject(project_name)}
+						/>
+					)
+				)}
+			</div>
+		</div>
+	)
+);
+
+const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
+	const [activeProject, setActiveProject] = useState(
+		projectsSettings[0].project_name
+	);
+
+	const { data: dataSourcesByProject, isLoading: isLoadingProviders } =
+		useQuery(
+			["dataSources", activeProject],
+			() => getDataSourcesByProject(activeProject),
+			{
+				staleTime: 1000 * 60 * 10, // 5 minutes
+				cacheTime: 1000 * 60 * 10 // 10 minutes
+			}
+		);
+
+	const activeProjectData = projectsSettings.find(
+		(project) => project.project_name === activeProject
+	);
+	const data = addProvidersToProjectData(
+		activeProjectData as IProjectData,
+		dataSourcesByProject ?? [{ data_source: "" }]
+	);
+
+	const activeProviders = allProvidersBasics
+		.filter((provider) => data.providers?.includes(provider.abbreviation))
+		.sort((a, b) => a.abbreviation.localeCompare(b.abbreviation));
 
 	return (
 		<>
-			<header className="bg-primary-primary text-white mb-5 py-5">
+			<Header />
+			<section className="pt-0">
 				<div className="container">
-					<div className="row py-5">
-						<div className="col-12">
-							<h1 className="m-0">Our data providers</h1>
-						</div>
-					</div>
-				</div>
-			</header>
-			<section>
-				<div className="container">
-					<div className="row">
-						<div
-							className="col-12 d-flex align-center justify-content-between"
-							style={{ columnGap: "1rem" }}
-						>
-							{projectsData.map((project) => {
-								const projectName = project.project_name,
-									initialBackgroundColor = "#ebebeb",
-									initialTextColor = "#003e48";
-
-								return (
-									<Button
-										key={projectName}
-										priority="secondary"
-										color="dark"
-										className="border-none justify-content-center"
-										style={{
-											flex: "1 1 0",
-											backgroundColor: initialBackgroundColor,
-											color: initialTextColor
-										}}
-										onMouseEnter={(e) => {
-											const target = e.target as HTMLElement;
-											target.style.backgroundColor =
-												project.project_settings.main_color;
-											target.style.color =
-												project.project_settings.secondary_color;
-										}}
-										onMouseLeave={(e) => {
-											const target = e.target as HTMLElement;
-											target.style.backgroundColor = initialBackgroundColor;
-											target.style.color = initialTextColor;
-										}}
-										onClick={() => setActiveProject(projectName)}
-									>
-										{projectName}
-									</Button>
-								);
-							})}
-						</div>
-					</div>
-					<div className="row">
-						{allProvidersBasics?.map((provider) => {
-							const parsedProvider = provider.abbreviation.replace(" ", "-"),
-								providerName = provider.name,
-								providerId = provider.id;
-
-							return (
-								<div className="col-12 mb-3" key={providerId}>
+					<ProjectButtons
+						activeProject={activeProject}
+						setActiveProject={setActiveProject}
+					/>
+					{data.project_description && data.project_settings.logo && (
+						<div className="row">
+							<div className="col-12 col-lg-8 offset-lg-2">
+								<Card
+									contentClassName="py-4"
+									header={
+										<h2 className="m-0">
+											{data.project_full_name ?? data.project_name}
+										</h2>
+									}
+								>
 									<div className="row">
-										<div className="col-12 col-md-2 text-center">
-											{provider.logo && (
-												<Image
-													src={`/${provider.logo}`}
-													alt={`${providerName} logo`}
-													width={150}
-													height={150}
-													className={`mx-auto mb-2 w-auto h-auto ${styles.Providers_logo}`}
-												/>
-											)}
+										<div className="col-3">
+											<Image
+												src={data.project_settings.logo}
+												alt={`${data.project_name} logo`}
+												width={150}
+												height={150}
+												className="w-100 h-auto mx-auto mb-2"
+											/>
 										</div>
-										<div className="col-12 col-md-9 mb-5">
-											<div className="row">
-												<div className="col-12 d-flex align-center">
-													<h2 className="h3 mt-0 mr-3">{providerName}</h2>
-												</div>
-											</div>
-											{provider.parsedContent && (
-												<div className="row mb-3">
-													<div className="col-12">
-														<div className={styles.Providers_content}>
-															<div
-																dangerouslySetInnerHTML={{
-																	__html: provider.parsedContent
-																}}
-															/>
-														</div>
-														<p className="mt-1">
-															<Link href={`/about/providers/${providerId}`}>
-																Continue reading...
-															</Link>
-														</p>
-													</div>
-												</div>
-											)}
-											<div className="row">
-												<div className="col-12">
-													<h4 className="mb-0 d-inline mr-2">
-														View models and data at:
-													</h4>
-													<Button
-														color="dark"
-														priority="primary"
-														className="mr-2 mt-0"
-														href={`/search?filters=data_source:${parsedProvider}`}
-														htmlTag="a"
-													>
-														<>CancerModels.Org</>
-													</Button>
-													<Button
-														color="dark"
-														priority="secondary"
-														className="mt-0"
-														href={`/cbioportal/study/clinicalData?id=${parsedProvider}`}
-														htmlTag="a"
-														target="_blank"
-													>
-														<>cBioPortal</>
-													</Button>
-												</div>
-											</div>
+										<div className="col-9">
+											<p>{data.project_description}</p>
+											<p>
+												<Link
+													href={`/search?filters=project_name%3A${data.project_name}`}
+												>
+													View all models and data
+												</Link>
+											</p>
 										</div>
 									</div>
-								</div>
-							);
-						})}
+								</Card>
+							</div>
+						</div>
+					)}
+					<div className="row mt-5">
+						{isLoadingProviders ? (
+							<div style={{ height: "50vh" }}>
+								<Loader />
+							</div>
+						) : (
+							activeProviders?.map((provider) => (
+								<ProviderInfo key={provider.id} provider={provider} />
+							))
+						)}
 					</div>
 				</div>
 			</section>

@@ -218,3 +218,16 @@ function sortOptions(facet_column: string, list: string[]) {
 		.sort((a, b) => a.localeCompare(b));
 	return sortedList.concat(endList);
 }
+
+export async function getDataSourcesByProject(projectName: string) {
+	let response = await fetch(
+		`${API_URL}/search_index?project_name=${
+			projectName === "Other" ? "is.null" : "in.(%22" + projectName + "%22)"
+		}&select=data_source`
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response.json().then((d: { data_source: string }[]) => d);
+}

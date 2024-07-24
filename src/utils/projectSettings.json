@@ -1,0 +1,68 @@
+[
+	{
+		"project_name": "ACC-PCMC",
+		"project_full_name": "Alleanza Contro il Cancro - Patient-derived Cancer Model Collection",
+		"project_settings": {
+			"main_color": "#008F30",
+			"secondary_color": "#FFFFFF",
+			"logo": "/img/providers/ACC-PCMC.png"
+		},
+		"project_description": "Alliance Against Cancer has the mission to bring technological and organizational innovation from basic research to clinical practice, raising and unifying the level of care, treatment, and rehabilitation of cancer patients throughout the country."
+	},
+	{
+		"project_name": "EurOPDX",
+		"project_settings": {
+			"main_color": "#6D4694",
+			"secondary_color": "#FFFFFF",
+			"logo": "/img/providers/europdx.png"
+		},
+		"project_description": "The EurOPDX Consortium is a scientific network of non-for-profit research institutions organised by a Consortium Agreement, and currently funded by Membership Fees contributed by each member institution according to its level of membership. One of our activities is to leverage funding for the Consortium infrastructure, as well as for specific collaborative research projects."
+	},
+	{
+		"project_name": "HCMI",
+		"project_full_name": "Human Cancer Models Initiative",
+		"project_settings": {
+			"main_color": "#FF6C01",
+			"secondary_color": "#000000",
+			"logo": "/img/providers/HCMI.png"
+		},
+		"project_description": "The Human Cancer Models Initiative (HCMI) is an international consortium that is generating novel, next-generation, tumor-derived culture models that are annotated with genomic, clinical, and biospecimen data. HCMI uses current culture techniques to develop cancer models for translational cancer research and other experiments."
+	},
+	{
+		"project_name": "PDXNet",
+		"project_full_name": "PDX Development and Trial Centers Research Network",
+		"project_settings": {
+			"main_color": "#47E4C2",
+			"secondary_color": "#000000",
+			"logo": "/img/providers/pdxnet.png"
+		},
+		"project_description": "PDXNet is an inclusive consortium that welcomes collaborations, in part through funded supplements. Please get in touch with us to discuss how we can work together to advance new cancer treatments."
+	},
+	{
+		"project_name": "PIVOT",
+		"project_full_name": "Pediatric Preclinical In Vivo Testing Consortium",
+		"project_settings": {
+			"main_color": "#5065A7",
+			"secondary_color": "#FFFFFF",
+			"logo": "/img/providers/pivot.png"
+		},
+		"project_description": "The PIVOT consortium collaborates with industry partners on preclinical testing of molecularly targeted agents developed for adult cancers to evaluate their applicability to the treatment of pediatric cancer."
+	},
+	{
+		"project_name": "STCC",
+		"project_full_name": "Singapore Translational Cancer Constortium",
+		"project_settings": {
+			"main_color": "#213C83",
+			"secondary_color": "#FFFFFF",
+			"logo": "/img/providers/STCC.jpg"
+		},
+		"project_description": "STCC is a nationally coordinated initiative and network to synergise cancer research and translational capabilities across Singapore."
+	},
+	{
+		"project_name": "Other",
+		"project_settings": {
+			"main_color": "#003e48",
+			"secondary_color": "#FFFFFF"
+		}
+	}
+]

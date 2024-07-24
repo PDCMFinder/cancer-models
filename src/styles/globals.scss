@@ -157,6 +157,13 @@ img {
 			align-self: flex-end;
 		}
 	}
+	@include mediaOver("md") {
+		&-md {
+			&-center {
+				align-items: center;
+			}
+		}
+	}
 }
 .object-fit {
 	&-cover {
