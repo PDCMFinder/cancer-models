@@ -189,7 +189,7 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 						setActiveProject={setActiveProject}
 					/>
 					{data.project_description && data.project_settings.logo && (
-						<div className="row">
+						<div className="row mb-5">
 							<div className="col-12 col-lg-8 offset-lg-2">
 								<Card
 									contentClassName="py-4"
@@ -224,7 +224,7 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 							</div>
 						</div>
 					)}
-					<div className="row mt-5">
+					<div className="row">
 						{isLoadingProviders ? (
 							<div style={{ height: "50vh" }}>
 								<Loader />
