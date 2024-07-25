@@ -175,8 +175,6 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 			["dataSources", activeProject],
 			() => getDataSourcesByProject(activeProject ?? ""),
 			{
-				staleTime: 1000 * 60 * 10, // 10 minutes
-				cacheTime: 1000 * 60 * 10, // 10 minutes,
 				enabled: !!activeProject // Ensure query only runs when activeProject is set
 			}
 		);
@@ -196,11 +194,13 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 		.sort((a, b) => a.abbreviation.localeCompare(b.abbreviation));
 
 	const handleProjectClick = (projectName: string) => {
-		setActiveProject(projectName);
-		router.replace({
-			pathname: "/about/providers",
-			query: { project: projectName }
-		});
+		if (projectName !== activeProject) {
+			setActiveProject(projectName);
+			router.replace({
+				pathname: "/about/providers",
+				query: { project: projectName }
+			});
+		}
 	};
 
 	return (
