@@ -453,7 +453,7 @@ const Search: NextPage = () => {
 							<h1 className="h2 text-white text-center mt-0">
 								Search{" "}
 								{modelCount && modelCount.data
-									? `over ${parseFloat(modelCount.data!).toLocaleString()}`
+									? `over ${modelCount.data.toLocaleString()}`
 									: ""}{" "}
 								cancer models
 							</h1>

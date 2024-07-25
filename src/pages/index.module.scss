@@ -18,6 +18,11 @@
 	}
 	&_searchBackground {
 		grid-area: 2 / 1 / 3 / 4;
+		background-color: $color-primary-primary;
+		background-image: url("../../public/national-cancer-institute-wUg8xhJ3aBs.jpg");
+		background-size: cover;
+		background-position: center;
+		background-blend-mode: soft-light;
 	}
 	@include mediaOver("lg") {
 		&_container {
@@ -29,19 +34,19 @@
 			grid-auto-flow: row;
 			grid-template-areas: none;
 		}
-		&_image {
+		&_graphicElement {
 			img {
 				object-fit: cover;
 				height: 100%;
 				border: 3px solid $color-primary-primary;
 			}
-			grid-area: 1 / 2 / 3 / 6;
+			grid-area: 1 / 3 / 3 / 6;
 		}
 		&_title {
 			grid-area: 1 / 6 / 2 / 14;
 		}
 		&_search {
-			grid-area: 2 / 6 / 3 / 13;
+			grid-area: 2 / 6 / 3 / 12;
 		}
 		&_searchBackground {
 			grid-area: 2 / 1 / 4 / 15;
@@ -59,13 +64,14 @@
 		}
 	}
 	@include mediaOver("xxx") {
-		&_image {
-			grid-area: 1 / 3 / 3 / 6;
+		&_graphicElement {
+			grid-area: 2 / 7 / 3 / 6;
 		}
-		&_title,
-		&_search {
-			grid-column-start: 7;
+		&_title {
 			grid-column-end: 13;
+		}
+		&_search {
+			grid-column-end: 11;
 		}
 	}
 }

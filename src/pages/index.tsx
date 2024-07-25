@@ -1,8 +1,6 @@
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import { useQuery } from "react-query";
-import bannerImage from "../../public/national-cancer-institute-wUg8xhJ3aBs.jpg";
 import { getModelCount } from "../apis/AggregatedData.api";
 import Button from "../components/Button/Button";
 import Label from "../components/Input/Label";
@@ -37,44 +35,35 @@ const DynamicSearchBar = dynamic(
 
 const Home: NextPage = () => {
 	const { windowWidth } = useWindowDimensions();
-	let bpLarge = breakPoints.large;
-	let modelCount = useQuery("modelCount", () => {
-		return getModelCount();
-	});
+	const bpLarge = breakPoints.large;
+	const modelCount = useQuery("modelCount", () => getModelCount());
 
 	return (
 		<>
 			<header className="mt-lg-3 mb-5">
 				<div className={styles.header_container}>
 					<ShowHide windowWidth={windowWidth || 0} showOver={bpLarge}>
-						<div className={`${styles.header_image} position-relative`}>
-							<Image
-								src={bannerImage}
-								alt="A scanning electron micrograph of the surface of human skin by National Cancer Institute"
-								priority
-								fill
-								sizes="16vw"
-								quality={50}
-							/>
+						<div
+							className={`${styles.header_graphicElement} position-relative`}
+						>
+							<DynamicDataCountCard layout="vertical" />
 						</div>
 					</ShowHide>
 					<div
 						className={`${styles.header_title} flex-column d-flex py-5 py-lg-0`}
 					>
 						<h1 className="h2 mt-lg-1">
-							The largest open catalog of harmonised patient-derived cancer
-							models.
+							Find the right PDX, organoid and cell line patient-derived cancer
+							model for your next project.
 						</h1>
 						<div className="col-12 col-lg-10">
-							<p>
+							<p className="mb-0">
 								Looking for PDX Finder? That&apos;s us! We have expanded to
 								organoids and cell lines and are now called CancerModels.Org.{" "}
 							</p>
 						</div>
 					</div>
-					<div
-						className={`${styles.header_searchBackground} bg-primary-primary`}
-					></div>
+					<div className={`${styles.header_searchBackground}`}></div>
 					<div className={`${styles.header_search} py-5`}>
 						<Label
 							name="searchBar"
@@ -82,7 +71,7 @@ const Home: NextPage = () => {
 							className="h3 text-white"
 							label={`Search ${
 								modelCount && modelCount.data
-									? `over ${parseFloat(modelCount.data!).toLocaleString()}`
+									? `over ${modelCount.data.toLocaleString()}`
 									: ""
 							} cancer models`}
 						/>
@@ -92,11 +81,6 @@ const Home: NextPage = () => {
 			</header>
 			<section className="pt-1">
 				<div className="container">
-					<div className="row justify-content-center mb-5">
-						<div className="col-10 col-lg-8 col-xxx-6">
-							<DynamicDataCountCard layout="horizontal" />
-						</div>
-					</div>
 					<div className="row justify-content-center">
 						<div className="col-12 col-lg-8 text-center">
 							<h2 className="my-5">
