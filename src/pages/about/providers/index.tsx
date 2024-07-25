@@ -4,8 +4,9 @@ import type { NextPage } from "next";
 import { GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import path from "path";
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { remark } from "remark";
 import remarkHtml from "remark-html";
@@ -153,25 +154,40 @@ const ProjectButtons = memo(
 );
 
 const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
-	const [activeProject, setActiveProject] = useState(
-		projectsSettings[0].project_name
-	);
+	const router = useRouter();
+	const { project: projectFromUrl } = router.query;
+	const [activeProject, setActiveProject] = useState<string | null>(null);
+
+	useEffect(() => {
+		if (projectFromUrl) {
+			if (Array.isArray(projectFromUrl)) {
+				setActiveProject(projectFromUrl[0]);
+			} else {
+				setActiveProject(projectFromUrl as string);
+			}
+		} else if (router.isReady) {
+			setActiveProject(projectsSettings[0].project_name);
+		}
+	}, [projectFromUrl, router.isReady]);
 
 	const { data: dataSourcesByProject, isLoading: isLoadingProviders } =
 		useQuery(
 			["dataSources", activeProject],
-			() => getDataSourcesByProject(activeProject),
+			() => getDataSourcesByProject(activeProject ?? ""),
 			{
-				staleTime: 1000 * 60 * 10, // 5 minutes
-				cacheTime: 1000 * 60 * 10 // 10 minutes
+				staleTime: 1000 * 60 * 10, // 10 minutes
+				cacheTime: 1000 * 60 * 10, // 10 minutes,
+				enabled: !!activeProject // Ensure query only runs when activeProject is set
 			}
 		);
 
-	const activeProjectData = projectsSettings.find(
-		(project) => project.project_name === activeProject
-	);
+	const activeProjectData =
+		(projectsSettings.find(
+			(project) => project.project_name === activeProject
+		) as IProjectData) || projectsSettings[0];
+
 	const data = addProvidersToProjectData(
-		activeProjectData as IProjectData,
+		activeProjectData,
 		dataSourcesByProject ?? [{ data_source: "" }]
 	);
 
@@ -182,61 +198,68 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 	return (
 		<>
 			<Header />
-			<section className="pt-0">
-				<div className="container">
-					<ProjectButtons
-						activeProject={activeProject}
-						setActiveProject={setActiveProject}
-					/>
-					{data.project_description && data.project_settings.logo && (
-						<div className="row mb-5">
-							<div className="col-12 col-lg-8 offset-lg-2">
-								<Card
-									contentClassName="py-4"
-									header={
-										<h2 className="m-0">
-											{data.project_full_name ?? data.project_name}
-										</h2>
-									}
-								>
-									<div className="row">
-										<div className="col-3">
-											<Image
-												src={data.project_settings.logo}
-												alt={`${data.project_name} logo`}
-												width={150}
-												height={150}
-												className="w-100 h-auto mx-auto mb-2"
-											/>
-										</div>
-										<div className="col-9">
-											<p>{data.project_description}</p>
-											<p>
-												<Link
-													href={`/search?filters=project_name%3A${data.project_name}`}
-												>
-													View all models and data
-												</Link>
-											</p>
-										</div>
-									</div>
-								</Card>
-							</div>
-						</div>
-					)}
-					<div className="row">
-						{isLoadingProviders ? (
-							<div style={{ height: "50vh" }}>
-								<Loader />
-							</div>
-						) : (
-							activeProviders?.map((provider) => (
-								<ProviderInfo key={provider.id} provider={provider} />
-							))
-						)}
-					</div>
+			{/* Decided to move this here instead of outside this return so Header doesn't blink */}
+			{activeProject === null ? (
+				<div style={{ height: "50vh" }}>
+					<Loader />
 				</div>
-			</section>
+			) : (
+				<section className="pt-0">
+					<div className="container">
+						<ProjectButtons
+							activeProject={activeProject}
+							setActiveProject={setActiveProject}
+						/>
+						{data.project_description && data.project_settings.logo && (
+							<div className="row mb-5">
+								<div className="col-12 col-lg-8 offset-lg-2">
+									<Card
+										contentClassName="py-4"
+										header={
+											<h2 className="m-0">
+												{data.project_full_name ?? data.project_name}
+											</h2>
+										}
+									>
+										<div className="row">
+											<div className="col-3">
+												<Image
+													src={data.project_settings.logo}
+													alt={`${data.project_name} logo`}
+													width={150}
+													height={150}
+													className="w-100 h-auto mx-auto mb-2"
+												/>
+											</div>
+											<div className="col-9">
+												<p>{data.project_description}</p>
+												<p>
+													<Link
+														href={`/search?filters=project_name%3A${data.project_name}`}
+													>
+														View all models and data
+													</Link>
+												</p>
+											</div>
+										</div>
+									</Card>
+								</div>
+							</div>
+						)}
+						<div className="row">
+							{isLoadingProviders ? (
+								<div style={{ height: "50vh" }}>
+									<Loader />
+								</div>
+							) : (
+								activeProviders?.map((provider) => (
+									<ProviderInfo key={provider.id} provider={provider} />
+								))
+							)}
+						</div>
+					</div>
+				</section>
+			)}
 		</>
 	);
 };
