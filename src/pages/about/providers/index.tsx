@@ -50,7 +50,7 @@ interface IProjectButtonProps {
 
 interface IProjectButtonsProps {
 	activeProject: string;
-	setActiveProject: (name: string) => void;
+	onClick: (projectName: string) => void;
 }
 
 const getButtonColors = (
@@ -127,7 +127,7 @@ const Header = () => (
 );
 
 const ProjectButtons = memo(
-	({ activeProject, setActiveProject }: IProjectButtonsProps) => (
+	({ activeProject, onClick }: IProjectButtonsProps) => (
 		<div className="row mb-5">
 			<div
 				className="col-12 d-flex flex-column flex-md-row align-md-center justify-content-between"
@@ -144,7 +144,7 @@ const ProjectButtons = memo(
 							isActive={activeProject === project_name}
 							mainColor={main_color}
 							secondaryColor={secondary_color}
-							onClick={() => setActiveProject(project_name)}
+							onClick={() => onClick(project_name)}
 						/>
 					)
 				)}
@@ -195,6 +195,14 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 		.filter((provider) => data.providers?.includes(provider.abbreviation))
 		.sort((a, b) => a.abbreviation.localeCompare(b.abbreviation));
 
+	const handleProjectClick = (projectName: string) => {
+		setActiveProject(projectName);
+		router.replace({
+			pathname: "/about/providers",
+			query: { project: projectName }
+		});
+	};
+
 	return (
 		<>
 			<Header />
@@ -208,7 +216,7 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 					<div className="container">
 						<ProjectButtons
 							activeProject={activeProject}
-							setActiveProject={setActiveProject}
+							onClick={handleProjectClick}
 						/>
 						{data.project_description && data.project_settings.logo && (
 							<div className="row mb-5">
