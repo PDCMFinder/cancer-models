@@ -13,8 +13,10 @@ const ModelTypeIcon = ({
 		return <MouseIcon size={size} />;
 	} else if (modelType === "organoid") {
 		return <OrganoidIcon size={size} />;
-	} else {
+	} else if (modelType === "cell line") {
 		return <CavendishIcon size={size} />;
+	} else {
+		return <></>;
 	}
 };
 

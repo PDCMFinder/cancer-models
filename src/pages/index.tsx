@@ -40,7 +40,7 @@ const Home: NextPage = () => {
 
 	return (
 		<>
-			<header className="mt-lg-3 mb-5">
+			<header className="mt-lg-3">
 				<div className={styles.header_container}>
 					<ShowHide windowWidth={windowWidth || 0} showOver={bpLarge}>
 						<div
@@ -63,7 +63,7 @@ const Home: NextPage = () => {
 							</p>
 						</div>
 					</div>
-					<div className={`${styles.header_searchBackground}`}></div>
+					<div className={styles.header_searchBackground}></div>
 					<div className={`${styles.header_search} py-5`}>
 						<Label
 							name="searchBar"
@@ -79,27 +79,21 @@ const Home: NextPage = () => {
 					</div>
 				</div>
 			</header>
-			<section className="pt-1">
+			<section>
 				<div className="container">
 					<div className="row justify-content-center">
-						<div className="col-12 col-lg-8 text-center">
-							<h2 className="my-5">
-								Find the right PDX, organoid and cell line patient-derived
-								cancer model for your next project.
-							</h2>
-							<h2 className="h3">Explore and analyse the data.</h2>
-							<h2 className="h3">Connect with model providers.</h2>
-							<h2 className="h3">All in one platform.</h2>
-							<Button
-								color="dark"
-								priority="primary"
-								htmlTag="a"
-								href="/overview"
-								className="mb-0 mt-5"
-							>
-								Explore data overview
-							</Button>
+						<div className="col-12 col-lg-6">
+							<h2>Some text about projects</h2>
+							<p>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+								id lectus nec turpis molestie pretium tristique imperdiet
+								libero. Praesent sed mi tortor.
+							</p>
 						</div>
+					</div>
+					<div className="row justify-content-center">
+						<div className="col-12 col-md-3 col-lg-2">Filters</div>
+						<div className="col-12 col-md-9 col-lg-8">Providers</div>
 					</div>
 				</div>
 			</section>
