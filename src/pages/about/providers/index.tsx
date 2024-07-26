@@ -46,9 +46,11 @@ interface IProjectButtonProps {
 	mainColor: string;
 	secondaryColor: string;
 	onClick: () => void;
+	direction?: IProjectButtonsProps["direction"];
 }
 
 interface IProjectButtonsProps {
+	direction?: "row" | "column";
 	activeProject: string;
 	onClick: (projectName: string) => void;
 }
@@ -92,7 +94,8 @@ const ProjectButton = ({
 	isActive,
 	mainColor,
 	secondaryColor,
-	onClick
+	onClick,
+	direction
 }: IProjectButtonProps) => {
 	const buttonColors = getButtonColors(isActive, mainColor, secondaryColor);
 
@@ -101,7 +104,9 @@ const ProjectButton = ({
 			key={projectName}
 			priority="secondary"
 			color="dark"
-			className="mx-0 my-1 my-md-3 border-none justify-content-center"
+			className={`mx-0 my-1 border-none justify-content-center ${
+				direction === "row" ? "my-md-3" : ""
+			}`}
 			style={{ flex: "1 1 0", ...buttonColors }}
 			onMouseEnter={(e) =>
 				handleMouseEnter(e, isActive, mainColor, secondaryColor)
@@ -126,11 +131,13 @@ const Header = () => (
 	</header>
 );
 
-const ProjectButtons = memo(
-	({ activeProject, onClick }: IProjectButtonsProps) => (
+export const ProjectButtons = memo(
+	({ activeProject, onClick, direction }: IProjectButtonsProps) => (
 		<div className="row mb-5">
 			<div
-				className="col-12 d-flex flex-column flex-md-row align-md-center justify-content-between"
+				className={`col-12 d-flex flex-column align-md-center justify-content-between ${
+					direction === "row" ? "flex-md-row" : ""
+				}`}
 				style={{ columnGap: "1rem" }}
 			>
 				{projectsSettings.map(
@@ -145,6 +152,7 @@ const ProjectButtons = memo(
 							mainColor={main_color}
 							secondaryColor={secondary_color}
 							onClick={() => onClick(project_name)}
+							direction={direction}
 						/>
 					)
 				)}
@@ -215,6 +223,7 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 				<section className="pt-0">
 					<div className="container">
 						<ProjectButtons
+							direction="row"
 							activeProject={activeProject}
 							onClick={handleProjectClick}
 						/>
