@@ -6,7 +6,7 @@ import { addProvidersToProjectData } from "../projects";
 import projectsSettings from "../projectSettings.json";
 
 interface IProjectData {
-	project_name: string;
+	project_abbreviation: string;
 	project_full_name?: string;
 	providers?: string[];
 	project_description?: string;
@@ -30,7 +30,7 @@ export const useActiveProject = () => {
 				setActiveProject(projectFromUrl as string);
 			}
 		} else if (router.isReady) {
-			setActiveProject(projectsSettings[0].project_name);
+			setActiveProject(projectsSettings[0].project_abbreviation);
 		}
 	}, [projectFromUrl, router.isReady]);
 
@@ -45,7 +45,7 @@ export const useActiveProject = () => {
 
 	const activeProjectData =
 		(projectsSettings.find(
-			(project) => project.project_name === activeProject
+			(project) => project.project_abbreviation === activeProject
 		) as IProjectData) || projectsSettings[0];
 
 	addProvidersToProjectData(

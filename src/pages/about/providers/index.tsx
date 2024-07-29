@@ -26,7 +26,7 @@ interface IProvidersProps {
 }
 
 export interface IProjectData {
-	project_name: string;
+	project_abbreviation: string;
 	project_full_name?: string;
 	providers?: string[];
 	project_settings: {
@@ -142,16 +142,16 @@ export const ProjectButtons = memo(
 		>
 			{projectsSettings.map(
 				({
-					project_name,
+					project_abbreviation,
 					project_settings: { main_color, secondary_color }
 				}) => (
 					<ProjectButton
-						key={project_name}
-						projectName={project_name}
-						isActive={activeProject === project_name}
+						key={project_abbreviation}
+						projectName={project_abbreviation}
+						isActive={activeProject === project_abbreviation}
 						mainColor={main_color}
 						secondaryColor={secondary_color}
-						onClick={() => onClick(project_name)}
+						onClick={() => onClick(project_abbreviation)}
 						direction={direction}
 					/>
 				)
@@ -202,7 +202,7 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 											header={
 												<h2 className="m-0">
 													{activeProjectData.project_full_name ??
-														activeProjectData.project_name}
+														activeProjectData.project_abbreviation}
 												</h2>
 											}
 										>
@@ -210,7 +210,7 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 												<div className="col-3">
 													<Image
 														src={activeProjectData.project_settings.logo}
-														alt={`${activeProjectData.project_name} logo`}
+														alt={`${activeProjectData.project_abbreviation} logo`}
 														width={150}
 														height={150}
 														className="w-100 h-auto mx-auto mb-2"
@@ -220,7 +220,7 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 													<p>{activeProjectData.project_description}</p>
 													<p>
 														<Link
-															href={`/search?filters=project_name%3A${activeProjectData.project_name}`}
+															href={`/search?filters=project_name%3A${activeProjectData.project_abbreviation}`}
 														>
 															View all models and data
 														</Link>

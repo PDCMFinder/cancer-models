@@ -1,6 +1,7 @@
 // Documents/cancer-models/src/pages/index.tsx
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useQuery } from "react-query";
 import { getModelCount } from "../apis/AggregatedData.api";
 import Button from "../components/Button/Button";
@@ -128,16 +129,18 @@ const Home: NextPage = () => {
 										<div className="row">
 											<div className="col-12">
 												<img
-													src="/img/providers/ACC-PCMC.png"
-													alt="PDX logo"
+													src={activeProjectData.project_settings.logo}
+													alt={`${activeProjectData.project_abbreviation} logo`}
 													className="w-50 h-auto mx-auto mb-2"
 												/>
 												<h3 className="mt-0">
 													{activeProjectData.project_full_name ??
-														activeProjectData.project_name}
+														activeProjectData.project_abbreviation}
 												</h3>
 												<p>
-													<a href="/search?filters=project_name%3AACC-PCMC">
+													<a
+														href={`/search?filters=project_name%3A${activeProjectData.project_abbreviation}`}
+													>
 														Explore all project models
 													</a>
 												</p>
@@ -147,10 +150,22 @@ const Home: NextPage = () => {
 									</>
 								) : null}
 								{/* provider logos */}
-								<div className="row">
-									<div className="col-12">
-										<p>imgs</p>
-									</div>
+								<div className="row row-cols-1 row-cols-md-2 row-cols-lg-6 align-center">
+									{activeProjectData.providers?.map((provider) => (
+										<div className="col text-center" key={provider}>
+											<Link
+												href={`/search?filters=data_source%3A${provider}`}
+												title={`Explore all ${provider} models`}
+											>
+												<img
+													src={`/img/providers/${provider.toLowerCase()}.png`}
+													alt={`${provider} logo`}
+													className="w-100 h-auto mb-3"
+													// style={{ maxHeight: "100px" }}
+												/>
+											</Link>
+										</div>
+									))}
 								</div>
 							</div>
 						</div>
