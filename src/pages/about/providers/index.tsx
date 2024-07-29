@@ -4,18 +4,15 @@ import type { NextPage } from "next";
 import { GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import path from "path";
-import React, { memo, useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import React, { memo } from "react";
 import { remark } from "remark";
 import remarkHtml from "remark-html";
-import { getDataSourcesByProject } from "../../../apis/Search.api";
 import Button from "../../../components/Button/Button";
 import Card from "../../../components/Card/Card";
 import Loader from "../../../components/Loader/Loader";
 import ProviderInfo from "../../../components/ProviderInfo/ProviderInfo";
-import { addProvidersToProjectData } from "../../../utils/projects";
+import { useActiveProject } from "../../../utils/hooks/useActiveProject";
 import projectsSettings from "../../../utils/projectSettings.json";
 
 interface IProvidersProps {
@@ -162,56 +159,19 @@ export const ProjectButtons = memo(
 		</div>
 	)
 );
-
 const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
-	const router = useRouter();
-	const { project: projectFromUrl } = router.query;
-	const [activeProject, setActiveProject] = useState<string | null>(null);
-
-	useEffect(() => {
-		if (projectFromUrl) {
-			if (Array.isArray(projectFromUrl)) {
-				setActiveProject(projectFromUrl[0]);
-			} else {
-				setActiveProject(projectFromUrl as string);
-			}
-		} else if (router.isReady) {
-			setActiveProject(projectsSettings[0].project_name);
-		}
-	}, [projectFromUrl, router.isReady]);
-
-	const { data: dataSourcesByProject, isLoading: isLoadingProviders } =
-		useQuery(
-			["dataSources", activeProject],
-			() => getDataSourcesByProject(activeProject ?? ""),
-			{
-				enabled: !!activeProject // Ensure query only runs when activeProject is set
-			}
-		);
-
-	const activeProjectData =
-		(projectsSettings.find(
-			(project) => project.project_name === activeProject
-		) as IProjectData) || projectsSettings[0];
-
-	const data = addProvidersToProjectData(
+	const {
+		activeProject,
 		activeProjectData,
-		dataSourcesByProject ?? [{ data_source: "" }]
-	);
+		isLoadingProviders,
+		handleProjectClick
+	} = useActiveProject();
 
 	const activeProviders = allProvidersBasics
-		.filter((provider) => data.providers?.includes(provider.abbreviation))
+		.filter((provider) =>
+			activeProjectData.providers?.includes(provider.abbreviation)
+		)
 		.sort((a, b) => a.abbreviation.localeCompare(b.abbreviation));
-
-	const handleProjectClick = (projectName: string) => {
-		if (projectName !== activeProject) {
-			setActiveProject(projectName);
-			router.replace({
-				pathname: "/about/providers",
-				query: { project: projectName }
-			});
-		}
-	};
 
 	return (
 		<>
@@ -233,42 +193,44 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 								/>
 							</div>
 						</div>
-						{data.project_description && data.project_settings.logo && (
-							<div className="row mb-5">
-								<div className="col-12 col-lg-8 offset-lg-2">
-									<Card
-										contentClassName="py-4"
-										header={
-											<h2 className="m-0">
-												{data.project_full_name ?? data.project_name}
-											</h2>
-										}
-									>
-										<div className="row">
-											<div className="col-3">
-												<Image
-													src={data.project_settings.logo}
-													alt={`${data.project_name} logo`}
-													width={150}
-													height={150}
-													className="w-100 h-auto mx-auto mb-2"
-												/>
+						{activeProjectData.project_description &&
+							activeProjectData.project_settings.logo && (
+								<div className="row mb-5">
+									<div className="col-12 col-lg-8 offset-lg-2">
+										<Card
+											contentClassName="py-4"
+											header={
+												<h2 className="m-0">
+													{activeProjectData.project_full_name ??
+														activeProjectData.project_name}
+												</h2>
+											}
+										>
+											<div className="row">
+												<div className="col-3">
+													<Image
+														src={activeProjectData.project_settings.logo}
+														alt={`${activeProjectData.project_name} logo`}
+														width={150}
+														height={150}
+														className="w-100 h-auto mx-auto mb-2"
+													/>
+												</div>
+												<div className="col-9">
+													<p>{activeProjectData.project_description}</p>
+													<p>
+														<Link
+															href={`/search?filters=project_name%3A${activeProjectData.project_name}`}
+														>
+															View all models and data
+														</Link>
+													</p>
+												</div>
 											</div>
-											<div className="col-9">
-												<p>{data.project_description}</p>
-												<p>
-													<Link
-														href={`/search?filters=project_name%3A${data.project_name}`}
-													>
-														View all models and data
-													</Link>
-												</p>
-											</div>
-										</div>
-									</Card>
+										</Card>
+									</div>
 								</div>
-							</div>
-						)}
+							)}
 						<div className="row">
 							{isLoadingProviders ? (
 								<div style={{ height: "50vh" }}>

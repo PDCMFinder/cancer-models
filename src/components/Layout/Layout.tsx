@@ -94,7 +94,7 @@ const Layout = (props: ILayoutProps) => {
 					>
 						<Card
 							className="bg-white"
-							headerClassName="py-0 px-1 bg-white"
+							headerClassName="pt-1 pb-0 px-1 bg-white"
 							header={
 								<header className="text-right">
 									<CloseIcon
@@ -120,7 +120,6 @@ const Layout = (props: ILayoutProps) => {
 									href={surveyHref}
 									color="dark"
 									priority="primary"
-									className="mb-5"
 									onClick={() =>
 										setCookie("cm_feedback", "true", {
 											sameSite: "lax",

@@ -1,3 +1,4 @@
+// Documents/cancer-models/src/pages/index.tsx
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
 import { useQuery } from "react-query";
@@ -9,6 +10,7 @@ import Loader from "../components/Loader/Loader";
 import ShowHide from "../components/ShowHide/ShowHide";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import breakPoints from "../utils/breakpoints";
+import { useActiveProject } from "../utils/hooks/useActiveProject";
 import { ProjectButtons } from "./about/providers";
 import styles from "./index.module.scss";
 
@@ -40,6 +42,14 @@ const Home: NextPage = () => {
 	const bpLarge = breakPoints.large;
 	const modelCount = useQuery("modelCount", () => getModelCount());
 
+	const {
+		activeProject,
+		setActiveProject,
+		activeProjectData,
+		isLoadingProviders,
+		handleProjectClick
+	} = useActiveProject();
+
 	return (
 		<>
 			<header className="mt-lg-3">
@@ -58,12 +68,14 @@ const Home: NextPage = () => {
 							Find the right PDX, organoid and cell line patient-derived cancer
 							model for your next project.
 						</h1>
-						{/* <div className="col-12 col-lg-10">
-							<p className="mb-0">
-								Looking for PDX Finder? That&apos;s us! We have expanded to
-								organoids and cell lines and are now called CancerModels.Org.{" "}
-							</p>
-						</div> */}
+
+						<ShowHide windowWidth={windowWidth || 0} hideOver={bpLarge}>
+							<div
+								className={`${styles.header_graphicElement} mt-3 position-relative`}
+							>
+								<DynamicDataCountCard layout="vertical" iconSize="1em" />
+							</div>
+						</ShowHide>
 					</div>
 					<div className={styles.header_searchBackground}></div>
 					<div className={`${styles.header_search} py-5`}>
@@ -93,20 +105,56 @@ const Home: NextPage = () => {
 							</p>
 						</div>
 					</div>
-					<div className="row justify-content-center">
-						<div className="col-12 col-md-3 col-lg-2">
-							<Card contentClassName="p-1" className="bg-lightGray">
-								<ProjectButtons
-									direction="column"
-									activeProject={""}
-									onClick={function (projectName: string): void {
-										throw new Error("Function not implemented.");
-									}}
-								/>
-							</Card>
+					{activeProject === null ? (
+						<div style={{ height: "50vh" }}>
+							<Loader />
 						</div>
-						<div className="col-12 col-md-9 col-lg-8">Providers</div>
-					</div>
+					) : (
+						<div className="row justify-content-center">
+							<div className="col-12 col-md-3 col-lg-2">
+								<Card contentClassName="p-1" className="bg-lightGray">
+									<ProjectButtons
+										direction="column"
+										activeProject={activeProject}
+										onClick={handleProjectClick}
+									/>
+								</Card>
+							</div>
+							<div className="col-12 col-md-9 col-lg-8 mt-5 mt-md-0">
+								{/* project logo and name */}
+								{activeProjectData.project_description &&
+								activeProjectData.project_settings.logo ? (
+									<>
+										<div className="row">
+											<div className="col-12">
+												<img
+													src="/img/providers/ACC-PCMC.png"
+													alt="PDX logo"
+													className="w-50 h-auto mx-auto mb-2"
+												/>
+												<h3 className="mt-0">
+													{activeProjectData.project_full_name ??
+														activeProjectData.project_name}
+												</h3>
+												<p>
+													<a href="/search?filters=project_name%3AACC-PCMC">
+														Explore all project models
+													</a>
+												</p>
+											</div>
+										</div>
+										<hr />
+									</>
+								) : null}
+								{/* provider logos */}
+								<div className="row">
+									<div className="col-12">
+										<p>imgs</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					)}
 				</div>
 			</section>
 			<section className="pb-0">
