@@ -48,7 +48,7 @@ const Home: NextPage = () => {
 						<div
 							className={`${styles.header_graphicElement} position-relative`}
 						>
-							<DynamicDataCountCard layout="vertical" />
+							<DynamicDataCountCard layout="vertical" iconSize="1em" />
 						</div>
 					</ShowHide>
 					<div
@@ -58,12 +58,12 @@ const Home: NextPage = () => {
 							Find the right PDX, organoid and cell line patient-derived cancer
 							model for your next project.
 						</h1>
-						<div className="col-12 col-lg-10">
+						{/* <div className="col-12 col-lg-10">
 							<p className="mb-0">
 								Looking for PDX Finder? That&apos;s us! We have expanded to
 								organoids and cell lines and are now called CancerModels.Org.{" "}
 							</p>
-						</div>
+						</div> */}
 					</div>
 					<div className={styles.header_searchBackground}></div>
 					<div className={`${styles.header_search} py-5`}>

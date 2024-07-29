@@ -55,7 +55,7 @@ interface IProjectButtonsProps {
 	onClick: (projectName: string) => void;
 }
 
-const getButtonColors = (
+const getButtonStyleColors = (
 	isActive: boolean,
 	mainColor: string,
 	secondaryColor: string
@@ -97,14 +97,18 @@ const ProjectButton = ({
 	onClick,
 	direction
 }: IProjectButtonProps) => {
-	const buttonColors = getButtonColors(isActive, mainColor, secondaryColor);
+	const buttonColors = getButtonStyleColors(
+		isActive,
+		mainColor,
+		secondaryColor
+	);
 
 	return (
 		<Button
 			key={projectName}
 			priority="secondary"
 			color="dark"
-			className={`mx-0 my-1 border-none justify-content-center ${
+			className={`w-100 mx-0 my-1 border-none justify-content-center ${
 				direction === "row" ? "my-md-3" : ""
 			}`}
 			style={{ flex: "1 1 0", ...buttonColors }}
@@ -133,30 +137,28 @@ const Header = () => (
 
 export const ProjectButtons = memo(
 	({ activeProject, onClick, direction }: IProjectButtonsProps) => (
-		<div className="row mb-5">
-			<div
-				className={`col-12 d-flex flex-column align-md-center justify-content-between ${
-					direction === "row" ? "flex-md-row" : ""
-				}`}
-				style={{ columnGap: "1rem" }}
-			>
-				{projectsSettings.map(
-					({
-						project_name,
-						project_settings: { main_color, secondary_color }
-					}) => (
-						<ProjectButton
-							key={project_name}
-							projectName={project_name}
-							isActive={activeProject === project_name}
-							mainColor={main_color}
-							secondaryColor={secondary_color}
-							onClick={() => onClick(project_name)}
-							direction={direction}
-						/>
-					)
-				)}
-			</div>
+		<div
+			className={`d-flex flex-column align-md-center justify-content-between ${
+				direction === "row" ? "flex-md-row" : ""
+			}`}
+			style={{ columnGap: "1rem" }}
+		>
+			{projectsSettings.map(
+				({
+					project_name,
+					project_settings: { main_color, secondary_color }
+				}) => (
+					<ProjectButton
+						key={project_name}
+						projectName={project_name}
+						isActive={activeProject === project_name}
+						mainColor={main_color}
+						secondaryColor={secondary_color}
+						onClick={() => onClick(project_name)}
+						direction={direction}
+					/>
+				)
+			)}
 		</div>
 	)
 );
@@ -222,11 +224,15 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 			) : (
 				<section className="pt-0">
 					<div className="container">
-						<ProjectButtons
-							direction="row"
-							activeProject={activeProject}
-							onClick={handleProjectClick}
-						/>
+						<div className="row mb-5">
+							<div className="col-12">
+								<ProjectButtons
+									direction="row"
+									activeProject={activeProject}
+									onClick={handleProjectClick}
+								/>
+							</div>
+						</div>
 						{data.project_description && data.project_settings.logo && (
 							<div className="row mb-5">
 								<div className="col-12 col-lg-8 offset-lg-2">

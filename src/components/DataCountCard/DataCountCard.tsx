@@ -3,11 +3,13 @@ import { useQuery } from "react-query";
 import { getModelsByType } from "../../apis/AggregatedData.api";
 import { capitalizeFirstLetter } from "../../utils/dataUtils";
 import Card from "../Card/Card";
+import { ICavendishIconProps } from "../Icons/CavendishIcon";
 import ModelTypeIcon from "../Icons/ModelTypeIcon";
 import Loader from "../Loader/Loader";
 
 interface IDataCountCardProps {
 	layout: "vertical" | "horizontal";
+	iconSize?: ICavendishIconProps["size"];
 }
 
 const DataCountCard = (props: IDataCountCardProps) => {
@@ -31,7 +33,10 @@ const DataCountCard = (props: IDataCountCardProps) => {
 								href={`/search?filters=model_type:${d.modelType}`}
 								className="p text-noDecoration"
 							>
-								<ModelTypeIcon modelType={d.modelType} size="2em" />
+								<ModelTypeIcon
+									modelType={d.modelType}
+									size={props.iconSize ?? "1em"}
+								/>
 								<br />
 								<span className="h3 mb-0">{d.count.toLocaleString()}</span>
 								<br />
