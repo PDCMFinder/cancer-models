@@ -105,7 +105,7 @@ const ProjectButton = ({
 			key={projectName}
 			priority="secondary"
 			color="dark"
-			className={`w-100 mx-0 my-1 border-none justify-content-center ${
+			className={`w-100 mx-0 mt-0 mb-1 border-none justify-content-center ${
 				direction === "row" ? "my-md-3" : "mt-lg-0"
 			}`}
 			style={{ flex: "1 1 0", ...buttonColors }}
@@ -205,7 +205,7 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 											}
 										>
 											<div className="row">
-												<div className="col-3">
+												<div className="col-8 offset-2 col-md-3">
 													<Image
 														src={activeProjectData.project_settings.logo}
 														alt={`${activeProjectData.project_abbreviation} logo`}
@@ -214,7 +214,7 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 														className="w-100 h-auto mx-auto mb-2"
 													/>
 												</div>
-												<div className="col-9">
+												<div className="col-12 col-md-9">
 													<p>{activeProjectData.project_description}</p>
 													<p>
 														<Link

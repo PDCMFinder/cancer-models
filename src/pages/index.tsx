@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useQuery } from "react-query";
 import { getModelCount } from "../apis/AggregatedData.api";
 import Button from "../components/Button/Button";
-import Card from "../components/Card/Card";
 import Label from "../components/Input/Label";
 import Loader from "../components/Loader/Loader";
 import ShowHide from "../components/ShowHide/ShowHide";
@@ -113,13 +112,11 @@ const Home: NextPage = () => {
 					) : (
 						<div className="row justify-content-center">
 							<div className="col-12 col-md-3 col-lg-2">
-								<Card contentClassName="p-1" className="bg-lightGray">
-									<ProjectButtons
-										direction="column"
-										activeProject={activeProject}
-										onClick={handleProjectClick}
-									/>
-								</Card>
+								<ProjectButtons
+									direction="column"
+									activeProject={activeProject}
+									onClick={handleProjectClick}
+								/>
 							</div>
 							<div className="col-12 col-md-9 col-lg-8 mt-5 mt-md-0">
 								{/* project logo and name */}
