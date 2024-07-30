@@ -27,7 +27,7 @@ export const useActiveProject = () => {
 			if (Array.isArray(projectFromUrl)) {
 				setActiveProject(projectFromUrl[0]);
 			} else {
-				setActiveProject(projectFromUrl as string);
+				setActiveProject(projectFromUrl);
 			}
 		} else if (router.isReady) {
 			setActiveProject(projectsSettings[0].project_abbreviation);
@@ -53,23 +53,28 @@ export const useActiveProject = () => {
 		dataSourcesByProject ?? [{ data_source: "" }]
 	);
 
+	const handleProjectClick = (projectName: string) => {
+		if (projectName !== activeProject) {
+			setActiveProject(projectName);
+			router.replace(
+				{
+					query: {
+						project: projectName
+					}
+				},
+				undefined,
+				{ scroll: false }
+			);
+		} else {
+			setActiveProject(null);
+		}
+	};
+
 	return {
 		activeProject,
 		setActiveProject,
 		activeProjectData,
 		isLoadingProviders,
-		handleProjectClick: (projectName: string) => {
-			if (projectName !== activeProject) {
-				setActiveProject(projectName);
-				router.replace(
-					{
-						pathname: router.pathname,
-						query: { project: projectName }
-					},
-					undefined,
-					{ scroll: false }
-				);
-			}
-		}
+		handleProjectClick
 	};
 };

@@ -48,6 +48,7 @@ p {
 svg,
 img {
 	display: block;
+	max-width: 100%;
 }
 .d {
 	&-none {
@@ -95,9 +96,9 @@ img {
 .flex {
 	&-column {
 		flex-direction: column;
-	}
-	&-column-reverse {
-		flex-direction: column-reverse;
+		&-reverse {
+			flex-direction: column-reverse;
+		}
 	}
 	&-shrink {
 		&-1 {
@@ -111,6 +112,15 @@ img {
 		&-md {
 			&-row {
 				flex-direction: row;
+			}
+		}
+	}
+	@include mediaOver("lg") {
+		&-lg {
+			&-row {
+				&-reverse {
+					flex-direction: row-reverse;
+				}
 			}
 		}
 	}
@@ -203,6 +213,11 @@ img {
 	}
 	&-min {
 		width: min-content;
+	}
+	@include mediaOver("lg") {
+		&-lg-auto {
+			width: auto;
+		}
 	}
 }
 button {

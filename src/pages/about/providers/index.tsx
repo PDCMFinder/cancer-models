@@ -106,7 +106,7 @@ const ProjectButton = ({
 			priority="secondary"
 			color="dark"
 			className={`w-100 mx-0 my-1 border-none justify-content-center ${
-				direction === "row" ? "my-md-3" : ""
+				direction === "row" ? "my-md-3" : "mt-lg-0"
 			}`}
 			style={{ flex: "1 1 0", ...buttonColors }}
 			onMouseEnter={(e) =>

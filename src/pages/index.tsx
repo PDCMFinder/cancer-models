@@ -96,7 +96,7 @@ const Home: NextPage = () => {
 			</header>
 			<section>
 				<div className="container">
-					<div className="row justify-content-center">
+					<div className="row justify-content-center mb-3">
 						<div className="col-12 col-lg-6">
 							<h2>Some text about projects</h2>
 							<p>
@@ -126,18 +126,24 @@ const Home: NextPage = () => {
 								{activeProjectData.project_description &&
 								activeProjectData.project_settings.logo ? (
 									<>
-										<div className="row">
-											<div className="col-12">
+										<div className="row flex-lg-row-reverse mb-3">
+											<div className="col-12 col-md-6 col-lg-3">
 												<img
 													src={activeProjectData.project_settings.logo}
 													alt={`${activeProjectData.project_abbreviation} logo`}
-													className="w-50 h-auto mx-auto mb-2"
+													className="w-50 h-auto mx-auto mb-2 mb-md-0 w-lg-auto mr-lg-0"
+													style={{
+														maxHeight: "120px",
+														maxWidth: "100%"
+													}}
 												/>
+											</div>
+											<div className="col-12 col-md-6 col-lg-9">
 												<h3 className="mt-0">
 													{activeProjectData.project_full_name ??
 														activeProjectData.project_abbreviation}
 												</h3>
-												<p>
+												<p className="mb-lg-0">
 													<a
 														href={`/search?filters=project_name%3A${activeProjectData.project_abbreviation}`}
 													>
@@ -146,7 +152,7 @@ const Home: NextPage = () => {
 												</p>
 											</div>
 										</div>
-										<hr />
+										<hr className="mb-3" />
 									</>
 								) : null}
 								{/* provider logos */}
