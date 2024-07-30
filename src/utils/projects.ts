@@ -7,7 +7,7 @@ export const addProvidersToProjectData = (
 	const uniqueValues = [
 		...new Set(dataSources.map((item) => item.data_source))
 	];
-	projectData.providers = uniqueValues;
+	projectData.providers = uniqueValues.sort((a, b) => a.localeCompare(b));
 
 	return projectData;
 };

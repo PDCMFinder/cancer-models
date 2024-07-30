@@ -150,9 +150,9 @@ const Home: NextPage = () => {
 									</>
 								) : null}
 								{/* provider logos */}
-								<div className="row row-cols-1 row-cols-md-2 row-cols-lg-6 align-center">
+								<div className="row row-cols-2 row-cols-md-3 row-cols-lg-6 align-center">
 									{activeProjectData.providers?.map((provider) => (
-										<div className="col text-center" key={provider}>
+										<div key={provider} className="col text-center mb-3">
 											<Link
 												href={`/search?filters=data_source%3A${provider}`}
 												title={`Explore all ${provider} models`}
@@ -160,8 +160,8 @@ const Home: NextPage = () => {
 												<img
 													src={`/img/providers/${provider.toLowerCase()}.png`}
 													alt={`${provider} logo`}
-													className="w-100 h-auto mb-3"
-													// style={{ maxHeight: "100px" }}
+													className="w-75 h-auto mx-auto"
+													style={{ maxHeight: "100px" }}
 												/>
 											</Link>
 										</div>

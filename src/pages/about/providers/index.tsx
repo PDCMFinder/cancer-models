@@ -167,11 +167,9 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 		handleProjectClick
 	} = useActiveProject();
 
-	const activeProviders = allProvidersBasics
-		.filter((provider) =>
-			activeProjectData.providers?.includes(provider.abbreviation)
-		)
-		.sort((a, b) => a.abbreviation.localeCompare(b.abbreviation));
+	const activeProviders = allProvidersBasics.filter((provider) =>
+		activeProjectData.providers?.includes(provider.abbreviation)
+	);
 
 	return (
 		<>
