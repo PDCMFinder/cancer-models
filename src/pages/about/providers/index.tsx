@@ -5,7 +5,7 @@ import { GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import path from "path";
-import React, { memo } from "react";
+import React from "react";
 import { remark } from "remark";
 import remarkHtml from "remark-html";
 import Button from "../../../components/Button/Button";
@@ -102,7 +102,6 @@ const ProjectButton = ({
 
 	return (
 		<Button
-			key={projectName}
 			priority="secondary"
 			color="dark"
 			className={`w-100 mx-0 mt-0 mb-1 border-none justify-content-center ${
@@ -132,33 +131,36 @@ const Header = () => (
 	</header>
 );
 
-export const ProjectButtons = memo(
-	({ activeProject, onClick, direction }: IProjectButtonsProps) => (
-		<div
-			className={`d-flex flex-column align-md-center justify-content-between ${
-				direction === "row" ? "flex-md-row" : ""
-			}`}
-			style={{ columnGap: "1rem" }}
-		>
-			{projectsSettings.map(
-				({
-					project_abbreviation,
-					project_settings: { main_color, secondary_color }
-				}) => (
-					<ProjectButton
-						key={project_abbreviation}
-						projectName={project_abbreviation}
-						isActive={activeProject === project_abbreviation}
-						mainColor={main_color}
-						secondaryColor={secondary_color}
-						onClick={() => onClick(project_abbreviation)}
-						direction={direction}
-					/>
-				)
-			)}
-		</div>
-	)
+export const ProjectButtons = ({
+	activeProject,
+	onClick,
+	direction
+}: IProjectButtonsProps) => (
+	<div
+		className={`d-flex flex-column align-md-center justify-content-between ${
+			direction === "row" ? "flex-md-row" : ""
+		}`}
+		style={{ columnGap: "1rem" }}
+	>
+		{projectsSettings.map(
+			({
+				project_abbreviation,
+				project_settings: { main_color, secondary_color }
+			}) => (
+				<ProjectButton
+					key={project_abbreviation}
+					projectName={project_abbreviation}
+					isActive={activeProject === project_abbreviation}
+					mainColor={main_color}
+					secondaryColor={secondary_color}
+					onClick={() => onClick(project_abbreviation)}
+					direction={direction}
+				/>
+			)
+		)}
+	</div>
 );
+
 const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 	const {
 		activeProject,
