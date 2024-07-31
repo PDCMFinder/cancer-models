@@ -195,8 +195,8 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 						</div>
 						{activeProjectData.project_description &&
 							activeProjectData.project_settings.logo && (
-								<div className="row mb-5">
-									<div className="col-12 col-lg-8 offset-lg-2">
+								<div className="row mb-5 justify-content-center">
+									<div className="col-12 col-lg-8">
 										<Card
 											contentClassName="py-4"
 											header={
@@ -207,7 +207,7 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 											}
 										>
 											<div className="row">
-												<div className="col-8 offset-2 col-md-3">
+												<div className="col-8 offset-2 col-md-3 offset-md-0">
 													<Image
 														src={activeProjectData.project_settings.logo}
 														alt={`${activeProjectData.project_abbreviation} logo`}
