@@ -1,7 +1,5 @@
-import { camelCase } from "../utils/dataUtils";
 import { IGitlabRelease } from "../../types/releaseTypes";
-import { remark } from "remark";
-import remarkHtml from "remark-html";
+import { camelCase } from "../utils/dataUtils";
 import parseRelease from "../utils/parseRelease";
 
 export async function getCancerHierarchy(): Promise<any> {
@@ -22,18 +20,18 @@ export async function getCancerHierarchy(): Promise<any> {
 			if (hierarchy[element.cancer_system] === undefined) {
 				hierarchy[element.cancer_system] = {
 					search_terms: element.cancer_system.replace("Cancer", ""),
-					children: [],
+					children: []
 				};
 			}
 			hierarchy[element.cancer_system].children.push({
 				search_terms: element.histology,
-				count: element.count,
+				count: element.count
 			});
 		});
 
 		return {
 			search_terms: "CancerModels.Org Models",
-			children: Object.values(hierarchy),
+			children: Object.values(hierarchy)
 		};
 	});
 }
@@ -70,14 +68,20 @@ export async function getModelsByTreatment() {
 	});
 }
 
-export async function getModelsByType() {
+export async function getModelsByType(): Promise<
+	{ modelType: string; count: number }[]
+> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_type?order=count.desc`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json().then((d: any[]) => d.map((i: any) => camelCase(i)));
+	return response
+		.json()
+		.then((d: { model_type: string; count: number }[]) =>
+			d.filter((d) => d.model_type !== "other").map((i) => camelCase(i))
+		);
 }
 
 export async function getModelsByPrimarySite() {
@@ -172,7 +176,7 @@ export async function getModelsByDatasetAvailability() {
 			return {
 				id: i.dataset_availability,
 				label: i.dataset_availability,
-				value: i.count,
+				value: i.count
 			};
 		})
 	);
@@ -183,8 +187,8 @@ export async function getDataReleaseInformation() {
 		"https://gitlab.ebi.ac.uk/api/v4/projects/1629/releases",
 		{
 			headers: {
-				"PRIVATE-TOKEN": "glpat-gbQzKFxHTWyp_jZhP5gE",
-			},
+				"PRIVATE-TOKEN": "glpat-gbQzKFxHTWyp_jZhP5gE"
+			}
 		}
 	);
 	if (!response.ok) {
@@ -205,8 +209,8 @@ export async function getLatestDataReleaseInformation() {
 		"https://gitlab.ebi.ac.uk/api/v4/projects/1629/releases?per_page=1",
 		{
 			headers: {
-				"PRIVATE-TOKEN": "glpat-gbQzKFxHTWyp_jZhP5gE",
-			},
+				"PRIVATE-TOKEN": "glpat-gbQzKFxHTWyp_jZhP5gE"
+			}
 		}
 	);
 	if (!response.ok) {
@@ -221,8 +225,8 @@ export async function getUIReleaseInformation() {
 		"https://gitlab.ebi.ac.uk/api/v4/projects/4135/releases",
 		{
 			headers: {
-				"PRIVATE-TOKEN": "glpat-SJR6QYyByDoaKp-wCRxL",
-			},
+				"PRIVATE-TOKEN": "glpat-SJR6QYyByDoaKp-wCRxL"
+			}
 		}
 	);
 
@@ -248,9 +252,9 @@ export async function getModelCount() {
 	return response
 		.json()
 		.then(
-			(d) =>
+			(d: { value: number; key: string }[]) =>
 				d.filter(
-					(el: { value: string; key: string }) => el.key === "total_models"
+					(el: { value: number; key: string }) => el.key === "total_models"
 				)[0].value
 		);
 }
@@ -262,8 +266,8 @@ export async function getProviderCount() {
 			headers: {
 				"Range-Unit": "items",
 				Range: "0-24",
-				Prefer: "count=exact",
-			},
+				Prefer: "count=exact"
+			}
 		}
 	);
 	if (!response.ok) {
