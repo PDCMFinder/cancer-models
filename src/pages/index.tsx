@@ -127,7 +127,8 @@ const Home: NextPage = () => {
 											<div className="col-12 col-md-6 col-lg-3">
 												<img
 													src={activeProjectData.project_settings.logo}
-													alt={`${activeProjectData.project_abbreviation} logo`}
+													alt={`${activeProjectData.project_full_name} logo`}
+													title={`${activeProjectData.project_full_name}`}
 													className="w-50 h-auto mx-auto mb-2 mb-md-0 w-lg-auto mr-lg-0"
 													style={{
 														maxHeight: "120px",
@@ -161,8 +162,9 @@ const Home: NextPage = () => {
 												title={`Explore all ${provider} models`}
 											>
 												<img
-													src={`/img/providers/${provider.toLowerCase()}.png`}
+													src={`/img/providers/${provider}.png`}
 													alt={`${provider} logo`}
+													title={provider}
 													className="w-75 h-auto mx-auto"
 													style={{ maxHeight: "100px" }}
 												/>
