@@ -18,6 +18,7 @@ import {
 } from "../../../../apis/ModelDetails.api";
 import Button from "../../../../components/Button/Button";
 import Card from "../../../../components/Card/Card";
+import ExternalModelLinksTable from "../../../../components/ExternalModelLinksTable/ExternalModelLinksTable";
 import FloatingButton from "../../../../components/FloatingWidget/FloatingButton";
 import CloseIcon from "../../../../components/Icons/CloseIcon/CloseIcon";
 import ImageChecker from "../../../../components/ImageChecker/ImageChecker";
@@ -1468,6 +1469,31 @@ const ModelDetails = ({
 												</ImageChecker>
 											))}
 										</div>
+									</div>
+								</div>
+							)}
+							{Object.keys(extLinks.externalModelLinksByType).length > 0 && (
+								<div id="external-model-links" className="row mb-5 pt-3">
+									<div className="col-12">
+										<h2 className="mt-0">External resources</h2>
+									</div>
+									<div className="col-12 col-lg-6">
+										<ExternalModelLinksTable
+											externalModelLinksByType={
+												extLinks.externalModelLinksByType
+											}
+											type="external_id"
+											columnHeader="IDENTIFIERS"
+										/>
+									</div>
+									<div className="col-12 col-lg-6">
+										<ExternalModelLinksTable
+											externalModelLinksByType={
+												extLinks.externalModelLinksByType
+											}
+											type="supplier"
+											columnHeader="SUPPLIERS"
+										/>
 									</div>
 								</div>
 							)}
