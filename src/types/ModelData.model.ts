@@ -52,9 +52,36 @@ export type Metadata = {
 	pdxModelPublications: string;
 };
 
+export type ExternalModelLink = {
+	type: "external_id" | "supplier";
+	resourceLabel: string;
+	linkLabel: string;
+	link: string;
+};
+
+export type ExternalModelLinkByType = Record<
+	ExternalModelLink["type"],
+	ExternalModelLink[]
+>;
+
+export type APIExternalModelLink = {
+	type: "external_id" | "supplier";
+	resource_label: string;
+	link_label: string;
+	link: string;
+};
+
 export type ExtLinks = {
 	contactLink: string;
 	sourceDatabaseUrl: string;
+	externalModelLinksByType: ExternalModelLinkByType;
+};
+
+export type APIExtLinks = {
+	other_model_links: APIExternalModelLink[];
+	contact_form?: { form_url: string };
+	contact_people?: { email_list: string };
+	source_database?: { database_url: string };
 };
 
 export type MolecularData = {
