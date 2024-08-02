@@ -162,9 +162,17 @@ img {
 	&-baseline {
 		align-items: baseline;
 	}
+	&-flex {
+		&-start {
+			align-items: flex-start;
+		}
+	}
 	&-self {
 		&-end {
 			align-self: flex-end;
+		}
+		&-start {
+			align-self: flex-start;
 		}
 	}
 	@include mediaOver("md") {
