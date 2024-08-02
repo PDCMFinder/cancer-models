@@ -957,8 +957,8 @@ const ModelDetails = ({
 							{qualityData.length > 0 && (
 								<div id="quality-control" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
-										<div className="d-flex justify-content-between align-center">
-											<h2 className="mt-0">Model quality control</h2>
+										<div className="d-flex align-flex-start align-md-center flex-column flex-md-row justify-content-between flex-column flex-md-row">
+											<h2 className="my-0">Model quality control</h2>
 											<Button
 												priority="secondary"
 												color="dark"
@@ -1053,8 +1053,8 @@ const ModelDetails = ({
 							{!molecularDataIsLoading && molecularData.length > 0 && (
 								<div id="molecular-data" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
-										<div className="d-flex justify-content-between align-center">
-											<h2 className="mt-0">Molecular data</h2>
+										<div className="d-flex align-flex-start align-md-center flex-column flex-md-row justify-content-between">
+											<h2 className="my-0">Molecular data</h2>
 											{!molecularDataIsLoading &&
 												molecularData &&
 												molecularData.some(
