@@ -181,7 +181,7 @@ export async function getModelExtLinks(
 			contactLink,
 			sourceDatabaseUrl,
 			externalModelLinksByType
-		} as unknown as ExtLinks;
+		} as ExtLinks;
 	});
 }
 
