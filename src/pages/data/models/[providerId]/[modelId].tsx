@@ -1477,24 +1477,29 @@ const ModelDetails = ({
 									<div className="col-12">
 										<h2 className="mt-0">External resources</h2>
 									</div>
-									<div className="col-12 col-lg-6">
-										<ExternalModelLinksTable
-											externalModelLinksByType={
-												extLinks.externalModelLinksByType
-											}
-											type="external_id"
-											columnHeader="IDENTIFIERS"
-										/>
-									</div>
-									<div className="col-12 col-lg-6">
-										<ExternalModelLinksTable
-											externalModelLinksByType={
-												extLinks.externalModelLinksByType
-											}
-											type="supplier"
-											columnHeader="SUPPLIERS"
-										/>
-									</div>
+									{extLinks.externalModelLinksByType.external_id?.length >
+										0 && (
+										<div className="col-12 col-lg-6">
+											<ExternalModelLinksTable
+												externalModelLinksByType={
+													extLinks.externalModelLinksByType
+												}
+												type="external_id"
+												columnHeader="IDENTIFIERS"
+											/>
+										</div>
+									)}
+									{extLinks.externalModelLinksByType.supplier?.length > 0 && (
+										<div className="col-12 col-lg-6">
+											<ExternalModelLinksTable
+												externalModelLinksByType={
+													extLinks.externalModelLinksByType
+												}
+												type="supplier"
+												columnHeader="SUPPLIERS"
+											/>
+										</div>
+									)}
 								</div>
 							)}
 							{publications.length > 0 && (
