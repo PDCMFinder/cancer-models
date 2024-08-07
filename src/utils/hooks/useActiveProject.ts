@@ -50,7 +50,7 @@ export const useActiveProject = () => {
 
 	addProvidersToProjectData(
 		activeProjectData,
-		dataSourcesByProject ?? [{ data_source: "" }]
+		dataSourcesByProject ?? [{ data_source: "", provider_name: "" }]
 	);
 
 	const handleProjectClick = (projectName: string) => {
@@ -65,13 +65,10 @@ export const useActiveProject = () => {
 				undefined,
 				{ scroll: false }
 			);
-		} else {
-			setActiveProject(null);
 		}
 	};
 
 	return {
-		activeProject,
 		setActiveProject,
 		activeProjectData,
 		isLoadingProviders,

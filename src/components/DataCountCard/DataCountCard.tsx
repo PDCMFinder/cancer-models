@@ -1,15 +1,15 @@
 import Link from "next/link";
 import { useQuery } from "react-query";
+import { CSSSize } from "../../../types/globalTypes";
 import { getModelsByType } from "../../apis/AggregatedData.api";
 import { capitalizeFirstLetter } from "../../utils/dataUtils";
 import Card from "../Card/Card";
-import { ICavendishIconProps } from "../Icons/CavendishIcon";
 import ModelTypeIcon from "../Icons/ModelTypeIcon";
 import Loader from "../Loader/Loader";
 
 interface IDataCountCardProps {
 	layout: "vertical" | "horizontal";
-	iconSize?: ICavendishIconProps["size"];
+	iconSize?: CSSSize;
 }
 
 const DataCountCard = (props: IDataCountCardProps) => {
@@ -17,34 +17,42 @@ const DataCountCard = (props: IDataCountCardProps) => {
 	const { data } = useQuery("modelsByTypeCounts", () => getModelsByType());
 
 	return data ? (
-		<Card className="bg-primary-quaternary">
+		<Card className="bg-primary-quaternary h-100" contentClassName="py-2 h-100">
 			<div
-				className={`row text-center justify-content-center row-cols-1 ${
+				className={`row h-100 text-center justify-content-center row-cols-1 ${
 					isVertical ? "" : "row-cols-lg-3"
 				}`}
 			>
-				{data.map((d) => (
+				{data.map((d, idx) => (
 					<div
-						className={`my-3 col ${isVertical ? "" : "my-lg-0"}`}
+						className={`my-3 col ${isVertical ? "" : "my-lg-0"} ${
+							data.length - 1 === idx ? "mb-0" : ""
+						}`}
 						key={d.modelType}
 					>
-						<p className="mb-0">
-							<Link
-								href={`/search?filters=model_type:${d.modelType}`}
-								className="p text-noDecoration"
-							>
+						<Link
+							href={`/search?filters=model_type:${d.modelType}`}
+							className="p text-noDecoration"
+						>
+							<div className="d-flex align-items-center">
 								<ModelTypeIcon
 									modelType={d.modelType}
 									size={props.iconSize ?? "1em"}
+									className="mr-3"
 								/>
-								<br />
-								<span className="h3 mb-0">{d.count.toLocaleString()}</span>
-								<br />
-								<span className={"text-underline"}>
-									{capitalizeFirstLetter(d.modelType)} models
-								</span>
-							</Link>
-						</p>
+								<p className="mb-0 lh-1">
+									<span
+										className="text-family-primary mb-1 d-block"
+										style={{ fontSize: "3.4rem" }}
+									>
+										{d.count.toLocaleString()}
+									</span>
+									<span className={"text-underline"}>
+										{capitalizeFirstLetter(d.modelType)}s
+									</span>
+								</p>
+							</div>
+						</Link>
 					</div>
 				))}
 			</div>

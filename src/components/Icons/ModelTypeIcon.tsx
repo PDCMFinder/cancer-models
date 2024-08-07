@@ -8,10 +8,12 @@ interface IIconComponent {
 
 const ModelTypeIcon = ({
 	modelType,
-	size
+	size,
+	...props
 }: {
 	modelType: string;
 	size: ICavendishIconProps["size"];
+	className?: string;
 }) => {
 	const icons: IIconComponent = {
 		PDX: MouseIcon,
@@ -20,7 +22,8 @@ const ModelTypeIcon = ({
 	};
 
 	const IconComponent = icons[modelType] || (() => <></>);
-	return <IconComponent size={size} />;
+
+	return <IconComponent size={size} {...props} />;
 };
 
 export default ModelTypeIcon;

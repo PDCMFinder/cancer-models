@@ -2,7 +2,7 @@ import { IProjectData } from "../pages/about/providers";
 
 export const addProvidersToProjectData = (
 	projectData: IProjectData,
-	dataSources: { data_source: string }[]
+	dataSources: { data_source: string; provider_name: string }[]
 ): IProjectData => {
 	const uniqueValues = [
 		...new Set(dataSources.map((item) => item.data_source))

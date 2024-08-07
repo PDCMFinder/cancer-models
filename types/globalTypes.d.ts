@@ -1,5 +1,27 @@
 import { CSSProperties } from "react";
 
+type CSSUnit =
+	| "em"
+	| "rem"
+	| "px"
+	| "vh"
+	| "vw"
+	| "vmin"
+	| "vmax"
+	| "pt"
+	| "cm"
+	| "mm"
+	| "in"
+	| "pc"
+	| "ch"
+	| "ex"
+	| "fr"
+	| "%"
+	| "s"
+	| "ms";
+
+export type CSSSize = `${number}${CSSUnit}`;
+
 const inputTypes = [
 	"button",
 	"checkbox",
@@ -22,7 +44,7 @@ const inputTypes = [
 	"text",
 	"time",
 	"url",
-	"week",
+	"week"
 ] as const;
 
 export interface INavProps {
