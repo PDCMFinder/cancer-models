@@ -1,7 +1,7 @@
 ---
 name: Istituto Dermopatico Dell'Immacolata
-abbreviation: IDI-IRCCS
-logo: img/providers/IDI-IRCCS.png
+abbreviation: IRCCS-IDI
+logo: img/providers/IRCCS-IDI.png
 ---
 
 IDI-IRCCS is a dermatologic institute that represents a national and international reference center for clinicians and researchers in the field of skin and epithelia physio-pathology. In addition to its well-established healthcare services, IDI-IRCCS places significant emphasis on scientific research. This research integrates pre-clinical, clinical, and healthcare studies, aiming to translate findings into innovative and updated diagnostic and therapeutic methods for patients.
