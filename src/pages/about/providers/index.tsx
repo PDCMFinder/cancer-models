@@ -162,12 +162,8 @@ export const ProjectButtons = ({
 );
 
 const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
-	const {
-		activeProject,
-		activeProjectData,
-		isLoadingProviders,
-		handleProjectClick
-	} = useActiveProject();
+	const { activeProjectData, isLoadingProviders, handleProjectClick } =
+		useActiveProject();
 
 	const activeProviders = allProvidersBasics.filter((provider) =>
 		activeProjectData.providers?.includes(provider.abbreviation)
@@ -177,7 +173,7 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 		<>
 			<Header />
 			{/* Decided to move this here instead of outside this return so Header doesn't blink */}
-			{activeProject === null ? (
+			{activeProjectData.project_abbreviation === null ? (
 				<div style={{ height: "50vh" }}>
 					<Loader />
 				</div>
@@ -188,7 +184,7 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 							<div className="col-12">
 								<ProjectButtons
 									direction="row"
-									activeProject={activeProject}
+									activeProject={activeProjectData.project_abbreviation}
 									onClick={handleProjectClick}
 								/>
 							</div>

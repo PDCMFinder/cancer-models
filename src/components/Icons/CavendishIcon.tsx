@@ -1,29 +1,11 @@
-export type CSSUnit =
-	| "em"
-	| "rem"
-	| "px"
-	| "vh"
-	| "vw"
-	| "vmin"
-	| "vmax"
-	| "pt"
-	| "cm"
-	| "mm"
-	| "in"
-	| "pc"
-	| "ch"
-	| "ex"
-	| "fr"
-	| "%"
-	| "s"
-	| "ms";
+import { CSSSize } from "../../../types/globalTypes";
 
 export interface ICavendishIconProps {
 	color?: string;
-	size: `${number}${CSSUnit}`;
+	size: CSSSize;
 }
 
-const CavendishIcon = ({ color, size }: ICavendishIconProps) => {
+const CavendishIcon = ({ color, size, ...props }: ICavendishIconProps) => {
 	const splitSize = size.match(/^(\d*\.?\d+)(.*)$/) as RegExpMatchArray;
 	const sizeAmount = Number(splitSize[1]);
 	const sizeUnit = splitSize[2];
@@ -35,6 +17,7 @@ const CavendishIcon = ({ color, size }: ICavendishIconProps) => {
 			xmlns="http://www.w3.org/2000/svg"
 			className="d-inline"
 			style={{ width: `${sizeAmount * 1.3}${sizeUnit}` }}
+			{...props}
 		>
 			<path
 				fillRule="evenodd"
