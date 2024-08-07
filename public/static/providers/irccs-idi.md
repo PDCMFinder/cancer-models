@@ -1,6 +1,6 @@
 ---
 name: Istituto Dermopatico Dell'Immacolata
-abbreviation: IDI-IRCCS
+abbreviation: IRCCS-IDI
 logo: img/providers/IRCCS-IDI.png
 ---
 
