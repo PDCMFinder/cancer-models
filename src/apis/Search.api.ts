@@ -223,11 +223,13 @@ export async function getDataSourcesByProject(projectName: string) {
 	let response = await fetch(
 		`${API_URL}/search_index?project_name=${
 			projectName === "Other" ? "is.null" : "in.(%22" + projectName + "%22)"
-		}&select=data_source`
+		}&select=data_source,provider_name`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json().then((d: { data_source: string }[]) => d);
+	return response
+		.json()
+		.then((d: { data_source: string; provider_name: string }[]) => d);
 }

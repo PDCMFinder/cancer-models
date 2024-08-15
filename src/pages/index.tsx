@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useQuery } from "react-query";
 import { getModelCount } from "../apis/AggregatedData.api";
 import Button from "../components/Button/Button";
+import DataCountCard from "../components/DataCountCard/DataCountCard";
 import Label from "../components/Input/Label";
 import Loader from "../components/Loader/Loader";
 import ShowHide from "../components/ShowHide/ShowHide";
@@ -14,17 +15,6 @@ import { useActiveProject } from "../utils/hooks/useActiveProject";
 import { ProjectButtons } from "./about/providers";
 import styles from "./index.module.scss";
 
-const DynamicDataCountCard = dynamic(
-	import("../components/DataCountCard/DataCountCard"),
-	{
-		loading: () => (
-			<div style={{ height: "300px" }}>
-				<Loader />
-			</div>
-		),
-		ssr: false
-	}
-);
 const DynamicSearchBar = dynamic(
 	() => import("../components/SearchBar/SearchBar"),
 	{
@@ -42,42 +32,33 @@ const Home: NextPage = () => {
 	const bpLarge = breakPoints.large;
 	const modelCount = useQuery("modelCount", () => getModelCount());
 
-	const {
-		activeProject,
-		setActiveProject,
-		activeProjectData,
-		isLoadingProviders,
-		handleProjectClick
-	} = useActiveProject();
+	const { activeProjectData, handleProjectClick } = useActiveProject();
 
 	return (
 		<>
 			<header className="mt-lg-3">
 				<div className={styles.header_container}>
+					<div className={styles.header_searchBackground}></div>
 					<ShowHide windowWidth={windowWidth || 0} showOver={bpLarge}>
-						<div
-							className={`${styles.header_graphicElement} position-relative`}
-						>
-							<DynamicDataCountCard layout="vertical" iconSize="1em" />
+						<div className={styles.header_graphicElement}>
+							<DataCountCard layout="vertical" iconSize="2em" />
 						</div>
 					</ShowHide>
 					<div
 						className={`${styles.header_title} flex-column d-flex py-5 py-lg-0`}
 					>
-						<h1 className="h2 mt-lg-1">
-							Find the right PDX, organoid and cell line patient-derived cancer
+						<h1 className="text-center text-md-left h2 mt-lg-1">
+							Find the right patient-derived xenograft, organoid and cell line
 							model for your next project.
 						</h1>
-
 						<ShowHide windowWidth={windowWidth || 0} hideOver={bpLarge}>
 							<div
 								className={`${styles.header_graphicElement} mt-3 position-relative`}
 							>
-								<DynamicDataCountCard layout="vertical" iconSize="1em" />
+								<DataCountCard layout="vertical" iconSize="2em" />
 							</div>
 						</ShowHide>
 					</div>
-					<div className={styles.header_searchBackground}></div>
 					<div className={`${styles.header_search} py-5`}>
 						<Label
 							name="searchBar"
@@ -95,17 +76,12 @@ const Home: NextPage = () => {
 			</header>
 			<section>
 				<div className="container">
-					<div className="row justify-content-center mb-3">
-						<div className="col-12 col-lg-6">
-							<h2>Some text about projects</h2>
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-								id lectus nec turpis molestie pretium tristique imperdiet
-								libero. Praesent sed mi tortor.
-							</p>
+					<div className="row mb-3">
+						<div className="col-12 col-lg-6 offset-lg-1">
+							<h2>Our data providers</h2>
 						</div>
 					</div>
-					{activeProject === null ? (
+					{activeProjectData.project_abbreviation === null ? (
 						<div style={{ height: "50vh" }}>
 							<Loader />
 						</div>
@@ -114,7 +90,7 @@ const Home: NextPage = () => {
 							<div className="col-12 col-md-3 col-lg-2">
 								<ProjectButtons
 									direction="column"
-									activeProject={activeProject}
+									activeProject={activeProjectData.project_abbreviation}
 									onClick={handleProjectClick}
 								/>
 							</div>
@@ -154,7 +130,7 @@ const Home: NextPage = () => {
 									</>
 								) : null}
 								{/* provider logos */}
-								<div className="row row-cols-2 row-cols-md-3 row-cols-lg-6 align-center">
+								<div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 align-center">
 									{activeProjectData.providers?.map((provider) => (
 										<div key={provider} className="col text-center mb-3">
 											<Link
