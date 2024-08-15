@@ -132,6 +132,13 @@ a,
 	&-underline {
 		text-decoration: underline !important;
 	}
+	@include mediaOver("md") {
+		&-md {
+			&-left {
+				text-align: left !important;
+			}
+		}
+	}
 	@include mediaOver("lg") {
 		&-lg {
 			&-left {

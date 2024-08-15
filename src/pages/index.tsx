@@ -47,7 +47,7 @@ const Home: NextPage = () => {
 					<div
 						className={`${styles.header_title} flex-column d-flex py-5 py-lg-0`}
 					>
-						<h1 className="h2 mt-lg-1">
+						<h1 className="text-center text-md-left h2 mt-lg-1">
 							Find the right patient-derived xenograft, organoid and cell line
 							model for your next project.
 						</h1>
@@ -55,7 +55,7 @@ const Home: NextPage = () => {
 							<div
 								className={`${styles.header_graphicElement} mt-3 position-relative`}
 							>
-								<DataCountCard layout="vertical" iconSize="1em" />
+								<DataCountCard layout="vertical" iconSize="2em" />
 							</div>
 						</ShowHide>
 					</div>

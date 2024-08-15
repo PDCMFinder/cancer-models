@@ -23,11 +23,9 @@ const DataCountCard = (props: IDataCountCardProps) => {
 					isVertical ? "" : "row-cols-lg-3"
 				}`}
 			>
-				{data.map((d, idx) => (
+				{data.map((d) => (
 					<div
-						className={`my-3 col ${isVertical ? "" : "my-lg-0"} ${
-							data.length - 1 === idx ? "mb-0" : ""
-						}`}
+						className={`my-3 col ${isVertical ? "" : "my-lg-0"}`}
 						key={d.modelType}
 					>
 						<Link
