@@ -1,7 +1,7 @@
 ---
 name: Princess Marget Living Biobank
 abbreviation: PMLB
-logo: img/providers/pmlb.png
+logo: img/providers/PMLB.png
 ---
 
 Researchers at the Princess Margaret (PM) Cancer Centre (Toronto, Canada) have clinically annotated and molecularly characterized tumor models (>1000) including ovarian, head and neck, lung, mesothelioma, breast, pancreas and colon cancers. These patient-derived PDX (PDX) models are grown in immune-deficient mice to study the genotypic and phenotypic heterogeneity of these tumors, and to better understand the functional significance of their molecular changes.
