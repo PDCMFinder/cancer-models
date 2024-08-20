@@ -14,9 +14,9 @@ interface IProviderInfoProps {
 }
 
 const ProviderInfo = ({ provider }: IProviderInfoProps) => {
-	const parsedProvider = provider.abbreviation.replace(" ", "-");
-	const providerName = provider.name;
-	const providerId = provider.id;
+	const parsedProvider = provider.abbreviation.replace(" ", "-"),
+		providerName = provider.name,
+		providerId = provider.id;
 
 	return (
 		<>

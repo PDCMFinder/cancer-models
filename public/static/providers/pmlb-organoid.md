@@ -1,7 +1,7 @@
 ---
 name: Princess Marget Living Biobank - Organoid Centre
 abbreviation: PMLB-Organoid
-logo: img/providers/pmlb-organoid.png
+logo: img/providers/PMLB-Organoid.png
 ---
 
 Researchers at the Princess Margaret (PM) Cancer Centre (Toronto, Canada) have clinically annotated and molecularly characterized tumor models (>1000) including ovarian, head and neck, lung, mesothelioma, breast, pancreas and colon cancers. Organoid models are derived from patient-derived xenograft tissues, primary tumors, and metastatic patient tissues. PMLB organoid repository includes models generated from colorectal, pancreatic, and lung cancer tissues.
