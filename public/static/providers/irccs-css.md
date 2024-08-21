@@ -1,5 +1,5 @@
 ---
-name: IRCCS Casa Sollievo della Sofferenza
+name: Fondazione IRCCS Casa Sollievo della Sofferenza
 abbreviation: IRCCS-CSS
 logo: img/providers/IRCCS-CSS.png
 ---
