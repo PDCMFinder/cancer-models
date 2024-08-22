@@ -52,20 +52,22 @@ export type Metadata = {
 	pdxModelPublications: string;
 };
 
+type ExternalModelLinkTypes = "external_id" | "supplier";
+
 export type ExternalModelLink = {
-	type: "external_id" | "supplier";
+	type: ExternalModelLinkTypes;
 	resourceLabel: string;
 	linkLabel: string;
 	link: string;
 };
 
 export type ExternalModelLinkByType = Record<
-	ExternalModelLink["type"],
+	ExternalModelLinkTypes,
 	ExternalModelLink[]
 >;
 
 export type APIExternalModelLink = {
-	type: "external_id" | "supplier";
+	type: ExternalModelLinkTypes;
 	resource_label: string;
 	link_label: string;
 	link: string;
