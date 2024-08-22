@@ -1,25 +1,15 @@
 import Link from "next/link";
-import { CSSProperties, MouseEvent, useState } from "react";
+import React, { CSSProperties, MouseEvent, useState } from "react";
+import isExternalLink from "../../utils/isExternalLink";
 import ArrowIcon, { IArrowIconProps } from "../ArrowIcon/ArrowIcon";
 import styles from "./Button.module.scss";
 
-const RIGHT = "right",
-	DOWN = "down";
-
-export interface IButtonProps {
+export type IButtonProps = {
 	style?: CSSProperties;
-	children: string | JSX.Element;
+	children: React.ReactNode;
 	priority: "primary" | "secondary";
 	color: "dark" | "light" | "white";
-	target?: "_blank" | "_self" | "_parent" | "_top";
-	htmlTag?: "a" | "button";
-	type?: "button" | "submit" | "reset";
-	href?: string;
 	className?: string;
-	arrow?: boolean;
-	disabled?: boolean;
-	arrowDirection?: IArrowIconProps["direction"];
-	"aria-controls"?: string;
 	onClick?: () => void;
 	onMouseEnter?: (
 		e: MouseEvent<HTMLDivElement | HTMLAnchorElement | HTMLButtonElement>
@@ -27,16 +17,41 @@ export interface IButtonProps {
 	onMouseLeave?: (
 		e: MouseEvent<HTMLDivElement | HTMLAnchorElement | HTMLButtonElement>
 	) => void;
-}
+} & (ButtonProperties | LinkProperties);
 
-const Button = (props: IButtonProps) => {
+type ButtonProperties = {
+	htmlTag?: "button";
+	type?: "button" | "submit" | "reset";
+	arrow?: boolean;
+	arrowDirection?: IArrowIconProps["direction"];
+	"aria-controls"?: string;
+	disabled?: boolean;
+};
+
+type LinkProperties = {
+	htmlTag: "a";
+	href: string;
+	target?: "_blank" | "_self" | "_parent" | "_top";
+};
+
+const DOWN: IArrowIconProps["direction"] = "down";
+const RIGHT: IArrowIconProps["direction"] = "right";
+
+const isButtonProps = (
+	props: IButtonProps
+): props is IButtonProps & ButtonProperties => {
+	return props.htmlTag === "a" ? false : props.htmlTag === "button";
+};
+
+const Button = ({ htmlTag = "button", ...props }: IButtonProps) => {
+	const retypedButtonProps = props as IButtonProps & ButtonProperties;
+	const retypedLinkProps = props as IButtonProps & LinkProperties;
 	const [arrowDirection, setArrowDirection] = useState<
 		IArrowIconProps["direction"]
-	>(props.arrowDirection ?? DOWN);
+	>(isButtonProps(props) && props.arrowDirection ? props.arrowDirection : DOWN);
 
-	let href = props.href,
-		children = props.children,
-		showArrow = props.arrow,
+	let children = props.children,
+		showArrow = isButtonProps(props) && props.arrow,
 		propsClassName = props.className,
 		classNames = `
       ${styles.Button}
@@ -58,45 +73,52 @@ const Button = (props: IButtonProps) => {
 		}
 	};
 
-	if (props.htmlTag === "a" && href) {
-		const externalLinkProps = href.includes("http")
-			? {
-					target: "_blank",
-					rel: "noopener noreferrer"
-			  }
-			: null;
-
+	if (htmlTag === "button") {
 		return (
-			<Link
-				style={props.style}
+			<button
+				disabled={retypedButtonProps.disabled}
+				style={retypedButtonProps.style}
+				aria-controls={retypedButtonProps["aria-controls"]}
+				type={retypedButtonProps.type ?? "button"}
 				className={classNames}
-				href={href}
 				onClick={handleOnClick}
-				target={props.target}
-				{...externalLinkProps}
+				onMouseEnter={(e) =>
+					retypedButtonProps.onMouseEnter && retypedButtonProps.onMouseEnter(e)
+				}
+				onMouseLeave={(e) =>
+					retypedButtonProps.onMouseLeave && retypedButtonProps.onMouseLeave(e)
+				}
 			>
-				<>
-					{children}
-					{showArrow && <ArrowIcon direction={arrowDirection} />}
-				</>
-			</Link>
+				{children}
+				{showArrow && <ArrowIcon direction={arrowDirection} />}
+			</button>
 		);
 	}
 
+	const linkTarget = retypedLinkProps.target ?? "_blank";
+
 	return (
-		<button
-			disabled={props.disabled}
-			style={props.style}
-			aria-controls={props["aria-controls"]}
-			type={props.type ?? "button"}
+		<Link
+			style={retypedLinkProps.style}
 			className={classNames}
+			href={retypedLinkProps.href}
 			onClick={handleOnClick}
-			onMouseEnter={(e) => props.onMouseEnter && props.onMouseEnter(e)}
-			onMouseLeave={(e) => props.onMouseLeave && props.onMouseLeave(e)}
+			target={linkTarget}
+			onMouseEnter={(e) =>
+				retypedLinkProps.onMouseEnter && retypedLinkProps.onMouseEnter(e)
+			}
+			onMouseLeave={(e) =>
+				retypedLinkProps.onMouseLeave && retypedLinkProps.onMouseLeave(e)
+			}
+			{...(isExternalLink(retypedLinkProps.href)
+				? { rel: "noreferrer" }
+				: null)}
 		>
-			{children}
-			{showArrow && <ArrowIcon direction={arrowDirection} />}
-		</button>
+			<>
+				{children}
+				{showArrow && <ArrowIcon direction={arrowDirection} />}
+			</>
+		</Link>
 	);
 };
 

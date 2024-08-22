@@ -1,10 +1,10 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import Card from "./Card";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 import Button from "../Button/Button";
+import Card from "./Card";
 
 export default {
 	title: "UI/Card",
-	component: Card,
+	component: Card
 } as ComponentMeta<typeof Card>;
 
 const Template: ComponentStory<typeof Card> = (args) => (
@@ -26,5 +26,5 @@ const Template: ComponentStory<typeof Card> = (args) => (
 export const Component = Template.bind({});
 Component.args = {
 	header: <p className="m-0">Header title</p>,
-	footer: <p className="m-0">Footer information</p>,
+	footer: <p className="m-0">Footer information</p>
 };
