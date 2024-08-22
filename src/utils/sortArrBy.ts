@@ -1,33 +1,28 @@
-export const sortObjArrBy = (
-	currArr: any[],
-	sortArr: string[],
-	sortBy: string | undefined,
-	newArr?: boolean,
-	sendItemsToEnd?: boolean
-) => {
-	sortArr.reverse();
-	if (sendItemsToEnd) currArr.reverse();
+export const sortObjectArrayBy = (
+	array: any[],
+	sortOrder: string[],
+	sortProperty?: string,
+	returnNewArray?: boolean,
+	reverseOriginalArray?: boolean
+): any[] => {
+	const sortedArray = [...array];
+	const sortMap = Object.fromEntries(
+		sortOrder.map((value, index) => [value.toLowerCase(), index])
+	);
 
-	if (sortBy && currArr[0].hasOwnProperty(sortBy)) {
-		if (newArr) {
-			return currArr
-				.slice()
-				.sort(
-					(a, b) =>
-						sortArr.indexOf(b[sortBy].toLowerCase()) -
-						sortArr.indexOf(a[sortBy].toLowerCase())
-				);
-		} else {
-			currArr.sort(
-				(a, b) =>
-					sortArr.indexOf(b[sortBy].toLowerCase()) -
-					sortArr.indexOf(a[sortBy].toLowerCase())
-			);
-		}
+	if (sortProperty) {
+		sortedArray.sort((a, b) => {
+			const aValue = (a[sortProperty] || "").toLowerCase();
+			const bValue = (b[sortProperty] || "").toLowerCase();
+			return sortMap[bValue] - sortMap[aValue];
+		});
 	} else {
-		currArr.sort(
-			(a, b) =>
-				sortArr.indexOf(a.toLowerCase()) - sortArr.indexOf(b.toLowerCase())
+		sortedArray.sort(
+			(a, b) => sortMap[b.toLowerCase()] - sortMap[a.toLowerCase()]
 		);
 	}
+
+	if (returnNewArray) sortedArray;
+	if (reverseOriginalArray) array.reverse();
+	return array;
 };

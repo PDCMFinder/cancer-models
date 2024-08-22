@@ -25,18 +25,6 @@ interface IProvidersProps {
 	}[];
 }
 
-export interface IProjectData {
-	project_abbreviation: string;
-	project_full_name?: string;
-	providers?: string[];
-	project_settings: {
-		main_color: string;
-		secondary_color: string;
-		logo?: string;
-	};
-	project_description?: string;
-}
-
 interface IProjectButtonProps {
 	projectName: string;
 	isActive: boolean;
@@ -165,9 +153,11 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 	const { activeProjectData, isLoadingProviders, handleProjectClick } =
 		useActiveProject();
 
-	const activeProviders = allProvidersBasics.filter((provider) =>
-		activeProjectData.providers?.includes(provider.abbreviation)
-	);
+	const activeProviders = allProvidersBasics.filter((provider) => {
+		for (const key in activeProjectData.providers) {
+			return key === provider.abbreviation;
+		}
+	});
 
 	return (
 		<>

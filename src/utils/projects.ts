@@ -1,4 +1,4 @@
-import { IProjectData } from "../pages/about/providers";
+import { IProjectData } from "./hooks/useActiveProject";
 
 export const addProvidersToProjectData = (
 	projectData: IProjectData,
@@ -7,7 +7,22 @@ export const addProvidersToProjectData = (
 	const uniqueValues = [
 		...new Set(dataSources.map((item) => item.data_source))
 	];
-	projectData.providers = uniqueValues.sort((a, b) => a.localeCompare(b));
+	const providers = uniqueValues.map((provider) =>
+		dataSources.find((source) => source.data_source === provider)
+	);
+
+	projectData.providers = providers.sort((a, b) =>
+		(a?.data_source ?? "").localeCompare(b?.data_source ?? "")
+	);
 
 	return projectData;
 };
+
+/*
+{
+  "ACC": "Alliance Against Cancer",
+  "CRO": "Cancer Research Organization",
+}
+
+providers[abbreviation]
+*/
