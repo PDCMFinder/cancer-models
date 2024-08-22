@@ -153,11 +153,11 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 	const { activeProjectData, isLoadingProviders, handleProjectClick } =
 		useActiveProject();
 
-	const activeProviders = allProvidersBasics.filter((provider) => {
-		for (const key in activeProjectData.providers) {
-			return key === provider.abbreviation;
-		}
-	});
+	const activeProviderBasics = allProvidersBasics.filter((providerBasic) =>
+		activeProjectData.providers?.some(
+			(provider) => provider?.data_source === providerBasic.abbreviation
+		)
+	);
 
 	return (
 		<>
@@ -223,7 +223,7 @@ const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
 									<Loader />
 								</div>
 							) : (
-								activeProviders?.map((provider) => (
+								activeProviderBasics?.map((provider) => (
 									<ProviderInfo key={provider.id} provider={provider} />
 								))
 							)}
