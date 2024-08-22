@@ -133,7 +133,7 @@ const Home: NextPage = () => {
 								<div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 align-center">
 									{activeProjectData.providers?.map((provider) => (
 										<div
-											key={provider?.provider_name}
+											key={provider?.data_source}
 											className="col text-center mb-3"
 										>
 											<Link
