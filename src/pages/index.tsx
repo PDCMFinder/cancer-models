@@ -139,18 +139,20 @@ const Home: NextPage = () => {
 											<Link
 												href={`/search?filters=data_source%3A${provider?.data_source}`}
 												title={`Explore all ${provider?.data_source} models`}
+												style={{ height: "100px" }}
+												className="mb-1"
 											>
-												<div>
-													<img
-														src={`/img/providers/${provider?.data_source}.png`}
-														alt={`${provider?.data_source} logo`}
-														title={provider?.provider_name}
-														className="w-75 h-auto mx-auto"
-														style={{ maxHeight: "100px" }}
-													/>
-												</div>
-												<p className="text-small">{provider?.provider_name}</p>
+												<img
+													src={`/img/providers/${provider?.data_source}.png`}
+													alt={`${provider?.data_source} logo`}
+													title={provider?.provider_name}
+													className="w-75 h-auto mx-auto"
+													style={{ maxHeight: "100px" }}
+												/>
 											</Link>
+											<p className="text-small text-muted">
+												{provider?.provider_name}
+											</p>
 										</div>
 									))}
 								</div>
