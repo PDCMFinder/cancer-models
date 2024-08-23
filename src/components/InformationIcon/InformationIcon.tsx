@@ -10,7 +10,10 @@ const InformationIcon = ({ information }: IInformationIconProps) => {
 		<Tooltip
 			className="d-inline-block ml-1"
 			content={
-				<p className="text-small m-0" style={{ minWidth: "300px" }}>
+				<p
+					className="text-small m-0"
+					style={{ width: "max-content", maxWidth: "300px" }}
+				>
 					{information}
 				</p>
 			}
