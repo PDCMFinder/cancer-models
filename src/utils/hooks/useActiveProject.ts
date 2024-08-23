@@ -5,10 +5,10 @@ import { getDataSourcesByProject } from "../../apis/Search.api";
 import { addProvidersToProjectData } from "../projects";
 import projectsSettings from "../projectSettings.json";
 
-interface IProjectData {
+export interface IProjectData {
 	project_abbreviation: string;
 	project_full_name?: string;
-	providers?: string[];
+	providers?: ({ data_source: string; provider_name: string } | undefined)[];
 	project_description?: string;
 	project_settings: {
 		main_color: string;
