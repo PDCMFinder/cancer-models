@@ -9,6 +9,7 @@ import { useQueries } from "react-query";
 import { getAllModelData } from "../apis/ModelDetails.api";
 import Button from "../components/Button/Button";
 import FloatingButton from "../components/FloatingWidget/FloatingButton";
+import ModelTypeIcon from "../components/Icons/ModelTypeIcon";
 import Loader from "../components/Loader/Loader";
 import QualityBadge from "../components/QualityBadge/QualityBadge";
 import ShowHide from "../components/ShowHide/ShowHide";
@@ -120,7 +121,7 @@ const Compare: NextPage = () => {
 										<div className="col" key={metadata.modelId}>
 											{/* quality badge always at baseline */}
 											<div className="d-flex flex-column h-100 justify-content-between">
-												<div>
+												<div className="mb-1">
 													<sub>
 														<Button
 															color="dark"
@@ -153,7 +154,11 @@ const Compare: NextPage = () => {
 															{metadata.modelId}
 														</Link>
 													</h1>
-													<h2 className="p mt-0">{metadata.histology}</h2>
+													<h2 className="p mt-0 mb-1">{metadata.histology}</h2>
+													<ModelTypeIcon
+														modelType={metadata.modelType}
+														size="1.5em"
+													/>
 												</div>
 												<QualityBadge
 													className="w-50"
