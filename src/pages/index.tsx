@@ -1,6 +1,7 @@
 // Documents/cancer-models/src/pages/index.tsx
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import Link from "next/link";
 import { useQuery } from "react-query";
 import { getModelCount } from "../apis/AggregatedData.api";
@@ -142,11 +143,13 @@ const Home: NextPage = () => {
 												style={{ height: "100px" }}
 												className="mb-1 d-flex"
 											>
-												<img
+												<Image
 													src={`/img/providers/${provider?.data_source}.png`}
-													alt={`${provider?.data_source} logo`}
+													alt={`${provider?.provider_name} logo`}
 													title={provider?.provider_name}
 													className="w-auto h-auto m-auto"
+													width={300}
+													height={100}
 													style={{ maxHeight: "100px", maxWidth: "75%" }}
 												/>
 											</Link>
