@@ -130,24 +130,24 @@ const Home: NextPage = () => {
 									</>
 								) : null}
 								{/* provider logos */}
-								<div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 align-center">
+								<div className="row row-cols-2 row-cols-md-3 row-cols-lg-4">
 									{activeProjectData.providers?.map((provider) => (
 										<div
 											key={provider?.data_source}
-											className="col text-center mb-3"
+											className="col text-center"
 										>
 											<Link
 												href={`/search?filters=data_source%3A${provider?.data_source}`}
 												title={`Explore all ${provider?.data_source} models`}
 												style={{ height: "100px" }}
-												className="mb-1"
+												className="mb-1 d-flex"
 											>
 												<img
 													src={`/img/providers/${provider?.data_source}.png`}
 													alt={`${provider?.data_source} logo`}
 													title={provider?.provider_name}
-													className="w-75 h-auto mx-auto"
-													style={{ maxHeight: "100px" }}
+													className="w-auto h-auto m-auto"
+													style={{ maxHeight: "100px", maxWidth: "75%" }}
 												/>
 											</Link>
 											<p className="text-small text-muted">
