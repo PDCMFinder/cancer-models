@@ -12,7 +12,7 @@ const Tooltip = (props: ITooltipProps) => {
 	const [isHovering, setIsHovering] = useState(false);
 
 	return (
-		<div className={`${props.className} ${styles.Tooltip}`}>
+		<div className={`${props.className ?? ""} ${styles.Tooltip}`}>
 			<div
 				onMouseOver={() => setIsHovering(true)}
 				onMouseLeave={() => setIsHovering(false)}

@@ -243,11 +243,15 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 				}
 
 				return (
-					<div className="w-100 text-capitalize" key={facetName}>
-						<h3 className="mb-0 p text-bold d-inlineBlock">{facetName}</h3>
-						<InformationIcon information="Patient Ethnic group. Can be derived from self-assement or genetic analysis." />
+					<div className="w-100" key={facetName}>
+						<h3 className="mb-0 p text-bold d-inline-block text-capitalize">
+							{facetName}
+						</h3>
+						{facet.description && (
+							<InformationIcon information={facet.description} />
+						)}
 						<hr />
-						{facetContent}
+						<span className="text-capitalize">{facetContent}</span>
 					</div>
 				);
 			})}

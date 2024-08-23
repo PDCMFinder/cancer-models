@@ -63,7 +63,7 @@ img {
 	&-inline {
 		display: inline;
 	}
-	&-inlineBlock {
+	&-inline-block {
 		display: inline-block;
 	}
 	@include mediaOver("md") {
