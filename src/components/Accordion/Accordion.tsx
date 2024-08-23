@@ -38,11 +38,13 @@ const Accordion = (props: IAccordionProps) => {
 			>
 				{props.id}
 			</Button>
-			{isOpen && (
-				<div className={`px-1 ${contentClassName}`.trim()} id={ariaId}>
-					{props.content}
-				</div>
-			)}
+			<div id={ariaId}>
+				{isOpen && (
+					<div className={`px-1 ${contentClassName}`.trim()}>
+						{props.content}
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };

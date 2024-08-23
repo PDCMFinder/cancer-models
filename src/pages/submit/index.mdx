@@ -1,0 +1,71 @@
+import MdLayout from "../../components/MdLayout/MdLayout";
+
+[comment]: # "Metadata"
+[comment]: # "Page title = h1 in banner"
+
+export const meta = {
+	pageTitle: "Submission guide",
+	metaTitle: "Submit your models and contribute to cancer research",
+	metaDescription:
+		"Be part of innovation. Submit patient-derived cancer models to CancerModels.Org. Advance research, improve treatments."
+};
+
+[comment]: # "Page content below"
+[comment]: # "Can include html tags"
+
+In the complex realm of patient-derived cancer models (PDCMs), including PDX, organoids, and cell lines, finding the right model and associated data has been a formidable challenge. Researchers, clinicians, and bioinformaticians have struggled to navigate this vast landscape, hindered by a lack of shared data standards.
+
+CancerModels.Org is here to simplify this process. We harmonise and integrate critical model attributes, offering a unified platform for efficient searching across diverse resources. Building on the success of the PDX Finder resource <a href="https://pubmed.ncbi.nlm.nih.gov/30535239/" target="_blank" rel="noopener noreferrer">PMID:30535239</a> and the PDX Minimal Information standard (PDX-MI, <a href="https://pubmed.ncbi.nlm.nih.gov/29092942/" target="_blank" rel="noopener noreferrer">PMID:29092942</a>), we're dedicated to enabling seamless data exchange and accelerating cancer research.
+
+## Why Submit Your Models and Data to CancerModels.Org:
+
+- Increased Visibility: Your models and associated data becomes more discoverable to researchers and other users.
+- Standardisation: Your models adhere to published standards, making it easier for researchers to search and compare them.
+- Adherence to FAIR principles: Your data is structured to adhere to the <a href="https://www.go-fair.org/fair-principles/" target="_blank" rel="noreferrer">FAIR data principles</a>, which means it's Findable, Accessible, Interoperable, and Reusable.
+- Attribution: Clear links to production centres are provided, so users can inquire about obtaining your models for their studies.
+- Free Access: CancerModels.Org is a community-driven platform that's free for both model providers and users.
+
+## Eligible models and associated data
+
+CancerModels.Org aggregates models from individual researchers, institutional biobanks, contract research organisations, external databases and consortia engaged in cancer research focusing on models from rare cancers and richly annotated models. All models and data should adhere to ethical and legal guidelines related to patient consent, data privacy, and data sharing. Since 1 January 2023 all model and data submissions are made available under <a href="https://creativecommons.org/share-your-work/public-domain/cc0/" target="_blank" rel="noopener noreferrer">CC0</a>.
+
+## Data types and formats
+
+| Data type              | Description                                                                                                                                                                                                                                                                                                     | Format                                                                       | Submission template                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Metadata               | Metadata related to the PDCMs, such as model information, and clinical information .                                                                                                                                                                                                                            | Excel                                                                        | <img className="d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[Metadata template](/static/templates/metadata_template.xlsx)                                                                                                                                                                                                                                                        |
+| Molecular metadata     | Metadata associated with the molecular data.                                                                                                                                                                                                                                                                    | Excel                                                                        | <img className="d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[Molecular metadata template](/static/templates/molecular_metadata.xlsx)                                                                                                                                                                                                                                             |
+| Mutation               | All sequencing data including WES, WGS & TGS used to generate mutation data for the PDCMs.                                                                                                                                                                                                                      | MAF, VCF                                                                     | <img className="d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[Mutation data template](/static/templates/mutation_template_external.xlsx)                                                                                                                                                                                                                                          |
+| Copy Number Alteration | Data related to copy number alterations in PDCMs, which can provide insights into genomic amplifications and deletions.                                                                                                                                                                                         | log2 ratio or discrete CNA data (GISTIC, PICNIC)                             | <img className="d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[CNA data template](/static/templates/cna_template.xlsx)                                                                                                                                                                                                                                                             |
+| Gene expression        | Information regarding gene expression patterns in PDCMs, which can shed light on gene activity and regulation.                                                                                                                                                                                                  | Excel, TXT or CSV: TPM, FPKM,RPKM, Z-score                                   | <img className="d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[Expression data template](/static/templates/expression_template.xlsx)                                                                                                                                                                                                                                               |
+| Biomarker              | Information related to gene mutations, gene expression levels, protein markers, immune cell populations, chromosomal abnormalities, structural changes in the genome and other molecular characteristics of tumours. This data is derived from genomics, transcriptomics, proteomics, and immunohistochemistry. | Excel, TXT or CSV: Biomarker status, Immunohistochemistry results, TMB score | <img className="d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[Biomarker data template](/static/templates/biomarker_template.xlsx)                                                                                                                                                                                                                                                 |
+| Immune markers         | Information related to immune cell populations, chromosomal abnormalities, and other molecular characteristics of tumours. This data is derived from genomics, and immunohistochemistry.                                                                                                                        | Excel, TXT or CSV: MSI status, HLA type, TMB score                           | <img className="d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[Immune marker template](/static/templates/immunemarker_template.xlsx)                                                                                                                                                                                                                                               |
+| Drug dosing            | Information about drug dosing studies conducted on PDCMs, including drug names, responses and dosage information.                                                                                                                                                                                               | Excel, TXT or CSV                                                            | <img className="d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[Drug dosing template](/static/templates/drug_dosing_template.xlsx)                                                                                                                                                                                                                                                  |
+| Patient treatment      | Information related to the treatment patient received from whom PDCMs were derived. Include details of therapies administered, drug and regimen names, doses and their outcomes.                                                                                                                                | Excel, TXT or CSV                                                            | <img className="d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[Patient treatment template](/static/templates/patienttreatment_template.xlsx)                                                                                                                                                                                                                                       |
+| Image data             | Histology Image data of the PDCMs                                                                                                                                                                                                                                                                               | Excel file with URLs to model images per row                                 | <img className="d-inline" src="/img/external-icon.svg" title="External Icon" alt="External Icon"/>&nbsp;Via <a href="https://www.ebi.ac.uk/bioimage-archive/" target="_blank" rel="noreferrer">BioImage Archive</a><br/><img className="mt-3 d-inline" src="/img/sheet-icon.svg" title="Sheet Icon" alt="Sheet Icon"/>&nbsp;[Model image sheet part of Metadata template](/static/templates/metadata_template.xlsx) |
+
+| Definitions and examples                      | Validate your data                 |
+| --------------------------------------------- | ---------------------------------- |
+| [Metadata Dictionary](/validation/dictionary) | [Validator](/validation/validator) |
+
+[comment]: # "Need empty div for spacing"
+
+<div className="mb-5"></div>
+Have data not mentioned here? Get in touch - we keep working on adding new data
+types associated with PDCMs.
+
+## Submit your PDCM data to CancerModels.Org to increase their visibility
+
+To start the process please contact CancerModels.Org team: [submissions](mailto:helpdesk@cancermodels.org?subject=PDCM%20producer:%20Data%20Submission%20request)&nbsp;<img className="d-inline" src="/img/envelope-icon.svg" title="Envelope Icon" alt="Envelope Icon"/>
+
+## Frequently Asked Questions
+
+Read our submit process [FAQ](/submit/faq)
+
+## Submission process
+
+Learn more about our [data submission process and additional resources](/submit/submission-process)
+
+[comment]: # "End page content - do not edit below this line"
+
+export default ({ children }) => <MdLayout meta={meta}>{children}</MdLayout>;

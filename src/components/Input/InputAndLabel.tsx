@@ -1,6 +1,6 @@
 import Input from "./Input";
 import Label from "./Label";
-import { IInputProps, ILabelProps } from "../../../globalTypes";
+import { IInputProps, ILabelProps } from "../../../types/globalTypes";
 import styles from "./InputAndLabel.module.scss";
 import { RefObject } from "react";
 
@@ -27,7 +27,8 @@ const InputAndLabel = (props: IInputAndLabel) => {
 	return (
 		<div className={`${isAlternateLayout} ${className}`.trim()}>
 			<Label
-				name={props.id ?? name}
+				forId={props.id ?? name}
+				name={props.name}
 				label={props.label}
 				className={props.labelClassName}
 			/>

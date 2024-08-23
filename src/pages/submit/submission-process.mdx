@@ -1,0 +1,79 @@
+import MdLayout from "../../components/MdLayout/MdLayout";
+
+[comment]: # "Metadata"
+[comment]: # "Page title = h1 in banner"
+
+export const meta = {
+	pageTitle: "Submission process",
+	metaTitle: "Submit your models and contribute to cancer research",
+	metaDescription:
+		"Be part of innovation. Submit patient-derived cancer models to cancermodels.org. Advance research, improve treatments."
+};
+
+[comment]: # "Page content below"
+[comment]: # "Can include html tags"
+
+## Simple diagram depicting the submission process and steps
+
+<img src="/img/submission_guide.jpg" className="w-100" alt="CancerModels.Org submission guide in image form" />
+
+### Step 1: Data preparation
+
+Before you dive into the submission process, ensure you have all the necessary data and information about your patient-derived cancer models (PDCMs) and associated data.
+
+1. Go to the [Metadata Dictionary page](/validation/dictionary) on cancermodels.org and familiarise yourself with the data model
+2. Download the metadata template Excel file from the metadata dictionary page.
+3. The Metadata Dictionary expresses the details of the data model, which adheres to specific formats and restrictions to ensure a standard of data quality.
+4. Download the Clinical/Model metadata template (Excel file) from the Metadata templates section of the [submit page](/submit). This template is split into six sections, which help describe your PDCM thoroughly. Please refer to the [Metadata Dictionary](/validation/dictionary) while filing in the templates.
+
+### Step 2: Fill Templates
+
+1. Carefully fill in the template with all the essential details about your PDCMs. Be as accurate and complete as possible.<br/>
+   **Tips to format your metadata file​**
+   1. Open your model metadata in Excel:
+   2. BEFORE pasting data, reformat cells as text: Right-click empty cells, choose "Format cells," select "Text," and click "Ok."
+   3. Do not delete the first four rows reserved for field headers; they are vital for validation.
+   4. Paste your data under the correct header fields.
+2. Save the Excel spreadsheet with preserved sheet names. Confirm to "keep using that format" if prompted.
+3. If you are using a text editor, make sure you have invisible characters turned on. This way you can be sure that tabs are correctly separating each field value.
+4. You do not need to remove any columns from the Excel file.
+5. Please refer to the [list of permissible values](/validation/docs/dictionary/permissible-values) for filling in the metadata
+
+### Step 3: Validation
+
+1. After you've filled out the templates, you can use cancermodels.org's validation service. You can find this tool [here](/validation/validator) and to understand how to use the validator, visit the [how-to-use](/validation/docs/validation/how-to-use) page.
+2. The validation service will check your metadata for any errors or missing information. Don't worry if you encounter errors; the service will guide you on how to fix them.
+3. You can also refer to the [validation report](/validation/docs/validation/error-report) page and the data model in the [Metadata Dictionary page](/validation/dictionary) for additional help in resolving any validation issues.
+4. If you are stuck you can get in touch with us by [email](mailto:helpdesk@cancermodels.org). We are here to help!
+
+### Step 4: Submission
+
+1. Once you validate your metadata, get in touch with the cancermodels.org team. You can reach us by [email](mailto:helpdesk@cancermodels.org).
+2. Provide the filled-out and validated metadata templates and any associated data you have or links to where your data is stored.
+3. Once you've submitted your information, the cancermodels.org team will process your submission.
+
+### Step 5: Release
+
+1. After submitting your PDCMs, take a deep breath and relax. Let the cancermodels.org team handle the rest.
+2. Once your submission is processed and everything is in agreement, cancermodels.org will release the information you provided. If you wish we can let you know when your models and data are available online. You can also find that through notifications we post on Twitter and LinkedIn of new releases.
+
+## Data submission questionnaire
+This form allows us to streamline the submission process of your models to CancerModels.Org. ⁤⁤Your input will help us make an assessment of your model information and provide you with the right templates for data submission.
+
+<a href="http://tinyurl.com/CancerModelsOrg-Q" target="_blank" rel="noreferrer">Data submission questionnaire</a>
+
+## Submit your PDCM data to cancermodels.org to increase their visibility
+
+To start the process please contact cancermodels.org team: [submissions](mailto:helpdesk@cancermodels.org?subject=PDCM%20producer:%20Data%20Submission%20request)&nbsp;<img className="d-inline" src="/img/envelope-icon.svg" title="Envelope Icon" alt="Envelope Icon"/>
+
+## Frequently Asked Questions
+
+Read our submit process [FAQ](/submit/faq)
+
+## Why and what to submit
+
+Learn about the benefits of submitting your data to CancerModels.Org and what data types and formats to submit [here](/submit)
+
+[comment]: # "End page content - do not edit below this line"
+
+export default ({ children }) => <MdLayout meta={meta}>{children}</MdLayout>;

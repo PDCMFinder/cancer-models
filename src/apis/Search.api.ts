@@ -1,61 +1,40 @@
-import { useRouter } from "next/router";
 import {
+	IFacetOperator,
 	IFacetProps,
-	IFacetSectionProps,
-	IFacetSidebarOperators,
-	IFacetSidebarSelection,
+	IFacetSectionProps
 } from "../types/Facet.model";
 import { SearchResult } from "../types/Search.model";
 import { ethnicityCategories } from "../utils/collapseEthnicity";
+import { camelCase } from "../utils/dataUtils";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export async function getSearchOptions() {
-	let response = await fetch(`${API_URL}/search_facet?facet_section=eq.search`);
-	if (!response.ok) {
-		throw new Error("Network response was not ok");
-	}
-	return response.json().then((d: any) => {
-		return d[0].facet_options
-			.filter((option: any) => option !== "")
-			.sort((a: String, b: String) =>
-				a.toLocaleLowerCase().trim() > b.toLocaleLowerCase().trim() ? 1 : -1
-			)
-			.map((option: any) => {
-				return {
-					key: option.replace(/[\W_]+/g, "_").toLowerCase(),
-					name: option.trim(),
-				};
-			});
-	});
-}
-
 export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
 	let response = await fetch(
-		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example`
+		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example,facet_type,is_boolean`
 	);
 
 	const sections: any = {
 		model: {
 			key: "model",
 			name: "Model",
-			facets: [],
+			facets: []
 		},
 		molecular_data: {
 			key: "molecular_data",
 			name: "Molecular Data",
-			facets: [],
+			facets: []
 		},
 		patient_tumour: {
 			key: "patient_tumour",
 			name: "Patient / Tumor",
-			facets: [],
+			facets: []
 		},
 		treatment_drug_dosing: {
 			key: "treatment_drug_dosing",
 			name: "Treatment / Drug dosing",
-			facets: [],
-		},
+			facets: []
+		}
 	};
 
 	if (!response.ok) {
@@ -69,6 +48,22 @@ export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
 		});
 		return Object.values(sections);
 	});
+}
+
+export async function getFacetOperators(): Promise<IFacetOperator[]> {
+	try {
+		const response = await fetch(
+			`${API_URL}/search_facet?select=facet_column,any_operator,all_operator`
+		);
+		if (!response.ok) {
+			throw new Error(`Network response was not ok: ${response.statusText}`);
+		}
+		const data = await response.json();
+		return data.map((d: IFacetOperator) => camelCase(d));
+	} catch (error) {
+		console.error("Error fetching facet operators:", error);
+		throw new Error("Failed to fetch facet operators");
+	}
 }
 
 export async function getFacetOptions(facetColumn: string) {
@@ -97,73 +92,62 @@ export async function autoCompleteFacetOptions(
 }
 
 export async function getSearchResults(
-	searchValues: Array<string> = [],
+	searchValues: string[] = [],
 	searchFilterSelection: any,
 	pageSize: number = 10,
-	sortBy: string
+	sortBy: string,
+	facetOperators: IFacetOperator[]
 ): Promise<[number, SearchResult[]]> {
 	if (!searchFilterSelection && !searchValues.length) {
 		return Promise.resolve([0, []]);
 	}
-
 	let query =
 		searchValues.length > 0
 			? `search_terms=ov.{${searchValues.join(",")}}`
 			: "";
 
-	for (const filterId in searchFilterSelection) {
+	for (const facetId in searchFilterSelection) {
 		if (
-			searchFilterSelection[filterId].selection?.length &&
-			filterId !== "page"
+			searchFilterSelection[facetId].selection?.length &&
+			facetId !== "page"
 		) {
-			const multiValuedFacets = [
-				"search_terms",
-				"dataset_available",
-				"breast_cancer_biomarkers",
-				"treatment_list",
-				"model_treatment_list",
-				"markers_with_cna_data",
-				"markers_with_mutation_data",
-				"markers_with_expression_data",
-				"markers_with_cytogenetics_data",
-			];
-			let options: string[] = searchFilterSelection[filterId].selection.map(
+			const currentFacetOperators = facetOperators.find(
+				(obj) => obj.facetColumn === facetId
+			);
+			let options: string[] = searchFilterSelection[facetId].selection.map(
 				(d: string) => `"${d}"`
 			);
 
 			// Handle filtering of subcategories while selecting top category
-			if (filterId === "patient_ethnicity") {
+			if (facetId === "patient_ethnicity") {
 				for (let key in ethnicityCategories) {
-					if (searchFilterSelection[filterId].selection.includes(key)) {
+					if (searchFilterSelection[facetId].selection.includes(key)) {
 						options = ethnicityCategories[key].map((d: string) => `"${d}"`);
 					}
 				}
 			}
 
-			let apiOperator = "in";
+			let apiOperator;
 
-			if (
-				multiValuedFacets.includes(filterId) &&
-				searchFilterSelection[filterId].operator === "ANY"
-			)
-				apiOperator = "ov";
+			if (searchFilterSelection[facetId].operator === "ANY")
+				apiOperator = currentFacetOperators?.anyOperator ?? "ov";
 
-			if (searchFilterSelection[filterId].operator === "ALL")
-				apiOperator = "cs";
+			if (searchFilterSelection[facetId].operator === "ALL")
+				apiOperator = currentFacetOperators?.allOperator ?? "cs";
 
 			let optionsQuery =
 				apiOperator === "in"
-					? `(${options.join(",").replaceAll(";", "%3B")})`
-					: `{${options.join(",").replaceAll(";", "%3B")}}`;
+					? `(${encodeURIComponent(options.join(","))})`
+					: `{${encodeURIComponent(options.join(","))}}`;
 
-			query += `&${filterId}=${apiOperator}.${optionsQuery}`;
+			query += `&${facetId}=${apiOperator}.${optionsQuery}`;
 		}
 	}
 
 	let response = await fetch(
 		`${API_URL}/search_index?${query}&limit=${pageSize}&offset=${
-			(searchFilterSelection["page"].selection[0] - 1) * pageSize
-		}&select=provider_name,patient_age,patient_sex,external_model_id,model_type,data_source,histology,primary_site,collection_site,tumour_type,dataset_available,scores->>pdx_metadata_score&order=${sortBy}`,
+			Math.max(searchFilterSelection["page"].selection - 1, 0) * pageSize
+		}&select=provider_name,patient_age,patient_sex,external_model_id,model_type,data_source,histology,primary_site,collection_site,tumour_type,dataset_available,scores&order=${sortBy}`,
 		{ headers: { Prefer: "count=exact" } }
 	);
 	if (!response.ok) {
@@ -173,11 +157,16 @@ export async function getSearchResults(
 		return [
 			parseInt(response.headers.get("Content-Range")?.split("/")[1] || "0"),
 			d.map((result: any) => {
+				const score =
+					(result.model_type === "PDX"
+						? result.scores.pdx_metadata_score
+						: result.scores.in_vitro_metadata_score) ?? 0;
+
 				return {
 					pdcmId: result.external_model_id,
 					sourceId: result.data_source,
 					datasource: "",
-					providerName: result.provider_name,
+					providerName: result.provider_name.replace("u00f9", "ù"), // remove .replace after API fix
 					histology: result.histology,
 					primarySite: result.primary_site,
 					collectionSite: result.collection_site,
@@ -186,148 +175,24 @@ export async function getSearchResults(
 					modelType: result.model_type,
 					patientAge: result.patient_age,
 					patientSex: result.patient_sex,
-					score: result.pdx_metadata_score,
+					score
 				};
-			}),
+			})
 		];
 	});
 }
 
 function mapApiFacet(apiFacet: any): IFacetProps {
-	const autocompleteFacets = ["external_model_id"];
-	const multiValuedFacets = [
-		"markers_with_mutation_data",
-		"markers_with_cna_data",
-		"markers_with_expression_data",
-		"markers_with_cytogenetics_data",
-		"treatment_list",
-		"model_treatment_list",
-	];
-	let facetType = "check";
-
-	if (autocompleteFacets.includes(apiFacet.facet_column))
-		facetType = "autocomplete";
-
-	if (multiValuedFacets.includes(apiFacet.facet_column))
-		facetType = "multivalued";
-
 	return {
 		facetId: apiFacet.facet_column,
 		name: apiFacet.facet_name,
-		type: facetType,
+		type: apiFacet.facet_type,
 		options: apiFacet.facet_options
 			? sortOptions(apiFacet.facet_column, apiFacet.facet_options)
 			: [],
 		placeholder: apiFacet.facet_example,
+		isBoolean: apiFacet.is_boolean
 	};
-}
-
-export function getSearchParams(
-	searchValues: Array<string>,
-	facetSelection: any,
-	facetOperators: any
-) {
-	let search = "";
-	if (searchValues?.length > 0) {
-		search +=
-			"?q=" +
-			searchValues.map((o) => encodeURIComponent('"' + o + '"')).join(",");
-	}
-	let facetString = "";
-
-	Object.keys(facetSelection).forEach((facetSectionKey) => {
-		Object.keys(facetSelection[facetSectionKey]).forEach((facetKey) => {
-			if (facetSelection[facetSectionKey][facetKey].length === 0) return;
-			facetString += `${
-				facetString === "" ? "" : " AND "
-			}${facetSectionKey}.${facetKey}:${
-				facetSelection[facetSectionKey][facetKey]
-			}`;
-		});
-	});
-	if (facetString !== "")
-		search += `${search === "" ? "?" : "&"}facets=${facetString}`;
-
-	let facetOperatorString = "";
-	Object.keys(facetOperators).forEach((facetSectionKey) => {
-		Object.keys(facetOperators[facetSectionKey]).forEach((facetKey) => {
-			if (
-				facetOperators[facetSectionKey][facetKey]?.length === 0 ||
-				facetOperators[facetSectionKey][facetKey] === undefined
-			)
-				return;
-			facetOperatorString += `${
-				facetOperatorString === "" ? "" : " AND "
-			}${facetSectionKey}.${facetKey}:${
-				facetOperators[facetSectionKey][facetKey]
-			}`;
-		});
-	});
-	if (facetOperatorString !== "")
-		search += `${
-			search === "" ? "?" : "&"
-		}facet.operators=${facetOperatorString}`;
-	return search;
-}
-
-// A custom hook that builds on useLocation to parse
-// the query string for you.
-export function useQueryParams() {
-	const { query } = useRouter();
-	let searchTermValues: Array<string> = [];
-	const queryParam = query.q as string,
-		queryFacets = query.facets as string,
-		queryFacetOperators = query["facet.operators"] as string;
-
-	if (queryParam !== null) {
-		searchTermValues = queryParam
-			?.split('","')
-			.map((o) => o.replace(/["]+/g, ""));
-	}
-	let facetSelection: any = {};
-	const facets = queryFacets?.split(" AND ") || [];
-	facets.forEach((facetString) => {
-		const [key, values] = facetString.split(":");
-		facetSelection[key] = values.split(",");
-	});
-	let facetOperators: any = {};
-	const facetOperatorParam = queryFacetOperators?.split(" AND ") || [];
-	facetOperatorParam.forEach((facetString) => {
-		const [key, value] = facetString.split(":");
-		facetOperators[key] = value;
-	});
-
-	return [searchTermValues, facetSelection, facetOperators];
-}
-
-export function parseSelectedFacetFromUrl(
-	facetsByKey: any
-): IFacetSidebarSelection {
-	const facetSidebarSelection: IFacetSidebarSelection = {};
-	// Object.keys(facetsByKey).forEach((compoundKey: string) => {
-	// 	const [sectionKey, facetKey] = compoundKey.split(".");
-	// 	const urlFacetSelection = facetsByKey[compoundKey];
-	// 	if (!facetSidebarSelection[sectionKey]) {
-	// 		facetSidebarSelection[sectionKey] = {};
-	// 	}
-	// 	facetSidebarSelection[sectionKey][facetKey] = urlFacetSelection || [];
-	// });
-	return facetSidebarSelection;
-}
-
-export function parseOperatorsFromUrl(
-	operatorsByKey: any
-): IFacetSidebarOperators {
-	const facetSidebarSelection: IFacetSidebarOperators = {};
-	Object.keys(operatorsByKey).forEach((compoundKey: string) => {
-		const [sectionKey, facetKey] = compoundKey.split(".");
-		const urlOperator = operatorsByKey[compoundKey];
-		if (!facetSidebarSelection[sectionKey]) {
-			facetSidebarSelection[sectionKey] = {};
-		}
-		facetSidebarSelection[sectionKey][facetKey] = urlOperator;
-	});
-	return facetSidebarSelection;
 }
 
 function sortOptions(facet_column: string, list: string[]) {
@@ -351,4 +216,19 @@ function sortOptions(facet_column: string, list: string[]) {
 		.filter((str) => !endList.includes(str))
 		.sort((a, b) => a.localeCompare(b));
 	return sortedList.concat(endList);
+}
+
+export async function getDataSourcesByProject(projectName: string) {
+	let response = await fetch(
+		`${API_URL}/search_index?project_name=${
+			projectName === "Other" ? "is.null" : "in.(%22" + projectName + "%22)"
+		}&select=data_source,provider_name`
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response
+		.json()
+		.then((d: { data_source: string; provider_name: string }[]) => d);
 }

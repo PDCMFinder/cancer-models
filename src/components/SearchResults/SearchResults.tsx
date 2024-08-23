@@ -1,5 +1,5 @@
-import SearchResult from "./SearchResult/SearchResult";
 import { SearchResult as SearchResultType } from "../../types/Search.model";
+import SearchResult from "./SearchResult/SearchResult";
 
 interface ISearchResultsProps {
 	compareModel: (id: string) => void;
@@ -15,13 +15,11 @@ const SearchResults = (props: ISearchResultsProps) => {
 
 				return (
 					<div className="row mb-3 mb-md-2" key={id + result.histology}>
-						<div className="col-12">
-							<SearchResult
-								addModelToCompare={(e) => props.compareModel(id)}
-								compareCheck={props.modelsToCompare.includes(id)}
-								data={result}
-							/>
-						</div>
+						<SearchResult
+							addModelToCompare={() => props.compareModel(id)}
+							compareCheck={props.modelsToCompare.includes(id)}
+							data={result}
+						/>
 					</div>
 				);
 			})}

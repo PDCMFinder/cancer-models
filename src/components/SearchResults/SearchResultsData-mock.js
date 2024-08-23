@@ -11,7 +11,7 @@ export default [
 		tumour_type: "Primary",
 		dataset_available: [
 			"mutation",
-			"cytogenetics",
+			"biomarker",
 			"copy number alteration",
 			"dosing studies",
 			"publication",
@@ -47,7 +47,7 @@ export default [
 		tumour_type: "Recurrent",
 		dataset_available: [
 			"mutation",
-			"cytogenetics",
+			"biomarker",
 			"expression",
 			"patient treatment",
 			"publication",
@@ -137,7 +137,7 @@ export default [
 		tumour_type: "Primary",
 		dataset_available: [
 			"mutation",
-			"cytogenetics",
+			"biomarker",
 			"copy number alteration",
 			"expression",
 			"publication",
@@ -155,7 +155,7 @@ export default [
 		tumour_type: "Metastatic",
 		dataset_available: [
 			"mutation",
-			"cytogenetics",
+			"biomarker",
 			"expression",
 			"patient treatment",
 			"publication",

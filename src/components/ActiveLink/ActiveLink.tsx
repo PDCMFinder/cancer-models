@@ -5,24 +5,27 @@ import React, { PropsWithChildren, useState, useEffect } from "react";
 type ActiveLinkProps = LinkProps & {
 	className?: string;
 	activeClassName: string;
+	opensNewTab?: boolean;
 };
 
 const ActiveLink = ({
 	children,
 	activeClassName,
 	className,
+	opensNewTab,
 	...props
 }: PropsWithChildren<ActiveLinkProps>) => {
 	const { asPath, isReady } = useRouter();
 	const [computedClassName, setComputedClassName] =
 		useState<string | undefined>(className);
 	const [isActive, setIsActive] = useState<boolean>(false);
-	const externalLinkProps = props.href.toString().includes("http")
-		? {
-				target: "_blank",
-				rel: "noopener noreferrer",
-		  }
-		: null;
+	const externalLinkProps =
+		props.href.toString().includes("http") || opensNewTab
+			? {
+					target: "_blank",
+					rel: "noopener noreferrer",
+			  }
+			: null;
 
 	useEffect(() => {
 		// Check if the router fields are updated client-side

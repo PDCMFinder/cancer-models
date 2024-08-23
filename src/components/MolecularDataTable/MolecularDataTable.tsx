@@ -1,19 +1,20 @@
-import { IMolecularData } from "../../pages/data/models/[providerId]/[modelId]";
-import Button from "../Button/Button";
+import Link from "next/link";
+import { useState } from "react";
+import ReactGA from "react-ga4";
 import { useQuery } from "react-query";
 import {
 	getAvailableDataColumns,
-	getModelMolecularDataDetails,
+	getModelMolecularDataDetails
 } from "../../apis/ModelDetails.api";
+import { MolecularData } from "../../types/ModelData.model";
+import Button from "../Button/Button";
+import InputAndLabel from "../Input/InputAndLabel";
 import Loader from "../Loader/Loader";
 import Pagination from "../Pagination/Pagination";
-import { useState } from "react";
-import InputAndLabel from "../Input/InputAndLabel";
-import { hj_event } from "../../utils/hotjar";
 
 interface IMolecularDataTableProps {
-	data: IMolecularData;
-	handleDownload: (data: IMolecularData) => void;
+	data: MolecularData;
+	handleDownload: (data: MolecularData) => void;
 }
 
 interface DataDetailsRow {
@@ -44,20 +45,21 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 		["get-molecular-data-detail-cols", data.dataSource, data.dataType],
 		() => getAvailableDataColumns(data.dataSource, data.dataType)
 	);
+
 	const { data: dataDetails, isLoading } = useQuery(
 		[
 			"get-molecular-data-detail",
-			data.id,
+			data.molecularCharacterizationId,
 			data.dataType,
 			filter,
 			currentPage,
 			pageSize,
 			sortColumn,
-			sortDirection,
+			sortDirection
 		],
 		() =>
 			getModelMolecularDataDetails(
-				data.id,
+				data.molecularCharacterizationId,
 				data.dataType,
 				filter,
 				currentPage,
@@ -78,7 +80,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 					{ key: "allele_frequency", name: "Allele Frequency" },
 					{ key: "seq_start_position", name: "Seq. Start Position" },
 					{ key: "ref_allele", name: "Ref. Allele" },
-					{ key: "alt_allele", name: "Alt. Allele" },
+					{ key: "alt_allele", name: "Alt. Allele" }
 				].filter((column) => columns.includes(column.key));
 				break;
 			case "expression":
@@ -93,9 +95,9 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 					{ key: "illumina_hgea_probe_id", name: "Illumina HGEA Probe" },
 					{
 						key: "illumina_hgea_expression_value",
-						name: "Illumina HGEA Exp. Value",
+						name: "Illumina HGEA Exp. Value"
 					},
-					{ key: "z_score", name: "Z Score" },
+					{ key: "z_score", name: "Z Score" }
 				].filter(
 					(column) =>
 						columns.includes(column.key) || column.key === "hgnc_symbol"
@@ -116,14 +118,14 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 					{ key: "allele_frequency", name: "Allele Frequency" },
 					{ key: "seq_start_position", name: "Seq. Start Position" },
 					{ key: "ref_allele", name: "Ref. Allele" },
-					{ key: "alt_allele", name: "Alt. Allele" },
+					{ key: "alt_allele", name: "Alt. Allele" }
 				].filter((column) => columns.includes(column.key));
 				break;
-			case "cytogenetics":
+			case "bio markers":
 				columnsToDisplay = [
-					{ key: "hgnc_symbol", name: "HGNC Symbol" },
-					{ key: "result", name: "Result" },
-				];
+					{ key: "biomarker", name: "Biomarker" },
+					{ key: "result", name: "Result" }
+				].filter((column) => columns.includes(column.key));
 				break;
 		}
 	}
@@ -143,7 +145,8 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 		<>
 			<div className="d-flex flex-column-reverse flex-md-row justify-content-between mb-3 align-center">
 				<InputAndLabel
-					name="filterData"
+					forId="filterData"
+					name="filterData-input"
 					type="text"
 					label="Filter"
 					labelClassName="mb-0 mr-1"
@@ -155,10 +158,7 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 					priority="primary"
 					color="dark"
 					className="m-0"
-					onClick={() => {
-						props.handleDownload(data);
-						hj_event("click_downloadData-modal");
-					}}
+					onClick={() => props.handleDownload(data)}
 				>
 					Download Data
 				</Button>
@@ -221,13 +221,19 @@ const MolecularDataTable = (props: IMolecularDataTableProps) => {
 															{columnLinks?.length
 																? columnLinks.map((l, k) => (
 																		<span key={k}>
-																			<a
+																			<Link
 																				href={l.link}
 																				target="_blank"
 																				rel="noopener noreferrer"
+																				onClick={() =>
+																					ReactGA.event("external_provider", {
+																						category: "event",
+																						resource: l.resource
+																					})
+																				}
 																			>
 																				{l.resource}
-																			</a>{" "}
+																			</Link>{" "}
 																		</span>
 																  ))
 																: null}

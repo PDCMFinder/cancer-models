@@ -7,13 +7,12 @@ import Button from "../components/Button/Button";
 import { useQuery } from "react-query";
 import {
 	getCancerHierarchy,
-	getDataReleaseInformation,
+	getLatestDataReleaseInformation,
 	getModelCount,
 	getModelsByMutatedGene,
 	getModelsByPatientAge,
 	getModelsByPatientEthnicity,
 	getModelsByPatientGender,
-	getModelsByPrimarySite,
 	getModelsByTreatment,
 	getModelsByTumourType,
 	getProviderCount,
@@ -21,11 +20,9 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { countEthnicity } from "../utils/collapseEthnicity";
-import ShowHide from "../components/ShowHide/ShowHide";
 import Loader from "../components/Loader/Loader";
 import dynamic from "next/dynamic";
-import useWindowDimensions from "../hooks/useWindowDimensions";
-import breakPoints from "../utils/breakpoints";
+import Head from "next/head";
 
 const DynamicCirclePacking = dynamic(
 	() => import("../components/CirclePacking/CirclePacking"),
@@ -76,8 +73,6 @@ function collapseAgeGroup(
 
 const Overview: NextPage = () => {
 	const notValidCategories = ["not provided", "not collected"];
-	const { windowWidth } = useWindowDimensions();
-	let bpLarge = breakPoints.large;
 
 	let cancerHierarchyQuery = useQuery("cancerHierarchy", () => {
 		return getCancerHierarchy();
@@ -109,8 +104,8 @@ const Overview: NextPage = () => {
 	let modelCount = useQuery("modelCount", () => {
 		return getModelCount();
 	});
-	let releaseInfo = useQuery("releaseInfo", () => {
-		return getDataReleaseInformation();
+	let latestDataReleaseInfo = useQuery("latestDataReleaseInfo", () => {
+		return getLatestDataReleaseInformation();
 	});
 
 	const router = useRouter();
@@ -130,6 +125,18 @@ const Overview: NextPage = () => {
 
 	return (
 		<>
+			{/* page metadata */}
+			<Head>
+				<title>Comprehensive Overview of Patient-Derived Cancer Models</title>
+				<meta
+					name="description"
+					content="Gain insights of PDX, organoid, and cell line models data on our portal."
+				/>
+				<meta
+					name="keywords"
+					content="Patient-derived cancer models, overview, research insights"
+				/>
+			</Head>
 			<header className="bg-primary-primary text-white mb-5 py-5">
 				<div className="container">
 					<div className="row py-5">
@@ -251,22 +258,19 @@ const Overview: NextPage = () => {
 						<div className="col-12">
 							<h2>Current data release</h2>
 							<ul>
-								{releaseInfo.data ? (
+								{latestDataReleaseInfo.data ? (
 									<li>
-										Data release version:{" "}
-										{releaseInfo.data.name.replace("dr.", "").replace("dr", "")}
+										Data release version: {latestDataReleaseInfo.data.tag_name}
 									</li>
 								) : null}
-								{releaseInfo.data ? (
+								{latestDataReleaseInfo.data ? (
 									<li>
 										Date of publication:{" "}
-										{new Date(releaseInfo.data.date)
-											.toISOString()
-											.substring(0, 10)}
+										{latestDataReleaseInfo.data?.released_at}
 									</li>
 								) : null}
-								<li>Number of models: {modelCount.data ?? 7091}</li>
-								<li>Number of providers: {providerCount.data ?? 33}</li>
+								<li>Number of models: {modelCount.data ?? 7500}</li>
+								<li>Number of providers: {providerCount.data ?? 37}</li>
 							</ul>
 							<Link href="/about/releases">Release log</Link>
 						</div>

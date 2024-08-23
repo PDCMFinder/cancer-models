@@ -16,7 +16,7 @@ const Tooltip = (props: ITooltipProps) => {
 			<div
 				onMouseOver={() => setIsHovering(true)}
 				onMouseLeave={() => setIsHovering(false)}
-				className="d-inline position-relative pr-2"
+				className="w-min position-relative pr-2"
 			>
 				{isHovering && (
 					<>

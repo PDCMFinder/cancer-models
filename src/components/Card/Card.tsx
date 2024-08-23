@@ -3,6 +3,7 @@ import styles from "./Card.module.scss";
 
 interface ICardProps {
 	className?: string;
+	id?: string;
 	header?: JSX.Element;
 	headerClassName?: string;
 	children: string | JSX.Element | JSX.Element[];
@@ -25,6 +26,7 @@ const Card = (props: ICardProps) => {
 		<div
 			className={`${styles.Card} ${cardClassName ? cardClassName : ""}`.trim()}
 			style={props.style}
+			id={props.id || undefined}
 			data-test={props["data-test"]}
 		>
 			{header && (

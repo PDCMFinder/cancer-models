@@ -1,35 +1,36 @@
-import Logotype from "../Logotype/Logotype";
-import { routes } from "../../utils/routes";
-import { IRoute } from "../../../globalTypes";
-import ActiveLink from "../ActiveLink/ActiveLink";
-import styles from "./Footer.module.scss";
 import Link from "next/link";
+import ReactGA from "react-ga4";
 import { useQuery } from "react-query";
-import { getDataReleaseInformation } from "../../apis/AggregatedData.api";
-import { hj_event } from "../../utils/hotjar";
+import { IRoute } from "../../../types/globalTypes";
+import { getLatestDataReleaseInformation } from "../../apis/AggregatedData.api";
+import { routes, routesWithGAEvents } from "../../utils/routes";
+import ActiveLink from "../ActiveLink/ActiveLink";
+import LinkedinIcon from "../Icons/LinkedinIcon";
+import Logotype from "../Logotype/Logotype";
+import styles from "./Footer.module.scss";
 
-interface IFooterProps {
-	cookieConsentHeight: number;
-}
-
-const Footer = (props: IFooterProps) => {
-	let releaseInfo = useQuery("releaseInfo", () => {
-		return getDataReleaseInformation();
+const Footer = () => {
+	let latestDataReleaseInfo = useQuery("latestDataReleaseInfo", () => {
+		return getLatestDataReleaseInformation();
 	});
 
 	return (
 		<footer
 			className={`${styles.Footer} text-white`}
-			style={{ paddingBottom: `calc(${props.cookieConsentHeight}px + 3.5rem)` }}
+			style={{ paddingBottom: "3.5rem" }}
 		>
 			<div className="container">
 				<div className={`row ${styles["Footer_row-main"]}`}>
 					<div className="col-12 col-lg-2">
-						<Link href="/" className={styles.Footer_Logotype}>
+						<Link
+							href="/"
+							className={styles.Footer_Logotype}
+							aria-label="CancerModels.Org logo"
+						>
 							<Logotype color="white" />
 						</Link>
 					</div>
-					<div className="col-12 col-md-4 col-xl-3">
+					<div className="col-12 col-md-4">
 						<div className="row">
 							<div className="col-12 col-lg-6">
 								<ul className={`ul-noStyle ${styles.Footer_nav_firstRow}`}>
@@ -44,6 +45,7 @@ const Footer = (props: IFooterProps) => {
 														className="link-text-light"
 														activeClassName={styles["Footer_item-active"]}
 														href={path}
+														opensNewTab={route.opensNewTab}
 													>
 														{route.name}
 													</ActiveLink>
@@ -59,17 +61,35 @@ const Footer = (props: IFooterProps) => {
 										let children = route.children;
 
 										if (route.name === "More" && children) {
-											return children.map((child) => (
-												<li key={child.path}>
-													<ActiveLink
-														className="link-text-light"
-														activeClassName={styles["Footer_item-active"]}
-														href={child.path}
-													>
-														{child.name}
-													</ActiveLink>
-												</li>
-											));
+											return children.map((child) => {
+												let childName = child.name,
+													onClickProp;
+
+												const childGAEvent = routesWithGAEvents.find(
+													(route) => route.routeName === childName
+												);
+
+												if (childGAEvent) {
+													onClickProp = () =>
+														ReactGA.event(childGAEvent.eventName, {
+															category: "event"
+														});
+												}
+
+												return (
+													<li key={child.path}>
+														<ActiveLink
+															className="link-text-light"
+															activeClassName={styles["Footer_item-active"]}
+															href={child.path}
+															opensNewTab={child.opensNewTab}
+															onClick={onClickProp}
+														>
+															{child.name}
+														</ActiveLink>
+													</li>
+												);
+											});
 										}
 									})}
 									<li>
@@ -94,7 +114,7 @@ const Footer = (props: IFooterProps) => {
 							</div>
 						</div>
 					</div>
-					<div className="col-12 col-md-7 col-lg-5 col-xl-4 offset-lg-1 offset-xl-3 d-flex flex-column justify-content-between">
+					<div className="col-12 col-md-7 col-lg-5 col-xl-4 offset-lg-1 offset-xl-2 d-flex flex-column justify-content-between">
 						<p>
 							<Link
 								className="link-text-light"
@@ -114,31 +134,43 @@ const Footer = (props: IFooterProps) => {
 							</Link>{" "}
 							are co-developers of CancerModels.Org. This work is supported by
 							the National Institutes of Health/National Cancer Institute U24
-							CA204781 01, U24 CA253539 01 and R01 CA089713.
+							CA204781, U24 CA253539 and R01 CA089713.
 						</p>
-						<p className="mb-0">
-							<a
-								href="mailto:info@cancermodels.org"
-								className="link-text-light mt-2"
-								onClick={() => hj_event("click_footerEmail")}
-							>
-								info@cancermodels.org
-							</a>
-						</p>
+						<div className="d-flex justify-content-between">
+							<p className="mb-0">
+								<a
+									href="https://www.linkedin.com/company/cancermodelsorg/"
+									target="_blank"
+									rel="noopener noreferrer"
+									className="link-text-light"
+								>
+									<LinkedinIcon />
+								</a>
+							</p>
+							<p className="mb-0">
+								<a
+									href="mailto:info@cancermodels.org"
+									className="link-text-light"
+								>
+									info@cancermodels.org
+								</a>
+							</p>
+						</div>
 					</div>
 				</div>
 				<div className="row">
 					<div className="col">
-						{/* Placeholder, change for API information */}
 						<p className="text-small text-center">
-							© 2017-{new Date(releaseInfo.data?.date).getFullYear() || 2023}
+							© 2017-
+							{new Date(
+								latestDataReleaseInfo.data?.released_at || Date.now()
+							).getFullYear()}
 							<br />
-							{releaseInfo.data
-								? `Data Release ${releaseInfo.data.name
-										.replace("dr.", "")
-										.replace("dr", "")} | 
-								${new Date(releaseInfo.data.date).toISOString().substring(0, 10)}`
-								: null}
+							{`Data Release ${
+								latestDataReleaseInfo.data?.tag_name
+							} | ${new Date(
+								latestDataReleaseInfo.data?.released_at || Date.now()
+							).getFullYear()}`}
 							<br />
 							<Link href="/about/releases" className="link-text-light">
 								Release log
@@ -163,6 +195,16 @@ const Footer = (props: IFooterProps) => {
 							>
 								EMBL-EBI terms of use.
 							</Link>
+							<br />
+							Our platform also conforms to the EMBL-EBI{" "}
+							<a
+								target="_blank"
+								rel="noreferrer noopener"
+								className="link-text-light"
+								href="https://www.ebi.ac.uk/long-term-data-preservation"
+							>
+								long-term data preservation policies.
+							</a>
 						</p>
 					</div>
 				</div>

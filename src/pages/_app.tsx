@@ -1,18 +1,13 @@
-import { useEffect } from "react";
-import "../styles/globals.scss";
 import type { AppProps } from "next/app";
-import App, { AppContext } from "next/app";
-import { Merriweather } from "@next/font/google";
-import { Space_Mono } from "@next/font/google";
-import Layout from "../components/Layout/Layout";
+import { Merriweather, Space_Mono } from "next/font/google";
 import Head from "next/head";
-import handleBodyClass from "../utils/handleBodyClass";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
-import { Cookies, CookiesProvider } from "react-cookie";
-import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
+import { useRouter } from "next/router";
 import Script from "next/script";
-import { HJ_ID } from "../utils/hotjar";
+import { useEffect, useState } from "react";
+import { CookiesProvider, useCookies } from "react-cookie";
+import Layout from "../components/Layout/Layout";
+import "../styles/globals.scss";
+import handleBodyClass from "../utils/handleBodyClass";
 
 const USERNAVIGATION_MOUSE = "userNavigation-mouse",
 	USERNAVIGATION_KEYBOARD = "userNavigation-keyboard",
@@ -25,12 +20,12 @@ const USERNAVIGATION_MOUSE = "userNavigation-mouse",
 const merriweather = Merriweather({
 	weight: "400",
 	subsets: ["latin"],
-	display: "swap",
+	display: "swap"
 });
 const spaceMono = Space_Mono({
 	weight: ["400", "700"],
 	subsets: ["latin"],
-	display: "swap",
+	display: "swap"
 });
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
@@ -38,8 +33,12 @@ if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
 }
 
 /* @ts-ignore */
-function CancerModels({ Component, pageProps, cookies }: AppProps) {
-	const isBrowser = typeof window !== "undefined";
+function CancerModels({ Component, pageProps }: AppProps) {
+	const [cookies, setCookie] = useCookies();
+	const [isConsented, setIsConsented] = useState(false);
+	const { asPath } = useRouter();
+	// hardcode envhost so we don't have to use getserverprops on whole app
+	const envHost = "https://www.cancermodels.org";
 
 	useEffect(() => {
 		handleBodyClass([USERNAVIGATION_MOUSE], ADD);
@@ -64,119 +63,87 @@ function CancerModels({ Component, pageProps, cookies }: AppProps) {
 		};
 	}, []);
 
-	const queryClient = new QueryClient({
-		defaultOptions: {
-			queries: {
-				staleTime: Infinity,
-				refetchOnWindowFocus: true,
-			},
-		},
-	});
+	useEffect(() => {
+		setIsConsented(cookies["cm_consent"] === "accept");
+	}, [cookies["cm_consent"]]);
 
-	const isProductionEnvironment = () => {
-		if (process.env.NEXT_PUBLIC_APP_ENV === "production") {
-			return true;
-		}
-		return false;
-	};
+	const isProductionEnvironment =
+		process.env.NEXT_PUBLIC_APP_ENV === "production";
 
 	return (
 		<>
-			<QueryClientProvider client={queryClient}>
-				<Head>
-					<title>
-						CancerModels.Org - Find PDX, organoid and cell line cancer models
-					</title>
-					<meta
-						name="description"
-						content="The largest open catalog of harmonised patient-derived cancer models. Find the right PDX, organoid and cell line patient-derived cancer model for your next project."
-					/>
-					<meta
-						name="viewport"
-						content="width=device-width, initial-scale=1.0"
-					/>
-					<meta property="og:image" content="/ogimage.png" />
+			<Head>
+				<title>
+					Cancer Models: Patient-Derived Xenografts, Organoids, Cells
+				</title>
+				<meta
+					name="description"
+					content="Discover the largest catalog of patient-derived xenograft, organoid, and cell cancer models for your next project."
+				/>
+				<meta
+					name="keywords"
+					content="Patient-derived models, Cancer research models, PDX models, Cell line models, Organoid models, Cancer model repositories, Molecular data"
+				/>
+				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+				<meta property="og:image" content="/ogimage.png" />
+				{/* canonical url without params */}
+				<link rel="canonical" href={`${envHost}${asPath.split("?")[0]}`} />
 
-					{/* Generics */}
-					<link rel="icon" href="/favicon-32.png" sizes="32x32" />
-					<link rel="icon" href="/favicon-128.png" sizes="128x128" />
-					<link rel="icon" href="/favicon-192.png" sizes="192x192" />
+				{/* Generics */}
+				<link rel="icon" href="/favicon-32.png" sizes="32x32" />
+				<link rel="icon" href="/favicon-128.png" sizes="128x128" />
+				<link rel="icon" href="/favicon-192.png" sizes="192x192" />
 
-					{/* Android */}
-					<link rel="shortcut icon" href="/favicon-196.png" sizes="196x196" />
+				{/* Android */}
+				<link rel="shortcut icon" href="/favicon-196.png" sizes="196x196" />
 
-					{/* iOS */}
-					<link
-						rel="apple-touch-icon"
-						href="/favicon-152.png"
-						sizes="152x152"
-					/>
-					<link
-						rel="apple-touch-icon"
-						href="/favicon-152.png"
-						sizes="167x167"
-					/>
-					<link
-						rel="apple-touch-icon"
-						href="/favicon-180.png"
-						sizes="180x180"
-					/>
-				</Head>
-				<style jsx global>{`
-					:root {
-						--type-primary: ${merriweather.style.fontFamily}, serif;
-						--type-secondary: ${spaceMono.style.fontFamily}, monospace;
-					}
-				`}</style>
-				<GoogleReCaptchaProvider reCaptchaKey="6LepEiwjAAAAAN9QFU8RpeY0QXCFoRRVVis2B-iF">
-					{isProductionEnvironment() && (
-						<>
-							{/* Hotjar Tracking Code for Cancer Models Org */}
-							<Script id="hotjar" strategy="beforeInteractive">
-								{`(function(h,o,t,j,a,r){
-                  h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-                  h._hjSettings={hjid:${HJ_ID},hjsv:6};
-                  a=o.getElementsByTagName('head')[0];
-                  r=o.createElement('script');r.async=1;
-                  r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-                  a.appendChild(r);
+				{/* iOS */}
+				<link rel="apple-touch-icon" href="/favicon-152.png" sizes="152x152" />
+				<link rel="apple-touch-icon" href="/favicon-152.png" sizes="167x167" />
+				<link rel="apple-touch-icon" href="/favicon-180.png" sizes="180x180" />
+			</Head>
+			<style jsx global>{`
+				:root {
+					--type-primary: ${merriweather.style.fontFamily}, serif;
+					--type-secondary: ${spaceMono.style.fontFamily}, monospace;
+				}
+			`}</style>
+			{isProductionEnvironment && isConsented ? (
+				<>
+					{/* Hotjar Tracking Code for Cancer Models Org */}
+					<Script id="hotjar" strategy="afterInteractive">
+						{`(function(h,o,t,j,a,r){
+                h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+                h._hjSettings={hjid:3209855,hjsv:6};
+                a=o.getElementsByTagName('head')[0];
+                r=o.createElement('script');r.async=1;
+                r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+                a.appendChild(r);
               })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
-							</Script>
-							{/* Google Analytics code */}
-							<Script
-								strategy="beforeInteractive"
-								src="https://www.googletagmanager.com/gtag/js?id=G-34S5KH94SX"
-							/>
-							<Script id="google-analytics" strategy="beforeInteractive">
-								{`window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', 'G-34S5KH94SX', {
-                      page_path: window.location.pathname,
-                  });`}
-							</Script>
-						</>
-					)}
-					<CookiesProvider
-						cookies={isBrowser ? undefined : new Cookies(cookies)}
-					>
-						<Layout>
-							<>
-								<ReactQueryDevtools initialIsOpen={false} />
-								<Component {...pageProps} />
-							</>
-						</Layout>
-					</CookiesProvider>
-				</GoogleReCaptchaProvider>
-			</QueryClientProvider>
+					</Script>
+					{/* Google Analytics code */}
+					<Script
+						strategy="afterInteractive"
+						id="google-tagManager"
+						src="https://www.googletagmanager.com/gtag/js?id=G-34S5KH94SX"
+					/>
+					<Script id="google-analytics" strategy="afterInteractive">
+						{`window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-34S5KH94SX', {
+                page_path: window.location.pathname,
+              });`}
+					</Script>
+				</>
+			) : null}
+			<CookiesProvider defaultSetOptions={{ path: "/" }}>
+				<Layout>
+					<Component {...pageProps} />
+				</Layout>
+			</CookiesProvider>
 		</>
 	);
 }
 
 export default CancerModels;
-
-CancerModels.getInitialProps = async (appContext: AppContext) => {
-	const appProps = await App.getInitialProps(appContext);
-
-	return { ...appProps, cookies: appContext.ctx.req?.headers?.cookie };
-};

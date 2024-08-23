@@ -56,7 +56,7 @@ build_dev_image:
     - sed -i "s|FROM nginx|FROM ${LOCAL_GITLAB_NGINX_IMAGE}|g" Dockerfile
     - mkdir -p "$MOUNT_POINT"
     - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
-    - rm .env.production && cp .env.development .env.production
+    - rm .env.production && cp .env.staging .env.production
   script:
     - |
       if [[ "${REQUIRES_REBUILD_IMAGE}" == "true" ]]; then
@@ -70,7 +70,7 @@ build_dev_image:
           docker push "${DOCKER_HUB_USER}"/"${DOCKER_HUB_REPO}":dev  | tee ${MOUNT_POINT}/dockerhub-push-latest.log
       fi
     - docker logout
-
+  environment: staging
   artifacts:
     paths:
       - "$MOUNT_POINT/"
@@ -131,6 +131,7 @@ build_prod_image:
       fi
     - docker logout
 
+  environment: production
   artifacts:
     paths:
       - "$MOUNT_POINT/"

@@ -4,9 +4,11 @@ import Button from "../components/Button/Button";
 import Form from "../components/Form/Form";
 import InputAndLabel from "../components/Input/InputAndLabel";
 import { createTicket } from "../apis/Contact.api";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { hj_event } from "../utils/hotjar";
 import Loader from "../components/Loader/Loader";
+import Link from "next/link";
+import ReCAPTCHA from "react-google-recaptcha";
+import ReactGA from "react-ga4";
+import Head from "next/head";
 
 interface IFormStatus {
 	status: "success" | "error" | "loading" | "";
@@ -14,7 +16,7 @@ interface IFormStatus {
 }
 
 const Contact: NextPage = () => {
-	const { executeRecaptcha } = useGoogleReCaptcha();
+	const recaptchaRef = useRef<any>(null);
 	const nameRef = useRef<HTMLInputElement>(null);
 	const emailRef = useRef<HTMLInputElement>(null);
 	const messageRef = useRef<HTMLInputElement>(null);
@@ -26,14 +28,14 @@ const Contact: NextPage = () => {
 	const handleFormOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		setFormStatus({ status: "loading", message: "" });
 
-		if (!executeRecaptcha) {
+		if (!recaptchaRef.current.executeAsync) {
 			return;
 		}
 
 		let { value: nameValue } = nameRef.current!;
 		let { value: emailValue } = emailRef.current!;
 		let { value: messageValue } = messageRef.current!;
-		const token = await executeRecaptcha("feedback");
+		const token = await recaptchaRef.current.executeAsync();
 		const response = await createTicket(
 			nameValue,
 			emailValue,
@@ -49,6 +51,11 @@ const Contact: NextPage = () => {
 				status: "success",
 				message: "Thank you for your message! We will be in touch soon.",
 			});
+
+			ReactGA.event("contactForm-success", {
+				category: "event",
+				value: 1,
+			});
 		} else if (response.error) {
 			// Logging the error so Hotjar can show it in analytics
 			console.log("Error_code: CFER");
@@ -62,6 +69,16 @@ const Contact: NextPage = () => {
 
 	return (
 		<>
+			{/* page metadata */}
+			<Head>
+				<title>
+					Connect with CancerModels.Org for Collaborations & Inquiries
+				</title>
+				<meta
+					name="description"
+					content="Contact our team to explore opportunities in cancer research, model contributions, or any questions you may have."
+				/>
+			</Head>
 			<header className="bg-primary-primary text-white mb-5 py-5">
 				<div className="container">
 					<div className="row py-5">
@@ -87,13 +104,17 @@ const Contact: NextPage = () => {
 						<div className="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
 							<Form onSubmit={handleFormOnSubmit}>
 								<InputAndLabel
-									name="name"
+									forId="name"
+									id="name"
+									name="name-name"
 									type="text"
 									label="Your name"
 									inputRef={nameRef}
 								/>
 								<InputAndLabel
-									name="email"
+									forId="email"
+									id="email"
+									name="email-name"
 									type="email"
 									label="Email address"
 									inputClassName="mb-0"
@@ -103,22 +124,43 @@ const Contact: NextPage = () => {
 									We&apos;ll never share your email with anyone else.
 								</p>
 								<InputAndLabel
-									name="message"
+									forId="message"
+									id="message"
+									name="message-name"
 									type="textarea"
 									label="Your message *"
 									inputRef={messageRef}
 									required={true}
 								/>
-								<div className="text-right">
-									<Button
-										type="submit"
-										priority="primary"
-										color="dark"
-										onClick={() => hj_event("click_contactSubmit")}
+								<p className="text-muted text-small">
+									This site is protected by reCAPTCHA and the Google{" "}
+									<Link
+										href="https://policies.google.com/privacy"
+										target="_blank"
+										rel="noopener noreferrer"
 									>
+										Privacy Policy
+									</Link>{" "}
+									and{" "}
+									<Link
+										href="https://policies.google.com/terms"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										Terms of Service
+									</Link>{" "}
+									apply.
+								</p>
+								<div className="text-right">
+									<Button type="submit" priority="primary" color="dark">
 										Submit
 									</Button>
 								</div>
+								<ReCAPTCHA
+									ref={recaptchaRef}
+									size="invisible"
+									sitekey="6LepEiwjAAAAAN9QFU8RpeY0QXCFoRRVVis2B-iF"
+								/>
 							</Form>
 							{formStatus.status && (
 								<div

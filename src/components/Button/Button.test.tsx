@@ -1,12 +1,12 @@
-import { render } from "@testing-library/react";
-import { screen } from "@testing-library/dom";
 import { expect } from "@jest/globals";
+import { screen } from "@testing-library/dom";
+import { render } from "@testing-library/react";
 import Button from "./Button";
 
 describe("Button UI component", () => {
 	it("should render a button with text", () => {
 		render(
-			<Button color="dark" priority="primary" htmlTag="button">
+			<Button color="dark" priority="primary">
 				Button text
 			</Button>
 		);

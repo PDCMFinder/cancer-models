@@ -1,8 +1,43 @@
 import {
+	AllModelData,
+	APIExternalModelLink,
+	APIExtLinks,
+	CellModelData,
+	ExternalModelLinkByType,
 	ExtLinks,
-	IPublication,
-} from "../pages/data/models/[providerId]/[modelId]";
+	ImmuneMarker,
+	Marker,
+	ModelImage,
+	ModelRelationships,
+	MolecularData,
+	Publication,
+	QualityData
+} from "../types/ModelData.model";
 import { camelCase } from "../utils/dataUtils";
+
+interface IImmuneMarkerAPI {
+	model_id: string;
+	data_source: string;
+	source: string;
+	sample_id: string;
+	marker_type: "HLA type" | "Model Genomics";
+	marker_name: string;
+	marker_value: string;
+	essential_or_additional_details: string;
+}
+
+export async function getCellModelData(pdcmModelId: number): Promise<any> {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/cell_model?model_id=eq.${pdcmModelId}`
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+	return response.json().then((d) => {
+		delete d[0].model_id;
+		return camelCase(d[0]);
+	});
+}
 
 export async function getModelDetailsMetadata(
 	modelId: string,
@@ -27,10 +62,44 @@ export async function getProviderId(modelId: string) {
 	return response.json();
 }
 
+export async function getModelImages(modelId: string): Promise<ModelImage[]> {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&select=model_images`
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+	return response.json().then((d) => {
+		if (d[0].model_images?.length) {
+			return d[0].model_images.map((imageObj: ModelImage) =>
+				camelCase(imageObj)
+			);
+		} else {
+			return [];
+		}
+	});
+}
+
+export async function getModelRelationships(
+	modelId: string
+): Promise<ModelRelationships> {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&select=model_relationships`
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+	return response.json().then((d) => {
+		const data: ModelRelationships = d[0].model_relationships;
+
+		return data;
+	});
+}
+
 export async function getModelPubmedIds(
 	modelId: string = "",
 	providerId: string
-): Promise<any> {
+): Promise<string[]> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/model_information?external_model_id=eq.${modelId}&data_source=eq.${providerId}&select=publication_group(pubmed_ids)`
 	);
@@ -74,30 +143,51 @@ export async function getModelExtLinks(
 	modelId: string
 ): Promise<ExtLinks> {
 	if (pdcmModelId !== 0 && !pdcmModelId) {
-		return {};
+		return {} as ExtLinks;
 	}
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/model_information?id=eq.${pdcmModelId}&select=id,contact_people(name_list,email_list),contact_form(form_url),source_database(database_url)`
+		`${process.env.NEXT_PUBLIC_API_URL}/model_information?id=eq.${pdcmModelId}&select=contact_people(email_list),contact_form(form_url),source_database(database_url),other_model_links`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
-		let extLinks = camelCase(d[0]);
-		for (let d in extLinks) {
-			extLinks[d] = camelCase(extLinks[d]);
-		}
-		let modelExtLinks: ExtLinks = {
-			contactLink: extLinks.contactForm.formUrl
-				? extLinks.contactForm.formUrl
-				: createMailToLink(extLinks.contactPeople.emailList, modelId),
-			sourceDatabaseUrl: extLinks.sourceDatabase.databaseUrl,
-		};
-		return modelExtLinks;
+		const extLinks = d[0] as APIExtLinks;
+
+		const externalModelLinks =
+			extLinks.other_model_links ?? ([] as APIExternalModelLink[]);
+
+		const externalModelLinksByType = externalModelLinks.reduce(
+			(acc: ExternalModelLinkByType, link: APIExternalModelLink) => {
+				if (!acc[link.type]) {
+					acc[link.type] = [];
+				}
+				acc[link.type].push(camelCase(link));
+
+				return acc;
+			},
+			{} as ExternalModelLinkByType
+		);
+
+		const contactLink = extLinks.contact_form?.form_url
+			? extLinks.contact_form.form_url
+			: `mailto:${
+					extLinks.contact_people?.email_list ?? ""
+			  }?subject=${encodeURIComponent(modelId)}`;
+
+		const sourceDatabaseUrl = extLinks.source_database?.database_url ?? "";
+
+		return {
+			contactLink,
+			sourceDatabaseUrl,
+			externalModelLinksByType
+		} as ExtLinks;
 	});
 }
 
-export async function getModelQualityData(pdcmModelId: number) {
+export async function getModelQualityData(
+	pdcmModelId: number
+): Promise<QualityData[]> {
 	if (pdcmModelId !== 0 && !pdcmModelId) {
 		return [];
 	}
@@ -108,37 +198,16 @@ export async function getModelQualityData(pdcmModelId: number) {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
-		return d.map((item: any) => camelCase(item));
+		return d.map((item: QualityData) => camelCase(item));
 	});
 }
 
-export async function getModelMolecularData(
-	providerId: string,
-	pdcmModelId: number
-) {
-	if (pdcmModelId !== 0 && !pdcmModelId) {
+export async function getMolecularData(modelId: string) {
+	if (!modelId) {
 		return [];
 	}
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/details_molecular_data?or=(patient_model_id.eq.${pdcmModelId},xenograft_model_id.eq.${pdcmModelId},cell_model_id.eq.${pdcmModelId})`,
-		{ headers: { Prefer: "count=exact" } }
-	);
-	if (!response.ok) {
-		throw new Error("Network response was not ok");
-	}
-	return response.json().then((d) => {
-		return d.map((item: any) => {
-			return { ...camelCase(item), dataSource: providerId };
-		});
-	});
-}
-
-export async function getMolecularDataRestrictions(dataSource: string) {
-	if (!dataSource) {
-		return [];
-	}
-	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/molecular_data_restriction?data_source=eq.${dataSource}`
+		`${process.env.NEXT_PUBLIC_API_URL}/model_molecular_metadata?model_id=eq.${modelId}`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
@@ -150,39 +219,19 @@ export async function getMolecularDataRestrictions(dataSource: string) {
 	});
 }
 
-export async function getModelMolecularDataColumns(
-	molecularCharacterizationId: number,
-	dataType: string
-) {
-	if (!molecularCharacterizationId || dataType === "cytogenetics") {
-		return [];
-	}
-	const typeEndpointMap: any = {
-		mutation: "mutation_data_table_columns",
-		expression: "expression_data_table_columns",
-		"copy number alteration": "cna_data_table_columns",
-		cytogenetics: "cytogenetics_data_table_columns",
-	};
-	const endpoint = typeEndpointMap[dataType];
-	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?molecular_characterization_id=eq.${molecularCharacterizationId}`
-	);
-	if (!response.ok) {
-		throw new Error("Network response was not ok");
-	}
-	return response.json().then((d) => {
-		return d[0].not_empty_cols;
-	});
-}
-
 export async function getAvailableDataColumns(
 	dataSource: string,
 	molecularCharacterizationType: string
 ) {
-	molecularCharacterizationType =
-		molecularCharacterizationType == "copy number alteration"
-			? "cna"
-			: molecularCharacterizationType;
+	switch (molecularCharacterizationType) {
+		case "copy number alteration":
+			molecularCharacterizationType = "cna";
+			break;
+		case "bio markers":
+			molecularCharacterizationType = "biomarker";
+			break;
+	}
+
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/available_molecular_data_columns?data_source=eq.${dataSource}&molecular_characterization_type=eq.${molecularCharacterizationType}`
 	);
@@ -210,7 +259,7 @@ export async function getModelMolecularDataDetails(
 		mutation: "mutation_data_table",
 		expression: "expression_data_table",
 		"copy number alteration": "cna_data_table",
-		cytogenetics: "cytogenetics_data_table",
+		"bio markers": "biomarker_data_table"
 	};
 	const endpoint = typeEndpointMap[dataType];
 	let request = `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?molecular_characterization_id=eq.${molecularCharacterizationId}`;
@@ -235,26 +284,25 @@ export async function getModelMolecularDataDetails(
 				delete item.molecular_characterization_id;
 				delete item.text;
 				return item;
-			}),
+			})
 		];
 	});
 }
 
 export async function getMolecularDataDownload(
-	molecularCharacterization: any,
-	dataType: string
+	molecularCharacterization: MolecularData
 ) {
-	if (!molecularCharacterization.id) {
+	if (!molecularCharacterization.molecularCharacterizationId) {
 		return [];
 	}
 	const typeEndpointMap: any = {
 		mutation: "mutation_data_table",
 		expression: "expression_data_table",
 		"copy number alteration": "cna_data_table",
-		cytogenetics: "cytogenetics_data_table",
+		"bio markers": "biomarker_data_table"
 	};
-	const endpoint = typeEndpointMap[dataType];
-	let request = `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?molecular_characterization_id=eq.${molecularCharacterization.id}`;
+	const endpoint = typeEndpointMap[molecularCharacterization.dataType];
+	let request = `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}?molecular_characterization_id=eq.${molecularCharacterization.molecularCharacterizationId}`;
 	let response = await fetch(request, { headers: { Prefer: "count=exact" } });
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
@@ -264,9 +312,7 @@ export async function getMolecularDataDownload(
 			delete item.molecular_characterization_id;
 			delete item.text;
 			delete item.external_db_links;
-			item["sampleID"] =
-				molecularCharacterization.patientSampleId ||
-				molecularCharacterization.xenograftSampleId;
+			item["sampleID"] = molecularCharacterization.sampleId;
 			return item;
 		});
 	});
@@ -319,7 +365,7 @@ export async function getPatientTreatment(pdcmModelId: number) {
 			let treatment = {
 				treatmentName: itemCamelCase.treatment.replaceAll(" And ", ", "),
 				treatmentDose: itemCamelCase.dose,
-				treatmentResponse: itemCamelCase.response,
+				treatmentResponse: itemCamelCase.response
 			};
 			return treatment;
 		})
@@ -330,7 +376,7 @@ export async function getModelDrugDosing(
 	pdcmModelId: number,
 	modelType: string
 ) {
-	if ((pdcmModelId !== 0 && !pdcmModelId) || modelType !== "PDX") {
+	if (!pdcmModelId || modelType !== "PDX") {
 		return [];
 	}
 	let response = await fetch(
@@ -345,7 +391,7 @@ export async function getModelDrugDosing(
 			let treatment = {
 				treatmentName: itemCamelCase.treatment,
 				treatmentDose: itemCamelCase.dose,
-				treatmentResponse: itemCamelCase.response,
+				treatmentResponse: itemCamelCase.response
 			};
 			return treatment;
 		});
@@ -370,55 +416,179 @@ export async function getExpressionHeatmap(
 	});
 }
 
-export const getAllModelData = async (modelId: string, providerId?: string) => {
+async function getModelImmuneMarkers(modelId: string): Promise<ImmuneMarker[]> {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/immunemarker_data_extended?model_id=eq.${modelId}`
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response.json().then((d) => {
+		const parsedImmuneMarkers: ImmuneMarker[] = d.reduce(
+			(result: ImmuneMarker[], current: IImmuneMarkerAPI) => {
+				// Check for sample id and type, since there might be a marker of different type but same id
+				const existingSampleId = result.find(
+					(item: ImmuneMarker) =>
+						item.sampleId === current.sample_id &&
+						item.type === current.marker_type
+				);
+				const marker = {
+					details: current.essential_or_additional_details,
+					name: current.marker_name,
+					value: [current.marker_value]
+				};
+
+				if (existingSampleId) {
+					// Check if column exists in sample id
+					const existingName = existingSampleId.markers.find(
+						(item: Marker) => item.name === current.marker_name
+					);
+
+					// push to same (marker), add value
+					if (existingName && existingName.value) {
+						existingName.value.push(current.marker_value);
+					} else {
+						// new name (marker)
+						existingSampleId.markers.push(marker);
+					}
+				} else {
+					result.push({
+						sampleId: current.sample_id,
+						type: current.marker_type,
+						markers: [marker]
+					});
+				}
+
+				return result;
+			},
+			[]
+		);
+
+		const addMissingNames = (immuneMarker: ImmuneMarker, type: string) => {
+			// create array with only unique names across all markers of x type
+			const uniqueNames = [
+				...new Set<string>(
+					d
+						.map(
+							(item: IImmuneMarkerAPI) =>
+								item.marker_type === type && item.marker_name
+						)
+						.filter((el: string) => el) // remove empty values
+				)
+			];
+
+			// push "empty" objs so all rows have all columns
+			uniqueNames.forEach((uniqueName: string) => {
+				if (
+					!immuneMarker.markers.some(
+						(marker: Marker) => marker.name === uniqueName
+					) &&
+					immuneMarker.type === type
+				) {
+					immuneMarker.markers.push({
+						details: "",
+						name: uniqueName,
+						value: []
+					});
+				}
+			});
+		};
+
+		// Add all missing names for table structure
+		parsedImmuneMarkers.forEach((immuneMarker: ImmuneMarker) => {
+			addMissingNames(immuneMarker, "HLA type");
+			addMissingNames(immuneMarker, "Model Genomics");
+
+			immuneMarker.markers.sort((a, b) => a.name.localeCompare(b.name));
+		});
+
+		return parsedImmuneMarkers;
+	});
+}
+
+export const getAllModelData = async (
+	modelId: string,
+	providerId?: string
+): Promise<AllModelData> => {
 	const modelProviderId =
 		providerId ?? (await getProviderId(modelId))[0].data_source;
 	const metadata = await getModelDetailsMetadata(modelId, modelProviderId);
+	const immuneMarkers = await getModelImmuneMarkers(modelId);
 	const pdcmModelId: number = metadata.pdcmModelId;
 	const extLinks = await getModelExtLinks(pdcmModelId, modelId);
-	const molecularData = await getModelMolecularData(
-		modelProviderId,
-		pdcmModelId
-	);
-	const molecularDataRestrictions = await getMolecularDataRestrictions(
-		modelProviderId
-	);
+	const molecularData = await getMolecularData(modelId);
 	const modelType = metadata.modelType;
 	const engraftments = await getModelEngraftments(pdcmModelId, modelType);
 	const drugDosing = await getModelDrugDosing(pdcmModelId, modelType);
 	const patientTreatment = await getPatientTreatment(pdcmModelId);
 	const qualityData = await getModelQualityData(pdcmModelId);
+	const modelImages = await getModelImages(modelId);
+	const modelRelationships = await getModelRelationships(modelId);
+	let score: number = metadata.scores.pdx_metadata_score,
+		cellModelData = {} as CellModelData;
+
+	if (modelType !== "PDX") {
+		cellModelData = await getCellModelData(pdcmModelId);
+		score = metadata.scores.in_vitro_metadata_score;
+	}
 
 	return {
 		// deconstruct metadata object so we dont pass more props than we need/should
 		metadata: {
-			histology: metadata.histology,
-			providerName: metadata.providerName,
-			cancerSystem: metadata.cancerSystem,
-			modelType: metadata.modelType,
-			patientSex: metadata.patientSex,
-			patientAge: metadata.patientAge,
-			patientEthnicity: metadata.patientEthnicity,
-			tumourType: metadata.tumourType,
 			cancerGrade: metadata.cancerGrade,
 			cancerStage: metadata.cancerStage,
-			primarySite: metadata.primarySite,
+			cancerSystem: metadata.cancerSystem,
 			collectionSite: metadata.collectionSite,
+			histology: metadata.histology,
 			licenseName: metadata.licenseName ?? "",
 			licenseUrl: metadata.licenseUrl ?? "",
-			score: metadata.scores.pdx_metadata_score ?? 0,
-			pdcmModelId,
 			modelId,
+			modelType: metadata.modelType,
+			patientAge: metadata.patientAge,
+			patientEthnicity: metadata.patientEthnicity,
+			patientSex: metadata.patientSex,
+			pdcmModelId,
+			primarySite: metadata.primarySite,
 			providerId: modelProviderId,
+			providerName: metadata.providerName,
+			score: score ?? 0,
+			tumourType: metadata.tumourType,
+			// Extras for metadata file
+			cancerGradingSystem: metadata.cancerGradingSystem,
+			cancerStagingSystem: metadata.cancerStagingSystem,
+			datasetAvailable: metadata.datasetAvailable,
+			externalModelId: metadata.externalModelId,
+			patientAgeAtInitialDiagnosis: metadata.patientAgeAtInitialDiagnosis,
+			patientEthnicityAssessmentMethod:
+				metadata.patientEthnicityAssessmentMethod,
+			patientHistory: metadata.patientHistory,
+			patientInitialDiagnosis: metadata.patientInitialDiagnosis,
+			patientSampleCollectionDate: metadata.patientSampleCollectionDate,
+			patientSampleCollectionEvent: metadata.patientSampleCollectionEvent,
+			patientSampleId: metadata.patientSampleId,
+			patientSampleMonthsSinceCollection:
+				metadata.patientSampleMonthsSinceCollection1,
+			patientSampleSharable: metadata.patientSampleSharable,
+			patientSampleTreatedAtCollection:
+				metadata.patientSampleTreatedAtCollection,
+			patientSampleTreatedPriorToCollection:
+				metadata.patientSampleTreatedPriorToCollection,
+			patientSampleVirologyStatus: metadata.patientSampleVirologyStatus,
+			pdxModelPublications: metadata.pdxModelPublications,
+			projectName: metadata.projectName
 		},
 		extLinks,
 		molecularData,
-		molecularDataRestrictions,
+		immuneMarkers,
 		engraftments,
+		cellModelData,
 		drugDosing,
 		patientTreatment,
 		qualityData,
-		publications: [] as IPublication[],
+		modelImages,
+		modelRelationships,
+		publications: [] as Publication[]
 	};
 };
 

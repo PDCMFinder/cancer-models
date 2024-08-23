@@ -1,28 +1,14 @@
-import styles from "./CookieConsent.module.scss";
-import { useCookies } from "react-cookie";
 import Link from "next/link";
+import { useCookies } from "react-cookie";
 import Button from "../Button/Button";
-import { Dispatch, SetStateAction, useEffect, useRef } from "react";
-import useWindowDimensions from "../../hooks/useWindowDimensions";
-interface ICookieConsentProps {
-	setCookieConsentHeight: Dispatch<SetStateAction<number>>;
-}
+import styles from "./CookieConsent.module.scss";
 
-const CookieConsent = (props: ICookieConsentProps) => {
-	const [cookie, setCookie] = useCookies(["CookieConsent"]);
-	const cookieConsentRef = useRef<HTMLDivElement>(null);
-	const { windowHeight = 0, windowWidth = 0 } = useWindowDimensions();
-
-	useEffect(() => {
-		if (cookieConsentRef && cookieConsentRef.current) {
-			props.setCookieConsentHeight(cookieConsentRef.current?.clientHeight);
-		}
-	}, [windowHeight, windowWidth]);
+const CookieConsent = () => {
+	const [cookie, setCookie] = useCookies(["cm_consent"]);
 
 	return (
 		<div
 			className={`${styles.CookieConsent} position-fixed bottom-0 w-100 d-md-flex align-center bg-white p-2`}
-			ref={cookieConsentRef}
 		>
 			<p className="mb-0">
 				This website requires cookies, and the limited processing of your
@@ -37,9 +23,8 @@ const CookieConsent = (props: ICookieConsentProps) => {
 					priority="secondary"
 					color="dark"
 					onClick={() =>
-						setCookie("CookieConsent", "false", {
-							sameSite: "lax",
-							path: "/",
+						setCookie("cm_consent", "reject", {
+							sameSite: "lax"
 						})
 					}
 				>
@@ -50,9 +35,8 @@ const CookieConsent = (props: ICookieConsentProps) => {
 					priority="primary"
 					color="dark"
 					onClick={() =>
-						setCookie("CookieConsent", "true", {
-							sameSite: "lax",
-							path: "/",
+						setCookie("cm_consent", "accept", {
+							sameSite: "lax"
 						})
 					}
 				>
