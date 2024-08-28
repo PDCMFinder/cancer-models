@@ -1,4 +1,5 @@
 @import "../../styles/vars";
+@import "../../styles/mixins";
 
 .Tooltip {
 	$--content-bgColor: $color-primary-secondary;
@@ -6,25 +7,37 @@
 	&_content {
 		color: $color-white;
 		position: absolute;
-		left: var(--content-separation);
-		border-radius: 4px;
+		left: 50%;
+		border-radius: $br-common;
 		padding: 0.5rem 1rem;
-		top: 50%;
-		transform: translateY(-50%);
+		transform: translate(-50%, -110%);
 		background-color: $--content-bgColor;
 		line-height: 1;
 		z-index: 9998;
+		filter: drop-shadow(0 0 0.25rem $--content-bgColor);
 	}
 	&_arrow {
-		--arrow-width: 0.7rem;
-		border-right: var(--arrow-width) solid $--content-bgColor;
-		border-top: var(--arrow-width) solid transparent;
-		border-bottom: var(--arrow-width) solid transparent;
-		position: absolute;
-		left: calc(calc(var(--content-separation) - var(--arrow-width)) + 1px);
-		top: 50%;
-		transform: translateY(-50%);
-		margin: 0;
+		display: none;
+	}
+	@include mediaOver("md") {
+		&_content {
+			left: var(--content-separation);
+			top: 50%;
+			transform: translateY(-50%);
+		}
+		&_arrow {
+			--arrow-width: 0.7rem;
+			display: block;
+			border-right: var(--arrow-width) solid $--content-bgColor;
+			border-top: var(--arrow-width) solid transparent;
+			border-bottom: var(--arrow-width) solid transparent;
+			border-left: none;
+			position: absolute;
+			left: calc(calc(var(--content-separation) - var(--arrow-width)) + 1px);
+			top: 50%;
+			transform: translateY(-50%);
+			margin: 0;
+		}
 	}
 	&_children {
 		text-decoration-line: underline;

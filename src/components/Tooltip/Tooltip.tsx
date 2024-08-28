@@ -16,12 +16,12 @@ const Tooltip = (props: ITooltipProps) => {
 			<div
 				onMouseOver={() => setIsHovering(true)}
 				onMouseLeave={() => setIsHovering(false)}
-				className="w-min position-relative pr-2"
+				className="w-min pr-2 position-md-relative"
 			>
 				{isHovering && (
 					<>
 						<div className={styles.Tooltip_content}>{props.content}</div>
-						<ArrowIcon className={styles.Tooltip_arrow} direction="left" />
+						<ArrowIcon className={styles.Tooltip_arrow} />
 					</>
 				)}
 				<span className={styles.Tooltip_children}>{props.children}</span>

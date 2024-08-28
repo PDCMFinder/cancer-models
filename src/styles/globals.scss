@@ -294,6 +294,13 @@ a {
 		position: sticky;
 		z-index: 9997;
 	}
+	@include mediaOver("md") {
+		&-md {
+			&-relative {
+				position: relative;
+			}
+		}
+	}
 }
 .dropdownParent {
 	position: relative;
