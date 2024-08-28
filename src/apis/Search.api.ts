@@ -11,7 +11,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
 	let response = await fetch(
-		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example,facet_type,is_boolean`
+		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example,facet_type,is_boolean,facet_description`
 	);
 
 	const sections: any = {
@@ -191,7 +191,8 @@ function mapApiFacet(apiFacet: any): IFacetProps {
 			? sortOptions(apiFacet.facet_column, apiFacet.facet_options)
 			: [],
 		placeholder: apiFacet.facet_example,
-		isBoolean: apiFacet.is_boolean
+		isBoolean: apiFacet.is_boolean,
+		description: apiFacet.facet_description
 	};
 }
 

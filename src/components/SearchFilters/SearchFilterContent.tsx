@@ -7,6 +7,7 @@ import { IFacetProps, IFacetSidebarSelection } from "../../types/Facet.model";
 import { ethnicityCategories } from "../../utils/collapseEthnicity";
 import typeaheadStyles from "../../utils/typeaheadStyles";
 import Fragment from "../Fragment/Fragment";
+import InformationIcon from "../InformationIcon/InformationIcon";
 import InputAndLabel from "../Input/InputAndLabel";
 
 interface ISearchFilterContentProps {
@@ -242,10 +243,15 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 				}
 
 				return (
-					<div className="w-100 text-capitalize" key={facetName}>
-						<h3 className="mb-1 p text-bold">{facetName}</h3>
+					<div className="w-100" key={facetName}>
+						<h3 className="mb-0 p text-bold d-inline-block text-capitalize">
+							{facetName}
+						</h3>
+						{facet.description && (
+							<InformationIcon information={facet.description} />
+						)}
 						<hr />
-						{facetContent}
+						<span className="text-capitalize">{facetContent}</span>
 					</div>
 				);
 			})}

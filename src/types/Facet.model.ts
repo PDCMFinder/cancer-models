@@ -57,6 +57,7 @@ export interface IFacetProps {
 	placeholder?: string | null;
 	onSelectionChange?(selection: string[], operator: string): void;
 	isBoolean: boolean;
+	description?: string;
 }
 
 export interface IOptionProps {

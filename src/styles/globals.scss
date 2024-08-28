@@ -63,6 +63,9 @@ img {
 	&-inline {
 		display: inline;
 	}
+	&-inline-block {
+		display: inline-block;
+	}
 	@include mediaOver("md") {
 		&-md {
 			&-flex {
@@ -290,6 +293,13 @@ a {
 	&-sticky {
 		position: sticky;
 		z-index: 9997;
+	}
+	@include mediaOver("md") {
+		&-md {
+			&-relative {
+				position: relative;
+			}
+		}
 	}
 }
 .dropdownParent {
