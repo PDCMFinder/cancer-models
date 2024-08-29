@@ -196,7 +196,7 @@ export async function getDataReleaseInformation() {
 	}
 	return response.json().then((d) => {
 		d.forEach(async (release: IGitlabRelease) => {
-			release = await parseRelease(release, "Data");
+			release = await parseRelease(release, "data");
 		});
 
 		return d;
@@ -236,7 +236,7 @@ export async function getUIReleaseInformation() {
 
 	return response.json().then((d) => {
 		d.forEach(async (release: IGitlabRelease) => {
-			release = await parseRelease(release, "UI");
+			release = await parseRelease(release, "ui");
 		});
 
 		return d;
