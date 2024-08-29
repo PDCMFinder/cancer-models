@@ -18,7 +18,10 @@ const ModelPurchaseButton = ({
 			htmlTag="a"
 			href={supplier.link}
 			className={`${isLastSupplier ? "mt-0" : ""}`}
-		>{`Purchase at ${supplier.resourceLabel}`}</Button>
+		>{`Purchase at ${
+			supplier.resourceLabel +
+			(supplier.resourceLabel.includes("ATCC") ? " " + supplier.linkLabel : "")
+		}`}</Button>
 	);
 };
 
