@@ -544,6 +544,11 @@ const ModelDetails = ({
 									id="tour_model-score"
 								/>
 							)}
+							{cellModelData?.modelName && (
+								<p className="mt-2 mb-0">
+									<b>Aliases:</b> {cellModelData.modelName}
+								</p>
+							)}
 							{Object.keys(extLinks.externalModelLinksByType).length > 0 && (
 								<ModelIdentifiers
 									externalModelLinks={extLinks.externalModelLinksByType}
@@ -573,7 +578,7 @@ const ModelDetails = ({
 									)}
 							</div>
 							<p className="mb-1">Provided by</p>
-							<h3 className="my-0 mb-3 mb-lg-0">
+							<h3 className="my-0 mb-3 mb-lg-0 lh-1">
 								<Link
 									className="text-white text-noDecoration"
 									href={`/about/providers/${metadata.providerId.toLowerCase()}`}
