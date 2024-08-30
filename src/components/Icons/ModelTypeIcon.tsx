@@ -2,9 +2,9 @@ import CavendishIcon, { ICavendishIconProps } from "./CavendishIcon";
 import MouseIcon from "./MouseIcon";
 import OrganoidIcon from "./OrganoidIcon";
 
-interface IIconComponent {
+type IIconComponent = {
 	[key: string]: (props: ICavendishIconProps) => JSX.Element;
-}
+};
 
 const ModelTypeIcon = ({
 	modelType,

@@ -1,4 +1,4 @@
-export interface SearchResult {
+export type SearchResult = {
 	pdcmId: string;
 	sourceId: string;
 	datasource: string;
@@ -13,4 +13,4 @@ export interface SearchResult {
 	patientAge?: string;
 	score: number;
 	modelAvailable: boolean;
-}
+};
