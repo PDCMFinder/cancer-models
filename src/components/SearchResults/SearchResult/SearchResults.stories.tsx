@@ -1,9 +1,9 @@
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 import SearchResult from "./SearchResult";
 
 export default {
 	title: "UI/SearchResults/SearchResult",
-	component: SearchResult,
+	component: SearchResult
 } as ComponentMeta<typeof SearchResult>;
 
 const Template: ComponentStory<typeof SearchResult> = (args) => (
@@ -26,7 +26,8 @@ Component.args = {
 		patientAge: "40 - 49",
 		patientSex: "female",
 		score: 0,
+		modelAvailable: true
 	},
 	addModelToCompare: (e) => alert(e.target.id),
-	compareCheck: false,
+	compareCheck: false
 };
