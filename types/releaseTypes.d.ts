@@ -1,4 +1,4 @@
-export interface IGitlabRelease {
+export type IGitlabRelease = {
 	name: string;
 	repository?: "data" | "ui";
 	tag_name: string;
@@ -13,18 +13,18 @@ export interface IGitlabRelease {
 	assets: Assets;
 	evidences: Evidence[];
 	_links: Links;
-}
+};
 
-interface IGitlabAuthor {
+type IGitlabAuthor = {
 	id: number;
 	username: string;
 	name: string;
 	state: string;
 	avatar_url: string;
 	web_url: string;
-}
+};
 
-interface IGitlabCommit {
+type IGitlabCommit = {
 	id: string;
 	short_id: string;
 	created_at: string;
@@ -39,26 +39,26 @@ interface IGitlabCommit {
 	committed_date: string;
 	trailers: object;
 	web_url: string;
-}
+};
 
-interface IGitlabAssets {
+type IGitlabAssets = {
 	count: number;
 	sources: Source[];
 	links: any[];
-}
+};
 
-interface IGitlabSource {
+type IGitlabSource = {
 	format: string;
 	url: string;
-}
+};
 
-interface IGitlabEvidence {
+type IGitlabEvidence = {
 	sha: string;
 	filepath: string;
 	collected_at: string;
-}
+};
 
-interface IGitlabLinks {
+type IGitlabLinks = {
 	closed_issues_url: string;
 	closed_merge_requests_url: string;
 	edit_url: string;
@@ -66,4 +66,4 @@ interface IGitlabLinks {
 	opened_issues_url: string;
 	opened_merge_requests_url: string;
 	self: string;
-}
+};

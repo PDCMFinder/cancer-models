@@ -1,4 +1,4 @@
-export interface IFacetSidebarProps {
+export type IFacetSidebarProps = {
 	facetSections?: IFacetSectionProps[];
 	sidebarSelection?: IFacetSidebarSelection;
 	sidebarOperators?: IFacetSidebarOperators;
@@ -10,29 +10,29 @@ export interface IFacetSidebarProps {
 		operators: string
 	): any;
 	onReset(): void;
-}
+};
 
-export interface IFacetOperator {
+export type IFacetOperator = {
 	facetColumn: string;
 	anyOperator: string | null;
 	allOperator: string | null;
 	facetType: "multivalued" | "autocomplete" | "check";
-}
+};
 
-export interface IFacetSidebarOperators {
+export type IFacetSidebarOperators = {
 	[section: string]: { [facet: string]: string };
-}
+};
 
-export interface IFacetSidebarSelection {
+export type IFacetSidebarSelection = {
 	[facetKey: string]: IFacetSectionSelection;
-}
+};
 
-export interface IFacetSectionSelection {
+export type IFacetSectionSelection = {
 	selection: string[];
 	operator: "ANY" | "ALL";
-}
+};
 
-export interface IFacetSectionProps {
+export type IFacetSectionProps = {
 	key: string;
 	name: string;
 	facets: IFacetProps[];
@@ -43,9 +43,9 @@ export interface IFacetSectionProps {
 		selection: string[],
 		operator: string
 	): void;
-}
+};
 
-export interface IFacetProps {
+export type IFacetProps = {
 	facetId: string;
 	name: string;
 	type: string;
@@ -58,9 +58,9 @@ export interface IFacetProps {
 	onSelectionChange?(selection: string[], operator: string): void;
 	isBoolean: boolean;
 	description?: string;
-}
+};
 
-export interface IOptionProps {
+export type IOptionProps = {
 	key: string;
 	name: string;
-}
+};

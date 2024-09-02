@@ -6,10 +6,11 @@ type Props = {
 	isLastSupplier: boolean;
 };
 
-const ModelPurchaseButton = ({
-	supplier,
-	isLastSupplier
-}: Props): JSX.Element => {
+const ModelPurchaseButton = ({ supplier, isLastSupplier }: Props) => {
+	const buttonText = `Purchase at ${supplier.resourceLabel}${
+		supplier.resourceLabel.includes("ATCC") ? ` ${supplier.linkLabel}` : ""
+	}`;
+
 	return (
 		<Button
 			priority="primary"
@@ -17,11 +18,10 @@ const ModelPurchaseButton = ({
 			target="_blank"
 			htmlTag="a"
 			href={supplier.link}
-			className={`${isLastSupplier ? "mt-0" : ""}`}
-		>{`Purchase at ${
-			supplier.resourceLabel +
-			(supplier.resourceLabel.includes("ATCC") ? " " + supplier.linkLabel : "")
-		}`}</Button>
+			className={isLastSupplier ? "" : "mb-2"}
+		>
+			{buttonText}
+		</Button>
 	);
 };
 

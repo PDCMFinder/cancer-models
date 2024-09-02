@@ -89,14 +89,14 @@ export interface IInputProps {
 	defaultChecked?: boolean;
 }
 
-export interface ITabProps {
+export type ITabProps = {
 	props: {
 		label: string;
 		content: any;
 	};
-}
+};
 
-export interface ISearchFiltersProps {
+export type ISearchFiltersProps = {
 	filterData: {
 		facet_section: string;
 		facet_filters: {
@@ -106,9 +106,9 @@ export interface ISearchFiltersProps {
 			facet_example?: string;
 		}[];
 	}[];
-}
+};
 
-export interface ISearchResult {
+export type ISearchResult = {
 	patient_age: string;
 	patient_sex: string;
 	external_model_id: string;
@@ -119,4 +119,4 @@ export interface ISearchResult {
 	collection_site: string;
 	tumour_type: string;
 	dataset_available: string[];
-}
+};
