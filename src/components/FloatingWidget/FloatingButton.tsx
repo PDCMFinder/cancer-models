@@ -15,22 +15,22 @@ const FloatingButton = ({
 	position = "bottom left",
 	className,
 	children,
-	onClick,
+	onClick
 }: IFloatingButtonProps) => {
-	let positionClassNames: string[] = [];
+	const positionClassMap: { [key: string]: string } = {
+		bottom: "bottom-0",
+		left: "left-margin",
+		right: "right-margin",
+		top: "top-0"
+	};
 
-	if (position.includes("bottom")) {
-		positionClassNames.push("bottom-0");
-	}
-	if (position.includes("left")) {
-		positionClassNames.push("left-margin");
-	}
-	if (position.includes("right")) {
-		positionClassNames.push("right-margin");
-	}
-	if (position.includes("top")) {
-		positionClassNames.push("top-0");
-	}
+	const positionClassNames: string[] = [];
+
+	Object.keys(positionClassMap).forEach((key) => {
+		if (position.includes(key)) {
+			positionClassNames.push(positionClassMap[key]);
+		}
+	});
 
 	return (
 		<Button

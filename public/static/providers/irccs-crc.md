@@ -1,7 +1,7 @@
 ---
 name: Candiolo Cancer Institute - Colorectal
-abbreviation: IRCC-CRC
-logo: img/providers/IRCC-CRC.png
+abbreviation: IRCCS-CRC
+logo: img/providers/IRCCS-CRC.png
 ---
 
 Researchers at the University of Turin, Italy, aim at exploring the mechanisms of tumor dependency on oncogenic drivers and at understanding how such dependency is affected by genomic or functional modifiers, with an emphasis on colorectal cancer (CRC).

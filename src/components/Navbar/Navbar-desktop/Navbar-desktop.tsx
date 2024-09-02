@@ -1,12 +1,12 @@
-import Logotype from "../../Logotype/Logotype";
-import { INavProps, IRoute } from "../../../../types/globalTypes";
 import Link from "next/link";
+import ReactGA from "react-ga4";
+import { INavProps, IRoute } from "../../../../types/globalTypes";
+import { routesWithGAEvents } from "../../../utils/routes";
 import ActiveLink from "../../ActiveLink/ActiveLink";
-import styles from "./Navbar-desktop.module.scss";
 import Button from "../../Button/Button";
 import Card from "../../Card/Card";
-import ReactGA from "react-ga4";
-import { routesWithGAEvents } from "../../../utils/routes";
+import Logotype from "../../Logotype/Logotype";
+import styles from "./Navbar-desktop.module.scss";
 
 const NavDesktop = (props: INavProps) => {
 	return (
@@ -60,7 +60,7 @@ const NavDesktop = (props: INavProps) => {
 									if (childGAEvent) {
 										onClickProp = () =>
 											ReactGA.event(childGAEvent.eventName, {
-												category: "event",
+												category: "event"
 											});
 									}
 

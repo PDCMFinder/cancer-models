@@ -4,7 +4,7 @@ import { IGitlabRelease } from "../../types/releaseTypes";
 
 const parseRelease = async (
 	release: IGitlabRelease,
-	repository?: "Data" | "UI"
+	repository?: IGitlabRelease["repository"]
 ) => {
 	const searchTxt = "v";
 	const regEscape = (v: string) =>

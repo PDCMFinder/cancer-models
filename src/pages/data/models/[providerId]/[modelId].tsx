@@ -23,6 +23,8 @@ import CloseIcon from "../../../../components/Icons/CloseIcon/CloseIcon";
 import ImageChecker from "../../../../components/ImageChecker/ImageChecker";
 import InputAndLabel from "../../../../components/Input/InputAndLabel";
 import Loader from "../../../../components/Loader/Loader";
+import ModelIdentifiers from "../../../../components/ModelIdentifiers/ModelIdentifiers";
+import ModelPurchaseButton from "../../../../components/ModelPurchaseButton/ModelPurchaseButton";
 import MolecularDataTable from "../../../../components/MolecularDataTable/MolecularDataTable";
 import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
 import ShowHide from "../../../../components/ShowHide/ShowHide";
@@ -523,8 +525,8 @@ const ModelDetails = ({
 			</Head>
 			<header className="bg-primary-primary text-white py-5">
 				<div className="container">
-					<div className="row align-center py-5 pb-lg-0 text-capitalize">
-						<div className="col-12 col-md-10 col-lg-6 col-xl-6 col-xxx-4 offset-md-1 offset-xl-2 offset-xxx-2 mb-5">
+					<div className="row align-center pb-lg-0 text-capitalize">
+						<div className="col-12 col-md-10 col-lg-6">
 							<h2
 								className={`m-0 text-family-secondary ${styles.ModelDetails_histology}`}
 								id="tour_model-histologyType"
@@ -542,13 +544,41 @@ const ModelDetails = ({
 									id="tour_model-score"
 								/>
 							)}
+							{cellModelData?.modelName && (
+								<p className="mt-2 mb-0">
+									<b>Aliases:</b> {cellModelData.modelName}
+								</p>
+							)}
+							{Object.keys(extLinks.externalModelLinksByType).length > 0 && (
+								<ModelIdentifiers
+									externalModelLinks={extLinks.externalModelLinksByType}
+								/>
+							)}
 						</div>
 						<div
-							className="col-12 col-md-10 col-lg-5 col-xxx-3 col-xl-5 offset-lg-1 offset-xl-5 offset-xxx-1 offset-md-1 text-right"
+							className="col-12 col-md-10 col-lg-6 text-right"
 							id="tour_model-providerInfo"
 						>
+							<div className="d-flex flex-column align-end">
+								{extLinks.externalModelLinksByType.supplier?.length > 0 &&
+									extLinks.externalModelLinksByType.supplier.map(
+										(supplier, index) => {
+											const isLastSupplier =
+												index !==
+												extLinks.externalModelLinksByType.supplier.length - 1;
+
+											return (
+												<ModelPurchaseButton
+													key={supplier.resourceLabel + supplier.linkLabel}
+													supplier={supplier}
+													isLastSupplier={isLastSupplier}
+												/>
+											);
+										}
+									)}
+							</div>
 							<p className="mb-1">Provided by</p>
-							<h3 className="my-0 mb-3 mb-lg-0">
+							<h3 className="my-0 mb-3 mb-lg-0 lh-1">
 								<Link
 									className="text-white text-noDecoration"
 									href={`/about/providers/${metadata.providerId.toLowerCase()}`}
@@ -556,10 +586,10 @@ const ModelDetails = ({
 									{metadata.providerName}
 								</Link>
 							</h3>
-							<div className="d-flex flex-column d-lg-block">
+							<div className="d-flex flex-column d-lg-block mt-1">
 								{extLinks.sourceDatabaseUrl && (
 									<Link
-										className="text-white mr-lg-3 mr-xl-0"
+										className="text-white mr-lg-3"
 										href={extLinks.sourceDatabaseUrl}
 										target="_blank"
 										rel="noopener noreferrer"
@@ -573,12 +603,10 @@ const ModelDetails = ({
 										View data at {metadata.providerId || "provider"}
 									</Link>
 								)}
-								<Button
-									priority="secondary"
+								<Link
 									color="white"
-									htmlTag="a"
 									href={extLinks.contactLink}
-									className="mb-0 ml-lg-3 align-self-end bg-transparent"
+									className="text-white"
 									onClick={() =>
 										ReactGA.event("provider_contact", {
 											category: "event",
@@ -587,7 +615,7 @@ const ModelDetails = ({
 									}
 								>
 									<>Contact {metadata.providerId || "provider"}</>
-								</Button>
+								</Link>
 							</div>
 							{metadata.licenseName && metadata.licenseUrl ? (
 								<div className="mt-5">
@@ -956,9 +984,10 @@ const ModelDetails = ({
 							{qualityData.length > 0 && (
 								<div id="quality-control" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
-										<div className="d-flex justify-content-between align-center">
-											<h2 className="mt-0">Model quality control</h2>
+										<div className="d-flex align-flex-start align-md-center flex-column flex-md-row justify-content-between flex-column flex-md-row">
+											<h2 className="my-0">Model quality control</h2>
 											<Button
+												htmlTag="button"
 												priority="secondary"
 												color="dark"
 												onClick={() => downloadAllQualityControlData()}
@@ -1052,8 +1081,8 @@ const ModelDetails = ({
 							{!molecularDataIsLoading && molecularData.length > 0 && (
 								<div id="molecular-data" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
-										<div className="d-flex justify-content-between align-center">
-											<h2 className="mt-0">Molecular data</h2>
+										<div className="d-flex align-flex-start align-md-center flex-column flex-md-row justify-content-between">
+											<h2 className="my-0">Molecular data</h2>
 											{!molecularDataIsLoading &&
 												molecularData &&
 												molecularData.some(
@@ -1136,6 +1165,7 @@ const ModelDetails = ({
 																	dataAvailableContent = (
 																		<>
 																			<Button
+																				htmlTag="button"
 																				color="dark"
 																				priority="secondary"
 																				className="text-left link-text mt-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"

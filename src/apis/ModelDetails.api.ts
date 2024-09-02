@@ -1,6 +1,9 @@
 import {
 	AllModelData,
+	APIExternalModelLink,
+	APIExtLinks,
 	CellModelData,
+	ExternalModelLinkByType,
 	ExtLinks,
 	ImmuneMarker,
 	Marker,
@@ -143,23 +146,42 @@ export async function getModelExtLinks(
 		return {} as ExtLinks;
 	}
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/model_information?id=eq.${pdcmModelId}&select=id,contact_people(name_list,email_list),contact_form(form_url),source_database(database_url)`
+		`${process.env.NEXT_PUBLIC_API_URL}/model_information?id=eq.${pdcmModelId}&select=contact_people(email_list),contact_form(form_url),source_database(database_url),other_model_links`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
-		let extLinks = camelCase(d[0]);
-		for (let d in extLinks) {
-			extLinks[d] = camelCase(extLinks[d]);
-		}
-		let modelExtLinks: ExtLinks = {
-			contactLink: extLinks.contactForm.formUrl
-				? extLinks.contactForm.formUrl
-				: createMailToLink(extLinks.contactPeople.emailList, modelId),
-			sourceDatabaseUrl: extLinks.sourceDatabase.databaseUrl
-		};
-		return modelExtLinks;
+		const extLinks = d[0] as APIExtLinks;
+
+		const externalModelLinks =
+			extLinks.other_model_links ?? ([] as APIExternalModelLink[]);
+
+		const externalModelLinksByType = externalModelLinks.reduce(
+			(acc: ExternalModelLinkByType, link: APIExternalModelLink) => {
+				if (!acc[link.type]) {
+					acc[link.type] = [];
+				}
+				acc[link.type].push(camelCase(link));
+
+				return acc;
+			},
+			{} as ExternalModelLinkByType
+		);
+
+		const contactLink = extLinks.contact_form?.form_url
+			? extLinks.contact_form.form_url
+			: `mailto:${
+					extLinks.contact_people?.email_list ?? ""
+			  }?subject=${encodeURIComponent(modelId)}`;
+
+		const sourceDatabaseUrl = extLinks.source_database?.database_url ?? "";
+
+		return {
+			contactLink,
+			sourceDatabaseUrl,
+			externalModelLinksByType
+		} as ExtLinks;
 	});
 }
 

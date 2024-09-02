@@ -11,7 +11,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
 	let response = await fetch(
-		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example,facet_type,is_boolean`
+		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example,facet_type,is_boolean,facet_description`
 	);
 
 	const sections: any = {
@@ -147,7 +147,7 @@ export async function getSearchResults(
 	let response = await fetch(
 		`${API_URL}/search_index?${query}&limit=${pageSize}&offset=${
 			Math.max(searchFilterSelection["page"].selection - 1, 0) * pageSize
-		}&select=provider_name,patient_age,patient_sex,external_model_id,model_type,data_source,histology,primary_site,collection_site,tumour_type,dataset_available,scores&order=${sortBy}`,
+		}&select=provider_name,patient_age,patient_sex,external_model_id,model_type,data_source,histology,primary_site,collection_site,tumour_type,dataset_available,scores,model_availability_boolean&order=${sortBy}`,
 		{ headers: { Prefer: "count=exact" } }
 	);
 	if (!response.ok) {
@@ -166,7 +166,7 @@ export async function getSearchResults(
 					pdcmId: result.external_model_id,
 					sourceId: result.data_source,
 					datasource: "",
-					providerName: result.provider_name.replace("u00f9", "ù"), // remove .replace after API fix
+					providerName: result.provider_name,
 					histology: result.histology,
 					primarySite: result.primary_site,
 					collectionSite: result.collection_site,
@@ -175,7 +175,8 @@ export async function getSearchResults(
 					modelType: result.model_type,
 					patientAge: result.patient_age,
 					patientSex: result.patient_sex,
-					score
+					score,
+					modelAvailable: result.model_availability_boolean
 				};
 			})
 		];
@@ -191,7 +192,8 @@ function mapApiFacet(apiFacet: any): IFacetProps {
 			? sortOptions(apiFacet.facet_column, apiFacet.facet_options)
 			: [],
 		placeholder: apiFacet.facet_example,
-		isBoolean: apiFacet.is_boolean
+		isBoolean: apiFacet.is_boolean,
+		description: apiFacet.facet_description
 	};
 }
 
@@ -216,4 +218,19 @@ function sortOptions(facet_column: string, list: string[]) {
 		.filter((str) => !endList.includes(str))
 		.sort((a, b) => a.localeCompare(b));
 	return sortedList.concat(endList);
+}
+
+export async function getDataSourcesByProject(projectName: string) {
+	let response = await fetch(
+		`${API_URL}/search_index?project_name=${
+			projectName === "Other" ? "is.null" : "in.(%22" + projectName + "%22)"
+		}&select=data_source,provider_name`
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response
+		.json()
+		.then((d: { data_source: string; provider_name: string }[]) => d);
 }

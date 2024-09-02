@@ -5,10 +5,15 @@ import { GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import path from "path";
+import React from "react";
 import { remark } from "remark";
 import remarkHtml from "remark-html";
 import Button from "../../../components/Button/Button";
-import styles from "./providers.module.scss";
+import Card from "../../../components/Card/Card";
+import Loader from "../../../components/Loader/Loader";
+import ProviderInfo from "../../../components/ProviderInfo/ProviderInfo";
+import { useActiveProject } from "../../../utils/hooks/useActiveProject";
+import projectsSettings from "../../../utils/projectSettings.json";
 
 interface IProvidersProps {
 	allProvidersBasics: {
@@ -20,100 +25,212 @@ interface IProvidersProps {
 	}[];
 }
 
-const Providers: NextPage<IProvidersProps> = ({
-	allProvidersBasics
-}: IProvidersProps) => {
+interface IProjectButtonProps {
+	projectName: string;
+	isActive: boolean;
+	mainColor: string;
+	secondaryColor: string;
+	onClick: () => void;
+	direction?: IProjectButtonsProps["direction"];
+}
+
+interface IProjectButtonsProps {
+	direction?: "row" | "column";
+	activeProject: string;
+	onClick: (projectName: string) => void;
+}
+
+const getButtonStyleColors = (
+	isActive: boolean,
+	mainColor: string,
+	secondaryColor: string
+) => {
+	return isActive
+		? { backgroundColor: mainColor, color: secondaryColor }
+		: { backgroundColor: "#ebebeb", color: "#003e48" };
+};
+
+const handleMouseEnter = (
+	e: React.MouseEvent<HTMLElement>,
+	isActive: boolean,
+	mainColor: string,
+	secondaryColor: string
+) => {
+	if (!isActive) {
+		const target = e.target as HTMLElement;
+		target.style.backgroundColor = mainColor;
+		target.style.color = secondaryColor;
+	}
+};
+
+const handleMouseLeave = (
+	e: React.MouseEvent<HTMLElement>,
+	isActive: boolean
+) => {
+	if (!isActive) {
+		const target = e.target as HTMLElement;
+		target.style.backgroundColor = "#ebebeb";
+		target.style.color = "#003e48";
+	}
+};
+
+const ProjectButton = ({
+	projectName,
+	isActive,
+	mainColor,
+	secondaryColor,
+	onClick,
+	direction
+}: IProjectButtonProps) => {
+	const buttonColors = getButtonStyleColors(
+		isActive,
+		mainColor,
+		secondaryColor
+	);
+
+	return (
+		<Button
+			priority="secondary"
+			color="dark"
+			className={`w-100 mx-0 mt-0 mb-1 border-none justify-content-center ${
+				direction === "row" ? "my-md-3" : "mt-lg-0"
+			}`}
+			style={{ flex: "1 1 0", ...buttonColors }}
+			onMouseEnter={(e) =>
+				handleMouseEnter(e, isActive, mainColor, secondaryColor)
+			}
+			onMouseLeave={(e) => handleMouseLeave(e, isActive)}
+			onClick={onClick}
+		>
+			{projectName}
+		</Button>
+	);
+};
+
+const Header = () => (
+	<header className="bg-primary-primary text-white mb-5 py-5">
+		<div className="container">
+			<div className="row py-5">
+				<div className="col-12">
+					<h1 className="m-0">Our data providers</h1>
+				</div>
+			</div>
+		</div>
+	</header>
+);
+
+export const ProjectButtons = ({
+	activeProject,
+	onClick,
+	direction
+}: IProjectButtonsProps) => (
+	<div
+		className={`d-flex flex-column align-md-center justify-content-between ${
+			direction === "row" ? "flex-md-row" : ""
+		}`}
+		style={{ columnGap: "1rem" }}
+	>
+		{projectsSettings.map(
+			({
+				project_abbreviation,
+				project_settings: { main_color, secondary_color }
+			}) => (
+				<ProjectButton
+					key={project_abbreviation}
+					projectName={project_abbreviation}
+					isActive={activeProject === project_abbreviation}
+					mainColor={main_color}
+					secondaryColor={secondary_color}
+					onClick={() => onClick(project_abbreviation)}
+					direction={direction}
+				/>
+			)
+		)}
+	</div>
+);
+
+const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
+	const { activeProjectData, isLoadingProviders, handleProjectClick } =
+		useActiveProject();
+
+	const activeProviderBasics = allProvidersBasics.filter((providerBasic) =>
+		activeProjectData.providers?.some(
+			(provider) => provider?.data_source === providerBasic.abbreviation
+		)
+	);
+
 	return (
 		<>
-			<header className="bg-primary-primary text-white mb-5 py-5">
-				<div className="container">
-					<div className="row py-5">
-						<div className="col-12">
-							<h1 className="m-0">Our data providers</h1>
-						</div>
-					</div>
+			<Header />
+			{/* Decided to move this here instead of outside this return so Header doesn't blink */}
+			{activeProjectData.project_abbreviation === null ? (
+				<div style={{ height: "50vh" }}>
+					<Loader />
 				</div>
-			</header>
-			<section>
-				<div className="container">
-					<div className="row">
-						{allProvidersBasics?.map((provider) => {
-							const parsedProvider = provider.abbreviation.replace(" ", "-"),
-								providerName = provider.name,
-								providerId = provider.id;
-
-							return (
-								<div className="col-12 mb-3" key={providerId}>
-									<div className="row">
-										<div className="col-12 col-md-2 text-center">
-											{provider.logo && (
-												<Image
-													src={`/${provider.logo}`}
-													alt={`${providerName} logo`}
-													width={150}
-													height={150}
-													className={`mx-auto mb-2 w-auto h-auto ${styles.Providers_logo}`}
-												/>
-											)}
-										</div>
-										<div className="col-12 col-md-9 mb-5">
+			) : (
+				<section className="pt-0">
+					<div className="container">
+						<div className="row mb-5">
+							<div className="col-12">
+								<ProjectButtons
+									direction="row"
+									activeProject={activeProjectData.project_abbreviation}
+									onClick={handleProjectClick}
+								/>
+							</div>
+						</div>
+						{activeProjectData.project_description &&
+							activeProjectData.project_settings.logo && (
+								<div className="row mb-5 justify-content-center">
+									<div className="col-12 col-lg-8">
+										<Card
+											contentClassName="py-4"
+											header={
+												<h2 className="m-0">
+													{activeProjectData.project_full_name ??
+														activeProjectData.project_abbreviation}
+												</h2>
+											}
+										>
 											<div className="row">
-												<div className="col-12 d-flex align-center">
-													<h2 className="h3 mt-0 mr-3">{providerName}</h2>
+												<div className="col-8 offset-2 col-md-3 offset-md-0">
+													<Image
+														src={activeProjectData.project_settings.logo}
+														alt={`${activeProjectData.project_abbreviation} logo`}
+														width={150}
+														height={150}
+														className="w-100 h-auto mx-auto mb-2"
+													/>
+												</div>
+												<div className="col-12 col-md-9">
+													<p>{activeProjectData.project_description}</p>
+													<p>
+														<Link
+															href={`/search?filters=project_name%3A${activeProjectData.project_abbreviation}`}
+														>
+															View all models and data
+														</Link>
+													</p>
 												</div>
 											</div>
-											{provider.parsedContent && (
-												<div className="row mb-3">
-													<div className="col-12">
-														<div className={styles.Providers_content}>
-															<div
-																dangerouslySetInnerHTML={{
-																	__html: provider.parsedContent
-																}}
-															/>
-														</div>
-														<p className="mt-1">
-															<Link href={`/about/providers/${providerId}`}>
-																Continue reading...
-															</Link>
-														</p>
-													</div>
-												</div>
-											)}
-											<div className="row">
-												<div className="col-12">
-													<h4 className="mb-0 d-inline mr-2">
-														View models and data at:
-													</h4>
-													<Button
-														color="dark"
-														priority="primary"
-														className="mr-2 mt-0"
-														href={`/search?filters=data_source:${parsedProvider}`}
-														htmlTag="a"
-													>
-														<>CancerModels.Org</>
-													</Button>
-													<Button
-														color="dark"
-														priority="secondary"
-														className="mt-0"
-														href={`/cbioportal/study/clinicalData?id=${parsedProvider}`}
-														htmlTag="a"
-														target="_blank"
-													>
-														<>cBioPortal</>
-													</Button>
-												</div>
-											</div>
-										</div>
+										</Card>
 									</div>
 								</div>
-							);
-						})}
+							)}
+						<div className="row">
+							{isLoadingProviders ? (
+								<div style={{ height: "50vh" }}>
+									<Loader />
+								</div>
+							) : (
+								activeProviderBasics?.map((provider) => (
+									<ProviderInfo key={provider.id} provider={provider} />
+								))
+							)}
+						</div>
 					</div>
-				</div>
-			</section>
+				</section>
+			)}
 		</>
 	);
 };

@@ -12,4 +12,5 @@ export interface SearchResult {
 	patientSex?: string;
 	patientAge?: string;
 	score: number;
+	modelAvailable: boolean;
 }

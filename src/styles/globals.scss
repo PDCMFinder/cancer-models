@@ -48,16 +48,23 @@ p {
 svg,
 img {
 	display: block;
+	max-width: 100%;
 }
 .d {
 	&-none {
 		display: none;
+	}
+	&-block {
+		display: block;
 	}
 	&-flex {
 		display: flex;
 	}
 	&-inline {
 		display: inline;
+	}
+	&-inline-block {
+		display: inline-block;
 	}
 	@include mediaOver("md") {
 		&-md {
@@ -95,9 +102,9 @@ img {
 .flex {
 	&-column {
 		flex-direction: column;
-	}
-	&-column-reverse {
-		flex-direction: column-reverse;
+		&-reverse {
+			flex-direction: column-reverse;
+		}
 	}
 	&-shrink {
 		&-1 {
@@ -111,6 +118,15 @@ img {
 		&-md {
 			&-row {
 				flex-direction: row;
+			}
+		}
+	}
+	@include mediaOver("lg") {
+		&-lg {
+			&-row {
+				&-reverse {
+					flex-direction: row-reverse;
+				}
 			}
 		}
 	}
@@ -152,9 +168,27 @@ img {
 	&-baseline {
 		align-items: baseline;
 	}
+	&-flex {
+		&-start {
+			align-items: flex-start;
+		}
+	}
+	&-end {
+		align-items: end;
+	}
 	&-self {
 		&-end {
 			align-self: flex-end;
+		}
+		&-start {
+			align-self: flex-start;
+		}
+	}
+	@include mediaOver("md") {
+		&-md {
+			&-center {
+				align-items: center;
+			}
 		}
 	}
 }
@@ -185,6 +219,9 @@ img {
 	&-50 {
 		width: 50%;
 	}
+	&-75 {
+		width: 75%;
+	}
 	&-100 {
 		width: 100%;
 	}
@@ -193,6 +230,11 @@ img {
 	}
 	&-min {
 		width: min-content;
+	}
+	@include mediaOver("lg") {
+		&-lg-auto {
+			width: auto;
+		}
 	}
 }
 button {
@@ -251,6 +293,13 @@ a {
 	&-sticky {
 		position: sticky;
 		z-index: 9997;
+	}
+	@include mediaOver("md") {
+		&-md {
+			&-relative {
+				position: relative;
+			}
+		}
 	}
 }
 .dropdownParent {
