@@ -13,6 +13,7 @@ const mockData = [
 		patientAge: "40 - 49",
 		patientSex: "female",
 		score: 0,
+		modelAvailable: true
 	},
 	{
 		pdcmId: "SIDM01525",
@@ -28,6 +29,7 @@ const mockData = [
 		patientAge: "10 - 19",
 		patientSex: "female",
 		score: 0,
+		modelAvailable: true
 	},
 	{
 		pdcmId: "SIDM01483",
@@ -43,6 +45,7 @@ const mockData = [
 		patientAge: "60 - 69",
 		patientSex: "female",
 		score: 0,
+		modelAvailable: true
 	},
 	{
 		pdcmId: "SIDM00340",
@@ -58,6 +61,7 @@ const mockData = [
 		patientAge: "50 - 59",
 		patientSex: "female",
 		score: 0,
+		modelAvailable: true
 	},
 	{
 		pdcmId: "SIDM00670",
@@ -73,6 +77,7 @@ const mockData = [
 		patientAge: "60 - 69",
 		patientSex: "female",
 		score: 0,
+		modelAvailable: true
 	},
 	{
 		pdcmId: "SIDM01027",
@@ -88,6 +93,7 @@ const mockData = [
 		patientAge: "50 - 59",
 		patientSex: "male",
 		score: 0,
+		modelAvailable: true
 	},
 	{
 		pdcmId: "SIDM01164",
@@ -103,6 +109,7 @@ const mockData = [
 		patientAge: "60 - 69",
 		patientSex: "male",
 		score: 0,
+		modelAvailable: true
 	},
 	{
 		pdcmId: "SIDM00428",
@@ -118,6 +125,7 @@ const mockData = [
 		patientAge: "20 - 29",
 		patientSex: "female",
 		score: 0,
+		modelAvailable: true
 	},
 	{
 		pdcmId: "SIDM00723",
@@ -133,6 +141,7 @@ const mockData = [
 		patientAge: "Not Provided",
 		patientSex: "male",
 		score: 0,
+		modelAvailable: true
 	},
 	{
 		pdcmId: "SIDM00884",
@@ -148,7 +157,8 @@ const mockData = [
 		patientAge: "40 - 49",
 		patientSex: "female",
 		score: 0,
-	},
+		modelAvailable: true
+	}
 ];
 
 export default mockData;
