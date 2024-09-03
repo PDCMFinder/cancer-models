@@ -87,7 +87,7 @@ const ModelDetails = ({
 	cellModelData,
 	engraftments,
 	modelImages,
-	modelRelationships
+	knowledgeGraph
 }: AllModelData) => {
 	const NA_STRING = "N/A",
 		MODEL_GENOMICS_STRING = "Model Genomics",
@@ -744,7 +744,7 @@ const ModelDetails = ({
 												"Patient treatment"
 											)}
 										</li>
-										<li className="mb-2">
+										{/* <li className="mb-2">
 											{Array.isArray(modelRelationships?.parents) ||
 											Array.isArray(modelRelationships?.children) ? (
 												<Link
@@ -757,7 +757,7 @@ const ModelDetails = ({
 											) : (
 												"Related Models"
 											)}
-										</li>
+										</li> */}
 										<li className="mb-2">
 											{validHistologyImages.length ? (
 												<Link
@@ -1449,7 +1449,7 @@ const ModelDetails = ({
 									</div>
 								</div>
 							)}
-							{(Array.isArray(modelRelationships?.parents) ||
+							{/* {(Array.isArray(modelRelationships?.parents) ||
 								Array.isArray(modelRelationships?.children)) && (
 								<div id="related-models" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
@@ -1462,7 +1462,7 @@ const ModelDetails = ({
 										/>
 									</div>
 								</div>
-							)}
+							)} */}
 							{validHistologyImages.length > 0 && (
 								<div id="histology-images" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
@@ -1725,7 +1725,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		patientTreatment,
 		qualityData,
 		modelImages,
-		modelRelationships
+		knowledgeGraph
 	} = await getAllModelData(
 		params!.modelId as string,
 		params!.providerId as string
@@ -1742,7 +1742,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			patientTreatment,
 			qualityData,
 			modelImages,
-			modelRelationships
+			knowledgeGraph
 		},
 		revalidate: 600
 	};

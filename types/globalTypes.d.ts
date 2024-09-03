@@ -1,5 +1,13 @@
 import { CSSProperties } from "react";
 
+export type CamelCaseKeys<T, K extends keyof T = keyof T> = {
+	[P in keyof T]: P extends K
+		? camelCase extends (str: string) => infer R
+			? R
+			: never
+		: T[P];
+};
+
 type CSSUnit =
 	| "em"
 	| "rem"

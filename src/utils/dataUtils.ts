@@ -1,15 +1,16 @@
-export function camelCase(obj: any) {
-	var newObj: any = {};
-	for (let d in obj) {
-		if (obj.hasOwnProperty(d)) {
-			newObj[
-				d.replace(/(_\w)/g, function (k) {
-					return k[1].toUpperCase();
-				})
-			] = obj[d];
+import { CamelCaseKeys } from "../../types/globalTypes";
+
+export function camelCase<T extends Record<string, any>>(
+	obj: T
+): CamelCaseKeys<T> {
+	const newObj: Partial<CamelCaseKeys<T>> = {};
+	for (const key in obj) {
+		if (obj.hasOwnProperty(key)) {
+			const camelKey = key.replace(/(_\w)/g, (k) => k[1].toUpperCase());
+			newObj[camelKey as keyof CamelCaseKeys<T>] = obj[key];
 		}
 	}
-	return newObj;
+	return newObj as CamelCaseKeys<T>;
 }
 
 export function capitalizeFirstLetter(text: string) {
