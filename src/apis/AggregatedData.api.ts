@@ -80,7 +80,7 @@ export async function getModelsByType(): Promise<
 	return response
 		.json()
 		.then((d: { model_type: string; count: number }[]) =>
-			d.filter((d) => d.model_type !== "other").map((i) => camelCase(i))
+			d.filter((d) => d.model_type !== "other").map(camelCase)
 		);
 }
 

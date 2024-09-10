@@ -1463,6 +1463,7 @@ const ModelDetails = ({
 									</div>
 								</div>
 							)} */}
+
 							{validHistologyImages.length > 0 && (
 								<div id="histology-images" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">

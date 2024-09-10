@@ -1,16 +1,30 @@
-import { CamelCaseKeys } from "../../types/globalTypes";
+// import { CamelCaseKeys } from "../../types/globalTypes";
+
+type CamelCase<S extends string> =
+	S extends `${infer P1}_${infer P2}${infer P3}`
+		? `${Lowercase<P1>}${Uppercase<P2>}${CamelCase<P3>}`
+		: Lowercase<S>;
+
+type CamelCaseKeys<T> = {
+	[K in keyof T as CamelCase<string & K>]: T[K] extends object
+		? CamelCaseKeys<T[K]>
+		: T[K];
+};
 
 export function camelCase<T extends Record<string, any>>(
 	obj: T
 ): CamelCaseKeys<T> {
-	const newObj: Partial<CamelCaseKeys<T>> = {};
-	for (const key in obj) {
-		if (obj.hasOwnProperty(key)) {
-			const camelKey = key.replace(/(_\w)/g, (k) => k[1].toUpperCase());
-			newObj[camelKey as keyof CamelCaseKeys<T>] = obj[key];
-		}
+	if (Array.isArray(obj)) {
+		return obj.map((v) => camelCase(v)) as any;
+	} else if (obj !== null && typeof obj === "object") {
+		return Object.fromEntries(
+			Object.entries(obj).map(([k, v]) => [
+				k.replace(/_([a-z])/g, (_, p1) => p1.toUpperCase()),
+				v !== null && typeof v === "object" ? camelCase(v) : v
+			])
+		) as CamelCaseKeys<T>;
 	}
-	return newObj as CamelCaseKeys<T>;
+	return obj as CamelCaseKeys<T>;
 }
 
 export function capitalizeFirstLetter(text: string) {

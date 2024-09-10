@@ -3,7 +3,7 @@ import { useRef } from "react";
 import ReactFlow, { Node, ReactFlowRefType } from "reactflow";
 import "reactflow/dist/style.css";
 import { ModelRelationships } from "../../types/ModelData.model";
-import parseRelationships from "../../utils/parseRelationships";
+import parseKnowledgeGraph from "../../utils/parseRelationships";
 import CustomNode from "./CustomNode";
 
 interface IHierarchyTreeProps {
@@ -40,7 +40,7 @@ const HierarchyTree = ({
 }: IHierarchyTreeProps) => {
 	const flowRef = useRef<ReactFlowRefType>(null);
 	const reactFlowHeight = flowRef?.current?.scrollHeight;
-	const parsedData = parseRelationships(
+	const parsedData = parseKnowledgeGraph(
 		data,
 		providerId,
 		currentModelId,

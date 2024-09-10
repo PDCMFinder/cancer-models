@@ -92,19 +92,21 @@ export async function getModelKnowledgeGraph(
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json().then((d) => {
-		if (!d[0].knowledge_graph) {
-			return { edges: [], nodes: [] };
-		}
+	return response
+		.json()
+		.then((d: { knowledge_graph: APIKnowledgeGraph | null }[]) => {
+			if (!d[0]?.knowledge_graph) {
+				return { edges: [], nodes: [] };
+			}
 
-		const apiGraph: APIKnowledgeGraph = d[0].knowledge_graph;
-		const data: KnowledgeGraph = {
-			edges: apiGraph.edges.map((edge) => camelCase(edge)),
-			nodes: apiGraph.nodes.map((node) => camelCase(node))
-		};
-
-		return data;
-	});
+			const apiGraph = d[0].knowledge_graph;
+			const data: KnowledgeGraph = {
+				edges: apiGraph.edges.map((edge) => camelCase(edge)),
+				nodes: apiGraph.nodes.map((node) => camelCase(node))
+			};
+			debugger;
+			return data;
+		});
 }
 
 export async function getModelPubmedIds(
@@ -589,7 +591,7 @@ export const getAllModelData = async (
 			patientSampleCollectionEvent: metadata.patientSampleCollectionEvent,
 			patientSampleId: metadata.patientSampleId,
 			patientSampleMonthsSinceCollection:
-				metadata.patientSampleMonthsSinceCollection1,
+				metadata.patientSampleMonthsSinceCollection_1,
 			patientSampleSharable: metadata.patientSampleSharable,
 			patientSampleTreatedAtCollection:
 				metadata.patientSampleTreatedAtCollection,

@@ -1,6 +1,6 @@
 import { Edge, MarkerType } from "reactflow";
 import { LayoutedNode } from "../components/HierarchyTree/HierarchyTree";
-import { ModelRelationships } from "../types/ModelData.model";
+import { KnowledgeGraph } from "../types/ModelData.model";
 
 const commonNodeProperties = {
 	x: 0,
@@ -21,88 +21,39 @@ const commonEdgeProperties = {
 	type: "smoothstep"
 };
 
-const parseRelationships = (
-	data: ModelRelationships,
+const parseKnowledgeGraph = (
+	data: KnowledgeGraph,
 	providerId: string,
 	currentId: string,
-	currentType: string,
-	parsedData: { nodes: LayoutedNode[]; edges: Edge[] } = {
+	currentType: string
+): { nodes: LayoutedNode[]; edges: Edge[] } => {
+	const parsedData: { nodes: LayoutedNode[]; edges: Edge[] } = {
 		nodes: [],
 		edges: []
-	} // don't pass as argument when calling function
-): { nodes: LayoutedNode[]; edges: Edge[] } => {
-	if (data) {
-		if (data.external_model_id) {
-			parsedData.nodes.push({
-				id: data.external_model_id,
-				data: {
-					label: data.external_model_id,
-					provider: providerId,
-					type: data.type || ""
-				},
-				...commonNodeProperties
-			});
-		} else {
-			// if there's no external model id, then it's the current model
-			parsedData.nodes.push({
-				id: currentId,
-				data: {
-					label: currentId,
-					provider: providerId,
-					type: currentType || ""
-				},
-				className: "current",
-				...commonNodeProperties
-			});
-		}
-		if (data.parents) {
-			if (Array.isArray(data.parents)) {
-				data.parents.forEach((parent: ModelRelationships) => {
-					const parentId = parent.external_model_id ?? "";
-					const childId = data.external_model_id ?? currentId;
+	};
 
-					parsedData.edges.push({
-						id: `e${parentId}-${childId}`,
-						source: parentId,
-						target: childId,
-						...commonEdgeProperties
-					});
+	data.nodes.forEach((node) => {
+		parsedData.nodes.push({
+			id: node.id.toString(),
+			data: {
+				label: node.nodeLabel,
+				provider: providerId,
+				type: node.nodeType || ""
+			},
+			...commonNodeProperties
+		});
+	});
 
-					parseRelationships(
-						parent,
-						providerId,
-						currentId,
-						currentType,
-						parsedData
-					);
-				});
-			}
-		}
-		if (data.children) {
-			if (Array.isArray(data.children)) {
-				data.children.forEach((child: ModelRelationships) => {
-					const parentId = data.external_model_id ?? currentId;
-					const childId = child.external_model_id ?? "";
-
-					parsedData.edges.push({
-						id: `e${parentId}-${childId}`,
-						source: parentId,
-						target: childId,
-						...commonEdgeProperties
-					});
-					parseRelationships(
-						child,
-						providerId,
-						currentId,
-						currentType,
-						parsedData
-					);
-				});
-			}
-		}
-	}
+	data.edges.forEach((edge) => {
+		parsedData.edges.push({
+			id: "e" + edge.source + "-" + edge.target,
+			source: edge.source.toString(),
+			target: edge.target.toString(),
+			...commonEdgeProperties
+		});
+	});
 
 	return parsedData;
 };
 
-export default parseRelationships;
+export default parseKnowledgeGraph;
