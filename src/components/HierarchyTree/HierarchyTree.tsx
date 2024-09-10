@@ -2,12 +2,12 @@ import Dagre from "@dagrejs/dagre";
 import { useRef } from "react";
 import ReactFlow, { Node, ReactFlowRefType } from "reactflow";
 import "reactflow/dist/style.css";
-import { ModelRelationships } from "../../types/ModelData.model";
-import parseKnowledgeGraph from "../../utils/parseRelationships";
+import { KnowledgeGraph } from "../../types/ModelData.model";
+import parseKnowledgeGraph from "../../utils/parseKnowledgeGraph";
 import CustomNode from "./CustomNode";
 
 interface IHierarchyTreeProps {
-	data: ModelRelationships;
+	data: KnowledgeGraph;
 	providerId: string;
 	modelId: string;
 	modelType: string;
@@ -35,17 +35,11 @@ const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 const HierarchyTree = ({
 	data,
 	modelId: currentModelId,
-	providerId,
-	modelType: currentModelType
+	providerId
 }: IHierarchyTreeProps) => {
 	const flowRef = useRef<ReactFlowRefType>(null);
 	const reactFlowHeight = flowRef?.current?.scrollHeight;
-	const parsedData = parseKnowledgeGraph(
-		data,
-		providerId,
-		currentModelId,
-		currentModelType
-	);
+	const parsedData = parseKnowledgeGraph(data, providerId, currentModelId);
 
 	g.setGraph({ rankdir: "LR" }); // Could also be TB so the tree is vertical. Need to update custom node if using TB
 

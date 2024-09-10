@@ -23,7 +23,8 @@ const commonEdgeProperties = {
 
 const parseKnowledgeGraph = (
 	data: KnowledgeGraph,
-	providerId: string
+	providerId: string,
+	currentModelId: string
 ): { nodes: LayoutedNode[]; edges: Edge[] } => {
 	return {
 		nodes: data.nodes.map((node) => ({
@@ -31,7 +32,8 @@ const parseKnowledgeGraph = (
 			data: {
 				label: node.nodeLabel,
 				provider: providerId,
-				type: node.nodeType || ""
+				type: node.data?.type || "",
+				className: node.nodeLabel === currentModelId ? "current" : undefined
 			},
 			...commonNodeProperties
 		})),

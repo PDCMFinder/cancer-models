@@ -1449,8 +1449,7 @@ const ModelDetails = ({
 									</div>
 								</div>
 							)}
-							{/* {(Array.isArray(modelRelationships?.parents) ||
-								Array.isArray(modelRelationships?.children)) && (
+							{knowledgeGraph && (
 								<div id="related-models" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0 mb-4">Related models</h2>
@@ -1458,12 +1457,11 @@ const ModelDetails = ({
 											providerId={metadata.providerId}
 											modelId={metadata.modelId}
 											modelType={metadata.modelType}
-											data={modelRelationships}
+											data={knowledgeGraph}
 										/>
 									</div>
 								</div>
-							)} */}
-
+							)}
 							{validHistologyImages.length > 0 && (
 								<div id="histology-images" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
