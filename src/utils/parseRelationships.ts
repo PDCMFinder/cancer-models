@@ -23,17 +23,10 @@ const commonEdgeProperties = {
 
 const parseKnowledgeGraph = (
 	data: KnowledgeGraph,
-	providerId: string,
-	currentId: string,
-	currentType: string
+	providerId: string
 ): { nodes: LayoutedNode[]; edges: Edge[] } => {
-	const parsedData: { nodes: LayoutedNode[]; edges: Edge[] } = {
-		nodes: [],
-		edges: []
-	};
-
-	data.nodes.forEach((node) => {
-		parsedData.nodes.push({
+	return {
+		nodes: data.nodes.map((node) => ({
 			id: node.id.toString(),
 			data: {
 				label: node.nodeLabel,
@@ -41,19 +34,14 @@ const parseKnowledgeGraph = (
 				type: node.nodeType || ""
 			},
 			...commonNodeProperties
-		});
-	});
-
-	data.edges.forEach((edge) => {
-		parsedData.edges.push({
-			id: "e" + edge.source + "-" + edge.target,
+		})),
+		edges: data.edges.map((edge) => ({
+			id: `e${edge.source}-${edge.target}`,
 			source: edge.source.toString(),
 			target: edge.target.toString(),
 			...commonEdgeProperties
-		});
-	});
-
-	return parsedData;
+		}))
+	};
 };
 
 export default parseKnowledgeGraph;

@@ -104,7 +104,7 @@ export async function getModelKnowledgeGraph(
 				edges: apiGraph.edges.map((edge) => camelCase(edge)),
 				nodes: apiGraph.nodes.map((node) => camelCase(node))
 			};
-			debugger;
+
 			return data;
 		});
 }
