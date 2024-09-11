@@ -18,7 +18,8 @@ const commonEdgeProperties = {
 		height: 17,
 		color: "#003e48" // $color-primary-primary
 	},
-	type: "smoothstep"
+	type: "smoothstep",
+	labelBgPadding: [5, 5] as [number, number]
 };
 
 const parseKnowledgeGraph = (
@@ -32,15 +33,18 @@ const parseKnowledgeGraph = (
 			data: {
 				label: node.nodeLabel,
 				provider: providerId,
-				type: node.data?.type || "",
-				className: node.nodeLabel === currentModelId ? "current" : undefined
+				type: node.data?.type || ""
 			},
+			className: `${node.nodeLabel === currentModelId ? "current" : ""} ${
+				node.data?.type ? `type-${node.data.type}` : ""
+			}`,
 			...commonNodeProperties
 		})),
 		edges: data.edges.map((edge) => ({
 			id: `e${edge.source}-${edge.target}`,
 			source: edge.source.toString(),
 			target: edge.target.toString(),
+			label: edge.label.replace("_", " "),
 			...commonEdgeProperties
 		}))
 	};

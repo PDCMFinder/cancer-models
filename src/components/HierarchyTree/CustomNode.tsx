@@ -1,8 +1,42 @@
 import { memo } from "react";
-import { Handle, Node, Position } from "reactflow";
+import { Handle, Position } from "reactflow";
 import ModelTypeIcon from "../Icons/ModelTypeIcon";
 
-const CustomNode = ({ data }: Node["data"]) => (
+type CustomNodeData = {
+	provider: string;
+	label: string;
+	type?: string;
+};
+
+const NodeContent = ({
+	label,
+	type,
+	provider
+}: CustomNodeData): JSX.Element => {
+	const content = (
+		<>
+			{label}
+			{type && (
+				<span className="d-flex ml-1">
+					<ModelTypeIcon modelType={type} size="1em" />
+				</span>
+			)}
+		</>
+	);
+
+	return type ? (
+		<a
+			className="px-2 py-1 d-flex align-center"
+			href={`/data/models/${provider}/${label}`}
+		>
+			{content}
+		</a>
+	) : (
+		<span className="px-2 py-1 d-flex align-center">{content}</span>
+	);
+};
+
+const CustomNode = ({ data }: { data: CustomNodeData }): JSX.Element => (
 	<div>
 		<Handle
 			style={{ visibility: "hidden" }}
@@ -11,15 +45,7 @@ const CustomNode = ({ data }: Node["data"]) => (
 			isConnectable={false}
 		/>
 		<p>
-			<a
-				className="px-2 py-1 d-flex align-center"
-				href={`/data/models/${data.provider}/${data.label}`}
-			>
-				{data.label}{" "}
-				<span className="d-flex ml-1">
-					<ModelTypeIcon modelType={data.type} size="1em" />
-				</span>
-			</a>
+			<NodeContent {...data} />
 		</p>
 		<Handle
 			style={{ visibility: "hidden" }}

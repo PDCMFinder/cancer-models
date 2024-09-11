@@ -1456,7 +1456,6 @@ const ModelDetails = ({
 										<DynamicHierarchyTree
 											providerId={metadata.providerId}
 											modelId={metadata.modelId}
-											modelType={metadata.modelType}
 											data={knowledgeGraph}
 										/>
 									</div>

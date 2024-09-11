@@ -10,7 +10,6 @@ interface IHierarchyTreeProps {
 	data: KnowledgeGraph;
 	providerId: string;
 	modelId: string;
-	modelType: string;
 }
 
 export type LayoutedNode = Node & {
