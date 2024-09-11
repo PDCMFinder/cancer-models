@@ -13,6 +13,7 @@ const NodeContent = ({
 	type,
 	provider
 }: CustomNodeData): JSX.Element => {
+	const containerClassName = "px-2 py-1 d-flex align-center";
 	const content = (
 		<>
 			{label}
@@ -26,13 +27,13 @@ const NodeContent = ({
 
 	return type ? (
 		<a
-			className="px-2 py-1 d-flex align-center"
+			className={containerClassName}
 			href={`/data/models/${provider}/${label}`}
 		>
 			{content}
 		</a>
 	) : (
-		<span className="px-2 py-1 d-flex align-center">{content}</span>
+		<span className={containerClassName}>{content}</span>
 	);
 };
 
@@ -44,7 +45,7 @@ const CustomNode = ({ data }: { data: CustomNodeData }): JSX.Element => (
 			position={Position.Left}
 			isConnectable={false}
 		/>
-		<p>
+		<p className="text-smaller">
 			<NodeContent {...data} />
 		</p>
 		<Handle

@@ -35,9 +35,9 @@ const parseKnowledgeGraph = (
 				provider: providerId,
 				type: node.data?.type || ""
 			},
-			className: `${node.nodeLabel === currentModelId ? "current" : ""} ${
-				node.data?.type ? `type-${node.data.type}` : ""
-			}`,
+			className: `${
+				node.nodeLabel === currentModelId && node.data?.type ? "current" : ""
+			} ${node.data?.type ? `type-${node.data.type}` : ""}`,
 			...commonNodeProperties
 		})),
 		edges: data.edges.map((edge) => ({
