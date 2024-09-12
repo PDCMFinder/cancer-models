@@ -18,7 +18,6 @@ const commonEdgeProperties = {
 		height: 17,
 		color: "#003e48" // $color-primary-primary
 	},
-	type: "smoothstep",
 	labelBgPadding: [5, 5] as [number, number]
 };
 

@@ -566,15 +566,13 @@ table {
 	}
 }
 .react-flow__pane {
-	cursor: default !important;
-}
-.react-flow__viewport {
-	transform: scale(1) !important;
+	background-color: $color-lightGray;
 }
 .react-flow__node-custom {
 	cursor: default !important;
 	border-radius: $br-common;
 	border: 1px solid $color-primary-primary;
+	background-color: $color-white;
 	p {
 		margin: 0;
 	}

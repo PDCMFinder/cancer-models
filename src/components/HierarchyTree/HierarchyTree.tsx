@@ -48,7 +48,7 @@ const HierarchyTree = ({
 	Dagre.layout(g);
 
 	return (
-		<div style={{ height: reactFlowHeight, width: "100%" }} className="w-100">
+		<div style={{ height: reactFlowHeight }}>
 			<ReactFlow
 				nodes={parsedData.nodes.map((node) => {
 					return {
@@ -60,21 +60,21 @@ const HierarchyTree = ({
 					};
 				})}
 				edges={parsedData.edges}
-				fitView
+				// fitView
 				proOptions={{
 					hideAttribution: true
 				}}
-				draggable={false}
-				panOnDrag={false}
-				preventScrolling={false}
-				zoomOnScroll={false}
-				zoomOnPinch={false}
-				zoomOnDoubleClick={false}
-				selectNodesOnDrag={false}
-				connectOnClick={false}
-				nodesConnectable={false}
-				nodesDraggable={false}
-				nodesFocusable={false}
+				// draggable={false}
+				// panOnDrag={false}
+				// preventScrolling={false}
+				// zoomOnScroll={false}
+				// zoomOnPinch={false}
+				// zoomOnDoubleClick={false}
+				// selectNodesOnDrag={false}
+				// connectOnClick={false}
+				// nodesConnectable={false}
+				// nodesDraggable={false}
+				// nodesFocusable={false}
 				nodeTypes={nodeTypes}
 				ref={flowRef}
 			></ReactFlow>

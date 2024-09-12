@@ -29,6 +29,7 @@ const NodeContent = ({
 		<a
 			className={containerClassName}
 			href={`/data/models/${provider}/${label}`}
+			style={{ lineHeight: "2rem" }}
 		>
 			{content}
 		</a>
