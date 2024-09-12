@@ -548,6 +548,17 @@ table {
 		}
 	}
 }
+.nodeType {
+	&-patient {
+		background: lightblue !important;
+	}
+	&-patient_sample {
+		background: pink !important;
+	}
+	&-model {
+		background: lightgreen !important;
+	}
+}
 
 // Overwrite external libraries css
 .grecaptcha-badge {
@@ -571,7 +582,7 @@ table {
 .react-flow__node-custom {
 	cursor: default !important;
 	border-radius: $br-common;
-	border: 1px solid $color-primary-quaternary;
+	border: 1px solid transparent;
 	background-color: $color-white;
 	p {
 		margin: 0;
