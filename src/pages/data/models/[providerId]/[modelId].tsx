@@ -744,9 +744,8 @@ const ModelDetails = ({
 												"Patient treatment"
 											)}
 										</li>
-										{/* <li className="mb-2">
-											{Array.isArray(modelRelationships?.parents) ||
-											Array.isArray(modelRelationships?.children) ? (
+										<li className="mb-2">
+											{knowledgeGraph ? (
 												<Link
 													replace
 													href="#related-models"
@@ -757,7 +756,7 @@ const ModelDetails = ({
 											) : (
 												"Related Models"
 											)}
-										</li> */}
+										</li>
 										<li className="mb-2">
 											{validHistologyImages.length ? (
 												<Link

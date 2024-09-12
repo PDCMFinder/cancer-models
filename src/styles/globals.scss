@@ -571,13 +571,13 @@ table {
 .react-flow__node-custom {
 	cursor: default !important;
 	border-radius: $br-common;
-	border: 1px solid $color-primary-primary;
+	border: 1px solid $color-primary-quaternary;
 	background-color: $color-white;
 	p {
 		margin: 0;
 	}
 	&.current {
-		background-color: $color-primary-quaternary;
+		border-color: $color-primary-primary;
 	}
 }
 [class^="react-flow__edge"] {

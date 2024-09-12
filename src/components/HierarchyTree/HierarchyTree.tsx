@@ -60,21 +60,9 @@ const HierarchyTree = ({
 					};
 				})}
 				edges={parsedData.edges}
-				// fitView
 				proOptions={{
 					hideAttribution: true
 				}}
-				// draggable={false}
-				// panOnDrag={false}
-				// preventScrolling={false}
-				// zoomOnScroll={false}
-				// zoomOnPinch={false}
-				// zoomOnDoubleClick={false}
-				// selectNodesOnDrag={false}
-				// connectOnClick={false}
-				// nodesConnectable={false}
-				// nodesDraggable={false}
-				// nodesFocusable={false}
 				nodeTypes={nodeTypes}
 				ref={flowRef}
 			></ReactFlow>
