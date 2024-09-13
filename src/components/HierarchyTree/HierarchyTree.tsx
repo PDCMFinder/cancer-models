@@ -1,6 +1,11 @@
 import Dagre from "@dagrejs/dagre";
 import { useRef } from "react";
-import ReactFlow, { Node, ReactFlowRefType } from "reactflow";
+import ReactFlow, {
+	Background,
+	BackgroundVariant,
+	Node,
+	ReactFlowRefType
+} from "reactflow";
 import "reactflow/dist/style.css";
 import { KnowledgeGraph } from "../../types/ModelData.model";
 import parseKnowledgeGraph from "../../utils/parseKnowledgeGraph";
@@ -65,7 +70,9 @@ const HierarchyTree = ({
 				}}
 				nodeTypes={nodeTypes}
 				ref={flowRef}
-			></ReactFlow>
+			>
+				<Background color="#ebebeb" variant={BackgroundVariant.Lines} />
+			</ReactFlow>
 		</div>
 	);
 };
