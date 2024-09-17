@@ -1,14 +1,17 @@
 import {
 	AllModelData,
+	APIEngraftment,
 	APIExternalModelLink,
 	APIExtLinks,
+	APIKnowledgeGraph,
 	CellModelData,
+	Engraftment,
 	ExternalModelLinkByType,
 	ExtLinks,
 	ImmuneMarker,
+	KnowledgeGraph,
 	Marker,
 	ModelImage,
-	ModelRelationships,
 	MolecularData,
 	Publication,
 	QualityData
@@ -80,20 +83,30 @@ export async function getModelImages(modelId: string): Promise<ModelImage[]> {
 	});
 }
 
-export async function getModelRelationships(
+export async function getModelKnowledgeGraph(
 	modelId: string
-): Promise<ModelRelationships> {
+): Promise<KnowledgeGraph> {
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&select=model_relationships`
+		`${process.env.NEXT_PUBLIC_API_URL}/model_information?external_model_id=eq.${modelId}&select=knowledge_graph`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json().then((d) => {
-		const data: ModelRelationships = d[0].model_relationships;
+	return response
+		.json()
+		.then((d: { knowledge_graph: APIKnowledgeGraph | null }[]) => {
+			if (!d[0]?.knowledge_graph) {
+				return { edges: [], nodes: [] };
+			}
 
-		return data;
-	});
+			const apiGraph = d[0].knowledge_graph;
+			const data: KnowledgeGraph = {
+				edges: apiGraph.edges.map((edge) => camelCase(edge)),
+				nodes: apiGraph.nodes.map((node) => camelCase(node))
+			};
+
+			return data;
+		});
 }
 
 export async function getModelPubmedIds(
@@ -162,7 +175,11 @@ export async function getModelExtLinks(
 				if (!acc[link.type]) {
 					acc[link.type] = [];
 				}
-				acc[link.type].push(camelCase(link));
+				acc[link.type].push({
+					...link,
+					resourceLabel: link.resource_label,
+					linkLabel: link.link_label
+				});
 
 				return acc;
 			},
@@ -321,7 +338,7 @@ export async function getMolecularDataDownload(
 export async function getModelEngraftments(
 	pdcmModelId: number,
 	modelType: string
-) {
+): Promise<Engraftment[]> {
 	if ((pdcmModelId !== 0 && !pdcmModelId) || modelType !== "PDX") {
 		return [];
 	}
@@ -332,19 +349,25 @@ export async function getModelEngraftments(
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
-		return d.map((item: any) => {
-			const engraftment = camelCase(item);
-			const itemCamelCase = camelCase(item);
-			engraftment.hostStrain = itemCamelCase.hostStrain?.name || "";
-			engraftment.hostStrainNomenclature =
-				itemCamelCase.hostStrain?.nomenclature || "";
-			engraftment.engraftmentSite = itemCamelCase.engraftmentSite.name;
-			engraftment.engraftmentType = itemCamelCase.engraftmentType.name;
-			engraftment.engraftmentSampleType =
-				itemCamelCase.engraftmentSampleType.name;
-			engraftment.engraftmentSampleState =
-				itemCamelCase.engraftmentSampleState?.name;
-			return engraftment;
+		return d.map((item: APIEngraftment) => {
+			const {
+				host_strain: hostStrain,
+				engraftment_site: engraftmentSite,
+				engraftment_type: engraftmentType,
+				engraftment_sample_type: engraftmentSampleType,
+				engraftment_sample_state: engraftmentSampleState,
+				...rest
+			} = item;
+
+			return {
+				...camelCase(rest),
+				hostStrain: hostStrain?.name ?? "",
+				hostStrainNomenclature: hostStrain?.nomenclature ?? "",
+				engraftmentSite: engraftmentSite.name,
+				engraftmentType: engraftmentType.name,
+				engraftmentSampleType: engraftmentSampleType.name,
+				engraftmentSampleState: engraftmentSampleState?.name ?? ""
+			};
 		});
 	});
 }
@@ -524,7 +547,7 @@ export const getAllModelData = async (
 	const patientTreatment = await getPatientTreatment(pdcmModelId);
 	const qualityData = await getModelQualityData(pdcmModelId);
 	const modelImages = await getModelImages(modelId);
-	const modelRelationships = await getModelRelationships(modelId);
+	const knowledgeGraph = await getModelKnowledgeGraph(modelId);
 	let score: number = metadata.scores.pdx_metadata_score,
 		cellModelData = {} as CellModelData;
 
@@ -568,7 +591,7 @@ export const getAllModelData = async (
 			patientSampleCollectionEvent: metadata.patientSampleCollectionEvent,
 			patientSampleId: metadata.patientSampleId,
 			patientSampleMonthsSinceCollection:
-				metadata.patientSampleMonthsSinceCollection1,
+				metadata.patientSampleMonthsSinceCollection_1,
 			patientSampleSharable: metadata.patientSampleSharable,
 			patientSampleTreatedAtCollection:
 				metadata.patientSampleTreatedAtCollection,
@@ -586,13 +609,8 @@ export const getAllModelData = async (
 		drugDosing,
 		patientTreatment,
 		qualityData,
+		knowledgeGraph,
 		modelImages,
-		modelRelationships,
 		publications: [] as Publication[]
 	};
 };
-
-function createMailToLink(emails: string, externalModelId: string) {
-	const subject = `Information about ${externalModelId}`;
-	return `mailto:${emails}?subject=${encodeURIComponent(subject)}`;
-}
