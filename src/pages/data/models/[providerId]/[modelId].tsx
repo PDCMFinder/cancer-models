@@ -9,6 +9,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import ReactGA from "react-ga4";
 import { useQueries, useQuery } from "react-query";
+import { ReactFlowProvider } from "reactflow";
 import {
 	getAllModelData,
 	getModelPubmedIds,
@@ -1452,11 +1453,13 @@ const ModelDetails = ({
 								<div id="related-models" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0 mb-4">Related models</h2>
-										<DynamicHierarchyTree
-											providerId={metadata.providerId}
-											modelId={metadata.modelId}
-											data={knowledgeGraph}
-										/>
+										<ReactFlowProvider>
+											<DynamicHierarchyTree
+												providerId={metadata.providerId}
+												modelId={metadata.modelId}
+												data={knowledgeGraph}
+											/>
+										</ReactFlowProvider>
 									</div>
 								</div>
 							)}

@@ -1,10 +1,11 @@
 import Dagre from "@dagrejs/dagre";
-import { useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ReactFlow, {
 	Background,
 	BackgroundVariant,
+	MiniMap,
 	Node,
-	ReactFlowRefType
+	useReactFlow
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { KnowledgeGraph } from "../../types/ModelData.model";
@@ -34,44 +35,70 @@ const nodeTypes = {
 	custom: CustomNode
 };
 
-const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
-
 const HierarchyTree = ({
 	data,
 	modelId: currentModelId,
 	providerId
 }: IHierarchyTreeProps) => {
-	const flowRef = useRef<ReactFlowRefType>(null);
-	const reactFlowHeight = flowRef?.current?.scrollHeight;
-	const parsedData = parseKnowledgeGraph(data, providerId, currentModelId);
+	const [reactFlowHeight, setReactFlowHeight] = useState<number>(500); // set initial height so it doesnt bug out when changing model pages
+	const { fitView } = useReactFlow();
+	const containerRef = useRef<HTMLDivElement>(null);
+	const parsedData = useMemo(
+		() => parseKnowledgeGraph(data, providerId, currentModelId),
+		[data, providerId, currentModelId]
+	);
 
-	g.setGraph({ rankdir: "LR" }); // Could also be TB so the tree is vertical. Need to update custom node if using TB
+	const updateHeight = useCallback(() => {
+		if (containerRef.current) {
+			setReactFlowHeight(containerRef.current.scrollHeight);
+		}
+	}, []);
 
-	parsedData.edges.forEach((edge) => g.setEdge(edge.source, edge.target));
-	parsedData.nodes.forEach((node) => g.setNode(node.id, node));
+	useEffect(() => {
+		updateHeight();
+		window.addEventListener("resize", updateHeight);
+		return () => {
+			window.removeEventListener("resize", updateHeight);
+		};
+	}, [updateHeight]);
 
-	Dagre.layout(g);
+	useEffect(() => {
+		fitView();
+	}, [fitView, parsedData.nodes, parsedData.edges]);
+
+	const layoutGraph = useMemo(() => {
+		const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
+		g.setGraph({ rankdir: "LR" }); // Could also be TB so the tree is vertical. Need to update custom node if using TB
+
+		parsedData.edges.forEach((edge) => g.setEdge(edge.source, edge.target));
+		parsedData.nodes.forEach((node) => g.setNode(node.id, node));
+
+		Dagre.layout(g);
+
+		return g;
+	}, [parsedData]);
 
 	return (
-		<div style={{ height: reactFlowHeight }}>
+		<div
+			ref={containerRef} // Use the ref here
+			style={{ height: reactFlowHeight + "px", width: "100%" }}
+		>
 			<ReactFlow
-				nodes={parsedData.nodes.map((node) => {
-					return {
-						...node,
-						position: {
-							x: node.x - node.width / 2,
-							y: node.y - node.height / 2
-						}
-					};
-				})}
+				nodes={parsedData.nodes.map((node) => ({
+					...node,
+					position: {
+						x: node.x - node.width / 2,
+						y: node.y - node.height / 2
+					}
+				}))}
 				edges={parsedData.edges}
 				proOptions={{
 					hideAttribution: true
 				}}
 				nodeTypes={nodeTypes}
-				ref={flowRef}
 			>
 				<Background color="#ebebeb" variant={BackgroundVariant.Lines} />
+				<MiniMap />
 			</ReactFlow>
 		</div>
 	);
