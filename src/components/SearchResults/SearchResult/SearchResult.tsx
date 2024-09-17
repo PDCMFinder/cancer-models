@@ -84,7 +84,7 @@ const SearchResult = (props: ISearchResultProps) => {
 	return (
 		<Card
 			className={`${styles.SearchResult} ${
-				modelAvailable || styles.notAvailable
+				modelAvailable ? "" : styles.modelNotAvailable
 			}`}
 			id="tour_searchResult"
 		>
@@ -104,6 +104,11 @@ const SearchResult = (props: ISearchResultProps) => {
 								}`}
 							</Link>
 						</p>
+						{!modelAvailable && (
+							<p className="text-small text-muted m-0">
+								<i>Model not available</i>
+							</p>
+						)}
 					</div>
 					<ShowHide showOver={bpLarge} windowWidth={windowWidth}>
 						{score > 0 && (
