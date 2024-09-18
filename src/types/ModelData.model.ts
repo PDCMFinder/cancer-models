@@ -13,11 +13,18 @@ export type AllModelData = {
 	publications: Publication[];
 };
 
-export type Metadata = {
+type ModelScores = {
+	dataScore: number;
+	inVitroMetadataScore: number;
+	pdxMetadataScore: number;
+};
+
+export type ModelMetadata = {
 	histology: string;
 	providerName: string;
 	cancerSystem: string;
 	modelType: string;
+	modelAvailabilityBoolean: boolean;
 	patientSex: string;
 	patientAge: string;
 	patientEthnicity: string;
@@ -28,7 +35,7 @@ export type Metadata = {
 	collectionSite: string;
 	licenseName: string;
 	licenseUrl: string;
-	score: number;
+	scores: ModelScores;
 	pdcmModelId: number;
 	modelId: string;
 	providerId: string;

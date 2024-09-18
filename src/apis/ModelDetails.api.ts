@@ -8,6 +8,7 @@ import {
 	ImmuneMarker,
 	Marker,
 	ModelImage,
+	ModelMetadata,
 	ModelRelationships,
 	MolecularData,
 	Publication,
@@ -42,7 +43,7 @@ export async function getCellModelData(pdcmModelId: number): Promise<any> {
 export async function getModelDetailsMetadata(
 	modelId: string,
 	providerId: string
-): Promise<any> {
+): Promise<ModelMetadata> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&data_source=eq.${providerId}`
 	);
@@ -525,12 +526,12 @@ export const getAllModelData = async (
 	const qualityData = await getModelQualityData(pdcmModelId);
 	const modelImages = await getModelImages(modelId);
 	const modelRelationships = await getModelRelationships(modelId);
-	let score: number = metadata.scores.pdx_metadata_score,
+	let score: number = metadata.scores.pdxMetadataScore,
 		cellModelData = {} as CellModelData;
 
 	if (modelType !== "PDX") {
 		cellModelData = await getCellModelData(pdcmModelId);
-		score = metadata.scores.in_vitro_metadata_score;
+		score = metadata.scores.inVitroMetadataScore;
 	}
 
 	return {
@@ -545,6 +546,7 @@ export const getAllModelData = async (
 			licenseUrl: metadata.licenseUrl ?? "",
 			modelId,
 			modelType: metadata.modelType,
+			modelAvailable: metadata.modelAvailabilityBoolean,
 			patientAge: metadata.patientAge,
 			patientEthnicity: metadata.patientEthnicity,
 			patientSex: metadata.patientSex,
@@ -568,7 +570,7 @@ export const getAllModelData = async (
 			patientSampleCollectionEvent: metadata.patientSampleCollectionEvent,
 			patientSampleId: metadata.patientSampleId,
 			patientSampleMonthsSinceCollection:
-				metadata.patientSampleMonthsSinceCollection1,
+				metadata.patientSampleMonthsSinceCollection_1,
 			patientSampleSharable: metadata.patientSampleSharable,
 			patientSampleTreatedAtCollection:
 				metadata.patientSampleTreatedAtCollection,
