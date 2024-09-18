@@ -1,3 +1,5 @@
+import { CamelCaseKeys } from "../../types/globalTypes";
+
 export type AllModelData = {
 	metadata: Metadata;
 	extLinks: ExtLinks;
@@ -8,8 +10,8 @@ export type AllModelData = {
 	drugDosing: DrugDosing[];
 	patientTreatment: PatientTreatment[];
 	qualityData: QualityData[];
+	knowledgeGraph: KnowledgeGraph;
 	modelImages: ModelImage[];
-	modelRelationships: ModelRelationships;
 	publications: Publication[];
 };
 
@@ -126,6 +128,26 @@ export type Marker = {
 	value: string[];
 };
 
+export type APIEngraftment = {
+	passage_number: string;
+	host_strain: {
+		name: string;
+		nomenclature: string;
+	};
+	engraftment_site: {
+		name: string;
+	};
+	engraftment_type: {
+		name: string;
+	};
+	engraftment_sample_type: {
+		name: string;
+	};
+	engraftment_sample_state: {
+		name: string;
+	};
+};
+
 export type Engraftment = {
 	passageNumber: string;
 	hostStrain: string;
@@ -193,12 +215,25 @@ export type ModelImage = {
 	isBroken: boolean;
 };
 
-export type ModelRelationships = {
-	type?: string;
-	parents?: ModelRelationships[];
-	children?: ModelRelationships[];
-	external_model_id?: string;
+export type APIKnowledgeGraph = {
+	edges: {
+		label: string;
+		source: number;
+		target: number;
+	}[];
+	nodes: {
+		id: number;
+		data?: {
+			sex?: string;
+			type?: string;
+		};
+		node_type: string;
+		node_label: string;
+		data_source: string;
+	}[];
 };
+
+export type KnowledgeGraph = CamelCaseKeys<APIKnowledgeGraph>;
 
 export type Publication = {
 	pmid: string;

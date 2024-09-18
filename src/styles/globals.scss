@@ -548,6 +548,17 @@ table {
 		}
 	}
 }
+.nodeType {
+	&-patient {
+		background: lightblue !important;
+	}
+	&-patient_sample {
+		background: pink !important;
+	}
+	&-model {
+		background: lightgreen !important;
+	}
+}
 
 // Overwrite external libraries css
 .grecaptcha-badge {
@@ -565,21 +576,16 @@ table {
 		line-height: 1.1;
 	}
 }
-.react-flow__pane {
-	cursor: default !important;
-}
-.react-flow__viewport {
-	transform: scale(1) !important;
-}
 .react-flow__node-custom {
 	cursor: default !important;
 	border-radius: $br-common;
-	border: 1px solid $color-primary-primary;
+	border: 1px solid transparent;
+	background-color: $color-white;
 	p {
 		margin: 0;
 	}
 	&.current {
-		background-color: $color-primary-quaternary;
+		border-color: $color-primary-primary;
 	}
 }
 [class^="react-flow__edge"] {

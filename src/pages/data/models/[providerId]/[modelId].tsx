@@ -9,6 +9,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import ReactGA from "react-ga4";
 import { useQueries, useQuery } from "react-query";
+import { ReactFlowProvider } from "reactflow";
 import {
 	getAllModelData,
 	getModelPubmedIds,
@@ -87,7 +88,7 @@ const ModelDetails = ({
 	cellModelData,
 	engraftments,
 	modelImages,
-	modelRelationships
+	knowledgeGraph
 }: AllModelData) => {
 	const NA_STRING = "N/A",
 		MODEL_GENOMICS_STRING = "Model Genomics",
@@ -745,8 +746,7 @@ const ModelDetails = ({
 											)}
 										</li>
 										<li className="mb-2">
-											{Array.isArray(modelRelationships?.parents) ||
-											Array.isArray(modelRelationships?.children) ? (
+											{knowledgeGraph ? (
 												<Link
 													replace
 													href="#related-models"
@@ -1449,17 +1449,17 @@ const ModelDetails = ({
 									</div>
 								</div>
 							)}
-							{(Array.isArray(modelRelationships?.parents) ||
-								Array.isArray(modelRelationships?.children)) && (
+							{knowledgeGraph && (
 								<div id="related-models" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0 mb-4">Related models</h2>
-										<DynamicHierarchyTree
-											providerId={metadata.providerId}
-											modelId={metadata.modelId}
-											modelType={metadata.modelType}
-											data={modelRelationships}
-										/>
+										<ReactFlowProvider>
+											<DynamicHierarchyTree
+												providerId={metadata.providerId}
+												modelId={metadata.modelId}
+												data={knowledgeGraph}
+											/>
+										</ReactFlowProvider>
 									</div>
 								</div>
 							)}
@@ -1725,7 +1725,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		patientTreatment,
 		qualityData,
 		modelImages,
-		modelRelationships
+		knowledgeGraph
 	} = await getAllModelData(
 		params!.modelId as string,
 		params!.providerId as string
@@ -1742,7 +1742,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			patientTreatment,
 			qualityData,
 			modelImages,
-			modelRelationships
+			knowledgeGraph
 		},
 		revalidate: 600
 	};
