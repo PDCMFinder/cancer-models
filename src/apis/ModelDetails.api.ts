@@ -4,6 +4,7 @@ import {
 	APIExternalModelLink,
 	APIExtLinks,
 	APIKnowledgeGraph,
+	APIModelMetadata,
 	CellModelData,
 	Engraftment,
 	ExternalModelLinkByType,
@@ -12,7 +13,6 @@ import {
 	KnowledgeGraph,
 	Marker,
 	ModelImage,
-	ModelMetadata,
 	MolecularData,
 	Publication,
 	QualityData
@@ -46,24 +46,34 @@ export async function getCellModelData(pdcmModelId: number): Promise<any> {
 export async function getModelDetailsMetadata(
 	modelId: string,
 	providerId: string
-): Promise<ModelMetadata> {
+) {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&data_source=eq.${providerId}`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json().then((d) => camelCase(d[0]));
+
+	return response.json().then((d) => {
+		if (!Array.isArray(d) || d.length === 0) {
+			throw new Error("No model metadata found");
+		}
+		const modelMetadata: APIModelMetadata = d[0];
+
+		return camelCase(modelMetadata);
+	});
 }
 
-export async function getProviderId(modelId: string) {
+export async function getProviderId(modelId: string): Promise<string> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/search_index?external_model_id=eq.${modelId}&select=data_source`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json();
+	return response.json().then((d) => {
+		return d[0].data_source;
+	});
 }
 
 export async function getModelImages(modelId: string): Promise<ModelImage[]> {
@@ -535,8 +545,7 @@ export const getAllModelData = async (
 	modelId: string,
 	providerId?: string
 ): Promise<AllModelData> => {
-	const modelProviderId =
-		providerId ?? (await getProviderId(modelId))[0].data_source;
+	const modelProviderId = providerId ?? (await getProviderId(modelId));
 	const metadata = await getModelDetailsMetadata(modelId, modelProviderId);
 	const immuneMarkers = await getModelImmuneMarkers(modelId);
 	const pdcmModelId: number = metadata.pdcmModelId;
@@ -582,7 +591,9 @@ export const getAllModelData = async (
 			// Extras for metadata file
 			cancerGradingSystem: metadata.cancerGradingSystem,
 			cancerStagingSystem: metadata.cancerStagingSystem,
-			datasetAvailable: metadata.datasetAvailable,
+			datasetAvailable: Array.isArray(metadata.datasetAvailable)
+				? metadata.datasetAvailable
+				: [],
 			externalModelId: metadata.externalModelId,
 			patientAgeAtInitialDiagnosis: metadata.patientAgeAtInitialDiagnosis,
 			patientEthnicityAssessmentMethod:
@@ -593,7 +604,7 @@ export const getAllModelData = async (
 			patientSampleCollectionEvent: metadata.patientSampleCollectionEvent,
 			patientSampleId: metadata.patientSampleId,
 			patientSampleMonthsSinceCollection:
-				metadata.patientSampleMonthsSinceCollection_1,
+				metadata.patientSampleMonthsSinceCollection1,
 			patientSampleSharable: metadata.patientSampleSharable,
 			patientSampleTreatedAtCollection:
 				metadata.patientSampleTreatedAtCollection,

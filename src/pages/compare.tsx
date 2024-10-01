@@ -11,6 +11,7 @@ import Button from "../components/Button/Button";
 import FloatingButton from "../components/FloatingWidget/FloatingButton";
 import ModelTypeIcon from "../components/Icons/ModelTypeIcon";
 import Loader from "../components/Loader/Loader";
+import ModelNotAvailable from "../components/ModelNotAvailable/ModelNotAvailable";
 import QualityBadge from "../components/QualityBadge/QualityBadge";
 import ShowHide from "../components/ShowHide/ShowHide";
 import Tooltip from "../components/Tooltip/Tooltip";
@@ -159,6 +160,7 @@ const Compare: NextPage = () => {
 														modelType={metadata.modelType}
 														size="1.5em"
 													/>
+													{!metadata.modelAvailable && <ModelNotAvailable />}
 												</div>
 												<QualityBadge
 													className="w-50"
@@ -544,7 +546,7 @@ const Compare: NextPage = () => {
 																Object.entries(dataToShowObj).forEach(
 																	([key, value]) => {
 																		columnValues.push(
-																			<div className="mb-2">
+																			<div className="mb-2" key={key + value}>
 																				<p className="text-uppercase">
 																					<b>{key}</b>
 																				</p>

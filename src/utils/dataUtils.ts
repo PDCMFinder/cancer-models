@@ -17,7 +17,7 @@ export function camelCase<T extends Record<string, any>>(
 	} else if (obj !== null && typeof obj === "object") {
 		return Object.fromEntries(
 			Object.entries(obj).map(([k, v]) => [
-				k.replace(/_([a-z])/g, (_, p1) => p1.toUpperCase()),
+				k.replace(/_([a-z])/g, (_, p1) => p1.toUpperCase()).replace(/_/g, ""),
 				v !== null && typeof v === "object" ? camelCase(v) : v
 			])
 		) as CamelCaseKeys<T>;
