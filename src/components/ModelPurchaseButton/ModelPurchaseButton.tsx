@@ -7,10 +7,6 @@ type Props = {
 };
 
 const ModelPurchaseButton = ({ supplier, isLastSupplier }: Props) => {
-	const buttonText = `Purchase at ${supplier.resourceLabel}${
-		supplier.resourceLabel.includes("ATCC") ? ` ${supplier.linkLabel}` : ""
-	}`;
-
 	return (
 		<Button
 			priority="primary"
@@ -20,7 +16,7 @@ const ModelPurchaseButton = ({ supplier, isLastSupplier }: Props) => {
 			href={supplier.link}
 			className={isLastSupplier ? "" : "mb-2"}
 		>
-			{buttonText}
+			Purchase {supplier.linkLabel}
 		</Button>
 	);
 };
