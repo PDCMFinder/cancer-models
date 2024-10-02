@@ -25,6 +25,7 @@ import ImageChecker from "../../../../components/ImageChecker/ImageChecker";
 import InputAndLabel from "../../../../components/Input/InputAndLabel";
 import Loader from "../../../../components/Loader/Loader";
 import ModelIdentifiers from "../../../../components/ModelIdentifiers/ModelIdentifiers";
+import ModelNotAvailable from "../../../../components/ModelNotAvailable/ModelNotAvailable";
 import ModelPurchaseButton from "../../../../components/ModelPurchaseButton/ModelPurchaseButton";
 import MolecularDataTable from "../../../../components/MolecularDataTable/MolecularDataTable";
 import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
@@ -577,6 +578,9 @@ const ModelDetails = ({
 											);
 										}
 									)}
+								{!metadata.modelAvailable && (
+									<ModelNotAvailable className="mb-2" isPill />
+								)}
 							</div>
 							<p className="mb-1">Provided by</p>
 							<h3 className="my-0 mb-3 mb-lg-0 lh-1">

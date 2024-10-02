@@ -1,5 +1,3 @@
-// import { CamelCaseKeys } from "../../types/globalTypes";
-
 type CamelCase<S extends string> =
 	S extends `${infer P1}_${infer P2}${infer P3}`
 		? `${Lowercase<P1>}${Uppercase<P2>}${CamelCase<P3>}`
@@ -19,7 +17,7 @@ export function camelCase<T extends Record<string, any>>(
 	} else if (obj !== null && typeof obj === "object") {
 		return Object.fromEntries(
 			Object.entries(obj).map(([k, v]) => [
-				k.replace(/_([a-z])/g, (_, p1) => p1.toUpperCase()),
+				k.replace(/_([a-z])/g, (_, p1) => p1.toUpperCase()).replace(/_/g, ""),
 				v !== null && typeof v === "object" ? camelCase(v) : v
 			])
 		) as CamelCaseKeys<T>;

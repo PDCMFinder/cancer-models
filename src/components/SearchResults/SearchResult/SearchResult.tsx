@@ -5,6 +5,7 @@ import { SearchResult as SearchResultType } from "../../../types/Search.model";
 import breakPoints from "../../../utils/breakpoints";
 import Card from "../../Card/Card";
 import InputAndLabel from "../../Input/InputAndLabel";
+import ModelNotAvailable from "../../ModelNotAvailable/ModelNotAvailable";
 import QualityBadge from "../../QualityBadge/QualityBadge";
 import ShowHide from "../../ShowHide/ShowHide";
 import styles from "./SearchResult.module.scss";
@@ -84,7 +85,7 @@ const SearchResult = (props: ISearchResultProps) => {
 	return (
 		<Card
 			className={`${styles.SearchResult} ${
-				modelAvailable || styles.notAvailable
+				modelAvailable ? "" : styles.modelNotAvailable
 			}`}
 			id="tour_searchResult"
 		>
@@ -104,6 +105,7 @@ const SearchResult = (props: ISearchResultProps) => {
 								}`}
 							</Link>
 						</p>
+						{!modelAvailable && <ModelNotAvailable />}
 					</div>
 					<ShowHide showOver={bpLarge} windowWidth={windowWidth}>
 						{score > 0 && (
