@@ -1092,7 +1092,7 @@ const ModelDetails = ({
 												<Button
 													color="dark"
 													priority="secondary"
-													className="mb-0 ml-md-1 mr-md-5"
+													className="mb-0 ml-md-1"
 												>
 													<Link
 														href={`/cbioportal/patient/clinicalData?studyId=${metadata.providerId}&caseId=${metadata.modelId}`}
@@ -1116,6 +1116,7 @@ const ModelDetails = ({
 														<Button
 															priority="secondary"
 															color="dark"
+															className="ml-md-5"
 															onClick={() => downloadAllMolecularData()}
 														>
 															Download all
