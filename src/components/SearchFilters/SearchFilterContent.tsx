@@ -1,14 +1,12 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import { ChangeEvent } from "react";
 import Select from "react-select";
-import { autoCompleteFacetOptions } from "../../apis/Search.api";
 import { onFilterChangeType } from "../../pages/search";
 import { IFacetProps, IFacetSidebarSelection } from "../../types/Facet.model";
 import { ethnicityCategories } from "../../utils/collapseEthnicity";
 import typeaheadStyles from "../../utils/typeaheadStyles";
-import Fragment from "../Fragment/Fragment";
 import InformationIcon from "../InformationIcon/InformationIcon";
 import InputAndLabel from "../Input/InputAndLabel";
+import MultivaluedSearchFilter from "./MultivaluedSearchFilter";
 
 interface ISearchFilterContentProps {
 	data: IFacetProps[];
@@ -28,29 +26,6 @@ export interface SelectOption {
 }
 
 const SearchFilterContent = (props: ISearchFilterContentProps) => {
-	const [query, setQuery] = useState("");
-	const [facetId, setfacetId] = useState("");
-	const [typeaheadData, setTypeaheadData] = useState<SelectOption[]>();
-
-	let selectOptionsQuery = useQuery(
-		[facetId, query],
-		() => autoCompleteFacetOptions(facetId, query),
-		{
-			onSuccess(data) {
-				setTypeaheadData(data);
-			}
-		}
-	);
-
-	useEffect(() => {
-		setTypeaheadData(selectOptionsQuery.data);
-	}, [query, facetId, selectOptionsQuery.data]);
-
-	const onTypeaheadType = (facetId: string, query: string) => {
-		setQuery(query);
-		setfacetId(facetId);
-	};
-
 	const optionSelectObj = (options: string[]): SelectOption[] => {
 		return options?.map((value: string) => ({
 			["label"]: value,
@@ -73,55 +48,16 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 
 				const defaultValues = optionSelectObj(selection);
 
-				if (facetType === "autocomplete" || facetType === "multivalued") {
-					const placeholder = facet.placeholder
-							? `Eg. ${facet.placeholder}`
-							: "Select...",
-						displayOperators = facetType === "multivalued";
+				const displayOperators = facetType === "multivalued";
 
+				if (facetType === "autocomplete" || facetType === "multivalued") {
 					facetContent = (
 						<>
-							<Select
-								closeMenuOnSelect
-								blurInputOnSelect
-								isMulti
-								defaultValue={defaultValues}
-								value={defaultValues}
-								placeholder={placeholder}
-								options={typeaheadData}
-								onInputChange={(inputValue) =>
-									onTypeaheadType(facet.facetId, inputValue)
-								}
-								onFocus={() => {
-									// reset options, theyre maintaining even after changing Selects
-									setTypeaheadData([]);
-								}}
-								isLoading={selectOptionsQuery.isLoading}
-								loadingMessage={() => "Loading data"}
-								noOptionsMessage={() => "Type to search"}
-								onChange={(_, actionMeta) => {
-									if (actionMeta.action === "pop-value") return;
-
-									let option = "",
-										action: onFilterChangeType["type"] = "add";
-
-									switch (actionMeta.action) {
-										case "remove-value":
-											option = actionMeta.removedValue.value;
-											action = "remove";
-											break;
-										case "select-option":
-											option = actionMeta.option!.value;
-											break;
-										case "clear":
-											action = "clear";
-											break;
-									}
-
-									props.onFilterChange(facet.facetId, option, operator, action);
-								}}
-								styles={typeaheadStyles}
-								components={{ DropdownIndicator: Fragment }}
+							<MultivaluedSearchFilter
+								facet={facet}
+								defaultValues={defaultValues}
+								onFilterChange={props.onFilterChange}
+								operator={operator}
 							/>
 							{displayOperators && (
 								<fieldset className="d-flex border-none m-0">
