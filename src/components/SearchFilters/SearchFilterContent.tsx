@@ -33,7 +33,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 	const [typeaheadData, setTypeaheadData] = useState<SelectOption[]>();
 
 	let selectOptionsQuery = useQuery(
-		query,
+		[facetId, query],
 		() => autoCompleteFacetOptions(facetId, query),
 		{
 			onSuccess(data) {
@@ -44,7 +44,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 
 	useEffect(() => {
 		setTypeaheadData(selectOptionsQuery.data);
-	}, [query, facetId]);
+	}, [query, facetId, selectOptionsQuery.data]);
 
 	const onTypeaheadType = (facetId: string, query: string) => {
 		setQuery(query);
@@ -92,6 +92,10 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 								onInputChange={(inputValue) =>
 									onTypeaheadType(facet.facetId, inputValue)
 								}
+								onFocus={() => {
+									// reset options, theyre maintaining even after changing Selects
+									setTypeaheadData([]);
+								}}
 								isLoading={selectOptionsQuery.isLoading}
 								loadingMessage={() => "Loading data"}
 								noOptionsMessage={() => "Type to search"}
