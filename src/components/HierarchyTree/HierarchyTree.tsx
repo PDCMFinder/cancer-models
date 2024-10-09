@@ -1,5 +1,5 @@
 import Dagre from "@dagrejs/dagre";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ReactFlow, {
 	Background,
 	BackgroundVariant,
@@ -47,20 +47,6 @@ const HierarchyTree = ({
 		() => parseKnowledgeGraph(data, providerId, currentModelId),
 		[data, providerId, currentModelId]
 	);
-
-	const updateHeight = useCallback(() => {
-		if (containerRef.current) {
-			setReactFlowHeight(containerRef.current.scrollHeight);
-		}
-	}, []);
-
-	useEffect(() => {
-		updateHeight();
-		window.addEventListener("resize", updateHeight);
-		return () => {
-			window.removeEventListener("resize", updateHeight);
-		};
-	}, [updateHeight]);
 
 	useEffect(() => {
 		fitView();
