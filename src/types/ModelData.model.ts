@@ -46,6 +46,7 @@ type ParsedModelMetadata = {
 	datasetAvailable: string[];
 	cancerGradingSystem: string;
 	cancerStagingSystem: string;
+	dateSubmitted: string;
 	patientHistory: string;
 	patientEthnicityAssessmentMethod: string;
 	patientInitialDiagnosis: string;

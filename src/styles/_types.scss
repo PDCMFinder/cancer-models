@@ -123,6 +123,9 @@ a,
 			font-family: $type-secondary !important;
 		}
 	}
+	&-noTransform {
+		text-transform: none;
+	}
 	&-capitalize {
 		text-transform: capitalize;
 	}

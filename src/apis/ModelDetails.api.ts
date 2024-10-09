@@ -588,6 +588,7 @@ export const getAllModelData = async (
 			providerName: metadata.providerName,
 			score: score ?? 0,
 			tumourType: metadata.tumourType,
+			dateSubmitted: metadata.dateSubmitted,
 			// Extras for metadata file
 			cancerGradingSystem: metadata.cancerGradingSystem,
 			cancerStagingSystem: metadata.cancerStagingSystem,
