@@ -529,6 +529,11 @@ const ModelDetails = ({
 				<div className="container">
 					<div className="row align-center pb-lg-0 text-capitalize">
 						<div className="col-12 col-md-10 col-lg-6">
+							{metadata.dateSubmitted && (
+								<p className="text-small text-noTransform">
+									Date of submission: {metadata.dateSubmitted}
+								</p>
+							)}
 							<h2
 								className={`m-0 text-family-secondary ${styles.ModelDetails_histology}`}
 								id="tour_model-histologyType"
