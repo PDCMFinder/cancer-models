@@ -1100,7 +1100,7 @@ const ModelDetails = ({
 													className="mb-0 ml-md-1"
 												>
 													<Link
-														href={`/cbioportal/patient/clinicalData?studyId=${metadata.providerId}&caseId=${metadata.modelId}`}
+														href={`/cbioportal/patient/clinicalData?studyId=${metadata.providerId}&caseId=${metadata.patientId}`}
 													>
 														<Image
 															src="/img/cbioportal.png"

@@ -53,6 +53,7 @@ type ParsedModelMetadata = {
 	cancerStagingSystem: string;
 	dateSubmitted: string;
 	patientHistory: string;
+	patientId: string;
 	patientEthnicityAssessmentMethod: string;
 	patientInitialDiagnosis: string;
 	patientAgeAtInitialDiagnosis: string;
@@ -173,6 +174,7 @@ export type APIModelMetadata = {
 	patient_age_category: string;
 	patient_sex: string;
 	patient_history: string;
+	patient_id: string;
 	patient_ethnicity: string;
 	patient_ethnicity_assessment_method: string;
 	patient_initial_diagnosis: string;
