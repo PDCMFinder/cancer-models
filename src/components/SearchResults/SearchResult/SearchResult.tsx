@@ -32,9 +32,9 @@ const dataTypes = [
 		sectionLink: "molecular-data"
 	},
 	{
-		key: "dosing studies",
-		name: "Dosing Studies",
-		sectionLink: "dosing-studies"
+		key: "model treatment",
+		name: "Model Treatment",
+		sectionLink: "model-treatment"
 	},
 	{
 		key: "patient treatment",

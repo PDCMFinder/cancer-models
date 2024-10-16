@@ -11,7 +11,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
 	let response = await fetch(
-		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example,facet_type,is_boolean,facet_description`
+		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example,facet_type,is_boolean,facet_description&order=index`
 	);
 
 	const sections: any = {
@@ -30,9 +30,14 @@ export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
 			name: "Patient / Tumor",
 			facets: []
 		},
-		treatment_drug_dosing: {
-			key: "treatment_drug_dosing",
-			name: "Treatment / Drug dosing",
+		patient_treatment: {
+			key: "patient_treatment",
+			name: "Patient Treatment",
+			facets: []
+		},
+		model_treatment: {
+			key: "model_treatment",
+			name: "Model Treatment",
 			facets: []
 		}
 	};
