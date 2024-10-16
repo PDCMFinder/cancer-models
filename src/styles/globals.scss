@@ -521,6 +521,9 @@ table {
 	caption {
 		@extend .hideElement-accessible;
 	}
+	&.table-align-top td {
+		vertical-align: top;
+	}
 }
 .white-space {
 	&-nowrap {

@@ -530,6 +530,11 @@ const ModelDetails = ({
 				<div className="container">
 					<div className="row align-center pb-lg-0 text-capitalize">
 						<div className="col-12 col-md-10 col-lg-6">
+							{metadata.dateSubmitted && (
+								<p className="text-small text-noTransform">
+									Date of submission: {metadata.dateSubmitted}
+								</p>
+							)}
 							<h2
 								className={`m-0 text-family-secondary ${styles.ModelDetails_histology}`}
 								id="tour_model-histologyType"
@@ -728,13 +733,13 @@ const ModelDetails = ({
 											{drugDosing.length ? (
 												<Link
 													replace
-													href="#dosing-studies"
+													href="#model-treatment"
 													className="text-primary-primary"
 												>
-													Dosing studies
+													Model treatment
 												</Link>
 											) : (
-												"Dosing studies"
+												"Model treatment"
 											)}
 										</li>
 										<li className="mb-2">
@@ -1407,12 +1412,12 @@ const ModelDetails = ({
 								</div>
 							)}
 							{drugDosing.length > 0 && (
-								<div id="dosing-studies" className="row mb-5 pt-3">
+								<div id="model-treatment" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
-										<h2 className="mt-0">Dosing studies</h2>
+										<h2 className="mt-0">Model treatment</h2>
 										<div className="overflow-auto showScrollbar-vertical">
 											<table>
-												<caption>Dosing studies</caption>
+												<caption>Model treatment</caption>
 												<thead>
 													<tr>
 														<th>DRUG</th>
@@ -1445,7 +1450,7 @@ const ModelDetails = ({
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Patient treatment</h2>
 										<div className="overflow-auto showScrollbar-vertical">
-											<table>
+											<table className="table-align-top">
 												<caption>Patient treatment</caption>
 												<thead>
 													<tr>
@@ -1455,19 +1460,104 @@ const ModelDetails = ({
 													</tr>
 												</thead>
 												<tbody>
-													{patientTreatment.map(
-														({
-															treatmentName: name,
-															treatmentDose: dose,
-															treatmentResponse: response
-														}) => (
-															<tr key={name}>
-																<td className="white-space-unset">{name}</td>
-																<td className="text-capitalize">{dose}</td>
-																<td>{response}</td>
+													{patientTreatment.map((treatments) => {
+														return (
+															<tr key={treatments[0].name}>
+																<td className="white-space-unset">
+																	{treatments.map((treatment, idx) => {
+																		return (
+																			<div
+																				key={
+																					treatment.response +
+																					treatment.name +
+																					treatment.dose
+																				}
+																				className={idx !== 0 ? "mt-1" : ""}
+																			>
+																				{treatment.name}
+																				<br />
+																				{treatment.externalDbLinks?.map(
+																					(externalDbLink) => {
+																						return (
+																							<Link
+																								key={externalDbLink.link}
+																								href={externalDbLink.link}
+																								className="mr-1"
+																								target="_blank"
+																								rel="noopener"
+																							>
+																								{externalDbLink.resourceLabel}
+																							</Link>
+																						);
+																					}
+																				)}
+																			</div>
+																		);
+																	})}
+																</td>
+																<td className="text-capitalize">
+																	{treatments.map((treatment, idx) => {
+																		return (
+																			<div
+																				key={
+																					treatment.response +
+																					treatment.name +
+																					treatment.dose
+																				}
+																				className={idx !== 0 ? "mt-1" : ""}
+																				style={{
+																					marginBottom:
+																						treatment.externalDbLinks
+																							? "2em"
+																							: 0
+																				}}
+																			>
+																				{treatment.dose}
+																				<br />
+																			</div>
+																		);
+																	})}
+																</td>
+																<td>
+																	{treatments.map((treatment, idx) => {
+																		return (
+																			<div
+																				key={
+																					treatment.response +
+																					treatment.name +
+																					treatment.dose
+																				}
+																				className={idx !== 0 ? "mt-1" : ""}
+																				style={{
+																					marginBottom:
+																						treatment.externalDbLinks
+																							? "2em"
+																							: 0
+																				}}
+																			>
+																				{treatment.response}
+																				<br />
+																				{/* hack to handle height from name row links */}
+																				{/* {treatment.externalDbLinks?.map(
+																					(externalDbLink) => {
+																						return (
+																							<span
+																								key={externalDbLink.link}
+																								className="text-white"
+																								style={{ opacity: 0 }}
+																							>
+																								.
+																							</span>
+																						);
+																					}
+																				)} */}
+																			</div>
+																		);
+																	})}
+																</td>
 															</tr>
-														)
-													)}
+														);
+													})}
 												</tbody>
 											</table>
 										</div>

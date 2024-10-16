@@ -1,5 +1,16 @@
 import { CamelCaseKeys } from "../../types/globalTypes";
 
+export type IImmuneMarkerAPI = {
+	model_id: string;
+	data_source: string;
+	source: string;
+	sample_id: string;
+	marker_type: "HLA type" | "Model Genomics";
+	marker_name: string;
+	marker_value: string;
+	essential_or_additional_details: string;
+};
+
 export type AllModelData = {
 	metadata: ParsedModelMetadata;
 	extLinks: ExtLinks;
@@ -8,17 +19,11 @@ export type AllModelData = {
 	engraftments: Engraftment[];
 	cellModelData: CellModelData;
 	drugDosing: DrugDosing[];
-	patientTreatment: PatientTreatment[];
+	patientTreatment: CamelCaseKeys<APIPatientTreatment>[number]["entries"][number][][];
 	qualityData: QualityData[];
 	knowledgeGraph: KnowledgeGraph;
 	modelImages: ModelImage[];
 	publications: Publication[];
-};
-
-type ModelScores = {
-	dataScore: number;
-	inVitroMetadataScore: number;
-	pdxMetadataScore: number;
 };
 
 type ParsedModelMetadata = {
@@ -46,6 +51,7 @@ type ParsedModelMetadata = {
 	datasetAvailable: string[];
 	cancerGradingSystem: string;
 	cancerStagingSystem: string;
+	dateSubmitted: string;
 	patientHistory: string;
 	patientEthnicityAssessmentMethod: string;
 	patientInitialDiagnosis: string;
@@ -60,46 +66,6 @@ type ParsedModelMetadata = {
 	patientSampleTreatedPriorToCollection: string;
 	pdxModelPublications: string;
 };
-
-// export type ModelMetadata = {
-// 	histology: string;
-// 	providerName: string;
-// 	cancerSystem: string;
-// 	modelType: string;
-// 	modelAvailabilityBoolean: boolean;
-// 	patientSex: string;
-// 	patientAge: string;
-// 	patientEthnicity: string;
-// 	tumourType: string;
-// 	cancerGrade: string;
-// 	cancerStage: string;
-// 	primarySite: string;
-// 	collectionSite: string;
-// 	licenseName: string;
-// 	licenseUrl: string;
-// 	scores: ModelScores;
-// 	pdcmModelId: number;
-// 	modelId: string;
-// 	providerId: string;
-// 	externalModelId: string;
-// 	projectName: string;
-// 	datasetAvailable: string[];
-// 	cancerGradingSystem: string;
-// 	cancerStagingSystem: string;
-// 	patientHistory: string;
-// 	patientEthnicityAssessmentMethod: string;
-// 	patientInitialDiagnosis: string;
-// 	patientAgeAtInitialDiagnosis: string;
-// 	patientSampleId: string;
-// 	patientSampleCollectionDate: string;
-// 	patientSampleCollectionEvent: string;
-// 	patientSampleMonthsSinceCollection_1: string;
-// 	patientSampleVirologyStatus: string;
-// 	patientSampleSharable: string;
-// 	patientSampleTreatedAtCollection: string;
-// 	patientSampleTreatedPriorToCollection: string;
-// 	pdxModelPublications: string;
-// };
 
 export type ModelMetadata = {
 	pdcmModelId: number;
@@ -403,11 +369,22 @@ export type DrugDosing = {
 	treatmentResponse: string;
 };
 
-export type PatientTreatment = {
-	treatmentName: string;
-	treatmentDose: string;
-	treatmentResponse: string;
-};
+export type APIPatientTreatment = {
+	model_id: number;
+	protocol_id: number;
+	treatment: string;
+	response: string;
+	dose: string;
+	entries: {
+		dose: string;
+		name: string;
+		response?: string;
+		external_db_links?: {
+			link: string;
+			resource_label: string;
+		}[];
+	}[];
+}[];
 
 export type QualityData = {
 	id?: number;

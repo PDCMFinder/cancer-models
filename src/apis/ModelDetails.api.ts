@@ -1,3 +1,4 @@
+import { CamelCaseKeys } from "../../types/globalTypes";
 import {
 	AllModelData,
 	APIEngraftment,
@@ -5,10 +6,12 @@ import {
 	APIExtLinks,
 	APIKnowledgeGraph,
 	APIModelMetadata,
+	APIPatientTreatment,
 	CellModelData,
 	Engraftment,
 	ExternalModelLinkByType,
 	ExtLinks,
+	IImmuneMarkerAPI,
 	ImmuneMarker,
 	KnowledgeGraph,
 	Marker,
@@ -18,17 +21,6 @@ import {
 	QualityData
 } from "../types/ModelData.model";
 import { camelCase } from "../utils/dataUtils";
-
-interface IImmuneMarkerAPI {
-	model_id: string;
-	data_source: string;
-	source: string;
-	sample_id: string;
-	marker_type: "HLA type" | "Model Genomics";
-	marker_name: string;
-	marker_value: string;
-	essential_or_additional_details: string;
-}
 
 export async function getCellModelData(pdcmModelId: number): Promise<any> {
 	let response = await fetch(
@@ -383,28 +375,34 @@ export async function getModelEngraftments(
 	});
 }
 
-export async function getPatientTreatment(pdcmModelId: number) {
+export const getPatientTreatment = async (pdcmModelId: number) => {
 	if (pdcmModelId !== 0 && !pdcmModelId) {
 		return [];
 	}
+
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/patient_treatment?model_id=eq.${pdcmModelId}&select=*`
 	);
+
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json().then((d) =>
-		d.map((item: any) => {
-			const itemCamelCase: any = camelCase(item);
-			let treatment = {
-				treatmentName: itemCamelCase.treatment.replaceAll(" And ", ", "),
-				treatmentDose: itemCamelCase.dose,
-				treatmentResponse: itemCamelCase.response
-			};
-			return treatment;
+
+	return response.json().then((d: APIPatientTreatment) =>
+		d.map((item) => {
+			item.entries.forEach((entry) => {
+				entry.response = item.response;
+				entry.external_db_links?.sort((a, b) =>
+					a.resource_label.localeCompare(b.resource_label)
+				);
+			});
+
+			return camelCase(item.entries) as unknown as CamelCaseKeys<
+				APIPatientTreatment[number]["entries"]
+			>[number][];
 		})
 	);
-}
+};
 
 export async function getModelDrugDosing(
 	pdcmModelId: number,
@@ -429,24 +427,6 @@ export async function getModelDrugDosing(
 			};
 			return treatment;
 		});
-	});
-}
-
-export async function getExpressionHeatmap(
-	molecularCharacterizationId: number,
-	dataType: string
-): Promise<Array<any>> {
-	if (!molecularCharacterizationId || dataType !== "expression") {
-		return [];
-	}
-	let response = await fetch(
-		`${process.env.PUBLIC_URL}/static/expression_heatmap.json`
-	);
-	if (!response.ok) {
-		throw new Error("Network response was not ok");
-	}
-	return response.json().then((d) => {
-		return d.map((item: any) => camelCase(item));
 	});
 }
 
@@ -588,6 +568,7 @@ export const getAllModelData = async (
 			providerName: metadata.providerName,
 			score: score ?? 0,
 			tumourType: metadata.tumourType,
+			dateSubmitted: metadata.dateSubmitted,
 			// Extras for metadata file
 			cancerGradingSystem: metadata.cancerGradingSystem,
 			cancerStagingSystem: metadata.cancerStagingSystem,
