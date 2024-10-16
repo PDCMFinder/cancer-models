@@ -562,6 +562,7 @@ export const getAllModelData = async (
 			patientAge: metadata.patientAge,
 			patientEthnicity: metadata.patientEthnicity,
 			patientSex: metadata.patientSex,
+			patientId: metadata.patientId,
 			pdcmModelId,
 			primarySite: metadata.primarySite,
 			providerId: modelProviderId,

@@ -5,6 +5,7 @@ import JSZip from "jszip";
 import { GetStaticPaths, GetStaticProps } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import ReactGA from "react-ga4";
@@ -1092,21 +1093,41 @@ const ModelDetails = ({
 									<div className="col-12 mb-1">
 										<div className="d-flex align-flex-start align-md-center flex-column flex-md-row justify-content-between">
 											<h2 className="my-0">Molecular data</h2>
-											{!molecularDataIsLoading &&
-												molecularData &&
-												molecularData.some(
-													(data: MolecularData) =>
-														data.dataExists === "TRUE" &&
-														data.dataRestricted !== "TRUE"
-												) && (
-													<Button
-														priority="secondary"
-														color="dark"
-														onClick={() => downloadAllMolecularData()}
+											<div className="d-flex align-center flex-column flex-md-row align-flex-start">
+												<Button
+													color="dark"
+													priority="secondary"
+													className="mb-0 ml-md-1"
+												>
+													<Link
+														href={`/cbioportal/patient/clinicalData?studyId=${metadata.providerId}&caseId=${metadata.patientId}`}
 													>
-														Download all
-													</Button>
-												)}
+														<Image
+															src="/img/cbioportal.png"
+															alt="cBioPortal logo"
+															width={100}
+															height={50}
+															style={{ height: "1em", width: "auto" }}
+														/>
+													</Link>
+												</Button>
+												{!molecularDataIsLoading &&
+													molecularData &&
+													molecularData.some(
+														(data: MolecularData) =>
+															data.dataExists === "TRUE" &&
+															data.dataRestricted !== "TRUE"
+													) && (
+														<Button
+															priority="secondary"
+															color="dark"
+															className="ml-md-5"
+															onClick={() => downloadAllMolecularData()}
+														>
+															Download all
+														</Button>
+													)}
+											</div>
 										</div>
 										<div className="overflow-auto showScrollbar-vertical">
 											<table>
