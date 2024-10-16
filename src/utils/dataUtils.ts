@@ -22,6 +22,7 @@ export function camelCase<T extends Record<string, any>>(
 			])
 		) as CamelCaseKeys<T>;
 	}
+
 	return obj as CamelCaseKeys<T>;
 }
 

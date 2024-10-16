@@ -1429,7 +1429,7 @@ const ModelDetails = ({
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Patient treatment</h2>
 										<div className="overflow-auto showScrollbar-vertical">
-											<table>
+											<table className="table-align-top">
 												<caption>Patient treatment</caption>
 												<thead>
 													<tr>
@@ -1439,19 +1439,104 @@ const ModelDetails = ({
 													</tr>
 												</thead>
 												<tbody>
-													{patientTreatment.map(
-														({
-															treatmentName: name,
-															treatmentDose: dose,
-															treatmentResponse: response
-														}) => (
-															<tr key={name}>
-																<td className="white-space-unset">{name}</td>
-																<td className="text-capitalize">{dose}</td>
-																<td>{response}</td>
+													{patientTreatment.map((treatments) => {
+														return (
+															<tr key={treatments[0].name}>
+																<td className="white-space-unset">
+																	{treatments.map((treatment, idx) => {
+																		return (
+																			<div
+																				key={
+																					treatment.response +
+																					treatment.name +
+																					treatment.dose
+																				}
+																				className={idx !== 0 ? "mt-1" : ""}
+																			>
+																				{treatment.name}
+																				<br />
+																				{treatment.externalDbLinks?.map(
+																					(externalDbLink) => {
+																						return (
+																							<Link
+																								key={externalDbLink.link}
+																								href={externalDbLink.link}
+																								className="mr-1"
+																								target="_blank"
+																								rel="noopener"
+																							>
+																								{externalDbLink.resourceLabel}
+																							</Link>
+																						);
+																					}
+																				)}
+																			</div>
+																		);
+																	})}
+																</td>
+																<td className="text-capitalize">
+																	{treatments.map((treatment, idx) => {
+																		return (
+																			<div
+																				key={
+																					treatment.response +
+																					treatment.name +
+																					treatment.dose
+																				}
+																				className={idx !== 0 ? "mt-1" : ""}
+																				style={{
+																					marginBottom:
+																						treatment.externalDbLinks
+																							? "2em"
+																							: 0
+																				}}
+																			>
+																				{treatment.dose}
+																				<br />
+																			</div>
+																		);
+																	})}
+																</td>
+																<td>
+																	{treatments.map((treatment, idx) => {
+																		return (
+																			<div
+																				key={
+																					treatment.response +
+																					treatment.name +
+																					treatment.dose
+																				}
+																				className={idx !== 0 ? "mt-1" : ""}
+																				style={{
+																					marginBottom:
+																						treatment.externalDbLinks
+																							? "2em"
+																							: 0
+																				}}
+																			>
+																				{treatment.response}
+																				<br />
+																				{/* hack to handle height from name row links */}
+																				{/* {treatment.externalDbLinks?.map(
+																					(externalDbLink) => {
+																						return (
+																							<span
+																								key={externalDbLink.link}
+																								className="text-white"
+																								style={{ opacity: 0 }}
+																							>
+																								.
+																							</span>
+																						);
+																					}
+																				)} */}
+																			</div>
+																		);
+																	})}
+																</td>
 															</tr>
-														)
-													)}
+														);
+													})}
 												</tbody>
 											</table>
 										</div>
