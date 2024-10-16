@@ -96,7 +96,7 @@ const Contact: NextPage = () => {
 						<div className="col-12 col-md-6">
 							<Card>
 								<p className="text-center">
-									If you have questions about a specific model, please visit the
+									If you are interested in acquiring a specific model or have questions about it, please visit the
 									models page. You can contact the provider using the links on
 									the right side of the top banner.
 								</p>
