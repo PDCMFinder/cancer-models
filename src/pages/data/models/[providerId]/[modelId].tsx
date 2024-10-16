@@ -732,13 +732,13 @@ const ModelDetails = ({
 											{drugDosing.length ? (
 												<Link
 													replace
-													href="#dosing-studies"
+													href="#model-treatment"
 													className="text-primary-primary"
 												>
-													Dosing studies
+													Model treatment
 												</Link>
 											) : (
-												"Dosing studies"
+												"Model treatment"
 											)}
 										</li>
 										<li className="mb-2">
@@ -1391,12 +1391,12 @@ const ModelDetails = ({
 								</div>
 							)}
 							{drugDosing.length > 0 && (
-								<div id="dosing-studies" className="row mb-5 pt-3">
+								<div id="model-treatment" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
-										<h2 className="mt-0">Dosing studies</h2>
+										<h2 className="mt-0">Model treatment</h2>
 										<div className="overflow-auto showScrollbar-vertical">
 											<table>
-												<caption>Dosing studies</caption>
+												<caption>Model treatment</caption>
 												<thead>
 													<tr>
 														<th>DRUG</th>
