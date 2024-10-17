@@ -404,11 +404,8 @@ export const getPatientTreatment = async (pdcmModelId: number) => {
 	);
 };
 
-export async function getModelDrugDosing(
-	pdcmModelId: number,
-	modelType: string
-) {
-	if (!pdcmModelId || modelType !== "PDX") {
+export async function getModelDrugDosing(pdcmModelId: number) {
+	if (!pdcmModelId) {
 		return [];
 	}
 	let response = await fetch(
@@ -533,7 +530,7 @@ export const getAllModelData = async (
 	const molecularData = await getMolecularData(modelId);
 	const modelType = metadata.modelType;
 	const engraftments = await getModelEngraftments(pdcmModelId, modelType);
-	const drugDosing = await getModelDrugDosing(pdcmModelId, modelType);
+	const drugDosing = await getModelDrugDosing(pdcmModelId);
 	const patientTreatment = await getPatientTreatment(pdcmModelId);
 	const qualityData = await getModelQualityData(pdcmModelId);
 	const modelImages = await getModelImages(modelId);
