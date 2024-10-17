@@ -18,8 +18,8 @@ export type AllModelData = {
 	immuneMarkers: ImmuneMarker[];
 	engraftments: Engraftment[];
 	cellModelData: CellModelData;
-	drugDosing: DrugDosing[];
-	patientTreatment: CamelCaseKeys<APIPatientTreatment>[number]["entries"][number][][];
+	drugDosing: CamelCaseKeys<APITreatment>[number]["entries"][number][][];
+	patientTreatment: CamelCaseKeys<APITreatment>[number]["entries"][number][][];
 	qualityData: QualityData[];
 	knowledgeGraph: KnowledgeGraph;
 	modelImages: ModelImage[];
@@ -371,7 +371,7 @@ export type DrugDosing = {
 	treatmentResponse: string;
 };
 
-export type APIPatientTreatment = {
+export type APITreatment = {
 	model_id: number;
 	protocol_id: number;
 	treatment: string;
