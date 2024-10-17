@@ -6,7 +6,7 @@ import {
 	APIExtLinks,
 	APIKnowledgeGraph,
 	APIModelMetadata,
-	APIPatientTreatment,
+	APITreatment,
 	CellModelData,
 	Engraftment,
 	ExternalModelLinkByType,
@@ -388,7 +388,7 @@ export const getPatientTreatment = async (pdcmModelId: number) => {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json().then((d: APIPatientTreatment) =>
+	return response.json().then((d: APITreatment) =>
 		d.map((item) => {
 			item.entries.forEach((entry) => {
 				entry.response = item.response;
@@ -398,7 +398,7 @@ export const getPatientTreatment = async (pdcmModelId: number) => {
 			});
 
 			return camelCase(item.entries) as unknown as CamelCaseKeys<
-				APIPatientTreatment[number]["entries"]
+				APITreatment[number]["entries"]
 			>[number][];
 		})
 	);
@@ -414,15 +414,18 @@ export async function getModelDrugDosing(pdcmModelId: number) {
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json().then((d) => {
-		return d.map((item: any) => {
-			const itemCamelCase: any = camelCase(item);
-			let treatment = {
-				treatmentName: itemCamelCase.treatment,
-				treatmentDose: itemCamelCase.dose,
-				treatmentResponse: itemCamelCase.response
-			};
-			return treatment;
+	return response.json().then((d: APITreatment) => {
+		return d.map((item) => {
+			item.entries.forEach((entry) => {
+				entry.response = item.response;
+				entry.external_db_links?.sort((a, b) =>
+					a.resource_label.localeCompare(b.resource_label)
+				);
+			});
+
+			return camelCase(item.entries) as unknown as CamelCaseKeys<
+				APITreatment[number]["entries"]
+			>[number][];
 		});
 	});
 }

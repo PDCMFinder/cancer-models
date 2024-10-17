@@ -1426,19 +1426,82 @@ const ModelDetails = ({
 													</tr>
 												</thead>
 												<tbody>
-													{drugDosing.map(
-														({
-															treatmentName: name,
-															treatmentDose: dose,
-															treatmentResponse: response
-														}) => (
-															<tr key={name + dose}>
-																<td>{name}</td>
-																<td>{dose}</td>
-																<td>{response}</td>
+													{drugDosing.map((doses) => {
+														return (
+															<tr key={doses[0].name}>
+																<td className="white-space-unset">
+																	{doses.map((dose, idx) => {
+																		return (
+																			<div
+																				key={
+																					dose.response + dose.name + dose.dose
+																				}
+																				className={idx !== 0 ? "mt-1" : ""}
+																			>
+																				{dose.name}
+																				<br />
+																				{dose.externalDbLinks?.map(
+																					(externalDbLink) => {
+																						return (
+																							<Link
+																								key={externalDbLink.link}
+																								href={externalDbLink.link}
+																								className="mr-1"
+																								target="_blank"
+																								rel="noopener"
+																							>
+																								{externalDbLink.resourceLabel}
+																							</Link>
+																						);
+																					}
+																				)}
+																			</div>
+																		);
+																	})}
+																</td>
+																<td className="text-capitalize">
+																	{doses.map((dose, idx) => {
+																		return (
+																			<div
+																				key={
+																					dose.response + dose.name + dose.dose
+																				}
+																				className={idx !== 0 ? "mt-1" : ""}
+																				style={{
+																					marginBottom: dose.externalDbLinks
+																						? "2em"
+																						: 0
+																				}}
+																			>
+																				{dose.dose}
+																				<br />
+																			</div>
+																		);
+																	})}
+																</td>
+																<td>
+																	{doses.map((dose, idx) => {
+																		return (
+																			<div
+																				key={
+																					dose.response + dose.name + dose.dose
+																				}
+																				className={idx !== 0 ? "mt-1" : ""}
+																				style={{
+																					marginBottom: dose.externalDbLinks
+																						? "2em"
+																						: 0
+																				}}
+																			>
+																				{dose.response}
+																				<br />
+																			</div>
+																		);
+																	})}
+																</td>
 															</tr>
-														)
-													)}
+														);
+													})}
 												</tbody>
 											</table>
 										</div>
