@@ -54,8 +54,42 @@ const Tutorials: NextPage = () => {
 			<section>
 				<div className="container">
 					<div className="row">
+						<div className="col-12 col-md-6">
+							<Card
+								className="mb-4"
+								headerClassName="py-1"
+								contentClassName="pb-0 pt-1"
+								header={
+									<h2 className="p m-0">
+										A guide to identifying suitable patient-derived cancer
+										models in CancerModels.Org
+									</h2>
+								}
+							>
+								<iframe
+									className="w-100 ar-16-9"
+									src="https://embl-ebi.cloud.panopto.eu/Panopto/Pages/Embed.aspx?id=e790bced-3213-41f9-9d47-b02800ffac14&autoplay=false&offerviewer=true&showtitle=true&showbrand=true&captions=false&interactivity=all"
+									title="A guide to identifying suitable patient-derived cancer
+										models in CancerModels.Org"
+									allow="autoplay"
+									allowFullScreen
+									frameBorder="0"
+									aria-label="Panopto Embedded Video Player"
+									aria-description="A guide to identifying suitable patient-derived cancer models in CancerModels.Org"
+								></iframe>
+								<p className="text-smaller">
+									EMBL-EBI Training. (2023). A guide to identifying suitable
+									patient-derived cancer models in CancerModels.Org. EMBL-EBI
+									Training.{" "}
+									<a href="https://www.ebi.ac.uk/training/">
+										https://www.ebi.ac.uk/training/
+									</a>
+									. Licensed under CC BY 4.0.
+								</p>
+							</Card>
+						</div>
 						{videos.map((video) => (
-							<div className="col-6" key={video.src}>
+							<div className="col-12 col-md-6" key={video.src}>
 								<Card
 									className="mb-4"
 									headerClassName="py-1"
