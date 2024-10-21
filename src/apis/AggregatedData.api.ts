@@ -80,7 +80,7 @@ export async function getModelsByType(): Promise<
 	return response
 		.json()
 		.then((d: { model_type: string; count: number }[]) =>
-			d.filter((d) => d.model_type !== "other").map((i) => camelCase(i))
+			d.filter((d) => d.model_type !== "other").map(camelCase)
 		);
 }
 
@@ -116,7 +116,7 @@ export async function getModelsByMutatedGene() {
 	});
 }
 
-export async function getModelsByPatientGender() {
+export async function getModelsByPatientSex() {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_sex?order=count.desc&limit=10`
 	);

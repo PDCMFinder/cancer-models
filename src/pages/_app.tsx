@@ -77,6 +77,10 @@ function CancerModels({ Component, pageProps }: AppProps) {
 					Cancer Models: Patient-Derived Xenografts, Organoids, Cells
 				</title>
 				<meta
+					name="google-site-verification"
+					content="clD2XSBe-DY5OecwoxXxNLdVTBaJeB54be_1zPj9DBA"
+				/>
+				<meta
 					name="description"
 					content="Discover the largest catalog of patient-derived xenograft, organoid, and cell cancer models for your next project."
 				/>

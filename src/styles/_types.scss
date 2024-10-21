@@ -89,6 +89,9 @@ a,
 	&-primary-tertiary {
 		color: $color-primary-tertiary !important;
 	}
+	&-red {
+		color: red;
+	}
 	&-left {
 		text-align: left !important;
 	}
@@ -119,6 +122,9 @@ a,
 		&-secondary {
 			font-family: $type-secondary !important;
 		}
+	}
+	&-noTransform {
+		text-transform: none;
 	}
 	&-capitalize {
 		text-transform: capitalize;

@@ -1,9 +1,8 @@
-import styles from "./overview.module.scss";
 import { NextPage } from "next";
-import BarChart from "../components/BarChart/BarChart";
-import DonutChart from "../components/DonutChart/DonutChart";
-import SunBurstChart from "../components/SunBurstChart/SunBurstChart";
-import Button from "../components/Button/Button";
+import dynamic from "next/dynamic";
+import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import {
 	getCancerHierarchy,
@@ -12,22 +11,23 @@ import {
 	getModelsByMutatedGene,
 	getModelsByPatientAge,
 	getModelsByPatientEthnicity,
-	getModelsByPatientGender,
+	getModelsByPatientSex,
 	getModelsByTreatment,
 	getModelsByTumourType,
-	getProviderCount,
+	getProviderCount
 } from "../apis/AggregatedData.api";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { countEthnicity } from "../utils/collapseEthnicity";
+import BarChart from "../components/BarChart/BarChart";
+import Button from "../components/Button/Button";
+import DonutChart from "../components/DonutChart/DonutChart";
 import Loader from "../components/Loader/Loader";
-import dynamic from "next/dynamic";
-import Head from "next/head";
+import SunBurstChart from "../components/SunBurstChart/SunBurstChart";
+import { countEthnicity } from "../utils/collapseEthnicity";
+import styles from "./overview.module.scss";
 
 const DynamicCirclePacking = dynamic(
 	() => import("../components/CirclePacking/CirclePacking"),
 	{
-		loading: () => <Loader style={{ height: "300px" }} />,
+		loading: () => <Loader style={{ height: "300px" }} />
 	}
 );
 
@@ -43,12 +43,12 @@ function collapseAgeGroup(
 		"60 - 69",
 		"70 - 79",
 		"80 - 89",
-		"90 - 99",
+		"90 - 99"
 	];
 	const mappedAgeGroups: any = {
 		pediatric: { label: "Pediatric", count: 0, ranges: pediatricAgeGroups },
 		adult: { label: "Adult", count: 0, ranges: adultAgeGroups },
-		"Not Provided": { count: 0, ranges: ["Not Provided"] },
+		"Not Provided": { count: 0, ranges: ["Not Provided"] }
 	};
 	ageGroupList.forEach((a) => {
 		if (pediatricAgeGroups.includes(a.patient_age)) {
@@ -66,7 +66,7 @@ function collapseAgeGroup(
 		return {
 			label: group.label,
 			patient_age: group.ranges.join(", "),
-			count: group.count,
+			count: group.count
 		};
 	});
 }
@@ -86,8 +86,8 @@ const Overview: NextPage = () => {
 	let modelsByMutatedGene = useQuery("modelsByMutatedGene", () => {
 		return getModelsByMutatedGene();
 	});
-	let modelsByPatientGender = useQuery("modelsByPatientGender", () => {
-		return getModelsByPatientGender();
+	let modelsByPatientSex = useQuery("modelsByPatientSex", () => {
+		return getModelsByPatientSex();
 	});
 	let modelsByTumourType = useQuery("modelsByTumourType", () => {
 		return getModelsByTumourType();
@@ -119,7 +119,7 @@ const Overview: NextPage = () => {
 			pathname: "/search",
 			search: `?filters=${filterId}:${
 				node.data[onClickFilters ? "onClickFilters" : filterId]
-			}`,
+			}`
 		});
 	};
 
@@ -176,7 +176,7 @@ const Overview: NextPage = () => {
 								style={{
 									backgroundColor: "#085154",
 									aspectRatio: "1",
-									borderRadius: "500%",
+									borderRadius: "500%"
 								}}
 							>
 								{!cancerHierarchyQuery.isLoading &&
@@ -195,7 +195,7 @@ const Overview: NextPage = () => {
 
 											router.push({
 												pathname: "/search",
-												search,
+												search
 											});
 										}}
 									/>
@@ -330,21 +330,20 @@ const Overview: NextPage = () => {
 						)}
 					</div>
 					<div className="row">
-						{modelsByPatientGender.data &&
-							modelsByPatientGender.data.length > 0 && (
-								<div className="col-12 col-md-6">
-									<div className="text-center">
-										<h3>Models by patient gender</h3>
-									</div>
-									<div style={{ height: "600px" }}>
-										<DonutChart
-											onSliceClick={onGraphClick}
-											keyId="patient_sex"
-											data={modelsByPatientGender.data}
-										/>
-									</div>
+						{modelsByPatientSex.data && modelsByPatientSex.data.length > 0 && (
+							<div className="col-12 col-md-6">
+								<div className="text-center">
+									<h3>Models by patient sex</h3>
 								</div>
-							)}
+								<div style={{ height: "600px" }}>
+									<DonutChart
+										onSliceClick={onGraphClick}
+										keyId="patient_sex"
+										data={modelsByPatientSex.data}
+									/>
+								</div>
+							</div>
+						)}
 						{modelsByTumourType.data && modelsByTumourType.data.length > 0 && (
 							<div className="col-12 col-md-6">
 								<div className="text-center">

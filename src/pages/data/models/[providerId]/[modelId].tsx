@@ -5,10 +5,12 @@ import JSZip from "jszip";
 import { GetStaticPaths, GetStaticProps } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import ReactGA from "react-ga4";
 import { useQueries, useQuery } from "react-query";
+import { ReactFlowProvider } from "reactflow";
 import {
 	getAllModelData,
 	getModelPubmedIds,
@@ -24,6 +26,7 @@ import ImageChecker from "../../../../components/ImageChecker/ImageChecker";
 import InputAndLabel from "../../../../components/Input/InputAndLabel";
 import Loader from "../../../../components/Loader/Loader";
 import ModelIdentifiers from "../../../../components/ModelIdentifiers/ModelIdentifiers";
+import ModelNotAvailable from "../../../../components/ModelNotAvailable/ModelNotAvailable";
 import ModelPurchaseButton from "../../../../components/ModelPurchaseButton/ModelPurchaseButton";
 import MolecularDataTable from "../../../../components/MolecularDataTable/MolecularDataTable";
 import QualityBadge from "../../../../components/QualityBadge/QualityBadge";
@@ -87,7 +90,7 @@ const ModelDetails = ({
 	cellModelData,
 	engraftments,
 	modelImages,
-	modelRelationships
+	knowledgeGraph
 }: AllModelData) => {
 	const NA_STRING = "N/A",
 		MODEL_GENOMICS_STRING = "Model Genomics",
@@ -527,6 +530,11 @@ const ModelDetails = ({
 				<div className="container">
 					<div className="row align-center pb-lg-0 text-capitalize">
 						<div className="col-12 col-md-10 col-lg-6">
+							{metadata.dateSubmitted && (
+								<p className="text-small text-noTransform">
+									Date of submission: {metadata.dateSubmitted}
+								</p>
+							)}
 							<h2
 								className={`m-0 text-family-secondary ${styles.ModelDetails_histology}`}
 								id="tour_model-histologyType"
@@ -576,6 +584,9 @@ const ModelDetails = ({
 											);
 										}
 									)}
+								{!metadata.modelAvailable && (
+									<ModelNotAvailable className="mb-2" isPill />
+								)}
 							</div>
 							<p className="mb-1">Provided by</p>
 							<h3 className="my-0 mb-3 mb-lg-0 lh-1">
@@ -722,13 +733,13 @@ const ModelDetails = ({
 											{drugDosing.length ? (
 												<Link
 													replace
-													href="#dosing-studies"
+													href="#model-treatment"
 													className="text-primary-primary"
 												>
-													Dosing studies
+													Model treatment
 												</Link>
 											) : (
-												"Dosing studies"
+												"Model treatment"
 											)}
 										</li>
 										<li className="mb-2">
@@ -745,8 +756,7 @@ const ModelDetails = ({
 											)}
 										</li>
 										<li className="mb-2">
-											{Array.isArray(modelRelationships?.parents) ||
-											Array.isArray(modelRelationships?.children) ? (
+											{knowledgeGraph ? (
 												<Link
 													replace
 													href="#related-models"
@@ -1083,21 +1093,41 @@ const ModelDetails = ({
 									<div className="col-12 mb-1">
 										<div className="d-flex align-flex-start align-md-center flex-column flex-md-row justify-content-between">
 											<h2 className="my-0">Molecular data</h2>
-											{!molecularDataIsLoading &&
-												molecularData &&
-												molecularData.some(
-													(data: MolecularData) =>
-														data.dataExists === "TRUE" &&
-														data.dataRestricted !== "TRUE"
-												) && (
-													<Button
-														priority="secondary"
-														color="dark"
-														onClick={() => downloadAllMolecularData()}
+											<div className="d-flex align-center flex-column flex-md-row align-flex-start">
+												<Button
+													color="dark"
+													priority="secondary"
+													className="mb-0 ml-md-1"
+												>
+													<Link
+														href={`/cbioportal/patient/clinicalData?studyId=${metadata.providerId}&caseId=${metadata.patientId}`}
 													>
-														Download all
-													</Button>
-												)}
+														<Image
+															src="/img/cbioportal.png"
+															alt="cBioPortal logo"
+															width={100}
+															height={50}
+															style={{ height: "1em", width: "auto" }}
+														/>
+													</Link>
+												</Button>
+												{!molecularDataIsLoading &&
+													molecularData &&
+													molecularData.some(
+														(data: MolecularData) =>
+															data.dataExists === "TRUE" &&
+															data.dataRestricted !== "TRUE"
+													) && (
+														<Button
+															priority="secondary"
+															color="dark"
+															className="ml-md-5"
+															onClick={() => downloadAllMolecularData()}
+														>
+															Download all
+														</Button>
+													)}
+											</div>
 										</div>
 										<div className="overflow-auto showScrollbar-vertical">
 											<table>
@@ -1382,12 +1412,12 @@ const ModelDetails = ({
 								</div>
 							)}
 							{drugDosing.length > 0 && (
-								<div id="dosing-studies" className="row mb-5 pt-3">
+								<div id="model-treatment" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
-										<h2 className="mt-0">Dosing studies</h2>
+										<h2 className="mt-0">Model treatment</h2>
 										<div className="overflow-auto showScrollbar-vertical">
 											<table>
-												<caption>Dosing studies</caption>
+												<caption>Model treatment</caption>
 												<thead>
 													<tr>
 														<th>DRUG</th>
@@ -1396,19 +1426,82 @@ const ModelDetails = ({
 													</tr>
 												</thead>
 												<tbody>
-													{drugDosing.map(
-														({
-															treatmentName: name,
-															treatmentDose: dose,
-															treatmentResponse: response
-														}) => (
-															<tr key={name + dose}>
-																<td>{name}</td>
-																<td>{dose}</td>
-																<td>{response}</td>
+													{drugDosing.map((doses) => {
+														return (
+															<tr key={doses[0].name}>
+																<td className="white-space-unset">
+																	{doses.map((dose, idx) => {
+																		return (
+																			<div
+																				key={
+																					dose.response + dose.name + dose.dose
+																				}
+																				className={idx !== 0 ? "mt-1" : ""}
+																			>
+																				{dose.name}
+																				<br />
+																				{dose.externalDbLinks?.map(
+																					(externalDbLink) => {
+																						return (
+																							<Link
+																								key={externalDbLink.link}
+																								href={externalDbLink.link}
+																								className="mr-1"
+																								target="_blank"
+																								rel="noopener"
+																							>
+																								{externalDbLink.resourceLabel}
+																							</Link>
+																						);
+																					}
+																				)}
+																			</div>
+																		);
+																	})}
+																</td>
+																<td className="text-capitalize">
+																	{doses.map((dose, idx) => {
+																		return (
+																			<div
+																				key={
+																					dose.response + dose.name + dose.dose
+																				}
+																				className={idx !== 0 ? "mt-1" : ""}
+																				style={{
+																					marginBottom: dose.externalDbLinks
+																						? "2em"
+																						: 0
+																				}}
+																			>
+																				{dose.dose}
+																				<br />
+																			</div>
+																		);
+																	})}
+																</td>
+																<td>
+																	{doses.map((dose, idx) => {
+																		return (
+																			<div
+																				key={
+																					dose.response + dose.name + dose.dose
+																				}
+																				className={idx !== 0 ? "mt-1" : ""}
+																				style={{
+																					marginBottom: dose.externalDbLinks
+																						? "2em"
+																						: 0
+																				}}
+																			>
+																				{dose.response}
+																				<br />
+																			</div>
+																		);
+																	})}
+																</td>
 															</tr>
-														)
-													)}
+														);
+													})}
 												</tbody>
 											</table>
 										</div>
@@ -1420,7 +1513,7 @@ const ModelDetails = ({
 									<div className="col-12 mb-1">
 										<h2 className="mt-0">Patient treatment</h2>
 										<div className="overflow-auto showScrollbar-vertical">
-											<table>
+											<table className="table-align-top">
 												<caption>Patient treatment</caption>
 												<thead>
 													<tr>
@@ -1430,36 +1523,121 @@ const ModelDetails = ({
 													</tr>
 												</thead>
 												<tbody>
-													{patientTreatment.map(
-														({
-															treatmentName: name,
-															treatmentDose: dose,
-															treatmentResponse: response
-														}) => (
-															<tr key={name}>
-																<td className="white-space-unset">{name}</td>
-																<td className="text-capitalize">{dose}</td>
-																<td>{response}</td>
+													{patientTreatment.map((treatments) => {
+														return (
+															<tr key={treatments[0].name}>
+																<td className="white-space-unset">
+																	{treatments.map((treatment, idx) => {
+																		return (
+																			<div
+																				key={
+																					treatment.response +
+																					treatment.name +
+																					treatment.dose
+																				}
+																				className={idx !== 0 ? "mt-1" : ""}
+																			>
+																				{treatment.name}
+																				<br />
+																				{treatment.externalDbLinks?.map(
+																					(externalDbLink) => {
+																						return (
+																							<Link
+																								key={externalDbLink.link}
+																								href={externalDbLink.link}
+																								className="mr-1"
+																								target="_blank"
+																								rel="noopener"
+																							>
+																								{externalDbLink.resourceLabel}
+																							</Link>
+																						);
+																					}
+																				)}
+																			</div>
+																		);
+																	})}
+																</td>
+																<td className="text-capitalize">
+																	{treatments.map((treatment, idx) => {
+																		return (
+																			<div
+																				key={
+																					treatment.response +
+																					treatment.name +
+																					treatment.dose
+																				}
+																				className={idx !== 0 ? "mt-1" : ""}
+																				style={{
+																					marginBottom:
+																						treatment.externalDbLinks
+																							? "2em"
+																							: 0
+																				}}
+																			>
+																				{treatment.dose}
+																				<br />
+																			</div>
+																		);
+																	})}
+																</td>
+																<td>
+																	{treatments.map((treatment, idx) => {
+																		return (
+																			<div
+																				key={
+																					treatment.response +
+																					treatment.name +
+																					treatment.dose
+																				}
+																				className={idx !== 0 ? "mt-1" : ""}
+																				style={{
+																					marginBottom:
+																						treatment.externalDbLinks
+																							? "2em"
+																							: 0
+																				}}
+																			>
+																				{treatment.response}
+																				<br />
+																				{/* hack to handle height from name row links */}
+																				{/* {treatment.externalDbLinks?.map(
+																					(externalDbLink) => {
+																						return (
+																							<span
+																								key={externalDbLink.link}
+																								className="text-white"
+																								style={{ opacity: 0 }}
+																							>
+																								.
+																							</span>
+																						);
+																					}
+																				)} */}
+																			</div>
+																		);
+																	})}
+																</td>
 															</tr>
-														)
-													)}
+														);
+													})}
 												</tbody>
 											</table>
 										</div>
 									</div>
 								</div>
 							)}
-							{(Array.isArray(modelRelationships?.parents) ||
-								Array.isArray(modelRelationships?.children)) && (
+							{knowledgeGraph && (
 								<div id="related-models" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
 										<h2 className="mt-0 mb-4">Related models</h2>
-										<DynamicHierarchyTree
-											providerId={metadata.providerId}
-											modelId={metadata.modelId}
-											modelType={metadata.modelType}
-											data={modelRelationships}
-										/>
+										<ReactFlowProvider>
+											<DynamicHierarchyTree
+												providerId={metadata.providerId}
+												modelId={metadata.modelId}
+												data={knowledgeGraph}
+											/>
+										</ReactFlowProvider>
 									</div>
 								</div>
 							)}
@@ -1725,7 +1903,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		patientTreatment,
 		qualityData,
 		modelImages,
-		modelRelationships
+		knowledgeGraph
 	} = await getAllModelData(
 		params!.modelId as string,
 		params!.providerId as string
@@ -1742,7 +1920,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			patientTreatment,
 			qualityData,
 			modelImages,
-			modelRelationships
+			knowledgeGraph
 		},
 		revalidate: 600
 	};

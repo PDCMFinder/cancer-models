@@ -48,10 +48,7 @@ export const useActiveProject = () => {
 			(project) => project.project_abbreviation === activeProject
 		) as IProjectData) || projectsSettings[0];
 
-	addProvidersToProjectData(
-		activeProjectData,
-		dataSourcesByProject ?? [{ data_source: "", provider_name: "" }]
-	);
+	addProvidersToProjectData(activeProjectData, dataSourcesByProject ?? []);
 
 	const handleProjectClick = (projectName: string) => {
 		if (projectName !== activeProject) {

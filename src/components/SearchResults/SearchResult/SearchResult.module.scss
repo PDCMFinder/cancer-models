@@ -41,7 +41,6 @@
 		flex-grow: 1;
 	}
 }
-.notAvailable {
-	background-color: #ffeeee !important;
-	cursor: default;
+.modelNotAvailable {
+	background-color: rgba(255, 242, 242, 0.7) !important;
 }

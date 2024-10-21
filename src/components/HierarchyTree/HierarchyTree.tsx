@@ -1,16 +1,21 @@
 import Dagre from "@dagrejs/dagre";
-import { useRef } from "react";
-import ReactFlow, { Node, ReactFlowRefType } from "reactflow";
+import { useEffect, useMemo, useRef, useState } from "react";
+import ReactFlow, {
+	Background,
+	BackgroundVariant,
+	MiniMap,
+	Node,
+	useReactFlow
+} from "reactflow";
 import "reactflow/dist/style.css";
-import { ModelRelationships } from "../../types/ModelData.model";
-import parseRelationships from "../../utils/parseRelationships";
+import { KnowledgeGraph } from "../../types/ModelData.model";
+import parseKnowledgeGraph from "../../utils/parseKnowledgeGraph";
 import CustomNode from "./CustomNode";
 
 interface IHierarchyTreeProps {
-	data: ModelRelationships;
+	data: KnowledgeGraph;
 	providerId: string;
 	modelId: string;
-	modelType: string;
 }
 
 export type LayoutedNode = Node & {
@@ -30,61 +35,57 @@ const nodeTypes = {
 	custom: CustomNode
 };
 
-const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
-
 const HierarchyTree = ({
 	data,
 	modelId: currentModelId,
-	providerId,
-	modelType: currentModelType
+	providerId
 }: IHierarchyTreeProps) => {
-	const flowRef = useRef<ReactFlowRefType>(null);
-	const reactFlowHeight = flowRef?.current?.scrollHeight;
-	const parsedData = parseRelationships(
-		data,
-		providerId,
-		currentModelId,
-		currentModelType
+	const [reactFlowHeight, setReactFlowHeight] = useState<number>(500); // set initial height so it doesnt bug out when changing model pages
+	const { fitView } = useReactFlow();
+	const containerRef = useRef<HTMLDivElement>(null);
+	const parsedData = useMemo(
+		() => parseKnowledgeGraph(data, providerId, currentModelId),
+		[data, providerId, currentModelId]
 	);
 
-	g.setGraph({ rankdir: "LR" }); // Could also be TB so the tree is vertical. Need to update custom node if using TB
+	useEffect(() => {
+		fitView();
+	}, [fitView, parsedData.nodes, parsedData.edges]);
 
-	parsedData.edges.forEach((edge) => g.setEdge(edge.source, edge.target));
-	parsedData.nodes.forEach((node) => g.setNode(node.id, node));
+	const layoutGraph = useMemo(() => {
+		const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
+		g.setGraph({ rankdir: "LR" }); // Could also be TB so the tree is vertical. Need to update custom node if using TB
 
-	Dagre.layout(g);
+		parsedData.edges.forEach((edge) => g.setEdge(edge.source, edge.target));
+		parsedData.nodes.forEach((node) => g.setNode(node.id, node));
+
+		Dagre.layout(g);
+
+		return g;
+	}, [parsedData]);
 
 	return (
-		<div style={{ height: reactFlowHeight, width: "100%" }} className="w-100">
+		<div
+			ref={containerRef} // Use the ref here
+			style={{ height: reactFlowHeight + "px", width: "100%" }}
+		>
 			<ReactFlow
-				nodes={parsedData.nodes.map((node) => {
-					return {
-						...node,
-						position: {
-							x: node.x - node.width / 2,
-							y: node.y - node.height / 2
-						}
-					};
-				})}
+				nodes={parsedData.nodes.map((node) => ({
+					...node,
+					position: {
+						x: node.x - node.width / 2,
+						y: node.y - node.height / 2
+					}
+				}))}
 				edges={parsedData.edges}
-				fitView
 				proOptions={{
 					hideAttribution: true
 				}}
-				draggable={false}
-				panOnDrag={false}
-				preventScrolling={false}
-				zoomOnScroll={false}
-				zoomOnPinch={false}
-				zoomOnDoubleClick={false}
-				selectNodesOnDrag={false}
-				connectOnClick={false}
-				nodesConnectable={false}
-				nodesDraggable={false}
-				nodesFocusable={false}
 				nodeTypes={nodeTypes}
-				ref={flowRef}
-			></ReactFlow>
+			>
+				<Background color="#ebebeb" variant={BackgroundVariant.Lines} />
+				<MiniMap />
+			</ReactFlow>
 		</div>
 	);
 };

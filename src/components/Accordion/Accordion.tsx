@@ -7,9 +7,9 @@ type IAccordionProps = {
 	buttonClassName?: string;
 	className?: string;
 	id: string;
-	content: any;
 	contentClassName?: string;
 	open?: boolean;
+	children: JSX.Element;
 };
 
 const Accordion = (props: IAccordionProps) => {
@@ -41,7 +41,7 @@ const Accordion = (props: IAccordionProps) => {
 			<div id={ariaId}>
 				{isOpen && (
 					<div className={`px-1 ${contentClassName}`.trim()}>
-						{props.content}
+						{props.children}
 					</div>
 				)}
 			</div>
