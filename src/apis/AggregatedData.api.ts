@@ -116,7 +116,7 @@ export async function getModelsByMutatedGene() {
 	});
 }
 
-export async function getModelsByPatientGender() {
+export async function getModelsByPatientSex() {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_sex?order=count.desc&limit=10`
 	);

@@ -375,6 +375,16 @@ export async function getModelEngraftments(
 	});
 }
 
+const addResponseToEntries = (
+	entry: APITreatment[number]["entries"][number],
+	response: string
+) => {
+	entry.response = response;
+	entry.external_db_links?.sort((a, b) =>
+		a.resource_label.localeCompare(b.resource_label)
+	);
+};
+
 export const getPatientTreatment = async (pdcmModelId: number) => {
 	if (pdcmModelId !== 0 && !pdcmModelId) {
 		return [];
@@ -391,10 +401,7 @@ export const getPatientTreatment = async (pdcmModelId: number) => {
 	return response.json().then((d: APITreatment) =>
 		d.map((item) => {
 			item.entries.forEach((entry) => {
-				entry.response = item.response;
-				entry.external_db_links?.sort((a, b) =>
-					a.resource_label.localeCompare(b.resource_label)
-				);
+				addResponseToEntries(entry, item.response);
 			});
 
 			return camelCase(item.entries) as unknown as CamelCaseKeys<
@@ -417,10 +424,7 @@ export async function getModelDrugDosing(pdcmModelId: number) {
 	return response.json().then((d: APITreatment) => {
 		return d.map((item) => {
 			item.entries.forEach((entry) => {
-				entry.response = item.response;
-				entry.external_db_links?.sort((a, b) =>
-					a.resource_label.localeCompare(b.resource_label)
-				);
+				addResponseToEntries(entry, item.response);
 			});
 
 			return camelCase(item.entries) as unknown as CamelCaseKeys<
