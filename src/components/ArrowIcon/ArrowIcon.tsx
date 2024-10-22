@@ -1,9 +1,9 @@
 import styles from "./ArrowIcon.module.scss";
 
-export interface IArrowIconProps {
+export type IArrowIconProps = {
 	direction?: "up" | "right" | "down" | "left";
 	className?: string;
-}
+};
 
 const ArrowIcon = (props: IArrowIconProps) => {
 	return (

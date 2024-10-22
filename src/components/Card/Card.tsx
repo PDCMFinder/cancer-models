@@ -1,7 +1,7 @@
 import { CSSProperties } from "react";
 import styles from "./Card.module.scss";
 
-interface ICardProps {
+type ICardProps = {
 	className?: string;
 	id?: string;
 	header?: JSX.Element;
@@ -12,7 +12,7 @@ interface ICardProps {
 	footerClassName?: string;
 	style?: CSSProperties;
 	"data-test"?: string;
-}
+};
 
 const Card = (props: ICardProps) => {
 	let cardClassName = props.className,

@@ -1,15 +1,15 @@
 import { useState } from "react";
-import Button from "../Button/Button";
 import { ITabProps } from "../../../types/globalTypes";
+import Button from "../Button/Button";
 import styles from "./Tabs.module.scss";
 
-interface ITabsProps {
-	children: ITabProps[]; // change this
+type ITabsProps = {
+	children: ITabProps[];
 	className?: string;
 	labelClassName?: string;
 	contentClassName?: string;
 	packedLabels?: boolean;
-}
+};
 
 const Tabs = (props: ITabsProps) => {
 	const [shownContent, setShownContent] = useState<

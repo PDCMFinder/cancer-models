@@ -1,12 +1,12 @@
 import { ResponsiveBar } from "@nivo/bar";
 
-interface BarChartProps {
+type BarChartProps = {
 	indexKey: string;
 	chartTitle: string;
 	data: any;
 	rotateTicks?: boolean;
 	onBarClick: (node: any, filterId: string, onClickFilters?: boolean) => void;
-}
+};
 
 const BarChart = (props: BarChartProps) => {
 	return (
@@ -18,7 +18,7 @@ const BarChart = (props: BarChartProps) => {
 				top: 0,
 				right: 60,
 				bottom: 150,
-				left: 60,
+				left: 60
 			}}
 			padding={0.3}
 			valueScale={{ type: "linear" }}
@@ -31,12 +31,12 @@ const BarChart = (props: BarChartProps) => {
 			axisBottom={{
 				tickSize: 5,
 				tickPadding: 5,
-				tickRotation: props.rotateTicks ? 25 : 0,
+				tickRotation: props.rotateTicks ? 25 : 0
 			}}
 			axisLeft={{
 				tickSize: 5,
 				tickPadding: 5,
-				tickRotation: 0,
+				tickRotation: 0
 			}}
 			labelSkipWidth={12}
 			labelSkipHeight={12}

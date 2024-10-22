@@ -5,7 +5,7 @@ import { getDataSourcesByProject } from "../../apis/Search.api";
 import { addProvidersToProjectData } from "../projects";
 import projectsSettings from "../projectSettings.json";
 
-export interface IProjectData {
+export type IProjectData = {
 	project_abbreviation: string;
 	project_full_name?: string;
 	providers?: ({ data_source: string; provider_name: string } | undefined)[];
@@ -15,7 +15,7 @@ export interface IProjectData {
 		secondary_color: string;
 		logo?: string;
 	};
-}
+};
 
 export const useActiveProject = () => {
 	const router = useRouter();

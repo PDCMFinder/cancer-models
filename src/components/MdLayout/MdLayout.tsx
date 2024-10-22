@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-interface IMdLayoutProps {
+type IMdLayoutProps = {
 	children: string;
 	meta: {
 		pageTitle: string;
@@ -8,7 +8,7 @@ interface IMdLayoutProps {
 		metaDescription?: string;
 		metaKeywords?: string;
 	};
-}
+};
 
 const MdLayout = ({ children, meta }: IMdLayoutProps) => {
 	return (

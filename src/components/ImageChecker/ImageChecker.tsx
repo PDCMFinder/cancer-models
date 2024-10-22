@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 
-interface ImageCheckerProps {
-	src: string;
-	children: JSX.Element;
-}
+type ImageCheckerProps = { src: string; children: JSX.Element };
 
 const ImageChecker = (props: ImageCheckerProps) => {
 	const [isBroken, setIsBroken] = useState(false);

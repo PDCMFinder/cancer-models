@@ -6,14 +6,14 @@ import Button from "../../../components/Button/Button";
 import { getProviderData } from "../../../utils/providers";
 import styles from "./Provider.module.scss";
 
-interface IProviderProps {
+type IProviderProps = {
 	providerData: {
 		abbreviation: string;
 		name: string;
 		logo: string;
 		contentHtml: string;
 	};
-}
+};
 
 const Provider: NextPage<IProviderProps> = ({
 	providerData

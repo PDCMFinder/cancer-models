@@ -15,7 +15,7 @@ import ProviderInfo from "../../../components/ProviderInfo/ProviderInfo";
 import { useActiveProject } from "../../../utils/hooks/useActiveProject";
 import projectsSettings from "../../../utils/projectSettings.json";
 
-interface IProvidersProps {
+type IProvidersProps = {
 	allProvidersBasics: {
 		id: string;
 		parsedContent: string;
@@ -23,22 +23,22 @@ interface IProvidersProps {
 		logo: string;
 		name: string;
 	}[];
-}
+};
 
-interface IProjectButtonProps {
+type IProjectButtonProps = {
 	projectName: string;
 	isActive: boolean;
 	mainColor: string;
 	secondaryColor: string;
 	onClick: () => void;
 	direction?: IProjectButtonsProps["direction"];
-}
+};
 
-interface IProjectButtonsProps {
+type IProjectButtonsProps = {
 	direction?: "row" | "column";
 	activeProject: string;
 	onClick: (projectName: string) => void;
-}
+};
 
 const getButtonStyleColors = (
 	isActive: boolean,

@@ -40,9 +40,9 @@ const DynamicModal = dynamic(import("../components/Modal/Modal"), {
 	ssr: false
 });
 
-export interface onFilterChangeType {
+export type onFilterChangeType = {
 	type: "add" | "remove" | "clear" | "toggleOperator" | "init" | "substitute";
-}
+};
 
 const sortByOptions = [
 		{

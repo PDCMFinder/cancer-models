@@ -1,9 +1,7 @@
 import Tooltip from "../Tooltip/Tooltip";
 import styles from "./InformationIcon.module.scss";
 
-interface IInformationIconProps {
-	information: string;
-}
+type IInformationIconProps = { information: string };
 
 const InformationIcon = ({ information }: IInformationIconProps) => {
 	return (

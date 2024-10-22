@@ -1,4 +1,5 @@
 import { CSSProperties } from "react";
+import { Route } from "../src/utils/routes";
 
 type CamelCase<S extends string> =
 	S extends `${infer P1}_${infer P2}${infer P3}`
@@ -60,31 +61,17 @@ const inputTypes = [
 	"week"
 ] as const;
 
-export interface INavProps {
-	routes: IRoute[];
-}
+export type INavProps = { routes: Route[] };
 
-export interface IRoute {
-	path?: string;
-	name: string;
-	secondary?: boolean;
-	opensNewTab?: boolean;
-	children?: {
-		path: string;
-		name: string;
-		opensNewTab?: boolean;
-	}[];
-}
-
-export interface ILabelProps {
+export type ILabelProps = {
 	label: string;
 	forId: string;
 	name: string;
 	className?: string;
 	style?: CSSProperties;
-}
+};
 
-export interface IInputProps {
+export type IInputProps = {
 	name: string;
 	id?: string;
 	type: typeof inputTypes[number] | "textarea";
@@ -100,7 +87,7 @@ export interface IInputProps {
 	required?: boolean;
 	checked?: boolean;
 	defaultChecked?: boolean;
-}
+};
 
 export type ITabProps = {
 	props: {

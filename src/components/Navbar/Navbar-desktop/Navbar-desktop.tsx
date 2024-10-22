@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ReactGA from "react-ga4";
-import { INavProps, IRoute } from "../../../../types/globalTypes";
-import { routesWithGAEvents } from "../../../utils/routes";
+import { INavProps } from "../../../../types/globalTypes";
+import { Route, routesWithGAEvents } from "../../../utils/routes";
 import ActiveLink from "../../ActiveLink/ActiveLink";
 import Button from "../../Button/Button";
 import Card from "../../Card/Card";
@@ -26,7 +26,7 @@ const NavDesktop = (props: INavProps) => {
 				</div>
 				<div className="col-9 col-xl-7">
 					<ul className="ul-noStyle align-center justify-content-between m-0">
-						{props.routes.map((route: IRoute) => {
+						{props.routes.map((route: Route) => {
 							let link = null,
 								children = route.children,
 								path = route.path,

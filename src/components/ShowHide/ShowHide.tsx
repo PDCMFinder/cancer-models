@@ -1,7 +1,4 @@
-interface IShowHideBasics {
-	children: any;
-	windowWidth: number;
-}
+type IShowHideBasics = { children: any; windowWidth: number };
 
 interface IShowOver extends IShowHideBasics {
 	showOver: number;

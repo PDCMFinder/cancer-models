@@ -1,11 +1,11 @@
 import { SearchResult as SearchResultType } from "../../types/Search.model";
 import SearchResult from "./SearchResult/SearchResult";
 
-interface ISearchResultsProps {
+type ISearchResultsProps = {
 	compareModel: (id: string) => void;
 	modelsToCompare: string[];
 	data: SearchResultType[];
-}
+};
 
 const SearchResults = (props: ISearchResultsProps) => {
 	return (

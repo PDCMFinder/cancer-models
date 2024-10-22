@@ -1,7 +1,7 @@
+import { useTheme, useValueFormatter, ValueFormat } from "@nivo/core";
 import { memo, ReactNode } from "react";
-import { useTheme, ValueFormat, useValueFormatter } from "@nivo/core";
 
-export interface BasicTooltipProps {
+export type BasicTooltipProps = {
 	id: ReactNode;
 	providers: Array<any>;
 	format?: ValueFormat<number | string | Date>;
@@ -11,7 +11,7 @@ export interface BasicTooltipProps {
 	 * @deprecated This should be replaced by custom tooltip components.
 	 */
 	renderContent?: () => JSX.Element;
-}
+};
 
 export const MapMarkerTooltip = memo<BasicTooltipProps>(
 	({ id, providers, format, enableChip = false, color, renderContent }) => {
@@ -27,7 +27,7 @@ export const MapMarkerTooltip = memo<BasicTooltipProps>(
 						display: "flex",
 						alignItems: "flex-start",
 						flexDirection: "column",
-						maxWidth: "400px",
+						maxWidth: "400px"
 					}}
 				>
 					<p>

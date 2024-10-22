@@ -1,10 +1,10 @@
 import { ResponsivePie } from "@nivo/pie";
 
-interface DonutChartProps {
+type DonutChartProps = {
 	keyId: string;
 	data: any;
 	onSliceClick: (node: any, filterId: string) => void;
-}
+};
 
 const DonutChart = (props: DonutChartProps) => {
 	return (
@@ -22,7 +22,7 @@ const DonutChart = (props: DonutChartProps) => {
 			colors={{ scheme: "purple_blue_green" }}
 			borderColor={{
 				from: "color",
-				modifiers: [["darker", 0.2]],
+				modifiers: [["darker", 0.2]]
 			}}
 			arcLinkLabelsSkipAngle={10}
 			arcLinkLabelsTextColor="#333333"
@@ -31,7 +31,7 @@ const DonutChart = (props: DonutChartProps) => {
 			arcLabelsSkipAngle={10}
 			arcLabelsTextColor={{
 				from: "color",
-				modifiers: [["darker", 2]],
+				modifiers: [["darker", 2]]
 			}}
 			onClick={(node: any) => props.onSliceClick(node, props.keyId)}
 		/>
