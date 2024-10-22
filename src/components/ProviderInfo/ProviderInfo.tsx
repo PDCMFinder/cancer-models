@@ -3,7 +3,7 @@ import Link from "next/link";
 import Button from "../Button/Button";
 import styles from "./ProviderInfo.module.scss";
 
-interface IProviderInfoProps {
+type IProviderInfoProps = {
 	provider: {
 		id: string;
 		parsedContent: string;
@@ -11,7 +11,7 @@ interface IProviderInfoProps {
 		logo: string;
 		name: string;
 	};
-}
+};
 
 const ProviderInfo = ({ provider }: IProviderInfoProps) => {
 	const parsedProvider = provider.abbreviation.replace(" ", "-"),

@@ -1,13 +1,13 @@
 import Button, { IButtonProps } from "../Button/Button";
 
-interface IFloatingButtonProps {
+type IFloatingButtonProps = {
 	priority: IButtonProps["priority"];
 	color: IButtonProps["color"];
 	position?: string;
 	className?: string;
 	children: JSX.Element;
 	onClick?: () => void;
-}
+};
 
 const FloatingButton = ({
 	priority,

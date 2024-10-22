@@ -1,6 +1,18 @@
+export type Route = {
+	path?: string;
+	name: string;
+	secondary?: boolean;
+	opensNewTab?: boolean;
+	children?: {
+		path: string;
+		name: string;
+		opensNewTab?: boolean;
+	}[];
+};
+
 // children: if it has children, it is parent; children of that item
 // If adding a page that already existed, check sitemaps so it's not duplicated
-export const routes = [
+export const routes: Route[] = [
 	{ path: "/", name: "Home" },
 	{ path: "/search", name: "Search" },
 	{ path: "/submit", name: "Submit" },

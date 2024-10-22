@@ -1,10 +1,10 @@
 import { ResponsiveCirclePacking } from "@nivo/circle-packing";
 import styles from "./CirclePacking.module.scss";
 
-interface CirclePackingProps {
+type CirclePackingProps = {
 	data: any;
 	onCircleClick: (circleId: string, circleDepth: number) => void;
-}
+};
 
 const CirclePacking = ({ data, onCircleClick }: CirclePackingProps) => {
 	return (
@@ -17,7 +17,7 @@ const CirclePacking = ({ data, onCircleClick }: CirclePackingProps) => {
 				styles["color-graph"],
 				styles["color-graph2"],
 				styles["color-graph3"],
-				styles["color-graph4"],
+				styles["color-graph4"]
 			].reverse()}
 			//colors={{ scheme: "blue_green" }}
 			//inheritColorFromParent={true}
@@ -36,9 +36,9 @@ const CirclePacking = ({ data, onCircleClick }: CirclePackingProps) => {
 						stroke: "#000",
 						strokeWidth: "2px",
 						paintOrder: "stroke",
-						fontFamily: "var(--type-secondary)",
-					},
-				},
+						fontFamily: "var(--type-secondary)"
+					}
+				}
 			}}
 			labelsSkipRadius={10}
 			labelTextColor={{ from: "color", modifiers: [["brighter", 100]] }}

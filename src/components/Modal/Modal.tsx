@@ -1,14 +1,14 @@
-import styles from "./Modal.module.scss";
 import { CSSProperties, useEffect } from "react";
+import styles from "./Modal.module.scss";
 
-interface IModalProps {
+type IModalProps = {
 	children: string | JSX.Element;
 	modalWidth?: "100" | "50" | "auto";
 	verticalAlign?: "center" | "top";
 	className?: string;
 	handleClose: () => void;
 	style?: CSSProperties;
-}
+};
 
 const Modal = ({
 	children,
@@ -16,7 +16,7 @@ const Modal = ({
 	verticalAlign = "center",
 	className,
 	handleClose,
-	style,
+	style
 }: IModalProps) => {
 	useEffect(() => {
 		document.body.classList.add("overflow-hidden");

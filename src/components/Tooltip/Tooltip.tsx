@@ -2,11 +2,7 @@ import { useState } from "react";
 import ArrowIcon from "../ArrowIcon/ArrowIcon";
 import styles from "./Tooltip.module.scss";
 
-interface ITooltipProps {
-	content: any;
-	children: any;
-	className?: string;
-}
+type ITooltipProps = { content: any; children: any; className?: string };
 
 const Tooltip = (props: ITooltipProps) => {
 	const [isHovering, setIsHovering] = useState(false);

@@ -2,7 +2,7 @@ import { CSSProperties, useState } from "react";
 import Button from "../Button/Button";
 import styles from "./Accordion.module.scss";
 
-interface IAccordionProps {
+type IAccordionProps = {
 	style?: CSSProperties;
 	buttonClassName?: string;
 	className?: string;
@@ -10,7 +10,7 @@ interface IAccordionProps {
 	contentClassName?: string;
 	open?: boolean;
 	children: JSX.Element;
-}
+};
 
 const Accordion = (props: IAccordionProps) => {
 	const [isOpen, setIsOpen] = useState(props.open);

@@ -1,16 +1,16 @@
-import Select from "react-select";
-import typeaheadStyles from "../../utils/typeaheadStyles";
-import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import Select from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
-import { SelectOption } from "../SearchFilters/SearchFilterContent";
 import { onFilterChangeType } from "../../pages/search";
 import { IFacetSidebarSelection } from "../../types/Facet.model";
+import typeaheadStyles from "../../utils/typeaheadStyles";
 import Fragment from "../Fragment/Fragment";
-import { useRouter } from "next/router";
 import Label from "../Input/Label";
+import { SelectOption } from "../SearchFilters/SearchFilterContent";
 
-interface ISearchBarProps {
+type ISearchBarProps = {
 	id: string;
 	name: string;
 	isMulti?: boolean;
@@ -21,7 +21,7 @@ interface ISearchBarProps {
 		operator: string,
 		type: onFilterChangeType["type"]
 	) => void;
-}
+};
 
 const SearchBar = (props: ISearchBarProps) => {
 	const selectedFacetObj = props.selection && props.selection["search_terms"],
@@ -37,7 +37,7 @@ const SearchBar = (props: ISearchBarProps) => {
 		{
 			onSuccess(data) {
 				setTypeaheadData(data);
-			},
+			}
 		}
 	);
 
@@ -52,7 +52,7 @@ const SearchBar = (props: ISearchBarProps) => {
 
 	const defaultValuesObj = selection?.map((value) => ({
 		["label"]: value,
-		["value"]: value,
+		["value"]: value
 	}));
 
 	return (
@@ -93,7 +93,7 @@ const SearchBar = (props: ISearchBarProps) => {
 						router.push({
 							pathname: "search",
 							// @ts-ignore
-							search: `?filters=search_terms:${option.value}`,
+							search: `?filters=search_terms:${option.value}`
 						});
 					} else {
 						switch (actionMeta.action) {

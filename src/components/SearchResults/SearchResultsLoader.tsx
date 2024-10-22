@@ -1,10 +1,8 @@
-import styles from "./SearchResultsLoader.module.scss";
 import Card from "../Card/Card";
 import Loader from "../Loader/Loader";
+import styles from "./SearchResultsLoader.module.scss";
 
-interface ISearchResultsLoaderProps {
-	amount: number;
-}
+type ISearchResultsLoaderProps = { amount: number };
 
 const SearchResultsLoader = (props: ISearchResultsLoaderProps) => {
 	const results = [];

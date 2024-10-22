@@ -1,9 +1,9 @@
-interface ISelectProps {
+type ISelectProps = {
 	id: string;
 	options: { value?: string; text: string }[];
 	className?: string;
 	onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-}
+};
 
 const Select = (props: ISelectProps) => {
 	let options = props.options,

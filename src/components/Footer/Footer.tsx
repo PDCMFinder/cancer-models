@@ -1,9 +1,8 @@
 import Link from "next/link";
 import ReactGA from "react-ga4";
 import { useQuery } from "react-query";
-import { IRoute } from "../../../types/globalTypes";
 import { getLatestDataReleaseInformation } from "../../apis/AggregatedData.api";
-import { routes, routesWithGAEvents } from "../../utils/routes";
+import { Route, routes, routesWithGAEvents } from "../../utils/routes";
 import ActiveLink from "../ActiveLink/ActiveLink";
 import SocialMediaIcons from "../Icons/SocialMediaIcons";
 import Logotype from "../Logotype/Logotype";
@@ -34,7 +33,7 @@ const Footer = () => {
 						<div className="row">
 							<div className="col-12 col-lg-6">
 								<ul className={`ul-noStyle ${styles.Footer_nav_firstRow}`}>
-									{routes.map((route: IRoute) => {
+									{routes.map((route: Route) => {
 										let path = route.path;
 										if (route.children) {
 											return;

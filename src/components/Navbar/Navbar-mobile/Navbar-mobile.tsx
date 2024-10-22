@@ -2,9 +2,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import ReactGA from "react-ga4";
-import { INavProps, IRoute } from "../../../../types/globalTypes";
+import { INavProps } from "../../../../types/globalTypes";
 import handleBodyClass from "../../../utils/handleBodyClass";
-import { routesWithGAEvents } from "../../../utils/routes";
+import { Route, routesWithGAEvents } from "../../../utils/routes";
 import ActiveLink from "../../ActiveLink/ActiveLink";
 import CloseIcon from "../../Icons/CloseIcon/CloseIcon";
 import Logotype from "../../Logotype/Logotype";
@@ -63,7 +63,7 @@ const NavMobile = (props: INavProps) => {
 						<div className="row">
 							<div className="col">
 								<ul className="ul-noStyle">
-									{props.routes.map((route: IRoute) => {
+									{props.routes.map((route: Route) => {
 										let children = route.children;
 
 										if (children) {

@@ -1,8 +1,6 @@
 import styles from "./Logotype.module.scss";
 
-interface ILogotypeProps {
-	color: "dark" | "light" | "white";
-}
+type ILogotypeProps = { color: "dark" | "light" | "white" };
 
 const Logotype = (props: ILogotypeProps) => {
 	return (

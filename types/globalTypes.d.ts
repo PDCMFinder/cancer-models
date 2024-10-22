@@ -1,4 +1,5 @@
 import { CSSProperties } from "react";
+import { Route } from "../src/utils/routes";
 
 type CamelCase<S extends string> =
 	S extends `${infer P1}_${infer P2}${infer P3}`
@@ -60,31 +61,17 @@ const inputTypes = [
 	"week"
 ] as const;
 
-export interface INavProps {
-	routes: IRoute[];
-}
+export type INavProps = { routes: Route[] };
 
-export interface IRoute {
-	path?: string;
-	name: string;
-	secondary?: boolean;
-	opensNewTab?: boolean;
-	children?: {
-		path: string;
-		name: string;
-		opensNewTab?: boolean;
-	}[];
-}
-
-export interface ILabelProps {
+export type ILabelProps = {
 	label: string;
 	forId: string;
 	name: string;
 	className?: string;
 	style?: CSSProperties;
-}
+};
 
-export interface IInputProps {
+export type IInputProps = {
 	name: string;
 	id?: string;
 	type: typeof inputTypes[number] | "textarea";
@@ -100,16 +87,16 @@ export interface IInputProps {
 	required?: boolean;
 	checked?: boolean;
 	defaultChecked?: boolean;
-}
+};
 
-export interface ITabProps {
+export type ITabProps = {
 	props: {
 		label: string;
 		content: any;
 	};
-}
+};
 
-export interface ISearchFiltersProps {
+export type ISearchFiltersProps = {
 	filterData: {
 		facet_section: string;
 		facet_filters: {
@@ -119,9 +106,9 @@ export interface ISearchFiltersProps {
 			facet_example?: string;
 		}[];
 	}[];
-}
+};
 
-export interface ISearchResult {
+export type ISearchResult = {
 	patient_age: string;
 	patient_sex: string;
 	external_model_id: string;
@@ -132,4 +119,4 @@ export interface ISearchResult {
 	collection_site: string;
 	tumour_type: string;
 	dataset_available: string[];
-}
+};

@@ -7,10 +7,10 @@ import Card from "../Card/Card";
 import ModelTypeIcon from "../Icons/ModelTypeIcon";
 import Loader from "../Loader/Loader";
 
-interface IDataCountCardProps {
+type IDataCountCardProps = {
 	layout: "vertical" | "horizontal";
 	iconSize?: CSSSize;
-}
+};
 
 const DataCountCard = (props: IDataCountCardProps) => {
 	const isVertical = props.layout === "vertical";

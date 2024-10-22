@@ -9,7 +9,7 @@ import Accordion from "../Accordion/Accordion";
 import Card from "../Card/Card";
 import SearchFilterContent from "./SearchFilterContent";
 
-interface ISearchFilters {
+type ISearchFilters = {
 	data: IFacetSectionProps[];
 	selection: IFacetSidebarSelection;
 	onFilterChange: (
@@ -18,7 +18,7 @@ interface ISearchFilters {
 		operator: string,
 		type: onFilterChangeType["type"]
 	) => void;
-}
+};
 
 // AKA <FacetSection/>
 const SearchFilters = (props: ISearchFilters) => {

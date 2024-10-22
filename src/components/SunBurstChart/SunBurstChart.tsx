@@ -1,10 +1,10 @@
 import { ResponsiveSunburst } from "@nivo/sunburst";
 
-interface SunBurstChartProps {
+type SunBurstChartProps = {
 	keyId: string;
 	data: any;
 	onSliceClick: (node: any, filterId: string) => void;
-}
+};
 
 const SunBurstChart = (props: SunBurstChartProps) => {
 	return (
@@ -18,13 +18,13 @@ const SunBurstChart = (props: SunBurstChartProps) => {
 			colors={{ scheme: "set3" }}
 			childColor={{
 				from: "color",
-				modifiers: [["brighter", 0.05]],
+				modifiers: [["brighter", 0.05]]
 			}}
 			enableArcLabels={true}
 			arcLabelsSkipAngle={10}
 			arcLabelsTextColor={{
 				from: "color",
-				modifiers: [["darker", 2.0]],
+				modifiers: [["darker", 2.0]]
 			}}
 			onClick={(node) => props.onSliceClick(node, props.keyId)}
 		/>

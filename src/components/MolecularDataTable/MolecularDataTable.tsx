@@ -12,12 +12,12 @@ import InputAndLabel from "../Input/InputAndLabel";
 import Loader from "../Loader/Loader";
 import Pagination from "../Pagination/Pagination";
 
-interface IMolecularDataTableProps {
+type IMolecularDataTableProps = {
 	data: MolecularData;
 	handleDownload: (data: MolecularData) => void;
-}
+};
 
-interface DataDetailsRow {
+type DataDetailsRow = {
 	hgnc_symbol: string | null;
 	rnaseq_coverage: string | null;
 	rnaseq_fpkm: string | null;
@@ -30,7 +30,7 @@ interface DataDetailsRow {
 	z_score: string | null;
 	non_harmonised_symbol: string | null;
 	external_db_links: any[] | null;
-}
+};
 
 const MolecularDataTable = (props: IMolecularDataTableProps) => {
 	const [currentPage, setCurrentPage] = useState<number>(1);

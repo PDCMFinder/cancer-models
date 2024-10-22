@@ -67,18 +67,14 @@ const DynamicHierarchyTree = dynamic(
 	}
 );
 
-export interface TypesMap {
+export type TypesMap = {
 	expression_molecular_data: string;
 	cna_molecular_data: string;
 	mutation_measurement_data: string;
 	biomarker_molecular_data: string;
-}
+};
 
-interface IDataFileConfig {
-	data: MolecularData;
-	filename: string;
-	id: string;
-}
+type IDataFileConfig = { data: MolecularData; filename: string; id: string };
 
 const ModelDetails = ({
 	metadata,

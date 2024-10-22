@@ -8,7 +8,7 @@ import InformationIcon from "../InformationIcon/InformationIcon";
 import InputAndLabel from "../Input/InputAndLabel";
 import MultivaluedSearchFilter from "./MultivaluedSearchFilter";
 
-interface ISearchFilterContentProps {
+type ISearchFilterContentProps = {
 	data: IFacetProps[];
 	facetSelection: IFacetSidebarSelection;
 	facet: any;
@@ -18,12 +18,9 @@ interface ISearchFilterContentProps {
 		operator: string,
 		type: onFilterChangeType["type"]
 	) => void;
-}
+};
 
-export interface SelectOption {
-	label: string;
-	value: string;
-}
+export type SelectOption = { label: string; value: string };
 
 const SearchFilterContent = (props: ISearchFilterContentProps) => {
 	const optionSelectObj = (options: string[]): SelectOption[] => {

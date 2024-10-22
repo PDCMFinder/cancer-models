@@ -31,9 +31,7 @@ const DynamicCookieConsent = dynamic(
 	}
 );
 
-interface ILayoutProps {
-	children: JSX.Element;
-}
+type ILayoutProps = { children: JSX.Element };
 
 const Layout = (props: ILayoutProps) => {
 	const [cookies, setCookie] = useCookies();

@@ -12,10 +12,10 @@ import SocialMediaIcons from "../components/Icons/SocialMediaIcons";
 import InputAndLabel from "../components/Input/InputAndLabel";
 import Loader from "../components/Loader/Loader";
 
-interface IFormStatus {
+type IFormStatus = {
 	status: "success" | "error" | "loading" | "";
 	message: string;
-}
+};
 
 const Contact: NextPage = () => {
 	const recaptchaRef = useRef<any>(null);
@@ -96,9 +96,10 @@ const Contact: NextPage = () => {
 						<div className="col-12 col-md-6">
 							<Card>
 								<p className="text-center">
-									If you are interested in acquiring a specific model or have questions about it, please visit the
-									models page. You can contact the provider using the links on
-									the right side of the top banner.
+									If you are interested in acquiring a specific model or have
+									questions about it, please visit the models page. You can
+									contact the provider using the links on the right side of the
+									top banner.
 								</p>
 							</Card>
 						</div>

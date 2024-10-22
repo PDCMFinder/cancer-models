@@ -12,11 +12,11 @@ import { KnowledgeGraph } from "../../types/ModelData.model";
 import parseKnowledgeGraph from "../../utils/parseKnowledgeGraph";
 import CustomNode from "./CustomNode";
 
-interface IHierarchyTreeProps {
+type IHierarchyTreeProps = {
 	data: KnowledgeGraph;
 	providerId: string;
 	modelId: string;
-}
+};
 
 export type LayoutedNode = Node & {
 	x: number;

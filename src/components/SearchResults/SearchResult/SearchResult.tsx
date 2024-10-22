@@ -43,14 +43,14 @@ const dataTypes = [
 	}
 ];
 
-interface ISearchResultProps {
+type ISearchResultProps = {
 	className?: string;
 	data: SearchResultType;
 	addModelToCompare: (
 		e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
 	) => void;
 	compareCheck: boolean;
-}
+};
 
 const SearchResult = (props: ISearchResultProps) => {
 	const { windowWidth = 0 } = useWindowDimensions();

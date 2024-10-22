@@ -1,12 +1,9 @@
 import styles from "./CloseIcon.module.scss";
 
-interface ICloseIconProps {
-	color?: "dark" | "white";
-	onClick?: () => void;
-}
+type ICloseIconProps = { color?: "dark" | "white"; onClick?: () => void };
 
 const defaultProps: ICloseIconProps = {
-	color: "white",
+	color: "white"
 };
 
 const CloseIcon = (props: ICloseIconProps) => {

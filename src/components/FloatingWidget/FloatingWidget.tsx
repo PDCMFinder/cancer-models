@@ -1,11 +1,11 @@
 import Button from "../Button/Button";
 import styles from "./FloatingWidget.module.scss";
 
-interface IFloatingWidgetProps {
+type IFloatingWidgetProps = {
 	link: string;
 	children: string;
 	onClick?: () => void;
-}
+};
 
 const FloatingWidget = (props: IFloatingWidgetProps) => {
 	return (

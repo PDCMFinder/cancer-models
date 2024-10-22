@@ -2,11 +2,11 @@ import useWindowDimensions from "../../hooks/useWindowDimensions";
 import breakPoints from "../../utils/breakpoints";
 import styles from "./Pagination.module.scss";
 
-interface IPaginationProps {
+type IPaginationProps = {
 	totalPages: number;
 	currentPage: number;
 	onPageChange: (page: number) => void;
-}
+};
 
 const Pagination = (props: IPaginationProps) => {
 	const { windowWidth } = useWindowDimensions();
