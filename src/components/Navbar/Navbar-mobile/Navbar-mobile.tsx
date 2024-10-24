@@ -10,8 +10,10 @@ import CloseIcon from "../../Icons/CloseIcon/CloseIcon";
 import Logotype from "../../Logotype/Logotype";
 import styles from "./Navbar-mobile.module.scss";
 
-const ADD = "add",
-	REMOVE = "remove";
+export enum AddRemove {
+	add = "add",
+	remove = "remove"
+}
 
 const NavMobile = (props: INavProps) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,39 +22,43 @@ const NavMobile = (props: INavProps) => {
 	useEffect(() => {
 		if (isMenuOpen) {
 			setIsMenuOpen(false);
-			handleBodyClass(["overflow-hidden"], REMOVE);
+			handleBodyClass(["overflow-hidden"], AddRemove.remove);
 		}
 	}, [router.asPath]);
 
 	const handleToggleMenu = () => {
 		// Add or remove body class to stylize
-		let addRemoveBodyClass: typeof ADD | typeof REMOVE = !isMenuOpen
-			? ADD
-			: REMOVE;
+		let addRemoveBodyClass: AddRemove = !isMenuOpen
+			? AddRemove.add
+			: AddRemove.remove;
 		handleBodyClass(["overflow-hidden"], addRemoveBodyClass);
 		setIsMenuOpen((prev) => !prev);
 	};
 
 	return (
 		<nav className={styles["Navbar-mobile"]} data-test="navbar-mobile">
-			<div className={`container text-white ${styles["Navbar-mobile_topBar"]}`}>
-				<div className="row align-center">
-					<div className="col-8">
-						<Link href="/" aria-label="CancerModels.Org logo">
-							<Logotype color="white" />
-						</Link>
-					</div>
-					<div
-						className={`col-4 text-right ${styles["Navbar-mobile_toggleMenuContainer"]}`}
-					>
-						{!isMenuOpen ? (
-							<button onClick={handleToggleMenu}>Menu</button>
-						) : (
-							<CloseIcon onClick={handleToggleMenu} />
-						)}
+			{!isMenuOpen && (
+				<div
+					className={`container text-white ${styles["Navbar-mobile_topBar"]}`}
+				>
+					<div className="row align-center">
+						<div className="col-8">
+							<Link href="/" aria-label="CancerModels.Org logo">
+								<Logotype color="white" />
+							</Link>
+						</div>
+						<div
+							className={`col-4 text-right ${styles["Navbar-mobile_toggleMenuContainer"]}`}
+						>
+							{!isMenuOpen ? (
+								<button onClick={handleToggleMenu}>Menu</button>
+							) : (
+								<CloseIcon onClick={handleToggleMenu} />
+							)}
+						</div>
 					</div>
 				</div>
-			</div>
+			)}
 			{/* Container with menu items */}
 			{isMenuOpen && (
 				<div
@@ -60,9 +66,13 @@ const NavMobile = (props: INavProps) => {
 					data-test="navbar-mobile-menu"
 				>
 					<div className="container d-flex flex-column justify-content-between h-100 text-center">
+						<CloseIcon
+							onClick={handleToggleMenu}
+							className="position-absolute right-margin"
+						/>
 						<div className="row">
 							<div className="col">
-								<ul className="ul-noStyle">
+								<ul className="ul-noStyle mt-0">
 									{props.routes.map((route: Route) => {
 										let children = route.children;
 

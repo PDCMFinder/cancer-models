@@ -1,16 +1,22 @@
 import styles from "./CloseIcon.module.scss";
 
-type ICloseIconProps = { color?: "dark" | "white"; onClick?: () => void };
-
-const defaultProps: ICloseIconProps = {
-	color: "white"
+type ICloseIconProps = {
+	color?: "dark" | "white";
+	className?: string;
+	onClick?: () => void;
 };
 
-const CloseIcon = (props: ICloseIconProps) => {
+const CloseIcon = ({
+	color = "white",
+	className,
+	onClick
+}: ICloseIconProps) => {
 	return (
 		<button
-			className={`${styles.CloseIcon} ${styles[`CloseIcon-${props.color}`]}`}
-			onClick={props.onClick}
+			className={`${className ? className : ""} ${styles.CloseIcon} ${
+				styles[`CloseIcon-${color}`]
+			}`}
+			onClick={onClick}
 			aria-label="Close icon"
 		>
 			<span></span>
@@ -18,7 +24,5 @@ const CloseIcon = (props: ICloseIconProps) => {
 		</button>
 	);
 };
-
-CloseIcon.defaultProps = defaultProps;
 
 export default CloseIcon;

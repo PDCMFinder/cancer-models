@@ -6,6 +6,7 @@ import Script from "next/script";
 import { useEffect, useState } from "react";
 import { CookiesProvider, useCookies } from "react-cookie";
 import Layout from "../components/Layout/Layout";
+import { AddRemove } from "../components/Navbar/Navbar-mobile/Navbar-mobile";
 import "../styles/globals.scss";
 import handleBodyClass from "../utils/handleBodyClass";
 
@@ -34,22 +35,22 @@ if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
 
 /* @ts-ignore */
 function CancerModels({ Component, pageProps }: AppProps) {
-	const [cookies, setCookie] = useCookies();
+	const [cookies] = useCookies();
 	const [isConsented, setIsConsented] = useState(false);
 	const { asPath } = useRouter();
 	// hardcode envhost so we don't have to use getserverprops on whole app
 	const envHost = "https://www.cancermodels.org";
 
 	useEffect(() => {
-		handleBodyClass([USERNAVIGATION_MOUSE], ADD);
+		handleBodyClass([USERNAVIGATION_MOUSE], AddRemove.add);
 
 		const handleKeyDown = () => {
-			handleBodyClass([USERNAVIGATION_KEYBOARD], ADD);
-			handleBodyClass([USERNAVIGATION_MOUSE], REMOVE);
+			handleBodyClass([USERNAVIGATION_KEYBOARD], AddRemove.add);
+			handleBodyClass([USERNAVIGATION_MOUSE], AddRemove.remove);
 		};
 		const handleMouseMove = () => {
-			handleBodyClass([USERNAVIGATION_MOUSE], ADD);
-			handleBodyClass([USERNAVIGATION_KEYBOARD], REMOVE);
+			handleBodyClass([USERNAVIGATION_MOUSE], AddRemove.add);
+			handleBodyClass([USERNAVIGATION_KEYBOARD], AddRemove.remove);
 		};
 
 		document.addEventListener(KEYDOWN, handleKeyDown);
