@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import Select from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
@@ -23,11 +23,11 @@ type ISearchBarProps = {
 };
 
 const SearchBar = (props: ISearchBarProps) => {
-	const [typeaheadData, setTypeaheadData] = useState<SelectOption[]>();
 	const router = useRouter();
+	const [typeaheadData, setTypeaheadData] = useState<SelectOption[]>();
 	const [debouncedValue, debounceValue, setDebounceValue] = useDebounce(
 		"",
-		500
+		350 // https://lawsofux.com/doherty-threshold/
 	);
 
 	let selectOptionsQuery = useQuery(
@@ -41,10 +41,6 @@ const SearchBar = (props: ISearchBarProps) => {
 		}
 	);
 
-	useEffect(() => {
-		setTypeaheadData(selectOptionsQuery.data);
-	}, [debouncedValue]);
-
 	return (
 		<>
 			<Label
@@ -54,6 +50,7 @@ const SearchBar = (props: ISearchBarProps) => {
 				name={props.name}
 			/>
 			<Select
+				isLoading={selectOptionsQuery.isLoading}
 				instanceId={props.id}
 				id={props.id}
 				inputId={props.id + "select"}
