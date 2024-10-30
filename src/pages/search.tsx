@@ -467,7 +467,6 @@ const Search: NextPage = () => {
 								id="searchBar"
 								name="searchBar-name"
 								isMulti
-								selection={searchFilterState}
 								onFilterChange={handleFilterChange}
 							/>
 						</div>

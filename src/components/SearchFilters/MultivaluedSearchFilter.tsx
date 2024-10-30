@@ -1,48 +1,41 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useState } from "react";
 import { useQuery } from "react-query";
 import Select from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
+import useDebounce from "../../hooks/useDebounce";
 import { onFilterChangeType } from "../../pages/search";
-import { IFacetProps, IFacetSectionSelection } from "../../types/Facet.model";
+import { FacetProps, FacetSectionSelection } from "../../types/Facet.model";
 import typeaheadStyles from "../../utils/typeaheadStyles";
 import Fragment from "../Fragment/Fragment";
 import { SelectOption } from "./SearchFilterContent";
 
-type Props = {
-	facet: IFacetProps;
-	defaultValues: SelectOption[];
+type MultivaluedSearchFilterProps = {
+	facet: FacetProps;
 	onFilterChange: any;
-	operator: IFacetSectionSelection["operator"];
+	operator: FacetSectionSelection["operator"];
 };
 
 const MultivaluedSearchFilter = ({
 	facet,
-	defaultValues,
 	onFilterChange,
 	operator
-}: Props) => {
-	const [query, setQuery] = useState("");
-	const [facetId, setfacetId] = useState("");
+}: MultivaluedSearchFilterProps) => {
 	const [typeaheadData, setTypeaheadData] = useState<SelectOption[]>();
+	const [debouncedValue, debounceValue, setDebounceValue] = useDebounce(
+		"",
+		350 // https://lawsofux.com/doherty-threshold/
+	);
 
 	let selectOptionsQuery = useQuery(
-		[facetId, query],
-		() => autoCompleteFacetOptions(facetId, query),
+		[facet.facetId, debouncedValue],
+		() => autoCompleteFacetOptions(facet.facetId, debouncedValue),
 		{
 			onSuccess(data) {
 				setTypeaheadData(data);
-			}
+			},
+			enabled: debouncedValue !== ""
 		}
 	);
-
-	useEffect(() => {
-		setTypeaheadData(selectOptionsQuery.data);
-	}, [query, facetId, selectOptionsQuery.data]);
-
-	const onTypeaheadType = (facetId: string, query: string) => {
-		setQuery(query);
-		setfacetId(facetId);
-	};
 
 	const placeholder = facet.placeholder
 		? `Eg. ${facet.placeholder}`
@@ -53,11 +46,9 @@ const MultivaluedSearchFilter = ({
 			closeMenuOnSelect
 			blurInputOnSelect
 			isMulti
-			defaultValue={defaultValues}
-			value={defaultValues}
 			placeholder={placeholder}
 			options={typeaheadData}
-			onInputChange={(inputValue) => onTypeaheadType(facet.facetId, inputValue)}
+			onInputChange={(inputValue) => setDebounceValue(inputValue)}
 			onFocus={() => {
 				// reset options, theyre maintaining even after changing Selects
 				setTypeaheadData([]);

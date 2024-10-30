@@ -1,7 +1,7 @@
 import {
-	IFacetOperator,
-	IFacetProps,
-	IFacetSectionProps
+	FacetOperator,
+	FacetProps,
+	FacetSectionProps
 } from "../types/Facet.model";
 import { SearchResult } from "../types/Search.model";
 import { ethnicityCategories } from "../utils/collapseEthnicity";
@@ -9,7 +9,7 @@ import { camelCase } from "../utils/dataUtils";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
+export async function getSearchFacets(): Promise<FacetSectionProps[]> {
 	let response = await fetch(
 		`${API_URL}/search_facet?facet_section=neq.search&select=facet_section,facet_column,facet_name,facet_example,facet_type,is_boolean,facet_description&order=index`
 	);
@@ -55,7 +55,7 @@ export async function getSearchFacets(): Promise<IFacetSectionProps[]> {
 	});
 }
 
-export async function getFacetOperators(): Promise<IFacetOperator[]> {
+export async function getFacetOperators(): Promise<FacetOperator[]> {
 	try {
 		const response = await fetch(
 			`${API_URL}/search_facet?select=facet_column,any_operator,all_operator`
@@ -64,7 +64,7 @@ export async function getFacetOperators(): Promise<IFacetOperator[]> {
 			throw new Error(`Network response was not ok: ${response.statusText}`);
 		}
 		const data = await response.json();
-		return data.map((d: IFacetOperator) => camelCase(d));
+		return data.map((d: FacetOperator) => camelCase(d));
 	} catch (error) {
 		console.error("Error fetching facet operators:", error);
 		throw new Error("Failed to fetch facet operators");
@@ -101,7 +101,7 @@ export async function getSearchResults(
 	searchFilterSelection: any,
 	pageSize: number = 10,
 	sortBy: string,
-	facetOperators: IFacetOperator[]
+	facetOperators: FacetOperator[]
 ): Promise<[number, SearchResult[]]> {
 	if (!searchFilterSelection && !searchValues.length) {
 		return Promise.resolve([0, []]);
@@ -188,7 +188,7 @@ export async function getSearchResults(
 	});
 }
 
-function mapApiFacet(apiFacet: any): IFacetProps {
+function mapApiFacet(apiFacet: any): FacetProps {
 	return {
 		facetId: apiFacet.facet_column,
 		name: apiFacet.facet_name,

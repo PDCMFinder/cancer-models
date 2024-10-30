@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { onFilterChangeType } from "../../pages/search";
 import {
-	IFacetSectionProps,
-	IFacetSidebarSelection
+	FacetSectionProps,
+	FacetSidebarSelection
 } from "../../types/Facet.model";
 import { sortObjArrBy } from "../../utils/sortArrBy";
 import Accordion from "../Accordion/Accordion";
 import Card from "../Card/Card";
 import SearchFilterContent from "./SearchFilterContent";
 
-type ISearchFilters = {
-	data: IFacetSectionProps[];
-	selection: IFacetSidebarSelection;
+type SearchFilters = {
+	data: FacetSectionProps[];
+	selection: FacetSidebarSelection;
 	onFilterChange: (
 		facetId: string,
 		selection: string,
@@ -20,8 +20,7 @@ type ISearchFilters = {
 	) => void;
 };
 
-// AKA <FacetSection/>
-const SearchFilters = (props: ISearchFilters) => {
+const SearchFilters = (props: SearchFilters) => {
 	const [filterData, setFilterData] = useState<any>(props.data);
 
 	useEffect(() => {
@@ -36,7 +35,7 @@ const SearchFilters = (props: ISearchFilters) => {
 			contentClassName="py-3 px-2"
 			id="tour_filters"
 		>
-			{filterData.map((facet: IFacetSectionProps) => {
+			{filterData.map((facet: FacetSectionProps) => {
 				let facetKey = facet.key,
 					facets = facet.facets,
 					isModelFacet = facetKey === "model";

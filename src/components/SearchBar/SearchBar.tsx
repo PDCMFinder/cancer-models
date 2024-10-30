@@ -1,20 +1,19 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import Select from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
+import useDebounce from "../../hooks/useDebounce";
 import { onFilterChangeType } from "../../pages/search";
-import { IFacetSidebarSelection } from "../../types/Facet.model";
 import typeaheadStyles from "../../utils/typeaheadStyles";
 import Fragment from "../Fragment/Fragment";
 import Label from "../Input/Label";
 import { SelectOption } from "../SearchFilters/SearchFilterContent";
 
-type ISearchBarProps = {
+type SearchBarProps = {
 	id: string;
 	name: string;
 	isMulti?: boolean;
-	selection?: IFacetSidebarSelection;
 	onFilterChange?: (
 		facetId: string,
 		selection: string,
@@ -23,37 +22,24 @@ type ISearchBarProps = {
 	) => void;
 };
 
-const SearchBar = (props: ISearchBarProps) => {
-	const selectedFacetObj = props.selection && props.selection["search_terms"],
-		selection = selectedFacetObj?.selection;
-	const [query, setQuery] = useState("");
-	const [facetId, setfacetId] = useState("");
-	const [typeaheadData, setTypeaheadData] = useState<SelectOption[]>();
+const SearchBar = (props: SearchBarProps) => {
 	const router = useRouter();
+	const [typeaheadData, setTypeaheadData] = useState<SelectOption[]>();
+	const [debouncedValue, debounceValue, setDebounceValue] = useDebounce(
+		"",
+		350 // https://lawsofux.com/doherty-threshold/
+	);
 
 	let selectOptionsQuery = useQuery(
-		query,
-		() => autoCompleteFacetOptions(facetId, query),
+		debouncedValue,
+		() => autoCompleteFacetOptions("search_terms", debouncedValue),
 		{
 			onSuccess(data) {
 				setTypeaheadData(data);
-			}
+			},
+			enabled: debouncedValue !== ""
 		}
 	);
-
-	useEffect(() => {
-		setTypeaheadData(selectOptionsQuery.data);
-	}, [query, facetId]);
-
-	const onTypeaheadType = (facetId: string, query: string) => {
-		setQuery(query);
-		setfacetId(facetId);
-	};
-
-	const defaultValuesObj = selection?.map((value) => ({
-		["label"]: value,
-		["value"]: value
-	}));
 
 	return (
 		<>
@@ -64,6 +50,7 @@ const SearchBar = (props: ISearchBarProps) => {
 				name={props.name}
 			/>
 			<Select
+				isLoading={selectOptionsQuery.isLoading}
 				instanceId={props.id}
 				id={props.id}
 				inputId={props.id + "select"}
@@ -74,17 +61,13 @@ const SearchBar = (props: ISearchBarProps) => {
 				closeMenuOnSelect={props.isMulti}
 				blurInputOnSelect={props.isMulti}
 				isMulti={props.isMulti}
-				defaultValue={defaultValuesObj}
-				value={defaultValuesObj}
 				placeholder={"e.g. Melanoma"}
 				loadingMessage={() => "Loading data"}
 				noOptionsMessage={() => "Type to search"}
 				styles={typeaheadStyles}
 				components={{ DropdownIndicator: Fragment }}
 				options={typeaheadData}
-				onInputChange={(inputValue) =>
-					onTypeaheadType("search_terms", inputValue)
-				}
+				onInputChange={(inputValue) => setDebounceValue(inputValue)}
 				onChange={(option, actionMeta) => {
 					if (actionMeta.action === "pop-value") return;
 					let newOption = "",

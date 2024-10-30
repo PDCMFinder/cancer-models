@@ -1,16 +1,15 @@
-import { ChangeEvent } from "react";
 import Select from "react-select";
 import { onFilterChangeType } from "../../pages/search";
-import { IFacetProps, IFacetSidebarSelection } from "../../types/Facet.model";
+import { FacetProps, FacetSidebarSelection } from "../../types/Facet.model";
 import { ethnicityCategories } from "../../utils/collapseEthnicity";
 import typeaheadStyles from "../../utils/typeaheadStyles";
 import InformationIcon from "../InformationIcon/InformationIcon";
 import InputAndLabel from "../Input/InputAndLabel";
 import MultivaluedSearchFilter from "./MultivaluedSearchFilter";
 
-type ISearchFilterContentProps = {
-	data: IFacetProps[];
-	facetSelection: IFacetSidebarSelection;
+type SearchFilterContentProps = {
+	data: FacetProps[];
+	facetSelection: FacetSidebarSelection;
 	facet: any;
 	onFilterChange: (
 		facetId: string,
@@ -22,17 +21,17 @@ type ISearchFilterContentProps = {
 
 export type SelectOption = { label: string; value: string };
 
-const SearchFilterContent = (props: ISearchFilterContentProps) => {
-	const optionSelectObj = (options: string[]): SelectOption[] => {
-		return options?.map((value: string) => ({
-			["label"]: value,
-			["value"]: value
-		}));
-	};
+const optionSelectObj = (options: string[]): SelectOption[] => {
+	return options?.map((value: string) => ({
+		["label"]: value,
+		["value"]: value
+	}));
+};
 
+const SearchFilterContent = (props: SearchFilterContentProps) => {
 	return (
 		<>
-			{props.data.map((facet: IFacetProps) => {
+			{props.data.map((facet: FacetProps) => {
 				let facetContent = null;
 				const facetName = facet.name,
 					facetType = facet.type,
@@ -43,8 +42,6 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 					selection = selectedFacetObj?.selection,
 					operator = selectedFacetObj?.operator;
 
-				const defaultValues = optionSelectObj(selection);
-
 				const displayOperators = facetType === "multivalued";
 
 				if (facetType === "autocomplete" || facetType === "multivalued") {
@@ -52,7 +49,6 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 						<>
 							<MultivaluedSearchFilter
 								facet={facet}
-								defaultValues={defaultValues}
 								onFilterChange={props.onFilterChange}
 								operator={operator}
 							/>
@@ -111,8 +107,6 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 							closeMenuOnSelect
 							blurInputOnSelect
 							isMulti
-							defaultValue={defaultValues}
-							value={defaultValues}
 							options={optionsSelectObj}
 							onChange={(_, actionMeta) => {
 								if (actionMeta.action === "pop-value") return;
@@ -156,11 +150,7 @@ const SearchFilterContent = (props: ISearchFilterContentProps) => {
 											type="checkbox"
 											label={label}
 											checked={selection?.includes(value)} // no problem passing value since we're checking if it's boolean, if not, pass option as normally. This works for boolean filters
-											onChange={(
-												e:
-													| ChangeEvent<HTMLInputElement>
-													| ChangeEvent<HTMLTextAreaElement>
-											): void => {
+											onChange={(e): void => {
 												const target = e.target as HTMLInputElement;
 												const actionType = target.checked ? "add" : "remove";
 
