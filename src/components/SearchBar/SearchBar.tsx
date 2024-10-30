@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import Select from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
+import useDebounce from "../../hooks/useDebounce";
 import { onFilterChangeType } from "../../pages/search";
 import { IFacetSidebarSelection } from "../../types/Facet.model";
 import typeaheadStyles from "../../utils/typeaheadStyles";
@@ -24,36 +25,27 @@ type ISearchBarProps = {
 };
 
 const SearchBar = (props: ISearchBarProps) => {
-	const selectedFacetObj = props.selection && props.selection["search_terms"],
-		selection = selectedFacetObj?.selection;
-	const [query, setQuery] = useState("");
-	const [facetId, setfacetId] = useState("");
 	const [typeaheadData, setTypeaheadData] = useState<SelectOption[]>();
 	const router = useRouter();
+	const [debouncedValue, debounceValue, setDebounceValue] = useDebounce(
+		"",
+		500
+	);
 
 	let selectOptionsQuery = useQuery(
-		query,
-		() => autoCompleteFacetOptions(facetId, query),
+		debouncedValue,
+		() => autoCompleteFacetOptions("search_terms", debouncedValue),
 		{
 			onSuccess(data) {
 				setTypeaheadData(data);
-			}
+			},
+			enabled: debouncedValue !== ""
 		}
 	);
 
 	useEffect(() => {
 		setTypeaheadData(selectOptionsQuery.data);
-	}, [query, facetId]);
-
-	const onTypeaheadType = (facetId: string, query: string) => {
-		setQuery(query);
-		setfacetId(facetId);
-	};
-
-	const defaultValuesObj = selection?.map((value) => ({
-		["label"]: value,
-		["value"]: value
-	}));
+	}, [debouncedValue]);
 
 	return (
 		<>
@@ -74,17 +66,13 @@ const SearchBar = (props: ISearchBarProps) => {
 				closeMenuOnSelect={props.isMulti}
 				blurInputOnSelect={props.isMulti}
 				isMulti={props.isMulti}
-				defaultValue={defaultValuesObj}
-				value={defaultValuesObj}
 				placeholder={"e.g. Melanoma"}
 				loadingMessage={() => "Loading data"}
 				noOptionsMessage={() => "Type to search"}
 				styles={typeaheadStyles}
 				components={{ DropdownIndicator: Fragment }}
 				options={typeaheadData}
-				onInputChange={(inputValue) =>
-					onTypeaheadType("search_terms", inputValue)
-				}
+				onInputChange={(inputValue) => setDebounceValue(inputValue)}
 				onChange={(option, actionMeta) => {
 					if (actionMeta.action === "pop-value") return;
 					let newOption = "",
