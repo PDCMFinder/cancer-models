@@ -1,42 +1,24 @@
-export type IFacetSidebarProps = {
-	facetSections?: IFacetSectionProps[];
-	sidebarSelection?: IFacetSidebarSelection;
-	sidebarOperators?: IFacetSidebarOperators;
-	loading?: boolean;
-	onSelectionChange(
-		sectionKey: string,
-		facetKey: string,
-		selection: string[],
-		operators: string
-	): any;
-	onReset(): void;
-};
-
-export type IFacetOperator = {
+export type FacetOperator = {
 	facetColumn: string;
 	anyOperator: string | null;
 	allOperator: string | null;
 	facetType: "multivalued" | "autocomplete" | "check";
 };
 
-export type IFacetSidebarOperators = {
-	[section: string]: { [facet: string]: string };
+export type FacetSidebarSelection = {
+	[facetKey: string]: FacetSectionSelection;
 };
 
-export type IFacetSidebarSelection = {
-	[facetKey: string]: IFacetSectionSelection;
-};
-
-export type IFacetSectionSelection = {
+export type FacetSectionSelection = {
 	selection: string[];
 	operator: "ANY" | "ALL";
 };
 
-export type IFacetSectionProps = {
+export type FacetSectionProps = {
 	key: string;
 	name: string;
-	facets: IFacetProps[];
-	sectionSelection?: IFacetSectionSelection;
+	facets: FacetProps[];
+	sectionSelection?: FacetSectionSelection;
 	sectionOperators?: { [facet: string]: string };
 	onSelectionChange?(
 		facetKey: string,
@@ -45,7 +27,7 @@ export type IFacetSectionProps = {
 	): void;
 };
 
-export type IFacetProps = {
+export type FacetProps = {
 	facetId: string;
 	name: string;
 	type: string;
@@ -58,9 +40,4 @@ export type IFacetProps = {
 	onSelectionChange?(selection: string[], operator: string): void;
 	isBoolean: boolean;
 	description?: string;
-};
-
-export type IOptionProps = {
-	key: string;
-	name: string;
 };

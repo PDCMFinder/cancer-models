@@ -10,7 +10,7 @@ import Fragment from "../Fragment/Fragment";
 import Label from "../Input/Label";
 import { SelectOption } from "../SearchFilters/SearchFilterContent";
 
-type ISearchBarProps = {
+type SearchBarProps = {
 	id: string;
 	name: string;
 	isMulti?: boolean;
@@ -22,7 +22,7 @@ type ISearchBarProps = {
 	) => void;
 };
 
-const SearchBar = (props: ISearchBarProps) => {
+const SearchBar = (props: SearchBarProps) => {
 	const router = useRouter();
 	const [typeaheadData, setTypeaheadData] = useState<SelectOption[]>();
 	const [debouncedValue, debounceValue, setDebounceValue] = useDebounce(
