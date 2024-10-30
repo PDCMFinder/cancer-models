@@ -5,7 +5,6 @@ import Select from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
 import useDebounce from "../../hooks/useDebounce";
 import { onFilterChangeType } from "../../pages/search";
-import { IFacetSidebarSelection } from "../../types/Facet.model";
 import typeaheadStyles from "../../utils/typeaheadStyles";
 import Fragment from "../Fragment/Fragment";
 import Label from "../Input/Label";
@@ -15,7 +14,6 @@ type ISearchBarProps = {
 	id: string;
 	name: string;
 	isMulti?: boolean;
-	selection?: IFacetSidebarSelection;
 	onFilterChange?: (
 		facetId: string,
 		selection: string,
