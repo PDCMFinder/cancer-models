@@ -51,7 +51,7 @@ const MultivaluedSearchFilter = ({
 			blurInputOnSelect
 			isMulti
 			placeholder={placeholder}
-			options={typeaheadData}
+			options={debounceValue !== debouncedValue ? [] : typeaheadData}
 			onInputChange={(inputValue) => setDebounceValue(inputValue)}
 			onFocus={() => {
 				// reset options, theyre maintaining even after changing Selects
