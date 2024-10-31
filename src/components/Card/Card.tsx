@@ -6,7 +6,7 @@ type ICardProps = {
 	id?: string;
 	header?: JSX.Element;
 	headerClassName?: string;
-	children: string | JSX.Element | JSX.Element[];
+	children: React.ReactNode | React.ReactNode[];
 	contentClassName?: string;
 	footer?: JSX.Element;
 	footerClassName?: string;
