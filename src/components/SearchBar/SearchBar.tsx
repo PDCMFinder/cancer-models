@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import Select from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
@@ -22,7 +22,7 @@ type SearchBarProps = {
 	) => void;
 };
 
-const SearchBar = (props: SearchBarProps) => {
+const SearchBar = ({ id, name, isMulti, onFilterChange }: SearchBarProps) => {
 	const router = useRouter();
 	const [typeaheadData, setTypeaheadData] = useState<SelectOption[]>();
 	const [debouncedValue, debounceValue, setDebounceValue] = useDebounce(
@@ -30,7 +30,7 @@ const SearchBar = (props: SearchBarProps) => {
 		350 // https://lawsofux.com/doherty-threshold/
 	);
 
-	let selectOptionsQuery = useQuery(
+	const selectOptionsQuery = useQuery(
 		debouncedValue,
 		() => autoCompleteFacetOptions("search_terms", debouncedValue),
 		{
@@ -41,38 +41,44 @@ const SearchBar = (props: SearchBarProps) => {
 		}
 	);
 
+	useEffect(() => {
+		setTypeaheadData(selectOptionsQuery.data);
+	}, [selectOptionsQuery.data]);
+
 	return (
 		<>
 			<Label
 				className="mb-0 text-white"
 				label="Search by cancer diagnosis"
-				forId={props.id}
-				name={props.name}
+				forId={id}
+				name={name}
 			/>
 			<Select
 				isLoading={selectOptionsQuery.isLoading}
-				instanceId={props.id}
-				id={props.id}
-				inputId={props.id + "select"}
-				name={props.name}
+				instanceId={id}
+				id={id}
+				inputId={id + "select"}
+				name={name}
 				aria-label="Search by cancer diagnosis"
-				aria-labelledby={props.id}
+				aria-labelledby={id}
 				className="lh-1"
-				closeMenuOnSelect={props.isMulti}
-				blurInputOnSelect={props.isMulti}
-				isMulti={props.isMulti}
+				closeMenuOnSelect={isMulti}
+				blurInputOnSelect={isMulti}
+				isMulti={isMulti}
 				placeholder={"e.g. Melanoma"}
 				loadingMessage={() => "Loading data"}
 				noOptionsMessage={() => "Type to search"}
 				styles={typeaheadStyles}
 				components={{ DropdownIndicator: Fragment }}
-				options={typeaheadData}
-				onInputChange={(inputValue) => setDebounceValue(inputValue)}
+				options={debounceValue !== debouncedValue ? [] : typeaheadData}
+				onInputChange={(inputValue) => {
+					setDebounceValue(inputValue);
+				}}
 				onChange={(option, actionMeta) => {
 					if (actionMeta.action === "pop-value") return;
 					let newOption = "",
 						action: onFilterChangeType["type"] = "add";
-					if (option && !props.isMulti) {
+					if (option && !isMulti) {
 						router.push({
 							pathname: "search",
 							// @ts-ignore
@@ -92,8 +98,8 @@ const SearchBar = (props: SearchBarProps) => {
 								break;
 						}
 
-						props.onFilterChange &&
-							props.onFilterChange("search_terms", newOption, "", action);
+						onFilterChange &&
+							onFilterChange("search_terms", newOption, "", action);
 					}
 				}}
 			/>

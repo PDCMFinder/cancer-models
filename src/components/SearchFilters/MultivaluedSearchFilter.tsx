@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import Select from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
@@ -36,6 +36,10 @@ const MultivaluedSearchFilter = ({
 			enabled: debouncedValue !== ""
 		}
 	);
+
+	useEffect(() => {
+		setTypeaheadData(selectOptionsQuery.data);
+	}, [selectOptionsQuery.data]);
 
 	const placeholder = facet.placeholder
 		? `Eg. ${facet.placeholder}`
