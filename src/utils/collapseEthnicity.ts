@@ -1,8 +1,8 @@
-type IEthnicityCounter = { patient_ethnicity: string; count: number };
+type EthnicityCounter = { patient_ethnicity: string; count: number };
 
-type IEthnicityCategories = { [key: string]: string[] };
+type EthnicityCategories = { [key: string]: string[] };
 
-export const ethnicityCategories: IEthnicityCategories = {
+export const ethnicityCategories: EthnicityCategories = {
 	Asian: [
 		"Eastasian",
 		"East Asian",
@@ -40,7 +40,7 @@ export const ethnicityCategories: IEthnicityCategories = {
 	]
 };
 
-export function countEthnicity(subethnicityCountList: IEthnicityCounter[]) {
+export function countEthnicity(subethnicityCountList: EthnicityCounter[]) {
 	const ethnictyCounts: { [key: string]: number } = {};
 
 	subethnicityCountList.forEach((subethnicity) => {

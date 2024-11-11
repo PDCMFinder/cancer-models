@@ -1,6 +1,6 @@
 import { CamelCaseKeys } from "../../types/globalTypes";
 
-export type IImmuneMarkerAPI = {
+export type ImmuneMarkerAPI = {
 	model_id: string;
 	data_source: string;
 	source: string;

@@ -1,16 +1,18 @@
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 import ReactGA from "react-ga4";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import Accordion from "../Accordion/Accordion";
+import AccordionItem from "../Accordion/AccordionItem";
 import Button from "../Button/Button";
 import Card from "../Card/Card";
 import FeedbackIcon from "../FeedbackIcon/FeedbackIcon";
 import FloatingButton from "../FloatingWidget/FloatingButton";
 import CloseIcon from "../Icons/CloseIcon/CloseIcon";
+import InputAndLabel from "../Input/InputAndLabel";
 import Loader from "../Loader/Loader";
-import Modal from "../Modal/Modal";
 import Navbar from "../Navbar/Navbar";
 
 const DynamicFooter = dynamic(() => import("../Footer/Footer"), {
@@ -24,20 +26,22 @@ const DynamicFooter = dynamic(() => import("../Footer/Footer"), {
 const DynamicModal = dynamic(() => import("../Modal/Modal"), {
 	ssr: false
 });
-const DynamicCookieConsent = dynamic(
-	() => import("../CookieConsent/CookieConsent"),
-	{
-		ssr: false
-	}
-);
 
-type ILayoutProps = { children: JSX.Element };
+// type CookieConditions = "accepted" | "rejected" | "pending";
+enum CookieConditions {
+	accepted = "accepted",
+	rejected = "rejected",
+	pending = "pending"
+}
 
-const Layout = (props: ILayoutProps) => {
+type LayoutProps = { children: JSX.Element };
+
+const Layout = (props: LayoutProps) => {
 	const [cookies, setCookie] = useCookies();
 	const [showFeedbackModal, setShowFeedbackModal] = useState(false);
-	const surveyHref =
-		"https://docs.google.com/forms/d/e/1FAIpQLSeRJQ7Xu1pMqegYvs4KVdA17bucM6XzW2zzA2yHaroPfSR7Sg/viewform";
+	const [choosingCookies, setChoosingCookies] = useState(false);
+	const gaRef = useRef<HTMLInputElement | null>(null);
+	const hjRef = useRef<HTMLInputElement | null>(null);
 	const [queryClient] = useState(
 		() =>
 			new QueryClient({
@@ -50,12 +54,210 @@ const Layout = (props: ILayoutProps) => {
 			})
 	);
 
+	const isPendingOrMissing = (cookieKey: string) =>
+		!cookies["cm_consent"]?.[cookieKey] ||
+		cookies["cm_consent"]?.[cookieKey] === CookieConditions.pending;
+
 	return (
 		<>
 			<QueryClientProvider client={queryClient}>
 				<Navbar />
 				<main>{props.children}</main>
-				{!cookies["cm_consent"] && <DynamicCookieConsent />}
+				{(isPendingOrMissing("ga") || isPendingOrMissing("hj")) && (
+					<DynamicModal
+						verticalAlign="top"
+						strictClose={true}
+						style={{ maxWidth: "600px", overflow: "scroll" }}
+						modalWidth="100"
+					>
+						<Card
+							className="bg-white"
+							contentClassName="pt-3"
+							headerClassName="pt-1 pb-0 px-1 bg-white"
+							header={
+								<header className="text-right">
+									<CloseIcon
+										color="dark"
+										onClick={() =>
+											setCookie(
+												"cm_consent",
+												{
+													ga: CookieConditions.rejected,
+													hj: CookieConditions.rejected
+												},
+												{
+													sameSite: "lax",
+													maxAge: 25920
+												}
+											)
+										}
+									/>
+								</header>
+							}
+						>
+							{!choosingCookies ? (
+								<>
+									<p className="text-center">
+										CancerModels.Org uses cookies to enhance your browsing
+										experience. For more information or to select your
+										preferences, please click Choose Cookies.
+									</p>
+									<div className="d-flex flex-column flex-md-row align-center justify-content-around">
+										<Button
+											priority="primary"
+											color="dark"
+											className="mb-0"
+											onClick={() =>
+												setCookie(
+													"cm_consent",
+													{
+														ga: CookieConditions.accepted,
+														hj: CookieConditions.accepted
+													},
+													{
+														sameSite: "lax",
+														maxAge: 259200
+													}
+												)
+											}
+										>
+											Accept Cookies
+										</Button>
+										<Button
+											priority="secondary"
+											color="dark"
+											className="mb-0"
+											onClick={() => setChoosingCookies(true)}
+										>
+											Choose Cookies
+										</Button>
+									</div>
+								</>
+							) : (
+								<>
+									<p>
+										<b>Manage Consent Preferences</b>
+									</p>
+									<Accordion className="bg-lightGray br-common p-2">
+										<AccordionItem title="Strictly Necessary Cookies">
+											<p>
+												These cookies are necessary for the website to function
+												and cannot be switched off in our systems. They are
+												usually only set in response to actions made by you
+												which amount to a request for services, such as setting
+												your cookie preferences. You can set your browser to
+												block or alert you about these cookies, but the site
+												might not function as expected. These cookies do not
+												store any personally identifiable information.
+											</p>
+										</AccordionItem>
+										<AccordionItem title="Performance Cookies">
+											<p>
+												These cookies are necessary for the website to function
+												and cannot be switched off in our systems. They are
+												usually only set in response to actions made by you
+												which amount to a request for services, such as setting
+												your cookie preferences. You can set your browser to
+												block or alert you about these cookies, but the site
+												might not function as expected. These cookies do not
+												store any personally identifiable information.
+											</p>
+											<InputAndLabel
+												name="googleAnalytics"
+												type="checkbox"
+												label="Accept Google Analytics"
+												forId="googleAnalytics"
+												inputRef={gaRef}
+											/>
+											<InputAndLabel
+												name="hotjarAnalytics"
+												type="checkbox"
+												label="Accept Hotjar Analytics"
+												forId="hotjarAnalytics"
+												inputRef={hjRef}
+											/>
+										</AccordionItem>
+									</Accordion>
+									<div className="d-flex flex-column flex-md-row align-center justify-content-around">
+										<Button
+											priority="primary"
+											color="dark"
+											className="mb-0"
+											onClick={() => {
+												setChoosingCookies(false);
+												console.log(hjRef.current?.checked);
+												console.log("first");
+												setCookie(
+													"cm_consent",
+													{
+														ga: CookieConditions.accepted,
+														hj: CookieConditions.accepted
+													},
+													{
+														sameSite: "lax",
+														maxAge: 259200
+													}
+												);
+											}}
+										>
+											Accept All
+										</Button>
+										<Button
+											priority="primary"
+											color="dark"
+											className="mb-0"
+											onClick={() => {
+												setChoosingCookies(false);
+												console.log(hjRef.current?.checked);
+												console.log("first");
+												setCookie(
+													"cm_consent",
+													{
+														ga: gaRef.current?.checked
+															? CookieConditions.accepted
+															: CookieConditions.rejected,
+														hj: hjRef.current?.checked
+															? CookieConditions.accepted
+															: CookieConditions.rejected
+													},
+													{
+														sameSite: "lax",
+														maxAge: 259200
+													}
+												);
+											}}
+										>
+											Accept Selected
+										</Button>
+									</div>
+									<div className="text-center">
+										<Button
+											priority="secondary"
+											color="dark"
+											className="mb-0"
+											onClick={() => {
+												setChoosingCookies(false);
+												setCookie(
+													"cm_consent",
+													{
+														ga: CookieConditions.rejected,
+														hj: CookieConditions.rejected
+													},
+													{
+														sameSite: "lax",
+														maxAge: 25920
+													}
+												);
+											}}
+										>
+											Reject All
+										</Button>
+									</div>
+								</>
+							)}
+						</Card>
+					</DynamicModal>
+				)}
 				{/* bottom right survey bubble */}
 				<FloatingButton
 					onClick={() => {
@@ -78,61 +280,8 @@ const Layout = (props: ILayoutProps) => {
 				</FloatingButton>
 				<ReactQueryDevtools initialIsOpen={false} />
 				<DynamicFooter />
-				{!cookies["cm_feedback"] && (
-					<DynamicModal
-						className="overflow-hidden"
-						style={{ maxWidth: "500px" }}
-						modalWidth="100"
-						handleClose={() =>
-							setCookie("cm_feedback", "true", {
-								sameSite: "lax",
-								maxAge: 259200
-							})
-						}
-					>
-						<Card
-							className="bg-white"
-							headerClassName="pt-1 pb-0 px-1 bg-white"
-							header={
-								<header className="text-right">
-									<CloseIcon
-										color="dark"
-										onClick={() =>
-											setCookie("cm_feedback", "true", {
-												sameSite: "lax",
-												maxAge: 259200
-											})
-										}
-									/>
-								</header>
-							}
-						>
-							<div className="text-center">
-								<h1 className="h2 mt-0">Help us improve</h1>
-								<p>
-									Please <b>help us improve</b> by filling our short user survey
-								</p>
-								<p>Thank you!</p>
-								<Button
-									htmlTag="a"
-									href={surveyHref}
-									color="dark"
-									priority="primary"
-									onClick={() =>
-										setCookie("cm_feedback", "true", {
-											sameSite: "lax",
-											maxAge: 2592000
-										})
-									}
-								>
-									Go to feedback survey
-								</Button>
-							</div>
-						</Card>
-					</DynamicModal>
-				)}
 				{showFeedbackModal && (
-					<Modal handleClose={() => setShowFeedbackModal(false)}>
+					<DynamicModal handleClose={() => setShowFeedbackModal(false)}>
 						<Card
 							className="bg-white"
 							contentClassName="pt-0"
@@ -157,7 +306,7 @@ const Layout = (props: ILayoutProps) => {
 								Loading…
 							</iframe>
 						</Card>
-					</Modal>
+					</DynamicModal>
 				)}
 			</QueryClientProvider>
 		</>

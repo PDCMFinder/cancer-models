@@ -1,8 +1,8 @@
 import Button from "../Button/Button";
 
-type IBlogPreviewProps = { postAmount: number };
+type BlogPreviewProps = { postAmount: number };
 
-const BlogPreview = (props: IBlogPreviewProps) => {
+const BlogPreview = (props: BlogPreviewProps) => {
 	// Show latest {postAmount} posts
 	return (
 		<section>

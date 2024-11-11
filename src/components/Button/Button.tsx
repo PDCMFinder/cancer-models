@@ -1,10 +1,10 @@
 import Link from "next/link";
 import React, { CSSProperties, MouseEvent, useState } from "react";
 import isExternalLink from "../../utils/isExternalLink";
-import ArrowIcon, { IArrowIconProps } from "../ArrowIcon/ArrowIcon";
+import ArrowIcon, { ArrowIconProps } from "../ArrowIcon/ArrowIcon";
 import styles from "./Button.module.scss";
 
-export type IButtonProps = {
+export type ButtonProps = {
 	style?: CSSProperties;
 	children: React.ReactNode;
 	priority: "primary" | "secondary";
@@ -23,7 +23,7 @@ type ButtonProperties = {
 	htmlTag?: "button";
 	type?: "button" | "submit" | "reset";
 	arrow?: boolean;
-	arrowDirection?: IArrowIconProps["direction"];
+	arrowDirection?: ArrowIconProps["direction"];
 	"aria-controls"?: string;
 	disabled?: boolean;
 };
@@ -34,30 +34,28 @@ type LinkProperties = {
 	target?: "_blank" | "_self" | "_parent" | "_top";
 };
 
-const DOWN: IArrowIconProps["direction"] = "down";
-const RIGHT: IArrowIconProps["direction"] = "right";
+const DOWN: ArrowIconProps["direction"] = "down";
+const RIGHT: ArrowIconProps["direction"] = "right";
 
 const isButtonProps = (
-	props: IButtonProps
-): props is IButtonProps & ButtonProperties => {
+	props: ButtonProps
+): props is ButtonProps & ButtonProperties => {
 	return props.htmlTag === "a" ? false : props.htmlTag === "button";
 };
 
-const Button = ({ htmlTag = "button", ...props }: IButtonProps) => {
-	const retypedButtonProps = props as IButtonProps & ButtonProperties;
-	const retypedLinkProps = props as IButtonProps & LinkProperties;
+const Button = ({ htmlTag = "button", ...props }: ButtonProps) => {
+	const retypedButtonProps = props as ButtonProps & ButtonProperties;
+	const retypedLinkProps = props as ButtonProps & LinkProperties;
 	const [arrowDirection, setArrowDirection] = useState<
-		IArrowIconProps["direction"]
+		ArrowIconProps["direction"]
 	>(isButtonProps(props) && props.arrowDirection ? props.arrowDirection : DOWN);
 
 	let children = props.children,
 		showArrow = isButtonProps(props) && props.arrow,
 		propsClassName = props.className,
-		classNames = `
-      ${styles.Button}
-      ${styles[`Button-${props.priority}`]}
-      ${styles[`Button-${props.color}`]}
-      ${propsClassName ? propsClassName : ""}
+		classNames = `${styles.Button} ${styles[`Button-${props.priority}`]} ${
+			styles[`Button-${props.color}`]
+		} ${propsClassName ? propsClassName : ""} text-left
     `.trim();
 
 	const handleOnClick = () => {

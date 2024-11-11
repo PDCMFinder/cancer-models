@@ -1,8 +1,8 @@
 import styles from "./Logotype.module.scss";
 
-type ILogotypeProps = { color: "dark" | "light" | "white" };
+type LogotypeProps = { color: "dark" | "light" | "white" };
 
-const Logotype = (props: ILogotypeProps) => {
+const Logotype = (props: LogotypeProps) => {
 	return (
 		<svg
 			className={styles[`Logotype-${props.color}`]}

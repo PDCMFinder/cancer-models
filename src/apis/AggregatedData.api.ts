@@ -1,4 +1,4 @@
-import { IGitlabRelease } from "../../types/releaseTypes";
+import { GitlabRelease } from "../../types/releaseTypes";
 import { camelCase } from "../utils/dataUtils";
 import parseRelease from "../utils/parseRelease";
 
@@ -195,7 +195,7 @@ export async function getDataReleaseInformation() {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
-		d.forEach(async (release: IGitlabRelease) => {
+		d.forEach(async (release: GitlabRelease) => {
 			release = await parseRelease(release, "data");
 		});
 
@@ -216,7 +216,7 @@ export async function getLatestDataReleaseInformation() {
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json().then((d: IGitlabRelease[]) => parseRelease(d[0]));
+	return response.json().then((d: GitlabRelease[]) => parseRelease(d[0]));
 }
 
 export async function getUIReleaseInformation() {
@@ -235,7 +235,7 @@ export async function getUIReleaseInformation() {
 	}
 
 	return response.json().then((d) => {
-		d.forEach(async (release: IGitlabRelease) => {
+		d.forEach(async (release: GitlabRelease) => {
 			release = await parseRelease(release, "ui");
 		});
 

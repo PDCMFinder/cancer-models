@@ -7,12 +7,12 @@ import Card from "../Card/Card";
 import ModelTypeIcon from "../Icons/ModelTypeIcon";
 import Loader from "../Loader/Loader";
 
-type IDataCountCardProps = {
+type DataCountCardProps = {
 	layout: "vertical" | "horizontal";
 	iconSize?: CSSSize;
 };
 
-const DataCountCard = (props: IDataCountCardProps) => {
+const DataCountCard = (props: DataCountCardProps) => {
 	const isVertical = props.layout === "vertical";
 	const { data } = useQuery("modelsByTypeCounts", () => getModelsByType());
 

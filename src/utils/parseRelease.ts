@@ -1,10 +1,10 @@
 import { remark } from "remark";
 import remarkHtml from "remark-html";
-import { IGitlabRelease } from "../../types/releaseTypes";
+import { GitlabRelease } from "../../types/releaseTypes";
 
 const parseRelease = async (
-	release: IGitlabRelease,
-	repository?: IGitlabRelease["repository"]
+	release: GitlabRelease,
+	repository?: GitlabRelease["repository"]
 ) => {
 	const searchTxt = "v";
 	const regEscape = (v: string) =>

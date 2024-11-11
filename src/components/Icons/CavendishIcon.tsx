@@ -1,8 +1,8 @@
 import { CSSSize } from "../../../types/globalTypes";
 
-export type ICavendishIconProps = { color?: string; size: CSSSize };
+export type CavendishIconProps = { color?: string; size: CSSSize };
 
-const CavendishIcon = ({ color, size, ...props }: ICavendishIconProps) => {
+const CavendishIcon = ({ color, size, ...props }: CavendishIconProps) => {
 	const splitSize = size.match(/^(\d*\.?\d+)(.*)$/) as RegExpMatchArray;
 	const sizeAmount = Number(splitSize[1]);
 	const sizeUnit = splitSize[2];

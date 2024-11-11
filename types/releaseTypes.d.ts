@@ -1,4 +1,4 @@
-export type IGitlabRelease = {
+export type GitlabRelease = {
 	name: string;
 	repository?: "data" | "ui";
 	tag_name: string;
@@ -15,7 +15,7 @@ export type IGitlabRelease = {
 	_links: Links;
 };
 
-type IGitlabAuthor = {
+type GitlabAuthor = {
 	id: number;
 	username: string;
 	name: string;
@@ -24,7 +24,7 @@ type IGitlabAuthor = {
 	web_url: string;
 };
 
-type IGitlabCommit = {
+type GitlabCommit = {
 	id: string;
 	short_id: string;
 	created_at: string;
@@ -41,24 +41,24 @@ type IGitlabCommit = {
 	web_url: string;
 };
 
-type IGitlabAssets = {
+type GitlabAssets = {
 	count: number;
 	sources: Source[];
 	links: any[];
 };
 
-type IGitlabSource = {
+type GitlabSource = {
 	format: string;
 	url: string;
 };
 
-type IGitlabEvidence = {
+type GitlabEvidence = {
 	sha: string;
 	filepath: string;
 	collected_at: string;
 };
 
-type IGitlabLinks = {
+type GitlabLinks = {
 	closed_issues_url: string;
 	closed_merge_requests_url: string;
 	edit_url: string;

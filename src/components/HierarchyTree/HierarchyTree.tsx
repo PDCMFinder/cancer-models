@@ -12,7 +12,7 @@ import { KnowledgeGraph } from "../../types/ModelData.model";
 import parseKnowledgeGraph from "../../utils/parseKnowledgeGraph";
 import CustomNode from "./CustomNode";
 
-type IHierarchyTreeProps = {
+type HierarchyTreeProps = {
 	data: KnowledgeGraph;
 	providerId: string;
 	modelId: string;
@@ -39,7 +39,7 @@ const HierarchyTree = ({
 	data,
 	modelId: currentModelId,
 	providerId
-}: IHierarchyTreeProps) => {
+}: HierarchyTreeProps) => {
 	const [reactFlowHeight, setReactFlowHeight] = useState<number>(500); // set initial height so it doesnt bug out when changing model pages
 	const { fitView } = useReactFlow();
 	const containerRef = useRef<HTMLDivElement>(null);

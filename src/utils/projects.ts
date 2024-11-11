@@ -1,9 +1,9 @@
-import { IProjectData } from "./hooks/useActiveProject";
+import { ProjectData } from "./hooks/useActiveProject";
 
 export const addProvidersToProjectData = (
-	projectData: IProjectData,
+	projectData: ProjectData,
 	dataSources: { data_source: string; provider_name: string }[]
-): IProjectData => {
+): ProjectData => {
 	const uniqueValues = [
 		...new Set(dataSources.map((item) => item.data_source))
 	];

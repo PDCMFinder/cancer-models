@@ -11,8 +11,8 @@ import {
 	Engraftment,
 	ExternalModelLinkByType,
 	ExtLinks,
-	IImmuneMarkerAPI,
 	ImmuneMarker,
+	ImmuneMarkerAPI,
 	KnowledgeGraph,
 	Marker,
 	ModelImage,
@@ -444,7 +444,7 @@ async function getModelImmuneMarkers(modelId: string): Promise<ImmuneMarker[]> {
 
 	return response.json().then((d) => {
 		const parsedImmuneMarkers: ImmuneMarker[] = d.reduce(
-			(result: ImmuneMarker[], current: IImmuneMarkerAPI) => {
+			(result: ImmuneMarker[], current: ImmuneMarkerAPI) => {
 				// Check for sample id and type, since there might be a marker of different type but same id
 				const existingSampleId = result.find(
 					(item: ImmuneMarker) =>
@@ -489,7 +489,7 @@ async function getModelImmuneMarkers(modelId: string): Promise<ImmuneMarker[]> {
 				...new Set<string>(
 					d
 						.map(
-							(item: IImmuneMarkerAPI) =>
+							(item: ImmuneMarkerAPI) =>
 								item.marker_type === type && item.marker_name
 						)
 						.filter((el: string) => el) // remove empty values

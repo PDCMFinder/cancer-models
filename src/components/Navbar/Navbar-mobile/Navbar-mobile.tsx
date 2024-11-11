@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import ReactGA from "react-ga4";
-import { INavProps } from "../../../../types/globalTypes";
+import { NavProps } from "../../../../types/globalTypes";
 import handleBodyClass from "../../../utils/handleBodyClass";
 import { Route, routesWithGAEvents } from "../../../utils/routes";
 import ActiveLink from "../../ActiveLink/ActiveLink";
@@ -15,7 +15,7 @@ export enum AddRemove {
 	remove = "remove"
 }
 
-const NavMobile = (props: INavProps) => {
+const NavMobile = (props: NavProps) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const router = useRouter();
 	// Close menu when changing page

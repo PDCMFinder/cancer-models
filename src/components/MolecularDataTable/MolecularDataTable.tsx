@@ -12,7 +12,7 @@ import InputAndLabel from "../Input/InputAndLabel";
 import Loader from "../Loader/Loader";
 import Pagination from "../Pagination/Pagination";
 
-type IMolecularDataTableProps = {
+type MolecularDataTableProps = {
 	data: MolecularData;
 	handleDownload: (data: MolecularData) => void;
 };
@@ -32,7 +32,7 @@ type DataDetailsRow = {
 	external_db_links: any[] | null;
 };
 
-const MolecularDataTable = (props: IMolecularDataTableProps) => {
+const MolecularDataTable = (props: MolecularDataTableProps) => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	let columnsToDisplay: { key: string; name: string }[] = [];
 	const data = props.data ?? {},

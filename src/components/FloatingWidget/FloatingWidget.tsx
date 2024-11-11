@@ -1,13 +1,13 @@
 import Button from "../Button/Button";
 import styles from "./FloatingWidget.module.scss";
 
-type IFloatingWidgetProps = {
+type FloatingWidgetProps = {
 	link: string;
 	children: string;
 	onClick?: () => void;
 };
 
-const FloatingWidget = (props: IFloatingWidgetProps) => {
+const FloatingWidget = (props: FloatingWidgetProps) => {
 	return (
 		<Button
 			href={props.link}

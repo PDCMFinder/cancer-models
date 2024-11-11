@@ -1,8 +1,8 @@
-import Button, { IButtonProps } from "../Button/Button";
+import Button, { ButtonProps } from "../Button/Button";
 
-type IFloatingButtonProps = {
-	priority: IButtonProps["priority"];
-	color: IButtonProps["color"];
+type FloatingButtonProps = {
+	priority: ButtonProps["priority"];
+	color: ButtonProps["color"];
 	position?: string;
 	className?: string;
 	children: JSX.Element;
@@ -16,7 +16,7 @@ const FloatingButton = ({
 	className,
 	children,
 	onClick
-}: IFloatingButtonProps) => {
+}: FloatingButtonProps) => {
 	const positionClassMap: { [key: string]: string } = {
 		bottom: "bottom-0",
 		left: "left-margin",

@@ -1,15 +1,15 @@
-import { IGitlabRelease } from "../../../types/releaseTypes";
+import { GitlabRelease } from "../../../types/releaseTypes";
 import Card from "../Card/Card";
 import styles from "./index.module.scss";
 
 type Props = {
-	releases: IGitlabRelease[];
+	releases: GitlabRelease[];
 };
 
 const ReleasesList = ({ releases }: Props) => {
 	return (
 		<>
-			{releases.map((data: IGitlabRelease) => {
+			{releases.map((data: GitlabRelease) => {
 				const repository = data.repository === "data" ? "Data" : "UI";
 				return (
 					<div className="row mb-5" key={data.released_at + data.tag_name}>

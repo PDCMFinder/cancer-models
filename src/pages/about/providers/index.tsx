@@ -15,7 +15,7 @@ import ProviderInfo from "../../../components/ProviderInfo/ProviderInfo";
 import { useActiveProject } from "../../../utils/hooks/useActiveProject";
 import projectsSettings from "../../../utils/projectSettings.json";
 
-type IProvidersProps = {
+type ProvidersProps = {
 	allProvidersBasics: {
 		id: string;
 		parsedContent: string;
@@ -25,16 +25,16 @@ type IProvidersProps = {
 	}[];
 };
 
-type IProjectButtonProps = {
+type ProjectButtonProps = {
 	projectName: string;
 	isActive: boolean;
 	mainColor: string;
 	secondaryColor: string;
 	onClick: () => void;
-	direction?: IProjectButtonsProps["direction"];
+	direction?: ProjectButtonsProps["direction"];
 };
 
-type IProjectButtonsProps = {
+type ProjectButtonsProps = {
 	direction?: "row" | "column";
 	activeProject: string;
 	onClick: (projectName: string) => void;
@@ -81,7 +81,7 @@ const ProjectButton = ({
 	secondaryColor,
 	onClick,
 	direction
-}: IProjectButtonProps) => {
+}: ProjectButtonProps) => {
 	const buttonColors = getButtonStyleColors(
 		isActive,
 		mainColor,
@@ -123,7 +123,7 @@ export const ProjectButtons = ({
 	activeProject,
 	onClick,
 	direction
-}: IProjectButtonsProps) => (
+}: ProjectButtonsProps) => (
 	<div
 		className={`d-flex flex-column align-md-center justify-content-between ${
 			direction === "row" ? "flex-md-row" : ""
@@ -149,7 +149,7 @@ export const ProjectButtons = ({
 	</div>
 );
 
-const Providers: NextPage<IProvidersProps> = ({ allProvidersBasics }) => {
+const Providers: NextPage<ProvidersProps> = ({ allProvidersBasics }) => {
 	const { activeProjectData, isLoadingProviders, handleProjectClick } =
 		useActiveProject();
 

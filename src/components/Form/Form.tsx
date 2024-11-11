@@ -1,12 +1,12 @@
 import { FormEvent } from "react";
 
-type IFormProps = {
+type FormProps = {
 	children: string | JSX.Element | JSX.Element[];
 	className?: string;
 	onSubmit: Function;
 };
 
-const Form = (props: IFormProps) => {
+const Form = (props: FormProps) => {
 	const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		props.onSubmit(e);

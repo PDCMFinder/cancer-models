@@ -2,7 +2,7 @@ import { CSSProperties } from "react";
 import Tooltip from "../Tooltip/Tooltip";
 import styles from "./QualityBadge.module.scss";
 
-type IQualityBadgeProps = {
+type QualityBadgeProps = {
 	className?: string;
 	id?: string;
 	containerClassName?: string;
@@ -10,7 +10,7 @@ type IQualityBadgeProps = {
 	style?: CSSProperties;
 };
 
-const QualityBadge = (props: IQualityBadgeProps) => {
+const QualityBadge = (props: QualityBadgeProps) => {
 	return (
 		<div className={props.containerClassName} id={props.id}>
 			<Tooltip

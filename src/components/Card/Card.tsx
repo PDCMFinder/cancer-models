@@ -1,7 +1,7 @@
 import { CSSProperties } from "react";
 import styles from "./Card.module.scss";
 
-type ICardProps = {
+type CardProps = {
 	className?: string;
 	id?: string;
 	header?: JSX.Element;
@@ -14,7 +14,7 @@ type ICardProps = {
 	"data-test"?: string;
 };
 
-const Card = (props: ICardProps) => {
+const Card = (props: CardProps) => {
 	let cardClassName = props.className,
 		header = props.header,
 		headerClassName = props.headerClassName ? props.headerClassName : "",

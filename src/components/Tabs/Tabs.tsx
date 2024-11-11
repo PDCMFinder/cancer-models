@@ -1,25 +1,25 @@
 import { useState } from "react";
-import { ITabProps } from "../../../types/globalTypes";
+import { TabProps } from "../../../types/globalTypes";
 import Button from "../Button/Button";
 import styles from "./Tabs.module.scss";
 
-type ITabsProps = {
-	children: ITabProps[];
+type TabsProps = {
+	children: TabProps[];
 	className?: string;
 	labelClassName?: string;
 	contentClassName?: string;
 	packedLabels?: boolean;
 };
 
-const Tabs = (props: ITabsProps) => {
+const Tabs = (props: TabsProps) => {
 	const [shownContent, setShownContent] = useState<
-		ITabProps["props"] | undefined
+		TabProps["props"] | undefined
 	>(props.children[0].props);
 
 	const handleTabChange = (label: string) => {
 		let openTab = props.children.find((tab) => tab.props.label === label);
 
-		setShownContent(openTab?.props as ITabProps["props"]);
+		setShownContent(openTab?.props as TabProps["props"]);
 	};
 
 	let packedLabels = props.packedLabels;

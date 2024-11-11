@@ -1,7 +1,6 @@
-import React from "react";
-import { ILabelProps } from "../../../types/globalTypes";
+import { LabelProps } from "../../../types/globalTypes";
 
-const Label = (props: ILabelProps) => {
+const Label = (props: LabelProps) => {
 	return (
 		<label
 			style={props.style}

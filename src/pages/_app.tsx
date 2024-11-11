@@ -12,8 +12,6 @@ import handleBodyClass from "../utils/handleBodyClass";
 
 const USERNAVIGATION_MOUSE = "userNavigation-mouse",
 	USERNAVIGATION_KEYBOARD = "userNavigation-keyboard",
-	ADD = "add",
-	REMOVE = "remove",
 	KEYDOWN = "keydown",
 	MOUSEMOVE = "mousemove",
 	MOUSEDOWN = "mousedown";
@@ -33,7 +31,6 @@ if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
 	require("../mocks");
 }
 
-/* @ts-ignore */
 function CancerModels({ Component, pageProps }: AppProps) {
 	const [cookies] = useCookies();
 	const [isConsented, setIsConsented] = useState(false);

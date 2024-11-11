@@ -411,8 +411,15 @@ textarea {
 	&-transparent {
 		border-color: transparent !important;
 	}
+	&-current {
+		border-color: currentColor;
+	}
 }
 .border {
+	&-xs {
+		border-width: 1px;
+		border-style: solid;
+	}
 	&-none {
 		border: none !important;
 	}

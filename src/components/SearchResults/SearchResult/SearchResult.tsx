@@ -43,7 +43,7 @@ const dataTypes = [
 	}
 ];
 
-type ISearchResultProps = {
+type SearchResultProps = {
 	className?: string;
 	data: SearchResultType;
 	addModelToCompare: (
@@ -52,7 +52,7 @@ type ISearchResultProps = {
 	compareCheck: boolean;
 };
 
-const SearchResult = (props: ISearchResultProps) => {
+const SearchResult = (props: SearchResultProps) => {
 	const { windowWidth = 0 } = useWindowDimensions();
 	const bpLarge = breakPoints.large;
 	const {

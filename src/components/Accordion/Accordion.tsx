@@ -1,50 +1,66 @@
-import { CSSProperties, useState } from "react";
-import Button from "../Button/Button";
-import styles from "./Accordion.module.scss";
+import React, { useEffect, useState } from "react";
+import AccordionItem, { AccordionItemProps } from "./AccordionItem";
 
-type IAccordionProps = {
-	style?: CSSProperties;
-	buttonClassName?: string;
+// really doesn't do anything, but we'll have it here for reference
+type AccordionChildren = React.ReactElement<AccordionItemProps>;
+
+export type AccordionProps = {
+	allowMultipleOpen?: boolean;
+	children: AccordionChildren | AccordionChildren[];
 	className?: string;
-	id: string;
-	contentClassName?: string;
-	open?: boolean;
-	children: JSX.Element;
 };
 
-const Accordion = (props: IAccordionProps) => {
-	const [isOpen, setIsOpen] = useState(props.open);
+const Accordion = ({
+	allowMultipleOpen,
+	children,
+	className
+}: AccordionProps) => {
+	const [openItems, setOpenItems] = useState<string[]>([]);
 
-	let ariaId = props.id.split(" ").join(""),
-		contentClassName = props.contentClassName ?? "",
-		buttonClassName = props.buttonClassName ?? "";
+	useEffect(() => {
+		// all of this so we don't have to use context just for one component ( overkill )
+		const defaultOpenItems = React.Children.toArray(children)
+			.filter(
+				(child): child is React.ReactElement<AccordionItemProps> =>
+					React.isValidElement(child) &&
+					child.type === AccordionItem &&
+					child.props.isDefaultOpen
+			)
+			.map((child) => child.props.title);
 
-	const handleAccordionFold = () => {
-		setIsOpen((prev) => !prev);
+		setOpenItems(defaultOpenItems);
+	}, [children]);
+
+	const toggleItem = (title: string) => {
+		if (allowMultipleOpen) {
+			setOpenItems((prev) =>
+				prev.includes(title)
+					? prev.filter((item) => item !== title)
+					: [...prev, title]
+			);
+		} else {
+			setOpenItems((prev) => (prev.includes(title) ? [] : [title]));
+		}
+		console.log(openItems);
 	};
 
 	return (
-		<div className={props.className} style={props.style}>
-			<Button
-				color="dark"
-				priority="secondary"
-				className={`mt-1 mb-0 w-100 text-capitalize bc-transparent ${
-					isOpen ? styles["Accordion_label-active"] : ""
-				} ${buttonClassName} ${styles.Accordion_label}`.trim()}
-				aria-controls={ariaId}
-				arrow
-				arrowDirection={isOpen ? "right" : "down"}
-				onClick={handleAccordionFold}
-			>
-				{props.id}
-			</Button>
-			<div id={ariaId}>
-				{isOpen && (
-					<div className={`px-1 ${contentClassName}`.trim()}>
-						{props.children}
-					</div>
-				)}
-			</div>
+		<div className={className}>
+			{/* all of this so we don't have to use context just for one component ( overkill ) */}
+			{React.Children.map(children, (child) => {
+				if (
+					React.isValidElement<AccordionItemProps>(child) &&
+					child.type === AccordionItem
+				) {
+					return React.cloneElement(child, {
+						key: child.props.title,
+						isOpen: openItems.includes(child.props.title),
+						onToggle: toggleItem
+					});
+				}
+
+				return child;
+			})}
 		</div>
 	);
 };

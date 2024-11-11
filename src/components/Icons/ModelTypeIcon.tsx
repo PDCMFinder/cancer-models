@@ -1,9 +1,9 @@
-import CavendishIcon, { ICavendishIconProps } from "./CavendishIcon";
+import CavendishIcon, { CavendishIconProps } from "./CavendishIcon";
 import MouseIcon from "./MouseIcon";
 import OrganoidIcon from "./OrganoidIcon";
 
-type IIconComponent = {
-	[key: string]: (props: ICavendishIconProps) => JSX.Element;
+type IconComponent = {
+	[key: string]: (props: CavendishIconProps) => JSX.Element;
 };
 
 const ModelTypeIcon = ({
@@ -12,10 +12,10 @@ const ModelTypeIcon = ({
 	...props
 }: {
 	modelType: string;
-	size: ICavendishIconProps["size"];
+	size: CavendishIconProps["size"];
 	className?: string;
 }) => {
-	const icons: IIconComponent = {
+	const icons: IconComponent = {
 		PDX: MouseIcon,
 		organoid: OrganoidIcon,
 		"cell line": CavendishIcon

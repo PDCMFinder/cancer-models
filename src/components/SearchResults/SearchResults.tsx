@@ -1,13 +1,13 @@
 import { SearchResult as SearchResultType } from "../../types/Search.model";
 import SearchResult from "./SearchResult/SearchResult";
 
-type ISearchResultsProps = {
+type SearchResultsProps = {
 	compareModel: (id: string) => void;
 	modelsToCompare: string[];
 	data: SearchResultType[];
 };
 
-const SearchResults = (props: ISearchResultsProps) => {
+const SearchResults = (props: SearchResultsProps) => {
 	return (
 		<>
 			{props.data.map((result) => {
