@@ -32,7 +32,7 @@ const DataCountCard = (props: DataCountCardProps) => {
 							href={`/search?filters=model_type:${d.modelType}`}
 							className="p text-noDecoration"
 						>
-							<div className="d-flex align-items-center">
+							<div className="d-flex align-center">
 								<ModelTypeIcon
 									modelType={d.modelType}
 									size={props.iconSize ?? "1em"}

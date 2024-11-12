@@ -1,7 +1,10 @@
 context("Mobile navbar", () => {
 	beforeEach(() => {
 		cy.visit("");
-		cy.setCookie("cm_feedback", "true");
+		cy.setCookie(
+			"cm_consent",
+			JSON.stringify({ ga: "accepted", hj: "accepted" })
+		);
 		cy.reload();
 	});
 
