@@ -1,13 +1,15 @@
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import ReactGA from "react-ga4";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Card from "../Card/Card";
 import CookieConsentBanner from "../CookieConsentBanner/CookieConsentBanner";
-import FeedbackIcon from "../FeedbackIcon/FeedbackIcon";
 import FloatingButton from "../FloatingWidget/FloatingButton";
 import CloseIcon from "../Icons/CloseIcon/CloseIcon";
+import CookieIcon from "../Icons/CookieIcon";
+import FeedbackIcon from "../Icons/FeedbackIcon";
 import Loader from "../Loader/Loader";
 import Navbar from "../Navbar/Navbar";
 
@@ -26,7 +28,9 @@ const DynamicModal = dynamic(() => import("../Modal/Modal"), {
 type LayoutProps = { children: JSX.Element };
 
 const Layout = (props: LayoutProps) => {
+	const [cookies] = useCookies();
 	const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+	const [cookieModalIsOpen, setCookieModalIsOpen] = useState(true);
 	const [queryClient] = useState(
 		() =>
 			new QueryClient({
@@ -39,10 +43,16 @@ const Layout = (props: LayoutProps) => {
 			})
 	);
 
+	useEffect(() => {
+		setCookieModalIsOpen(
+			!cookies["cm_consent"]?.["ga"] || !cookies["cm_consent"]?.["hj"]
+		);
+	}, [cookies["cm_consent"]]);
+
 	return (
 		<>
 			<QueryClientProvider client={queryClient}>
-				<CookieConsentBanner />
+				{cookieModalIsOpen && <CookieConsentBanner />}
 				<Navbar />
 				<main>{props.children}</main>
 				{/* bottom right survey bubble */}
@@ -64,6 +74,17 @@ const Layout = (props: LayoutProps) => {
 						</p>
 						<FeedbackIcon />
 					</div>
+				</FloatingButton>
+				<FloatingButton
+					priority="secondary"
+					color="dark"
+					position="bottom right"
+					className="p-1"
+					fromRight={-5}
+					fromBottom={4}
+					onClick={() => setCookieModalIsOpen(true)}
+				>
+					<CookieIcon />
 				</FloatingButton>
 				<ReactQueryDevtools initialIsOpen={false} />
 				<DynamicFooter />
