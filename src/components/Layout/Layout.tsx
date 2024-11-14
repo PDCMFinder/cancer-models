@@ -52,7 +52,9 @@ const Layout = (props: LayoutProps) => {
 	return (
 		<>
 			<QueryClientProvider client={queryClient}>
-				{cookieModalIsOpen && <CookieConsentBanner />}
+				{cookieModalIsOpen && (
+					<CookieConsentBanner setCookieModalIsOpen={setCookieModalIsOpen} />
+				)}
 				<Navbar />
 				<main>{props.children}</main>
 				{/* bottom right survey bubble */}

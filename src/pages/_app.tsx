@@ -64,6 +64,7 @@ function CancerModels({ Component, pageProps }: AppProps) {
 		};
 	}, []);
 
+	const router = useRouter();
 	useEffect(() => {
 		setIsConsented({
 			ga: cookies["cm_consent"]?.ga,
@@ -78,13 +79,13 @@ function CancerModels({ Component, pageProps }: AppProps) {
 		isConsented.hj === CookieConditions.accepted ? (
 			<Script id="hotjar" strategy="afterInteractive">
 				{`(function(h,o,t,j,a,r){
-                h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-                h._hjSettings={hjid:3209855,hjsv:6};
-                a=o.getElementsByTagName('head')[0];
-                r=o.createElement('script');r.async=1;
-                r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-                a.appendChild(r);
-              })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
+          h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+          h._hjSettings={hjid:3209855,hjsv:6};
+          a=o.getElementsByTagName('head')[0];
+          r=o.createElement('script');r.async=1;
+          r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+          a.appendChild(r);
+        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
 			</Script>
 		) : null;
 
@@ -98,11 +99,11 @@ function CancerModels({ Component, pageProps }: AppProps) {
 				/>
 				<Script id="google-analytics" strategy="afterInteractive">
 					{`window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-34S5KH94SX', {
-                page_path: window.location.pathname,
-              });`}
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-34S5KH94SX', {
+              page_path: window.location.pathname,
+          });`}
 				</Script>
 			</>
 		) : null;

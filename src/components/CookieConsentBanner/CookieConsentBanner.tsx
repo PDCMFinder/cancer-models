@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { useRef, useState } from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 import AccordionItem from "../Accordion/AccordionItem";
 import Button from "../Button/Button";
@@ -17,7 +17,13 @@ export enum CookieConditions {
 	rejected = "rejected"
 }
 
-const CookieConsentBanner = () => {
+type CookieConsentBannerProps = {
+	setCookieModalIsOpen: Dispatch<SetStateAction<boolean>>;
+};
+
+const CookieConsentBanner = ({
+	setCookieModalIsOpen
+}: CookieConsentBannerProps) => {
 	const [cookies, setCookie] = useCookies();
 	const [choosingCookies, setChoosingCookies] = useState(false);
 	const gaRef = useRef<HTMLInputElement | null>(null);
@@ -39,6 +45,7 @@ const CookieConsentBanner = () => {
 						<CloseIcon
 							color="dark"
 							onClick={() => {
+								setCookieModalIsOpen(false);
 								// if cookies are already set and user closes modal, we want to keep them as they are
 								if (
 									!cookies["cm_consent"]?.["ga"] ||
