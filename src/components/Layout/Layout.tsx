@@ -1,15 +1,12 @@
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
+import { useState } from "react";
 import ReactGA from "react-ga4";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import Card from "../Card/Card";
-import CookieConsentBanner from "../CookieConsentBanner/CookieConsentBanner";
+import CookieConsent from "../CookieConsent/CookieConsent";
 import FloatingButton from "../FloatingWidget/FloatingButton";
 import CloseIcon from "../Icons/CloseIcon/CloseIcon";
-import CookieIcon from "../Icons/CookieIcon";
-import FeedbackIcon from "../Icons/FeedbackIcon";
 import Loader from "../Loader/Loader";
 import Navbar from "../Navbar/Navbar";
 
@@ -28,9 +25,7 @@ const DynamicModal = dynamic(() => import("../Modal/Modal"), {
 type LayoutProps = { children: JSX.Element };
 
 const Layout = (props: LayoutProps) => {
-	const [cookies] = useCookies();
 	const [showFeedbackModal, setShowFeedbackModal] = useState(false);
-	const [cookieModalIsOpen, setCookieModalIsOpen] = useState(true);
 	const [queryClient] = useState(
 		() =>
 			new QueryClient({
@@ -43,20 +38,12 @@ const Layout = (props: LayoutProps) => {
 			})
 	);
 
-	useEffect(() => {
-		setCookieModalIsOpen(
-			!cookies["cm_consent"]?.["ga"] || !cookies["cm_consent"]?.["hj"]
-		);
-	}, [cookies["cm_consent"]]);
-
 	return (
 		<>
 			<QueryClientProvider client={queryClient}>
-				{cookieModalIsOpen && (
-					<CookieConsentBanner setCookieModalIsOpen={setCookieModalIsOpen} />
-				)}
 				<Navbar />
 				<main>{props.children}</main>
+				<CookieConsent />
 				{/* bottom right survey bubble */}
 				<FloatingButton
 					onClick={() => {
@@ -69,24 +56,15 @@ const Layout = (props: LayoutProps) => {
 					className="p-2 br-round"
 					priority="primary"
 					color="dark"
+					fromBottom={80}
+					fromRight={-25}
 				>
 					<div className="d-flex align-center">
 						<p className="mb-0 mr-2 text-small">
 							We&apos;d love your (quick) feedback!
 						</p>
-						<FeedbackIcon />
+						{/* <FeedbackIcon /> */}
 					</div>
-				</FloatingButton>
-				<FloatingButton
-					priority="secondary"
-					color="dark"
-					position="bottom right"
-					className="p-1"
-					fromRight={-5}
-					fromBottom={4}
-					onClick={() => setCookieModalIsOpen(true)}
-				>
-					<CookieIcon />
 				</FloatingButton>
 				<ReactQueryDevtools initialIsOpen={false} />
 				<DynamicFooter />
