@@ -46,6 +46,8 @@ const SearchFilterContent = (props: SearchFilterContentProps) => {
 					selection = selectedFacetObj?.selection,
 					operator = selectedFacetObj?.operator;
 
+				const defaultValues = optionSelectObj(selection);
+
 				const displayOperators = facetType === "multivalued";
 
 				if (facetType === "autocomplete" || facetType === "multivalued") {
@@ -53,6 +55,7 @@ const SearchFilterContent = (props: SearchFilterContentProps) => {
 						<>
 							<MultivaluedSearchFilter
 								facet={facet}
+								defaultValues={defaultValues}
 								onFilterChange={props.onFilterChange}
 								operator={operator}
 							/>

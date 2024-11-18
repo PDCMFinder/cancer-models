@@ -188,7 +188,8 @@ const Search: NextPage = () => {
 			};
 
 			data?.forEach((section) =>
-				section.facets.forEach((facet) => {
+				section.facets.forEach((facet: any) => {
+					//TODO fix type
 					addInitialSearchFilter(facet.facetId);
 				})
 			);
@@ -467,6 +468,7 @@ const Search: NextPage = () => {
 								id="searchBar"
 								name="searchBar-name"
 								isMulti
+								selection={searchFilterState}
 								onFilterChange={handleFilterChange}
 							/>
 						</div>

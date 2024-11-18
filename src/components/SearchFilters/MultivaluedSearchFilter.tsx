@@ -2,44 +2,52 @@ import { memo, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import Select from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
-import useDebounce from "../../hooks/useDebounce";
 import { onFilterChangeType } from "../../pages/search";
 import { FacetProps, FacetSectionSelection } from "../../types/Facet.model";
 import typeaheadStyles from "../../utils/typeaheadStyles";
 import Fragment from "../Fragment/Fragment";
 import { SelectOption } from "./SearchFilterContent";
 
-type MultivaluedSearchFilterProps = {
+type Props = {
 	facet: FacetProps;
-	onFilterChange: any;
+	defaultValues: SelectOption[];
+	onFilterChange: (
+		facetId: string,
+		selection: string,
+		operator: string,
+		type: onFilterChangeType["type"]
+	) => void;
 	operator: FacetSectionSelection["operator"];
 };
 
 const MultivaluedSearchFilter = ({
 	facet,
+	defaultValues,
 	onFilterChange,
 	operator
-}: MultivaluedSearchFilterProps) => {
+}: Props) => {
+	const [query, setQuery] = useState("");
+	const [facetId, setfacetId] = useState("");
 	const [typeaheadData, setTypeaheadData] = useState<SelectOption[]>();
-	const [debouncedValue, debounceValue, setDebounceValue] = useDebounce(
-		"",
-		350 // https://lawsofux.com/doherty-threshold/
-	);
 
 	let selectOptionsQuery = useQuery(
-		[facet.facetId, debouncedValue],
-		() => autoCompleteFacetOptions(facet.facetId, debouncedValue),
+		[facetId, query],
+		() => autoCompleteFacetOptions(facetId, query),
 		{
 			onSuccess(data) {
 				setTypeaheadData(data);
-			},
-			enabled: debouncedValue !== ""
+			}
 		}
 	);
 
 	useEffect(() => {
 		setTypeaheadData(selectOptionsQuery.data);
-	}, [selectOptionsQuery.data]);
+	}, [query, facetId, selectOptionsQuery.data]);
+
+	const onTypeaheadType = (facetId: string, query: string) => {
+		setQuery(query);
+		setfacetId(facetId);
+	};
 
 	const placeholder = facet.placeholder
 		? `Eg. ${facet.placeholder}`
@@ -50,9 +58,11 @@ const MultivaluedSearchFilter = ({
 			closeMenuOnSelect
 			blurInputOnSelect
 			isMulti
+			defaultValue={defaultValues}
+			value={defaultValues}
 			placeholder={placeholder}
-			options={debounceValue !== debouncedValue ? [] : typeaheadData}
-			onInputChange={(inputValue) => setDebounceValue(inputValue)}
+			options={typeaheadData}
+			onInputChange={(inputValue) => onTypeaheadType(facet.facetId, inputValue)}
 			onFocus={() => {
 				// reset options, theyre maintaining even after changing Selects
 				setTypeaheadData([]);
