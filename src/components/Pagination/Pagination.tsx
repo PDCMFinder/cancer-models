@@ -2,13 +2,13 @@ import useWindowDimensions from "../../hooks/useWindowDimensions";
 import breakPoints from "../../utils/breakpoints";
 import styles from "./Pagination.module.scss";
 
-type IPaginationProps = {
+type PaginationProps = {
 	totalPages: number;
 	currentPage: number;
 	onPageChange: (page: number) => void;
 };
 
-const Pagination = (props: IPaginationProps) => {
+const Pagination = (props: PaginationProps) => {
 	const { windowWidth } = useWindowDimensions();
 	const bpLarge = breakPoints.large,
 		isMobile = windowWidth && windowWidth < bpLarge,

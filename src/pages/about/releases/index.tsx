@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import { useMemo, useState } from "react";
 import { useQuery } from "react-query";
-import { IGitlabRelease } from "../../../../types/releaseTypes";
+import { GitlabRelease } from "../../../../types/releaseTypes";
 import {
 	getDataReleaseInformation,
 	getUIReleaseInformation
@@ -28,7 +28,7 @@ const Releases: NextPage<IReleasesProps> = () => {
 	);
 
 	const allReleases = useMemo(() => {
-		const combinedReleases: IGitlabRelease[] = [
+		const combinedReleases: GitlabRelease[] = [
 			...(uiReleaseData ?? []),
 			...(dataReleaseData ?? [])
 		];

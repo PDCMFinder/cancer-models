@@ -1,13 +1,14 @@
 import { CSSProperties, useEffect } from "react";
 import styles from "./Modal.module.scss";
 
-type IModalProps = {
-	children: string | JSX.Element;
+type ModalProps = {
+	children: JSX.Element;
 	modalWidth?: "100" | "50" | "auto";
 	verticalAlign?: "center" | "top";
 	className?: string;
-	handleClose: () => void;
+	handleClose?: () => void;
 	style?: CSSProperties;
+	strictClose?: boolean;
 };
 
 const Modal = ({
@@ -16,23 +17,29 @@ const Modal = ({
 	verticalAlign = "center",
 	className,
 	handleClose,
-	style
-}: IModalProps) => {
+	style,
+	strictClose
+}: ModalProps) => {
 	useEffect(() => {
 		document.body.classList.add("overflow-hidden");
 
-		// Press esc to close
-		document.body.addEventListener("keydown", (e: KeyboardEvent) => {
-			if (e.key === "Escape") {
-				handleClose();
-			}
-		});
-		return () => {
-			document.body.removeEventListener("keydown", (e: KeyboardEvent) => {
+		if (!strictClose) {
+			// Press esc to close
+			document.body.addEventListener("keydown", (e: KeyboardEvent) => {
 				if (e.key === "Escape") {
-					handleClose();
+					handleClose && handleClose();
 				}
 			});
+		}
+		return () => {
+			if (!strictClose) {
+				document.body.removeEventListener("keydown", (e: KeyboardEvent) => {
+					if (e.key === "Escape") {
+						handleClose && handleClose();
+					}
+				});
+			}
+
 			document.body.classList.remove("overflow-hidden");
 		};
 	}, []);
@@ -41,12 +48,12 @@ const Modal = ({
 		<>
 			<div
 				className={`${styles.Modal_backdrop} h-100 w-100 top-0 position-fixed`}
-				onClick={handleClose}
+				onClick={!strictClose ? handleClose : undefined}
 			></div>
 			<div
-				className={`${styles.Modal} ${styles[`Modal-${verticalAlign}`]} ${
-					className ?? ""
-				} position-fixed w-${modalWidth}`}
+				className={`${styles.Modal} ${
+					verticalAlign === "center" ? styles[`Modal-center`] : ""
+				} ${className ?? ""} position-fixed w-${modalWidth}`}
 				style={style}
 			>
 				<div className={`position-relative ${styles.Modal_content}`}>

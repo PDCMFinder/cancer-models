@@ -1,7 +1,7 @@
-import { IInputProps } from "../../../types/globalTypes";
 import { ChangeEvent } from "react";
+import { InputProps } from "../../../types/globalTypes";
 
-const Input = (props: IInputProps) => {
+const Input = (props: InputProps) => {
 	let commonInputArgs = {
 			name: props.name,
 			id: props.id ?? props.name,
@@ -16,7 +16,7 @@ const Input = (props: IInputProps) => {
 			ref: props.inputRef && props.inputRef,
 			required: props.required,
 			checked: props.checked,
-			defaultChecked: props.defaultChecked,
+			defaultChecked: props.defaultChecked
 		},
 		InputElement =
 			props.type === "textarea" ? (

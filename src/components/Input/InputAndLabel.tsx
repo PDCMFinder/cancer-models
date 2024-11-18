@@ -1,15 +1,15 @@
-import Input from "./Input";
-import Label from "./Label";
-import { IInputProps, ILabelProps } from "../../../types/globalTypes";
-import styles from "./InputAndLabel.module.scss";
 import { RefObject } from "react";
+import { InputProps, LabelProps } from "../../../types/globalTypes";
+import Input from "./Input";
+import styles from "./InputAndLabel.module.scss";
+import Label from "./Label";
 
-interface IInputAndLabel extends IInputProps, ILabelProps {
+interface IInputAndLabel extends InputProps, LabelProps {
 	className?: string;
 	labelClassName?: string;
 	inputClassName?: string;
 	value?: string;
-	onChange?: IInputProps["onChange"];
+	onChange?: InputProps["onChange"];
 	inputRef?: RefObject<HTMLInputElement>;
 }
 

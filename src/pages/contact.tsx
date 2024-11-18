@@ -12,7 +12,7 @@ import SocialMediaIcons from "../components/Icons/SocialMediaIcons";
 import InputAndLabel from "../components/Input/InputAndLabel";
 import Loader from "../components/Loader/Loader";
 
-type IFormStatus = {
+type FormStatus = {
 	status: "success" | "error" | "loading" | "";
 	message: string;
 };
@@ -22,7 +22,7 @@ const Contact: NextPage = () => {
 	const nameRef = useRef<HTMLInputElement>(null);
 	const emailRef = useRef<HTMLInputElement>(null);
 	const messageRef = useRef<HTMLInputElement>(null);
-	const [formStatus, setFormStatus] = useState<IFormStatus>({
+	const [formStatus, setFormStatus] = useState<FormStatus>({
 		status: "",
 		message: ""
 	});

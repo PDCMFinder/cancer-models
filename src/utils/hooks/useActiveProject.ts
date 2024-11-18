@@ -5,7 +5,7 @@ import { getDataSourcesByProject } from "../../apis/Search.api";
 import { addProvidersToProjectData } from "../projects";
 import projectsSettings from "../projectSettings.json";
 
-export type IProjectData = {
+export type ProjectData = {
 	project_abbreviation: string;
 	project_full_name?: string;
 	providers?: ({ data_source: string; provider_name: string } | undefined)[];
@@ -46,7 +46,7 @@ export const useActiveProject = () => {
 	const activeProjectData =
 		(projectsSettings.find(
 			(project) => project.project_abbreviation === activeProject
-		) as IProjectData) || projectsSettings[0];
+		) as ProjectData) || projectsSettings[0];
 
 	addProvidersToProjectData(activeProjectData, dataSourcesByProject ?? []);
 

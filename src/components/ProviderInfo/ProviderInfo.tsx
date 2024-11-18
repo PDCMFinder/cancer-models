@@ -3,7 +3,7 @@ import Link from "next/link";
 import Button from "../Button/Button";
 import styles from "./ProviderInfo.module.scss";
 
-type IProviderInfoProps = {
+type ProviderInfoProps = {
 	provider: {
 		id: string;
 		parsedContent: string;
@@ -13,7 +13,7 @@ type IProviderInfoProps = {
 	};
 };
 
-const ProviderInfo = ({ provider }: IProviderInfoProps) => {
+const ProviderInfo = ({ provider }: ProviderInfoProps) => {
 	const parsedProvider = provider.abbreviation.replace(" ", "-"),
 		providerName = provider.name,
 		providerId = provider.id;

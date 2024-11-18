@@ -6,7 +6,7 @@ import Button from "../../../components/Button/Button";
 import { getProviderData } from "../../../utils/providers";
 import styles from "./Provider.module.scss";
 
-type IProviderProps = {
+type ProviderProps = {
 	providerData: {
 		abbreviation: string;
 		name: string;
@@ -15,9 +15,7 @@ type IProviderProps = {
 	};
 };
 
-const Provider: NextPage<IProviderProps> = ({
-	providerData
-}: IProviderProps) => {
+const Provider: NextPage<ProviderProps> = ({ providerData }: ProviderProps) => {
 	return (
 		<>
 			{/* page metadata */}

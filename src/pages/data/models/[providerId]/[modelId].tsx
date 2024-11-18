@@ -74,7 +74,7 @@ export type TypesMap = {
 	biomarker_molecular_data: string;
 };
 
-type IDataFileConfig = { data: MolecularData; filename: string; id: string };
+type DataFileConfig = { data: MolecularData; filename: string; id: string };
 
 const ModelDetails = ({
 	metadata,
@@ -100,7 +100,7 @@ const ModelDetails = ({
 	);
 	const [selectedMolecularViewData, setSelectedMolecularViewData] =
 		useState<MolecularData>();
-	const [dataToDownload, setDataToDownload] = useState<IDataFileConfig[]>([]);
+	const [dataToDownload, setDataToDownload] = useState<DataFileConfig[]>([]);
 	const [fileDownloadStatus, setFileDownloadStatus] = useState({
 		totalFiles: 0,
 		downloadedFiles: 0,

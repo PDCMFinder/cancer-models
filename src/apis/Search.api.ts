@@ -20,14 +20,14 @@ export async function getSearchFacets(): Promise<FacetSectionProps[]> {
 			name: "Model",
 			facets: []
 		},
-		molecular_data: {
-			key: "molecular_data",
-			name: "Molecular Data",
-			facets: []
-		},
 		patient_tumour: {
 			key: "patient_tumour",
 			name: "Patient / Tumor",
+			facets: []
+		},
+		molecular_data: {
+			key: "molecular_data",
+			name: "Molecular Data",
 			facets: []
 		},
 		patient_treatment: {

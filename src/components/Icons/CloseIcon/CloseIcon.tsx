@@ -1,16 +1,12 @@
 import styles from "./CloseIcon.module.scss";
 
-type ICloseIconProps = {
+type CloseIconProps = {
 	color?: "dark" | "white";
 	className?: string;
 	onClick?: () => void;
 };
 
-const CloseIcon = ({
-	color = "white",
-	className,
-	onClick
-}: ICloseIconProps) => {
+const CloseIcon = ({ color = "white", className, onClick }: CloseIconProps) => {
 	return (
 		<button
 			className={`${className ? className : ""} ${styles.CloseIcon} ${

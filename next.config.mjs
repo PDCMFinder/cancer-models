@@ -3,8 +3,9 @@ import remarkGfm from "remark-gfm";
 
 // img-src 'self' blob: data:;
 // default-src 'self';
+// added analytic scripts for no CSP blocking
 const cspHeader = `
-    script-src 'self' 'unsafe-eval' 'unsafe-inline';
+    script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://static.hotjar.com;
     style-src 'self' 'unsafe-inline';
     font-src 'self';
     object-src 'none';
@@ -19,8 +20,8 @@ const withMDX = nextMdx({
 	extension: /\.mdx?$/,
 	options: {
 		remarkPlugins: [remarkGfm],
-		rehypePlugins: [],
-	},
+		rehypePlugins: []
+	}
 });
 
 const nextConfig = {
@@ -30,15 +31,15 @@ const nextConfig = {
 	output: "standalone",
 	i18n: {
 		locales: ["en"],
-		defaultLocale: "en",
+		defaultLocale: "en"
 	},
 	images: {
 		remotePatterns: [
 			{
 				protocol: "https",
-				hostname: "**",
-			},
-		],
+				hostname: "**"
+			}
+		]
 	},
 	async headers() {
 		return [
@@ -47,12 +48,12 @@ const nextConfig = {
 				headers: [
 					{
 						key: "Content-Security-Policy",
-						value: cspHeader.replace(/\n/g, ""),
-					},
-				],
-			},
+						value: cspHeader.replace(/\n/g, "")
+					}
+				]
+			}
 		];
-	},
+	}
 };
 
 export default withMDX(nextConfig);

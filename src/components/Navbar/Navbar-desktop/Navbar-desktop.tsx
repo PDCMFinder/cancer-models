@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ReactGA from "react-ga4";
-import { INavProps } from "../../../../types/globalTypes";
+import { NavProps } from "../../../../types/globalTypes";
 import { Route, routesWithGAEvents } from "../../../utils/routes";
 import ActiveLink from "../../ActiveLink/ActiveLink";
 import Button from "../../Button/Button";
@@ -8,7 +8,7 @@ import Card from "../../Card/Card";
 import Logotype from "../../Logotype/Logotype";
 import styles from "./Navbar-desktop.module.scss";
 
-const NavDesktop = (props: INavProps) => {
+const NavDesktop = (props: NavProps) => {
 	return (
 		<nav
 			className={`container ${styles["Navbar-desktop"]} py-3 bg-white`}

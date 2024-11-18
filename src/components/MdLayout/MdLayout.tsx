@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-type IMdLayoutProps = {
+type MdLayoutProps = {
 	children: string;
 	meta: {
 		pageTitle: string;
@@ -10,7 +10,7 @@ type IMdLayoutProps = {
 	};
 };
 
-const MdLayout = ({ children, meta }: IMdLayoutProps) => {
+const MdLayout = ({ children, meta }: MdLayoutProps) => {
 	return (
 		<>
 			{/* page metadata */}

@@ -7,12 +7,12 @@ import Card from "../Card/Card";
 import ModelTypeIcon from "../Icons/ModelTypeIcon";
 import Loader from "../Loader/Loader";
 
-type IDataCountCardProps = {
+type DataCountCardProps = {
 	layout: "vertical" | "horizontal";
 	iconSize?: CSSSize;
 };
 
-const DataCountCard = (props: IDataCountCardProps) => {
+const DataCountCard = (props: DataCountCardProps) => {
 	const isVertical = props.layout === "vertical";
 	const { data } = useQuery("modelsByTypeCounts", () => getModelsByType());
 
@@ -32,7 +32,7 @@ const DataCountCard = (props: IDataCountCardProps) => {
 							href={`/search?filters=model_type:${d.modelType}`}
 							className="p text-noDecoration"
 						>
-							<div className="d-flex align-items-center">
+							<div className="d-flex align-center">
 								<ModelTypeIcon
 									modelType={d.modelType}
 									size={props.iconSize ?? "1em"}

@@ -1,6 +1,6 @@
-import { ITabProps } from "../../../types/globalTypes";
+import { TabProps } from "../../../types/globalTypes";
 
-const Tab = (props: ITabProps["props"]) => {
+const Tab = (props: TabProps["props"]) => {
 	return <div>{props.content}</div>;
 };
 

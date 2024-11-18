@@ -2,9 +2,9 @@ import Card from "../Card/Card";
 import Loader from "../Loader/Loader";
 import styles from "./SearchResultsLoader.module.scss";
 
-type ISearchResultsLoaderProps = { amount: number };
+type SearchResultsLoaderProps = { amount: number };
 
-const SearchResultsLoader = (props: ISearchResultsLoaderProps) => {
+const SearchResultsLoader = (props: SearchResultsLoaderProps) => {
 	const results = [];
 
 	let i = 0;

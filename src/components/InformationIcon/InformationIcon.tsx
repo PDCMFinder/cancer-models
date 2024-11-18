@@ -1,9 +1,9 @@
 import Tooltip from "../Tooltip/Tooltip";
 import styles from "./InformationIcon.module.scss";
 
-type IInformationIconProps = { information: string };
+type InformationIconProps = { information: string };
 
-const InformationIcon = ({ information }: IInformationIconProps) => {
+const InformationIcon = ({ information }: InformationIconProps) => {
 	return (
 		<Tooltip
 			className="d-inline-block ml-1"

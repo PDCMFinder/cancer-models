@@ -3,9 +3,9 @@ import Card from "../Card/Card";
 import Form from "../Form/Form";
 import InputAndLabel from "../Input/InputAndLabel";
 
-type IFeedbackSectionProps = { backgroundColor: "light" | "dark" | "white" };
+type FeedbackSectionProps = { backgroundColor: "light" | "dark" | "white" };
 
-const FeedbackSection = (props: IFeedbackSectionProps) => {
+const FeedbackSection = (props: FeedbackSectionProps) => {
 	let backgroundColorClass = null;
 
 	switch (props.backgroundColor) {

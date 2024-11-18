@@ -1,6 +1,10 @@
 import Select from "react-select";
 import { onFilterChangeType } from "../../pages/search";
-import { FacetProps, FacetSidebarSelection } from "../../types/Facet.model";
+import {
+	FacetProps,
+	FacetSectionProps,
+	FacetSidebarSelection
+} from "../../types/Facet.model";
 import { ethnicityCategories } from "../../utils/collapseEthnicity";
 import typeaheadStyles from "../../utils/typeaheadStyles";
 import InformationIcon from "../InformationIcon/InformationIcon";
@@ -10,7 +14,7 @@ import MultivaluedSearchFilter from "./MultivaluedSearchFilter";
 type SearchFilterContentProps = {
 	data: FacetProps[];
 	facetSelection: FacetSidebarSelection;
-	facet: any;
+	facet: FacetSectionProps;
 	onFilterChange: (
 		facetId: string,
 		selection: string,

@@ -79,7 +79,6 @@ const Tutorials: NextPage = () => {
 									></iframe>
 									{caption && (
 										<div
-											key={src}
 											dangerouslySetInnerHTML={{
 												__html: `<p class='text-smaller mb-0'>${caption}</p>`
 											}}

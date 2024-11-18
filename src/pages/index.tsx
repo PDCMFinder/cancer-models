@@ -102,11 +102,13 @@ const Home: NextPage = () => {
 									<>
 										<div className="row flex-lg-row-reverse mb-3">
 											<div className="col-12 col-md-6 col-lg-3">
-												<img
+												<Image
 													src={activeProjectData.project_settings.logo}
 													alt={`${activeProjectData.project_full_name} logo`}
 													title={`${activeProjectData.project_full_name}`}
 													className="w-50 h-auto mx-auto mb-2 mb-md-0 w-lg-auto mr-lg-0"
+													height={120}
+													width={120}
 													style={{
 														maxHeight: "120px",
 														maxWidth: "100%"
@@ -150,7 +152,10 @@ const Home: NextPage = () => {
 													className="w-auto h-auto m-auto"
 													width={300}
 													height={100}
-													style={{ maxHeight: "100px", maxWidth: "75%" }}
+													style={{
+														maxHeight: "100px",
+														maxWidth: "75%"
+													}}
 												/>
 											</Link>
 											<p className="text-small text-muted">

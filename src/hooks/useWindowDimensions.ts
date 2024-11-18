@@ -2,12 +2,12 @@ const RESIZE = "resize";
 
 import { useEffect, useState } from "react";
 
-type IWindowDimensions = {
+type WindowDimensions = {
 	windowWidth: number | undefined;
 	windowHeight: number | undefined;
 };
 
-const getWindowDimensions = (): IWindowDimensions => {
+const getWindowDimensions = (): WindowDimensions => {
 	let windowWidth, windowHeight;
 
 	if (typeof window !== "undefined") {
@@ -21,8 +21,8 @@ const getWindowDimensions = (): IWindowDimensions => {
 	};
 };
 
-const useWindowDimensions = (): IWindowDimensions => {
-	const [windowDimensions, setWindowDimensions] = useState<IWindowDimensions>({
+const useWindowDimensions = (): WindowDimensions => {
+	const [windowDimensions, setWindowDimensions] = useState<WindowDimensions>({
 		windowWidth: undefined,
 		windowHeight: undefined
 	});

@@ -61,9 +61,9 @@ const inputTypes = [
 	"week"
 ] as const;
 
-export type INavProps = { routes: Route[] };
+export type NavProps = { routes: Route[] };
 
-export type ILabelProps = {
+export type LabelProps = {
 	label: string;
 	forId: string;
 	name: string;
@@ -71,7 +71,7 @@ export type ILabelProps = {
 	style?: CSSProperties;
 };
 
-export type IInputProps = {
+export type InputProps = {
 	name: string;
 	id?: string;
 	type: typeof inputTypes[number] | "textarea";
@@ -89,14 +89,14 @@ export type IInputProps = {
 	defaultChecked?: boolean;
 };
 
-export type ITabProps = {
+export type TabProps = {
 	props: {
 		label: string;
 		content: any;
 	};
 };
 
-export type ISearchFiltersProps = {
+export type SearchFiltersProps = {
 	filterData: {
 		facet_section: string;
 		facet_filters: {
@@ -108,7 +108,7 @@ export type ISearchFiltersProps = {
 	}[];
 };
 
-export type ISearchResult = {
+export type SearchResult = {
 	patient_age: string;
 	patient_sex: string;
 	external_model_id: string;
