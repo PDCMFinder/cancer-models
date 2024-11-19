@@ -1,3 +1,4 @@
+import { ChangeEvent } from "react";
 import Select from "react-select";
 import { onFilterChangeType } from "../../pages/search";
 import {
@@ -25,13 +26,12 @@ type SearchFilterContentProps = {
 
 export type SelectOption = { label: string; value: string };
 
-const optionSelectObj = (options: string[]): SelectOption[] => {
+export const selectOptions = (options: string[]): SelectOption[] => {
 	return options?.map((value: string) => ({
 		["label"]: value,
 		["value"]: value
 	}));
 };
-
 const SearchFilterContent = (props: SearchFilterContentProps) => {
 	return (
 		<>
@@ -46,6 +46,8 @@ const SearchFilterContent = (props: SearchFilterContentProps) => {
 					selection = selectedFacetObj?.selection,
 					operator = selectedFacetObj?.operator;
 
+				const defaultValues = selectOptions(selection);
+
 				const displayOperators = facetType === "multivalued";
 
 				if (facetType === "autocomplete" || facetType === "multivalued") {
@@ -53,6 +55,7 @@ const SearchFilterContent = (props: SearchFilterContentProps) => {
 						<>
 							<MultivaluedSearchFilter
 								facet={facet}
+								defaultValues={defaultValues}
 								onFilterChange={props.onFilterChange}
 								operator={operator}
 							/>
@@ -103,14 +106,16 @@ const SearchFilterContent = (props: SearchFilterContentProps) => {
 					// Get grouped ethnicity categories from dictionary
 					const optionsSelectObj =
 						facet.facetId !== "patient_ethnicity"
-							? optionSelectObj(facetOptions)
-							: optionSelectObj(Object.keys(ethnicityCategories));
+							? selectOptions(facetOptions)
+							: selectOptions(Object.keys(ethnicityCategories));
 
 					facetContent = (
 						<Select
 							closeMenuOnSelect
 							blurInputOnSelect
 							isMulti
+							defaultValue={defaultValues}
+							value={defaultValues}
 							options={optionsSelectObj}
 							onChange={(_, actionMeta) => {
 								if (actionMeta.action === "pop-value") return;
@@ -154,7 +159,11 @@ const SearchFilterContent = (props: SearchFilterContentProps) => {
 											type="checkbox"
 											label={label}
 											checked={selection?.includes(value)} // no problem passing value since we're checking if it's boolean, if not, pass option as normally. This works for boolean filters
-											onChange={(e): void => {
+											onChange={(
+												e:
+													| ChangeEvent<HTMLInputElement>
+													| ChangeEvent<HTMLTextAreaElement>
+											): void => {
 												const target = e.target as HTMLInputElement;
 												const actionType = target.checked ? "add" : "remove";
 

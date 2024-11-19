@@ -27,6 +27,7 @@ import SearchResults from "../components/SearchResults/SearchResults";
 import SearchResultsLoader from "../components/SearchResults/SearchResultsLoader";
 import ShowHide from "../components/ShowHide/ShowHide";
 import useWindowDimensions from "../hooks/useWindowDimensions";
+import { FacetProps } from "../types/Facet.model";
 import breakPoints from "../utils/breakpoints";
 import { searchTourSteps } from "../utils/tourSteps";
 import styles from "./search.module.scss";
@@ -42,6 +43,13 @@ const DynamicModal = dynamic(import("../components/Modal/Modal"), {
 
 export type onFilterChangeType = {
 	type: "add" | "remove" | "clear" | "toggleOperator" | "init" | "substitute";
+};
+
+const ANY = "ANY",
+	ALL = "ALL";
+
+type State = {
+	[key: string]: { operator: typeof ANY | typeof ALL; selection: any[] };
 };
 
 const sortByOptions = [
@@ -119,7 +127,7 @@ const Search: NextPage = () => {
 				for (let key in state) {
 					if (key !== "search_terms") {
 						newState[key].selection = [];
-						newState[key].operator = "ANY";
+						newState[key].operator = ANY;
 					}
 				}
 			}
@@ -142,12 +150,12 @@ const Search: NextPage = () => {
 
 			if (type === "clear") {
 				newState[filterId].selection = [];
-				newState[filterId].operator = "ANY";
+				newState[filterId].operator = ANY;
 			}
 
 			if (type === "toggleOperator") {
 				newState[filterId].operator =
-					state[filterId].operator === "ANY" ? "ALL" : "ANY";
+					state[filterId].operator === ANY ? ALL : ANY;
 			}
 
 			if (filterId !== "page") {
@@ -164,16 +172,15 @@ const Search: NextPage = () => {
 		queryKey: "search-facet-sections",
 		queryFn: () => getSearchFacets(),
 		onSuccess(data) {
-			const initialSearchFilterState: any = {};
-			const stateFromUrl: any = {};
+			const initialSearchFilterState: State = {};
+			const stateFromUrl: State = {};
 			const filters = routerQuery["filters"]
 				? (routerQuery["filters"] as string).split(" AND ")
 				: [];
 			filters.forEach((filterStr) => {
 				const filterOperatorStr = filterStr.split(":")[0];
 				const filterId = filterOperatorStr.split(".")[0];
-				const operator =
-					filterOperatorStr.split(".").length > 1 ? "ALL" : "ANY";
+				const operator = filterOperatorStr.split(".").length > 1 ? ALL : ANY;
 				const selection = filterStr.split(":")[1].split(",");
 				stateFromUrl[filterId] = { operator, selection };
 			});
@@ -182,13 +189,13 @@ const Search: NextPage = () => {
 				initialSearchFilterState[id] = stateFromUrl[id]
 					? stateFromUrl[id]
 					: {
-							operator: "ANY",
+							operator: ANY,
 							selection: []
 					  };
 			};
 
 			data?.forEach((section) =>
-				section.facets.forEach((facet) => {
+				section.facets.forEach((facet: FacetProps) => {
 					addInitialSearchFilter(facet.facetId);
 				})
 			);
@@ -287,7 +294,7 @@ const Search: NextPage = () => {
 					}
 				} else {
 					const operator =
-						searchFilterState[filterId].operator !== "ANY"
+						searchFilterState[filterId].operator !== ANY
 							? `.${searchFilterState[filterId].operator}`
 							: "";
 					filterValues.push(
@@ -468,6 +475,7 @@ const Search: NextPage = () => {
 								name="searchBar-name"
 								isMulti
 								onFilterChange={handleFilterChange}
+								selection={searchFilterState}
 							/>
 						</div>
 					</div>
