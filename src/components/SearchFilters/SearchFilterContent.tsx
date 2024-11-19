@@ -25,7 +25,7 @@ type SearchFilterContentProps = {
 
 export type SelectOption = { label: string; value: string };
 
-const optionSelectObj = (options: string[]): SelectOption[] => {
+export const selectOptions = (options: string[]): SelectOption[] => {
 	return options?.map((value: string) => ({
 		["label"]: value,
 		["value"]: value
@@ -46,6 +46,8 @@ const SearchFilterContent = (props: SearchFilterContentProps) => {
 					selection = selectedFacetObj?.selection,
 					operator = selectedFacetObj?.operator;
 
+				const defaultValues = selectOptions(selection);
+
 				const displayOperators = facetType === "multivalued";
 
 				if (facetType === "autocomplete" || facetType === "multivalued") {
@@ -53,6 +55,7 @@ const SearchFilterContent = (props: SearchFilterContentProps) => {
 						<>
 							<MultivaluedSearchFilter
 								facet={facet}
+								defaultValues={defaultValues}
 								onFilterChange={props.onFilterChange}
 								operator={operator}
 							/>
@@ -103,8 +106,8 @@ const SearchFilterContent = (props: SearchFilterContentProps) => {
 					// Get grouped ethnicity categories from dictionary
 					const optionsSelectObj =
 						facet.facetId !== "patient_ethnicity"
-							? optionSelectObj(facetOptions)
-							: optionSelectObj(Object.keys(ethnicityCategories));
+							? selectOptions(facetOptions)
+							: selectOptions(Object.keys(ethnicityCategories));
 
 					facetContent = (
 						<Select

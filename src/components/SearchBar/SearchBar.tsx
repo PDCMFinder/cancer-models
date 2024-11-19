@@ -5,15 +5,20 @@ import Select from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
 import useDebounce from "../../hooks/useDebounce";
 import { onFilterChangeType } from "../../pages/search";
+import { FacetSidebarSelection } from "../../types/Facet.model";
 import typeaheadStyles from "../../utils/typeaheadStyles";
 import Fragment from "../Fragment/Fragment";
 import Label from "../Input/Label";
-import { SelectOption } from "../SearchFilters/SearchFilterContent";
+import {
+	SelectOption,
+	selectOptions
+} from "../SearchFilters/SearchFilterContent";
 
 type SearchBarProps = {
 	id: string;
 	name: string;
 	isMulti?: boolean;
+	selection?: FacetSidebarSelection;
 	onFilterChange?: (
 		facetId: string,
 		selection: string,
@@ -22,7 +27,13 @@ type SearchBarProps = {
 	) => void;
 };
 
-const SearchBar = ({ id, name, isMulti, onFilterChange }: SearchBarProps) => {
+const SearchBar = ({
+	id,
+	name,
+	isMulti,
+	onFilterChange,
+	selection
+}: SearchBarProps) => {
 	const router = useRouter();
 	const [typeaheadData, setTypeaheadData] = useState<SelectOption[]>();
 	const [debouncedValue, debounceValue, setDebounceValue] = useDebounce(
@@ -45,6 +56,8 @@ const SearchBar = ({ id, name, isMulti, onFilterChange }: SearchBarProps) => {
 		setTypeaheadData(selectOptionsQuery.data);
 	}, [selectOptionsQuery.data]);
 
+	const defaultValues = selectOptions(selection?.search_terms?.selection ?? []);
+
 	return (
 		<>
 			<Label
@@ -57,6 +70,7 @@ const SearchBar = ({ id, name, isMulti, onFilterChange }: SearchBarProps) => {
 				isLoading={selectOptionsQuery.isLoading}
 				instanceId={id}
 				id={id}
+				value={defaultValues}
 				inputId={id + "select"}
 				name={name}
 				aria-label="Search by cancer diagnosis"

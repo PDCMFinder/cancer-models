@@ -11,12 +11,14 @@ import { SelectOption } from "./SearchFilterContent";
 
 type MultivaluedSearchFilterProps = {
 	facet: FacetProps;
+	defaultValues: SelectOption[];
 	onFilterChange: any;
 	operator: FacetSectionSelection["operator"];
 };
 
 const MultivaluedSearchFilter = ({
 	facet,
+	defaultValues,
 	onFilterChange,
 	operator
 }: MultivaluedSearchFilterProps) => {
@@ -50,6 +52,8 @@ const MultivaluedSearchFilter = ({
 			closeMenuOnSelect
 			blurInputOnSelect
 			isMulti
+			defaultValue={defaultValues}
+			value={defaultValues}
 			placeholder={placeholder}
 			options={debounceValue !== debouncedValue ? [] : typeaheadData}
 			onInputChange={(inputValue) => setDebounceValue(inputValue)}
