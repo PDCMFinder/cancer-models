@@ -1,3 +1,4 @@
+import { ChangeEvent } from "react";
 import Select from "react-select";
 import { onFilterChangeType } from "../../pages/search";
 import {
@@ -31,7 +32,6 @@ export const selectOptions = (options: string[]): SelectOption[] => {
 		["value"]: value
 	}));
 };
-
 const SearchFilterContent = (props: SearchFilterContentProps) => {
 	return (
 		<>
@@ -114,6 +114,8 @@ const SearchFilterContent = (props: SearchFilterContentProps) => {
 							closeMenuOnSelect
 							blurInputOnSelect
 							isMulti
+							defaultValue={defaultValues}
+							value={defaultValues}
 							options={optionsSelectObj}
 							onChange={(_, actionMeta) => {
 								if (actionMeta.action === "pop-value") return;
@@ -157,7 +159,11 @@ const SearchFilterContent = (props: SearchFilterContentProps) => {
 											type="checkbox"
 											label={label}
 											checked={selection?.includes(value)} // no problem passing value since we're checking if it's boolean, if not, pass option as normally. This works for boolean filters
-											onChange={(e): void => {
+											onChange={(
+												e:
+													| ChangeEvent<HTMLInputElement>
+													| ChangeEvent<HTMLTextAreaElement>
+											): void => {
 												const target = e.target as HTMLInputElement;
 												const actionType = target.checked ? "add" : "remove";
 
