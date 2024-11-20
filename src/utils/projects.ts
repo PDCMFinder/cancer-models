@@ -17,12 +17,3 @@ export const addProvidersToProjectData = (
 
 	return projectData;
 };
-
-/*
-{
-  "ACC": "Alliance Against Cancer",
-  "CRO": "Cancer Research Organization",
-}
-
-providers[abbreviation]
-*/
