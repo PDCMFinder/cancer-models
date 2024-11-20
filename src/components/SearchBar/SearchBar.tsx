@@ -3,14 +3,18 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import Select from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
+import useDebounce from "../../hooks/useDebounce";
 import { onFilterChangeType } from "../../pages/search";
 import { FacetSidebarSelection } from "../../types/Facet.model";
 import typeaheadStyles from "../../utils/typeaheadStyles";
 import Fragment from "../Fragment/Fragment";
 import Label from "../Input/Label";
-import { SelectOption } from "../SearchFilters/SearchFilterContent";
+import {
+	SelectOption,
+	selectOptions
+} from "../SearchFilters/SearchFilterContent";
 
-type ISearchBarProps = {
+type SearchBarProps = {
 	id: string;
 	name: string;
 	isMulti?: boolean;
@@ -23,73 +27,72 @@ type ISearchBarProps = {
 	) => void;
 };
 
-const SearchBar = (props: ISearchBarProps) => {
-	const selectedFacetObj = props.selection && props.selection["search_terms"],
-		selection = selectedFacetObj?.selection;
-	const [query, setQuery] = useState("");
-	const [facetId, setfacetId] = useState("");
-	const [typeaheadData, setTypeaheadData] = useState<SelectOption[]>();
+const SearchBar = ({
+	id,
+	name,
+	isMulti,
+	onFilterChange,
+	selection
+}: SearchBarProps) => {
 	const router = useRouter();
+	const [typeaheadData, setTypeaheadData] = useState<SelectOption[]>();
+	const [debouncedValue, debounceValue, setDebounceValue] = useDebounce(
+		"",
+		350 // https://lawsofux.com/doherty-threshold/
+	);
 
-	let selectOptionsQuery = useQuery(
-		query,
-		() => autoCompleteFacetOptions(facetId, query),
+	const selectOptionsQuery = useQuery(
+		debouncedValue,
+		() => autoCompleteFacetOptions("search_terms", debouncedValue),
 		{
 			onSuccess(data) {
 				setTypeaheadData(data);
-			}
+			},
+			enabled: debouncedValue !== ""
 		}
 	);
 
 	useEffect(() => {
 		setTypeaheadData(selectOptionsQuery.data);
-	}, [query, facetId]);
+	}, [selectOptionsQuery.data]);
 
-	const onTypeaheadType = (facetId: string, query: string) => {
-		setQuery(query);
-		setfacetId(facetId);
-	};
-
-	const defaultValuesObj = selection?.map((value) => ({
-		["label"]: value,
-		["value"]: value
-	}));
+	const defaultValues = selectOptions(selection?.search_terms?.selection ?? []);
 
 	return (
 		<>
 			<Label
 				className="mb-0 text-white"
 				label="Search by cancer diagnosis"
-				forId={props.id}
-				name={props.name}
+				forId={id}
+				name={name}
 			/>
 			<Select
-				instanceId={props.id}
-				id={props.id}
-				inputId={props.id + "select"}
-				name={props.name}
+				isLoading={selectOptionsQuery.isLoading}
+				instanceId={id}
+				id={id}
+				value={defaultValues}
+				inputId={id + "select"}
+				name={name}
 				aria-label="Search by cancer diagnosis"
-				aria-labelledby={props.id}
+				aria-labelledby={id}
 				className="lh-1"
-				closeMenuOnSelect={props.isMulti}
-				blurInputOnSelect={props.isMulti}
-				isMulti={props.isMulti}
-				defaultValue={defaultValuesObj}
-				value={defaultValuesObj}
+				closeMenuOnSelect={isMulti}
+				blurInputOnSelect={isMulti}
+				isMulti={isMulti}
 				placeholder={"e.g. Melanoma"}
 				loadingMessage={() => "Loading data"}
 				noOptionsMessage={() => "Type to search"}
 				styles={typeaheadStyles}
 				components={{ DropdownIndicator: Fragment }}
-				options={typeaheadData}
-				onInputChange={(inputValue) =>
-					onTypeaheadType("search_terms", inputValue)
-				}
+				options={debounceValue !== debouncedValue ? [] : typeaheadData}
+				onInputChange={(inputValue) => {
+					setDebounceValue(inputValue);
+				}}
 				onChange={(option, actionMeta) => {
 					if (actionMeta.action === "pop-value") return;
 					let newOption = "",
 						action: onFilterChangeType["type"] = "add";
-					if (option && !props.isMulti) {
+					if (option && !isMulti) {
 						router.push({
 							pathname: "search",
 							// @ts-ignore
@@ -109,8 +112,8 @@ const SearchBar = (props: ISearchBarProps) => {
 								break;
 						}
 
-						props.onFilterChange &&
-							props.onFilterChange("search_terms", newOption, "", action);
+						onFilterChange &&
+							onFilterChange("search_terms", newOption, "", action);
 					}
 				}}
 			/>
