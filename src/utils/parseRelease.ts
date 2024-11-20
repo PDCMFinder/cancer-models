@@ -1,4 +1,5 @@
 import { remark } from "remark";
+import remarkGfm from "remark-gfm";
 import remarkHtml from "remark-html";
 import { GitlabRelease } from "../../types/releaseTypes";
 
@@ -11,6 +12,7 @@ const parseRelease = async (
 		v.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 	const strArr = release.tag_name.split(new RegExp(regEscape(searchTxt), "ig"));
 	const parsedDescription = await remark()
+		.use(remarkGfm)
 		.use(remarkHtml, { sanitize: true })
 		.process(release.description);
 
