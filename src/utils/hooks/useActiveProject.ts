@@ -20,33 +20,39 @@ export type ProjectData = {
 export const useActiveProject = () => {
 	const router = useRouter();
 	const { project: projectFromUrl } = router.query;
-	const [activeProject, setActiveProject] = useState<string | null>(null);
+	const [activeProject, setActiveProject] = useState<string>();
 
 	useEffect(() => {
-		if (projectFromUrl) {
-			if (Array.isArray(projectFromUrl)) {
-				setActiveProject(projectFromUrl[0]);
+		const randomProjectIndex = Math.floor(
+			Math.random() * projectsSettings.length
+		);
+		if (router.isReady) {
+			if (projectFromUrl) {
+				if (Array.isArray(projectFromUrl)) {
+					setActiveProject(projectFromUrl[0]);
+				} else {
+					setActiveProject(projectFromUrl);
+				}
 			} else {
-				setActiveProject(projectFromUrl);
+				setActiveProject(
+					projectsSettings[randomProjectIndex].project_abbreviation
+				);
 			}
-		} else if (router.isReady) {
-			setActiveProject(projectsSettings[0].project_abbreviation);
 		}
 	}, [projectFromUrl, router.isReady]);
 
 	const { data: dataSourcesByProject, isLoading: isLoadingProviders } =
 		useQuery(
-			["dataSources", activeProject],
+			["projectDataSources", activeProject],
 			() => getDataSourcesByProject(activeProject ?? ""),
 			{
 				enabled: !!activeProject // Ensure query only runs when activeProject is set
 			}
 		);
 
-	const activeProjectData =
-		(projectsSettings.find(
-			(project) => project.project_abbreviation === activeProject
-		) as ProjectData) || projectsSettings[0];
+	const activeProjectData = (projectsSettings.find(
+		(project) => project.project_abbreviation === activeProject
+	) as ProjectData) || { providers: [] };
 
 	addProvidersToProjectData(activeProjectData, dataSourcesByProject ?? []);
 
