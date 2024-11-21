@@ -1,4 +1,4 @@
-import { ProjectData } from "./hooks/useActiveProject";
+import { ProjectData } from "../hooks/useActiveProject";
 
 export const addProvidersToProjectData = (
 	projectData: ProjectData,

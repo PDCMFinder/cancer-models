@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { getDataSourcesByProject } from "../../apis/Search.api";
-import { addProvidersToProjectData } from "../projects";
-import projectsSettings from "../projectSettings.json";
+import { getDataSourcesByProject } from "../apis/Search.api";
+import { addProvidersToProjectData } from "../utils/projects";
+import projectsSettings from "../utils/projectSettings.json";
 
 export type ProjectData = {
 	project_abbreviation: string;
@@ -15,6 +15,23 @@ export type ProjectData = {
 		secondary_color: string;
 		logo?: string;
 	};
+};
+
+const randomizeProjectProviders = (providers: ProjectData["providers"]) => {
+	const newProviders = [...(providers ?? [])];
+	let currentIndex = newProviders.length ?? 0;
+
+	while (currentIndex != 0 && newProviders) {
+		const randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex--;
+
+		[newProviders[currentIndex], newProviders[randomIndex]] = [
+			newProviders[randomIndex],
+			newProviders[currentIndex]
+		];
+	}
+
+	return newProviders;
 };
 
 export const useActiveProject = () => {
@@ -55,6 +72,9 @@ export const useActiveProject = () => {
 	) as ProjectData) || { providers: [] };
 
 	addProvidersToProjectData(activeProjectData, dataSourcesByProject ?? []);
+	activeProjectData.providers = randomizeProjectProviders(
+		activeProjectData.providers
+	);
 
 	const handleProjectClick = (projectName: string) => {
 		if (projectName !== activeProject) {
