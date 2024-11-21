@@ -12,7 +12,7 @@ import Button from "../../../components/Button/Button";
 import Card from "../../../components/Card/Card";
 import Loader from "../../../components/Loader/Loader";
 import ProviderInfo from "../../../components/ProviderInfo/ProviderInfo";
-import { useActiveProject } from "../../../utils/hooks/useActiveProject";
+import { useActiveProject } from "../../../hooks/useActiveProject";
 import projectsSettings from "../../../utils/projectSettings.json";
 
 type ProvidersProps = {

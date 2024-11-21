@@ -9,9 +9,9 @@ import DataCountCard from "../components/DataCountCard/DataCountCard";
 import Label from "../components/Input/Label";
 import Loader from "../components/Loader/Loader";
 import ShowHide from "../components/ShowHide/ShowHide";
+import { useActiveProject } from "../hooks/useActiveProject";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import breakPoints from "../utils/breakpoints";
-import { useActiveProject } from "../utils/hooks/useActiveProject";
 import { ProjectButtons } from "./about/providers";
 import styles from "./index.module.scss";
 
@@ -31,7 +31,6 @@ const Home: NextPage = () => {
 	const { windowWidth } = useWindowDimensions();
 	const bpLarge = breakPoints.large;
 	const modelCount = useQuery("modelCount", () => getModelCount());
-
 	const { activeProjectData, handleProjectClick, isLoadingProviders } =
 		useActiveProject();
 
