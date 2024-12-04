@@ -41,7 +41,6 @@ const Accordion = ({
 		} else {
 			setOpenItems((prev) => (prev.includes(title) ? [] : [title]));
 		}
-		console.log(openItems);
 	};
 
 	return (
