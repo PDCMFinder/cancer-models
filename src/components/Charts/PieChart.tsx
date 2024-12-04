@@ -43,9 +43,7 @@ const PieChart = ({
 				data={[
 					{
 						values: Object.values(data),
-						labels: Object.keys(data).map((key) =>
-							key.length > 10 ? key.slice(0, 10) + "..." : key
-						),
+						labels: Object.keys(data),
 						name: "",
 						hoverinfo: "label+percent",
 						textinfo: "none",
