@@ -17,7 +17,7 @@ import {
 	getProviderCount
 } from "../apis/AggregatedData.api";
 import Button from "../components/Button/Button";
-import NewBarChart from "../components/Charts/BarChart";
+import BarChart from "../components/Charts/BarChart";
 import PieChart from "../components/Charts/PieChart";
 import Loader from "../components/Loader/Loader";
 
@@ -170,9 +170,10 @@ const Overview: NextPage = () => {
 			</section>
 			<section>
 				<div className="container">
-					<div className="row mb-5 align-center">
-						<div className="col-12">
+					<div className="row mb-5">
+						<div className="col-12 col-md-6 col-lg-4">
 							<PieChart
+								title="Models by"
 								values={[16, 15, 12, 6, 5, 4, 42, 5, 4, 42, 5, 4, 42]}
 								labels={[
 									"US",
@@ -189,9 +190,45 @@ const Overview: NextPage = () => {
 									"Indisas",
 									"Rest fosf World"
 								]}
-								hole={0}
 							/>
-							<NewBarChart />
+						</div>
+						<div className="col-md-6 col-lg-4">
+							<PieChart
+								title="Models by"
+								values={[16, 15, 12, 6, 5, 4, 42, 5, 4, 42, 5, 4, 42]}
+								labels={[
+									"US",
+									"China",
+									"European Union",
+									"Russian Federation",
+									"Brazil",
+									"India",
+									"Rest of World",
+									"Brazail",
+									"Indisa",
+									"Rest fof World",
+									"Brazails",
+									"Indisas",
+									"Rest fosf World"
+								]}
+							/>
+						</div>
+						<div className="col-md-6 col-lg-4">
+							<BarChart
+								title="Models by"
+								x={[
+									"giraffes",
+									"orangutans",
+									"monkeys",
+									"girafdfes",
+									"orangsutans",
+									"monkaeys",
+									"girafdfdes",
+									"orangsuatans",
+									"monkaseys"
+								]}
+								y={[20, 14, 23, 20, 14, 23, 20, 14, 23, 20, 14, 23]}
+							/>
 						</div>
 					</div>
 					<div className="row">

@@ -4,21 +4,22 @@ import { chartColors } from "../../utils/chartConfigs";
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
 type PieChartProps = {
+	title?: string;
 	values: string[] | number[];
 	labels: string[];
 	hole?: number;
 };
 
-const PieChart = ({ values, labels, hole }: PieChartProps) => {
+const PieChart = ({ title, values, labels, hole }: PieChartProps) => {
 	return (
 		<>
-			<div className="text-center">
-				<h2 className="h3">Models by</h2>
+			<div className="text-center h-100">
+				{title && <h2 className="h3">{title}</h2>}
 				<Plot
 					data={[
 						{
-							values,
-							labels,
+							values: values,
+							labels: labels,
 							name: "",
 							hoverinfo: "label+percent",
 							textinfo: "none",
@@ -38,7 +39,10 @@ const PieChart = ({ values, labels, hole }: PieChartProps) => {
 							}
 						],
 						showlegend: false,
-						margin: { t: 0, b: 0, l: 0, r: 0 }
+						margin: { t: 0, b: 0, l: 0, r: 0 },
+
+						height: 300,
+						width: 300
 					}}
 					config={{ displayModeBar: false, responsive: true }}
 				/>

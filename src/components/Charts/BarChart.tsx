@@ -1,43 +1,37 @@
 import dynamic from "next/dynamic";
-import { Data } from "plotly.js";
 import { chartColors } from "../../utils/chartConfigs";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
-const data = [
-	{
-		// hoverinfo: "none",
-		// text: yValue.map(String),
-		// y: yValue,
-		y: [20, 14, 23, 20, 14, 23, 20, 14, 23, 20, 14, 23],
-		x: [
-			"giraffes",
-			"orangutans",
-			"monkeys",
-			"girafdfes",
-			"orangsutans",
-			"monkaeys",
-			"girafdfdes",
-			"orangsuatans",
-			"monkaseys"
-		],
-		type: "bar",
-		hoverinfo: "label",
-		marker: {
-			color: chartColors[2]
-		}
-	}
-];
+type BarChartProps = {
+	title?: string;
+	x: string[];
+	y: string[] | number[];
+};
 
-const BarChart = () => {
+const BarChart = ({ title, x, y }: BarChartProps) => {
 	return (
 		<>
-			<div className="text-center">
-				<h2 className="h3">Models by</h2>
+			<div className="text-center h-100 w-100">
+				{title && <h2 className="h3">{title}</h2>}
 				<Plot
-					data={data as Data[]}
-					layout={{}}
-					config={{ displayModeBar: false }}
+					data={[
+						{
+							y,
+							x,
+							type: "bar",
+							hoverinfo: "x+y",
+							marker: {
+								color: chartColors[2]
+							},
+							automargin: true
+						}
+					]}
+					layout={{
+						height: 400,
+						width: 500
+					}}
+					config={{ displayModeBar: false, responsive: true }}
 				/>
 			</div>
 		</>
