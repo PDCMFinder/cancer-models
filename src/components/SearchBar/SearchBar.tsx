@@ -35,18 +35,13 @@ type SearchBarProps = {
 	) => void;
 };
 
-type Option = {
-	value: string;
-	text: string;
-};
-
-type ActionMeta<Option> =
-	| SelectOptionActionMeta<Option>
-	| DeselectOptionActionMeta<Option>
-	| RemoveValueActionMeta<Option>
-	| PopValueActionMeta<Option>
-	| ClearActionMeta<Option>
-	| CreateOptionActionMeta<Option>;
+type ActionMeta<SelectOption> =
+	| SelectOptionActionMeta<SelectOption>
+	| DeselectOptionActionMeta<SelectOption>
+	| RemoveValueActionMeta<SelectOption>
+	| PopValueActionMeta<SelectOption>
+	| ClearActionMeta<SelectOption>
+	| CreateOptionActionMeta<SelectOption>;
 
 const Input = (props: any) => (
 	<components.Input {...props} data-hj-allow={true} />
@@ -115,7 +110,10 @@ const SearchBar = ({
 				onInputChange={(inputValue: string) => {
 					setDebounceValue(inputValue);
 				}}
-				onChange={(option: Option | null, actionMeta: ActionMeta<Option>) => {
+				onChange={(
+					option: SelectOption | null,
+					actionMeta: ActionMeta<SelectOption>
+				) => {
 					if (actionMeta.action === "pop-value") return;
 					let newOption = "",
 						action: onFilterChangeType["type"] = "add";

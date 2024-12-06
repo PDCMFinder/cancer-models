@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import { useRef } from "react";
 import { chartColors } from "../../utils/chartConfigs";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
@@ -11,9 +12,11 @@ type PieChartProps = {
 };
 
 const PieChart = ({ title, values, labels, hole }: PieChartProps) => {
+	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
+
 	return (
 		<>
-			<div className="text-center h-100">
+			<div className="text-center h-100" ref={plotlyContainerRef}>
 				{title && <h2 className="h3">{title}</h2>}
 				<Plot
 					data={[
@@ -40,9 +43,8 @@ const PieChart = ({ title, values, labels, hole }: PieChartProps) => {
 						],
 						showlegend: false,
 						margin: { t: 0, b: 0, l: 0, r: 0 },
-
 						height: 300,
-						width: 300
+						width: plotlyContainerRef?.current?.clientWidth
 					}}
 					config={{ displayModeBar: false, responsive: true }}
 				/>

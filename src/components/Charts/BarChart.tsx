@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import { useRef } from "react";
 import { chartColors } from "../../utils/chartConfigs";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
@@ -10,9 +11,11 @@ type BarChartProps = {
 };
 
 const BarChart = ({ title, x, y }: BarChartProps) => {
+	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
+
 	return (
 		<>
-			<div className="text-center h-100 w-100">
+			<div className="text-center h-100 w-100" ref={plotlyContainerRef}>
 				{title && <h2 className="h3">{title}</h2>}
 				<Plot
 					data={[
@@ -28,8 +31,12 @@ const BarChart = ({ title, x, y }: BarChartProps) => {
 						}
 					]}
 					layout={{
+						margin: { l: 30, r: 0 },
+						xaxis: {
+							tickangle: 90
+						},
 						height: 400,
-						width: 500
+						width: plotlyContainerRef?.current?.clientWidth
 					}}
 					config={{ displayModeBar: false, responsive: true }}
 				/>

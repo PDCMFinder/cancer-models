@@ -1,6 +1,6 @@
 import { memo, useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import Select from "react-select";
+import Select, { ActionMeta } from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
 import useDebounce from "../../hooks/useDebounce";
 import { onFilterChangeType } from "../../pages/search";
@@ -56,7 +56,7 @@ const MultivaluedSearchFilter = ({
 			value={defaultValues}
 			placeholder={placeholder}
 			options={debounceValue !== debouncedValue ? [] : typeaheadData}
-			onInputChange={(inputValue) => setDebounceValue(inputValue)}
+			onInputChange={(inputValue: string) => setDebounceValue(inputValue)}
 			onFocus={() => {
 				// reset options, theyre maintaining even after changing Selects
 				setTypeaheadData([]);
@@ -64,7 +64,7 @@ const MultivaluedSearchFilter = ({
 			isLoading={selectOptionsQuery.isLoading}
 			loadingMessage={() => "Loading data"}
 			noOptionsMessage={() => "Type to search"}
-			onChange={(_, actionMeta) => {
+			onChange={(_: SelectOption, actionMeta: ActionMeta<SelectOption>) => {
 				if (actionMeta.action === "pop-value") return;
 
 				let option = "",

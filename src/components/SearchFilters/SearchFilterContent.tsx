@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import Select from "react-select";
+import Select, { ActionMeta } from "react-select";
 import { onFilterChangeType } from "../../pages/search";
 import {
 	FacetProps,
@@ -28,8 +28,8 @@ export type SelectOption = { label: string; value: string };
 
 export const selectOptions = (options: string[]): SelectOption[] => {
 	return options?.map((value: string) => ({
-		["label"]: value,
-		["value"]: value
+		label: value,
+		value: value
 	}));
 };
 const SearchFilterContent = (props: SearchFilterContentProps) => {
@@ -117,7 +117,10 @@ const SearchFilterContent = (props: SearchFilterContentProps) => {
 							defaultValue={defaultValues}
 							value={defaultValues}
 							options={optionsSelectObj}
-							onChange={(_, actionMeta) => {
+							onChange={(
+								_: SelectOption,
+								actionMeta: ActionMeta<SelectOption>
+							) => {
 								if (actionMeta.action === "pop-value") return;
 
 								let option = "",
