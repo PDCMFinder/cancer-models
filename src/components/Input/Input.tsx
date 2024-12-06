@@ -3,6 +3,7 @@ import { InputProps } from "../../../types/globalTypes";
 
 const Input = (props: InputProps) => {
 	let commonInputArgs = {
+			"data-hj-allow": true,
 			name: props.name,
 			id: props.id ?? props.name,
 			placeholder: props.placeholder,
