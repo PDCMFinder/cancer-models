@@ -118,7 +118,7 @@ export async function getModelsByMutatedGene() {
 
 export async function getModelsByPatientSex() {
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_sex?order=count.desc&limit=10`
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_sex?order=count.desc`
 	);
 
 	if (!response.ok) {
@@ -130,7 +130,7 @@ export async function getModelsByPatientSex() {
 
 export async function getModelsByTumourType() {
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/models_by_tumour_type?order=count.desc&limit=10`
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_tumour_type?order=count.desc`
 	);
 
 	if (!response.ok) {
@@ -154,7 +154,7 @@ export async function getModelsByPatientEthnicity() {
 
 export async function getModelsByPatientAge() {
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_age?order=count.desc&limit=10`
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_age?order=count.desc`
 	);
 
 	if (!response.ok) {

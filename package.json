@@ -43,12 +43,14 @@
 		"lodash": "^4.17.21",
 		"next": "13.5.6",
 		"normalize.css": "^8.0.1",
+		"plotly.js": "^2.35.2",
 		"react": "18.2.0",
 		"react-cookie": "^6.1.1",
 		"react-dom": "18.2.0",
 		"react-ga4": "^2.1.0",
 		"react-google-recaptcha": "^3.1.0",
 		"react-hotjar": "^6.2.0",
+		"react-plotly.js": "^2.6.0",
 		"react-query": "^3.39.3",
 		"react-select": "^5.7.0",
 		"reactflow": "^11.10.4",
@@ -79,6 +81,7 @@
 		"@types/react": "17.0.14",
 		"@types/react-dom": "17.0.14",
 		"@types/react-google-recaptcha": "^2.1.5",
+		"@types/react-plotly.js": "^2.6.3",
 		"babel-loader": "^8.3.0",
 		"css-loader": "^6.7.2",
 		"cypress": "^11.2.0",
@@ -88,13 +91,16 @@
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"eslint-plugin-storybook": "^0.6.8",
 		"msw": "^0.49.1",
+		"plotly.js-dist-min": "^2.35.2",
 		"sass": "^1.56.1",
 		"sass-loader": "^13.2.0",
 		"style-loader": "^3.3.1",
 		"typescript": "4.8.3"
 	},
 	"resolutions": {
-		"enhanced-resolve": "5.10.0"
+		"enhanced-resolve": "5.10.0",
+		"@types/react": "17.0.14",
+		"@types/react-dom": "17.0.14"
 	},
 	"msw": {
 		"workerDirectory": "public"
