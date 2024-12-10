@@ -8,10 +8,10 @@ type PieChartProps = {
 	title?: string;
 	values: string[] | number[];
 	labels: string[];
-	hole?: number;
+	holeRadius?: number;
 };
 
-const PieChart = ({ title, values, labels, hole }: PieChartProps) => {
+const PieChart = ({ title, values, labels, holeRadius }: PieChartProps) => {
 	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
 
 	return (
@@ -26,7 +26,7 @@ const PieChart = ({ title, values, labels, hole }: PieChartProps) => {
 							name: "",
 							hoverinfo: "label+percent",
 							textinfo: "none",
-							hole: hole ?? 0.5,
+							hole: holeRadius ?? 0.5,
 							type: "pie",
 							automargin: true,
 							marker: {
