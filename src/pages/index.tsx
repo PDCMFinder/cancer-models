@@ -124,7 +124,7 @@ const Home: NextPage = () => {
 													<a
 														href={`/search?filters=project_name%3A${activeProjectData.project_abbreviation}`}
 													>
-														Explore all project models
+														Explore project&apos;s models
 													</a>
 												</p>
 											</div>
