@@ -72,9 +72,6 @@ export const useActiveProject = () => {
 	) as ProjectData) || { providers: [] };
 
 	addProvidersToProjectData(activeProjectData, dataSourcesByProject ?? []);
-	activeProjectData.providers = randomizeProjectProviders(
-		activeProjectData.providers
-	);
 
 	const handleProjectClick = (projectName: string) => {
 		if (projectName !== activeProject) {
