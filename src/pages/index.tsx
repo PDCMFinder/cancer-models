@@ -1,4 +1,3 @@
-// Documents/cancer-models/src/pages/index.tsx
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -10,9 +9,9 @@ import DataCountCard from "../components/DataCountCard/DataCountCard";
 import Label from "../components/Input/Label";
 import Loader from "../components/Loader/Loader";
 import ShowHide from "../components/ShowHide/ShowHide";
+import { useActiveProject } from "../hooks/useActiveProject";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import breakPoints from "../utils/breakpoints";
-import { useActiveProject } from "../utils/hooks/useActiveProject";
 import { ProjectButtons } from "./about/providers";
 import styles from "./index.module.scss";
 
@@ -32,8 +31,8 @@ const Home: NextPage = () => {
 	const { windowWidth } = useWindowDimensions();
 	const bpLarge = breakPoints.large;
 	const modelCount = useQuery("modelCount", () => getModelCount());
-
-	const { activeProjectData, handleProjectClick } = useActiveProject();
+	const { activeProjectData, handleProjectClick, isLoadingProviders } =
+		useActiveProject();
 
 	return (
 		<>
@@ -82,7 +81,8 @@ const Home: NextPage = () => {
 							<h2>Our data providers</h2>
 						</div>
 					</div>
-					{activeProjectData.project_abbreviation === null ? (
+					{activeProjectData.project_abbreviation === null &&
+					isLoadingProviders ? (
 						<div style={{ height: "50vh" }}>
 							<Loader />
 						</div>

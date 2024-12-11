@@ -1,4 +1,4 @@
-import { ProjectData } from "./hooks/useActiveProject";
+import { ProjectData } from "../hooks/useActiveProject";
 
 export const addProvidersToProjectData = (
 	projectData: ProjectData,
@@ -17,12 +17,3 @@ export const addProvidersToProjectData = (
 
 	return projectData;
 };
-
-/*
-{
-  "ACC": "Alliance Against Cancer",
-  "CRO": "Cancer Research Organization",
-}
-
-providers[abbreviation]
-*/

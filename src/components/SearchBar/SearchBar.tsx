@@ -48,7 +48,7 @@ const SearchBar = ({
 			onSuccess(data) {
 				setTypeaheadData(data);
 			},
-			enabled: debouncedValue !== ""
+			enabled: !!debouncedValue
 		}
 	);
 
