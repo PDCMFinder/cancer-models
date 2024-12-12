@@ -29,7 +29,7 @@ const Accordion = ({
 			.map((child) => child.props.title);
 
 		setOpenItems(defaultOpenItems);
-	}, [children]);
+	}, []);
 
 	const toggleItem = (title: string) => {
 		if (allowMultipleOpen) {
