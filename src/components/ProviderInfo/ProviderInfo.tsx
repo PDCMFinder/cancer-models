@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
 import Button from "../Button/Button";
+import PieChart from "../Charts/PieChart";
 import styles from "./ProviderInfo.module.scss";
 
 type ProviderInfoProps = {
@@ -15,8 +15,7 @@ type ProviderInfoProps = {
 
 const ProviderInfo = ({ provider }: ProviderInfoProps) => {
 	const parsedProvider = provider.abbreviation.replace(" ", "-"),
-		providerName = provider.name,
-		providerId = provider.id;
+		providerName = provider.name;
 
 	return (
 		<>
@@ -37,24 +36,71 @@ const ProviderInfo = ({ provider }: ProviderInfoProps) => {
 						<h2 className="h3 mt-0 mr-3">{providerName}</h2>
 					</div>
 				</div>
-				{provider.parsedContent && (
-					<div className="row mb-3">
-						<div className="col-12">
-							<div className={styles.Providers_content}>
-								<div
-									dangerouslySetInnerHTML={{
-										__html: provider.parsedContent
-									}}
-								/>
-							</div>
-							<p className="mt-1">
-								<Link href={`/about/providers/${providerId}`}>
-									Continue reading...
-								</Link>
-							</p>
-						</div>
+				<div className="row row-cols-4">
+					<div className="col">
+						<PieChart
+							title="Models by"
+							values={[16, 15, 12, 6, 5, 4, 42, 5, 4, 42, 5, 4, 42]}
+							labels={[
+								"US",
+								"China",
+								"European Union",
+								"Russian Federation",
+								"Brazil",
+								"India",
+								"Rest of World",
+								"Brazail",
+								"Indisa",
+								"Rest fof World",
+								"Brazails",
+								"Indisas",
+								"Rest fosf World"
+							]}
+						/>
 					</div>
-				)}
+					<div className="col">
+						<PieChart
+							title="Models by"
+							values={[16, 15, 12, 6, 5, 4, 42, 5, 4, 42, 5, 4, 42]}
+							labels={[
+								"US",
+								"China",
+								"European Union",
+								"Russian Federation",
+								"Brazil",
+								"India",
+								"Rest of World",
+								"Brazail",
+								"Indisa",
+								"Rest fof World",
+								"Brazails",
+								"Indisas",
+								"Rest fosf World"
+							]}
+						/>
+					</div>
+					<div className="col">
+						<PieChart
+							title="Models by"
+							values={[16, 15, 12, 6, 5, 4, 42, 5, 4, 42, 5, 4, 42]}
+							labels={[
+								"US",
+								"China",
+								"European Union",
+								"Russian Federation",
+								"Brazil",
+								"India",
+								"Rest of World",
+								"Brazail",
+								"Indisa",
+								"Rest fof World",
+								"Brazails",
+								"Indisas",
+								"Rest fosf World"
+							]}
+						/>
+					</div>
+				</div>
 				<div className="row">
 					<div className="col-12">
 						<h4 className="mb-0 d-inline mr-2">View models and data at:</h4>
