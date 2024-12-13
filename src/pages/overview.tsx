@@ -160,8 +160,8 @@ const Overview: NextPage = () => {
 										{latestDataReleaseInfo.data?.released_at}
 									</li>
 								) : null}
-								<li>Number of models: {modelCount.data ?? 9000}</li>
-								<li>Number of providers: {providerCount.data ?? 37}</li>
+								<li>Number of models: {modelCount.data ?? 10000}</li>
+								<li>Number of providers: {providerCount.data ?? 56}</li>
 							</ul>
 							<Link href="/about/releases">Release log</Link>
 						</div>

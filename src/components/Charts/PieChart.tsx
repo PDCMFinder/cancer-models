@@ -23,7 +23,7 @@ const PieChart = ({ title, values, labels, holeRadius }: PieChartProps) => {
 
 	return (
 		<div className="text-center h-100 w-100" ref={plotlyContainerRef}>
-			{title && <h2 className="h3">{title}</h2>}
+			{title && <h2 className="p">{title}</h2>}
 			<Plot
 				data={[
 					{
@@ -49,7 +49,7 @@ const PieChart = ({ title, values, labels, holeRadius }: PieChartProps) => {
 					],
 					showlegend: false,
 					margin: { t: 0, b: 0, l: 0, r: 0 },
-					height: 300,
+					height: plotWidth,
 					width: plotWidth
 				}}
 				config={{ displayModeBar: false, responsive: true }}

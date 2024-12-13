@@ -1,0 +1,1619 @@
+[
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "40 - 49",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "30 - 39",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Adenocarcinoma",
+		"patient_age": "30 - 39",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "60 - 69",
+		"model_type": "other",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Lung Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "Black Or African American"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Lung Carcinoma",
+		"patient_age": "40 - 49",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Carcinoma",
+		"patient_age": "40 - 49",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "40 - 49",
+		"model_type": "other",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Non-Hodgkin Lymphoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "Not Provided"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "40 - 49",
+		"model_type": "other",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "40 - 49",
+		"model_type": "other",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "40 - 49",
+		"model_type": "other",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "Black Or African American"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Carcinoma",
+		"patient_age": "20 - 29",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "10 - 19",
+		"model_type": "other",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "Not Provided"
+	},
+	{
+		"histology": "Lung Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Renal Cell Carcinoma",
+		"patient_age": "40 - 49",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Head and Neck Keratinizing Squamous Cell Carcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "40 - 49",
+		"model_type": "other",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "40 - 49",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "80 - 89",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "50 - 59",
+		"model_type": "other",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Lung Adenocarcinoma",
+		"patient_age": "40 - 49",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "Asian"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "Not Provided"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Spindle Cell Sarcoma",
+		"patient_age": "20 - 29",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Carcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "Not Provided"
+	},
+	{
+		"histology": "Pancreatic Carcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Ewing Sarcoma of Bone",
+		"patient_age": "10 - 19",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Undifferentiated Carcinoma",
+		"patient_age": "30 - 39",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Brain Glioblastoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Kidney Wilms Tumor",
+		"patient_age": "2 - 9",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Carcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "Not Provided"
+	},
+	{
+		"histology": "Gastric Carcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "40 - 49",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Alveolar Rhabdomyosarcoma",
+		"patient_age": "10 - 19",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "Black Or African American"
+	},
+	{
+		"histology": "Gastric Adenocarcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Carcinoma",
+		"patient_age": "40 - 49",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "Asian"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "40 - 49",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Carcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "40 - 49",
+		"model_type": "other",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "Black Or African American"
+	},
+	{
+		"histology": "Alveolar Rhabdomyosarcoma",
+		"patient_age": "10 - 19",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Abdominal (Mesenteric) Fibromatosis",
+		"patient_age": "10 - 19",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "Not Provided"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Mature T-Cell and NK-Cell Non-Hodgkin Lymphoma",
+		"patient_age": "40 - 49",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "Not Provided"
+	},
+	{
+		"histology": "Gastric Signet Ring Cell Adenocarcinoma",
+		"patient_age": "40 - 49",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "Asian"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Lung Squamous Cell Carcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Adenocarcinoma",
+		"patient_age": "80 - 89",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "40 - 49",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Bone Sarcoma",
+		"patient_age": "10 - 19",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "50 - 59",
+		"model_type": "other",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Epithelioid Sarcoma",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Kidney Wilms Tumor",
+		"patient_age": "2 - 9",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Ovarian Carcinosarcoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Undifferentiated Carcinoma",
+		"patient_age": "30 - 39",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "Not Provided"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "60 - 69",
+		"model_type": "other",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Undifferentiated Carcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "Black Or African American"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "40 - 49",
+		"model_type": "other",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Epithelioid Sarcoma",
+		"patient_age": "20 - 29",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "Asian"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "70 - 79",
+		"model_type": "other",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "40 - 49",
+		"model_type": "other",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "Asian"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Clear Cell Renal Cell Carcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "Asian"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "40 - 49",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "30 - 39",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Uterine Corpus Leiomyosarcoma",
+		"patient_age": "40 - 49",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Breast Carcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Adenocarcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Kidney Medullary Carcinoma",
+		"patient_age": "10 - 19",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "Not Provided"
+	},
+	{
+		"histology": "Gastric Adenocarcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Uterine Corpus Leiomyosarcoma",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "Not Provided"
+	},
+	{
+		"histology": "Ovarian High Grade Serous Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Adenocarcinoma",
+		"patient_age": "30 - 39",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "40 - 49",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Carcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Lung Squamous Cell Carcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "80 - 89",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Follicular Helper T-Cell Lymphoma, Angioimmunoblastic-Type",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "Asian"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "40 - 49",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Ocular Melanoma",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gliosarcoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "60 - 69",
+		"model_type": "other",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "40 - 49",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "40 - 49",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Carcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "50 - 59",
+		"model_type": "other",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Lung Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "40 - 49",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "40 - 49",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Lung Carcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "other",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Brain Glioblastoma",
+		"patient_age": "60 - 69",
+		"model_type": "other",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Bone Osteosarcoma",
+		"patient_age": "10 - 19",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Carcinoma",
+		"patient_age": "40 - 49",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Ovarian Endometrioid Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "Asian"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Large Cell/Anaplastic Medulloblastoma",
+		"patient_age": "0 - 23 months",
+		"model_type": "other",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Lip and Oral Cavity Squamous Cell Carcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "50 - 59",
+		"model_type": "other",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "Not Provided"
+	},
+	{
+		"histology": "Thyroid Gland Papillary Carcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "40 - 49",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Kidney Wilms Tumor",
+		"patient_age": "2 - 9",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "30 - 39",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Colorectal Adenocarcinoma",
+		"patient_age": "40 - 49",
+		"model_type": "other",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "70 - 79",
+		"model_type": "other",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Moderately Differentiated Ductal Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "40 - 49",
+		"model_type": "cell line",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "40 - 49",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "Asian"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Moderately Differentiated Ductal Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "Asian"
+	},
+	{
+		"histology": "Clear Cell Sarcoma of Soft Tissue",
+		"patient_age": "30 - 39",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Carcinoma",
+		"patient_age": "40 - 49",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Leiomyosarcoma",
+		"patient_age": "40 - 49",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Clear Cell Renal Cell Carcinoma",
+		"patient_age": "40 - 49",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "T-Cell Prolymphocytic Leukemia",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Epithelioid Sarcoma",
+		"patient_age": "10 - 19",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "80 - 89",
+		"model_type": "other",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Carcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Chromophobe Renal Cell Carcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Adenocarcinoma",
+		"patient_age": "30 - 39",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Adrenal Gland Neuroblastoma",
+		"patient_age": "2 - 9",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "30 - 39",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "40 - 49",
+		"model_type": "cell line",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Colorectal Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "40 - 49",
+		"model_type": "other",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "60 - 69",
+		"model_type": "other",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Signet Ring Cell Carcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Carcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Non-Hodgkin Lymphoma",
+		"patient_age": "Not Provided",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Uterine Corpus Leiomyosarcoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "Asian"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Adenocarcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Alveolar Rhabdomyosarcoma",
+		"patient_age": "10 - 19",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Sezary Syndrome",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Thyroid Gland Papillary Carcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "80 - 89",
+		"model_type": "other",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Malignant Gastric Neoplasm",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Ovarian High Grade Serous Adenocarcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "60 - 69",
+		"model_type": "other",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Ewing Sarcoma of Bone",
+		"patient_age": "20 - 29",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Brain Glioblastoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Brain Glioblastoma",
+		"patient_age": "50 - 59",
+		"model_type": "other",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "80 - 89",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Carcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "Not Provided"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Lung Small Cell Carcinoma",
+		"patient_age": "50 - 59",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Esophageal Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "60 - 69",
+		"model_type": "other",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "50 - 59",
+		"model_type": "cell line",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Cutaneous Melanoma",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "60 - 69",
+		"model_type": "cell line",
+		"tumour_type": "Recurrent",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Ductal Adenocarcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Pancreatic Adenocarcinoma",
+		"patient_age": "70 - 79",
+		"model_type": "organoid",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Glioblastoma, Not Otherwise Specified",
+		"patient_age": "60 - 69",
+		"model_type": "other",
+		"tumour_type": "Primary",
+		"patient_ethnicity": "White"
+	},
+	{
+		"histology": "Gastric Carcinoma",
+		"patient_age": "60 - 69",
+		"model_type": "organoid",
+		"tumour_type": "Metastatic",
+		"patient_ethnicity": "Not Provided"
+	}
+]

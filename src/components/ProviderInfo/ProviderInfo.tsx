@@ -1,12 +1,13 @@
 import Image from "next/image";
+import { countUniqueValues } from "../../utils/dataUtils";
 import Button from "../Button/Button";
 import PieChart from "../Charts/PieChart";
 import styles from "./ProviderInfo.module.scss";
+import providerInfoMockData from "./providerInfoMockData.json";
 
 type ProviderInfoProps = {
 	provider: {
 		id: string;
-		parsedContent: string;
 		abbreviation: string;
 		logo: string;
 		name: string;
@@ -16,6 +17,16 @@ type ProviderInfoProps = {
 const ProviderInfo = ({ provider }: ProviderInfoProps) => {
 	const parsedProvider = provider.abbreviation.replace(" ", "-"),
 		providerName = provider.name;
+
+	// replace for API calls
+	const histologyData = countUniqueValues(providerInfoMockData, "histology");
+	const patientAgeData = countUniqueValues(providerInfoMockData, "patient_age");
+	const modelTypeData = countUniqueValues(providerInfoMockData, "model_type");
+	const tumourTypeData = countUniqueValues(providerInfoMockData, "tumour_type");
+	const patientEthnicityData = countUniqueValues(
+		providerInfoMockData,
+		"patient_ethnicity"
+	);
 
 	return (
 		<>
@@ -36,68 +47,40 @@ const ProviderInfo = ({ provider }: ProviderInfoProps) => {
 						<h2 className="h3 mt-0 mr-3">{providerName}</h2>
 					</div>
 				</div>
-				<div className="row row-cols-4">
+				<div className="row row-cols-5 mb-4">
 					<div className="col">
 						<PieChart
-							title="Models by"
-							values={[16, 15, 12, 6, 5, 4, 42, 5, 4, 42, 5, 4, 42]}
-							labels={[
-								"US",
-								"China",
-								"European Union",
-								"Russian Federation",
-								"Brazil",
-								"India",
-								"Rest of World",
-								"Brazail",
-								"Indisa",
-								"Rest fof World",
-								"Brazails",
-								"Indisas",
-								"Rest fosf World"
-							]}
+							title="Cancer system"
+							values={Object.values(histologyData)}
+							labels={Object.keys(histologyData)}
 						/>
 					</div>
 					<div className="col">
 						<PieChart
-							title="Models by"
-							values={[16, 15, 12, 6, 5, 4, 42, 5, 4, 42, 5, 4, 42]}
-							labels={[
-								"US",
-								"China",
-								"European Union",
-								"Russian Federation",
-								"Brazil",
-								"India",
-								"Rest of World",
-								"Brazail",
-								"Indisa",
-								"Rest fof World",
-								"Brazails",
-								"Indisas",
-								"Rest fosf World"
-							]}
+							title="Patient age"
+							values={Object.values(patientAgeData)}
+							labels={Object.keys(patientAgeData)}
 						/>
 					</div>
 					<div className="col">
 						<PieChart
-							title="Models by"
-							values={[16, 15, 12, 6, 5, 4, 42, 5, 4, 42, 5, 4, 42]}
-							labels={[
-								"US",
-								"China",
-								"European Union",
-								"Russian Federation",
-								"Brazil",
-								"India",
-								"Rest of World",
-								"Brazail",
-								"Indisa",
-								"Rest fof World",
-								"Brazails",
-								"Indisas",
-								"Rest fosf World"
-							]}
+							title="Model type"
+							values={Object.values(modelTypeData)}
+							labels={Object.keys(modelTypeData)}
+						/>
+					</div>
+					<div className="col">
+						<PieChart
+							title="Tumour type"
+							values={Object.values(tumourTypeData)}
+							labels={Object.keys(tumourTypeData)}
+						/>
+					</div>
+					<div className="col">
+						<PieChart
+							title="Ethnicity"
+							values={Object.values(patientEthnicityData)}
+							labels={Object.keys(patientEthnicityData)}
 						/>
 					</div>
 				</div>
