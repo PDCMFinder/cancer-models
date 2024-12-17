@@ -610,19 +610,21 @@ const ModelDetails = ({
 										View data at {metadata.providerId || "provider"}
 									</Link>
 								)}
-								<Link
-									color="white"
-									href={extLinks.contactLink}
-									className="text-white"
-									onClick={() =>
-										ReactGA.event("provider_contact", {
-											category: "event",
-											provider: metadata.providerId
-										})
-									}
-								>
-									<>Contact {metadata.providerId || "provider"}</>
-								</Link>
+								{extLinks.contactLink && (
+									<Link
+										color="white"
+										href={extLinks.contactLink}
+										className="text-white"
+										onClick={() =>
+											ReactGA.event("provider_contact", {
+												category: "event",
+												provider: metadata.providerId
+											})
+										}
+									>
+										<>Contact {metadata.providerId || "provider"}</>
+									</Link>
+								)}
 							</div>
 							{metadata.licenseName && metadata.licenseUrl ? (
 								<div className="mt-5">
@@ -1264,20 +1266,29 @@ const ModelDetails = ({
 																	<td>
 																		{hasExternalDbLinks
 																			? rawDataExternalLinks?.map(
-																					(externalResource) => (
-																						<React.Fragment
-																							key={externalResource.resource}
-																						>
-																							<Link
-																								href={externalResource.link}
-																								target="_blank"
-																								rel="noopener noreferrer"
-																							>
-																								{externalResource.resource}
-																							</Link>
-																							<br />
-																						</React.Fragment>
-																					)
+																					(externalResource) => {
+																						if (
+																							externalResource.link &&
+																							externalResource.resource
+																						) {
+																							return (
+																								<React.Fragment
+																									key={
+																										externalResource.resource
+																									}
+																								>
+																									<Link
+																										href={externalResource.link}
+																										target="_blank"
+																										rel="noopener noreferrer"
+																									>
+																										{externalResource.resource}
+																									</Link>
+																									<br />
+																								</React.Fragment>
+																							);
+																						}
+																					}
 																			  )
 																			: "Not available"}
 																	</td>
@@ -1424,7 +1435,13 @@ const ModelDetails = ({
 												<tbody>
 													{drugDosing.map((doses) => {
 														return (
-															<tr key={doses[0].name}>
+															<tr
+																key={
+																	doses[0].name +
+																	doses[0].dose +
+																	doses[0].response
+																}
+															>
 																<td className="white-space-unset">
 																	{doses.map((dose, idx) => {
 																		return (
@@ -1438,17 +1455,23 @@ const ModelDetails = ({
 																				<br />
 																				{dose.externalDbLinks?.map(
 																					(externalDbLink) => {
-																						return (
-																							<Link
-																								key={externalDbLink.link}
-																								href={externalDbLink.link}
-																								className="mr-1"
-																								target="_blank"
-																								rel="noopener"
-																							>
-																								{externalDbLink.resourceLabel}
-																							</Link>
-																						);
+																						if (
+																							externalDbLink.link &&
+																							externalDbLink.resourceLabel
+																						) {
+																							return (
+																								<Link
+																									key={externalDbLink.link}
+																									href={externalDbLink.link}
+																									className="mr-1"
+																									target="_blank"
+																									rel="noopener"
+																								>
+																									{externalDbLink.resourceLabel}
+																								</Link>
+																							);
+																						}
+																						return null;
 																					}
 																				)}
 																			</div>
@@ -1537,17 +1560,22 @@ const ModelDetails = ({
 																				<br />
 																				{treatment.externalDbLinks?.map(
 																					(externalDbLink) => {
-																						return (
-																							<Link
-																								key={externalDbLink.link}
-																								href={externalDbLink.link}
-																								className="mr-1"
-																								target="_blank"
-																								rel="noopener"
-																							>
-																								{externalDbLink.resourceLabel}
-																							</Link>
-																						);
+																						if (
+																							externalDbLink.link &&
+																							externalDbLink.resourceLabel
+																						) {
+																							return (
+																								<Link
+																									key={externalDbLink.link}
+																									href={externalDbLink.link}
+																									className="mr-1"
+																									target="_blank"
+																									rel="noopener"
+																								>
+																									{externalDbLink.resourceLabel}
+																								</Link>
+																							);
+																						}
 																					}
 																				)}
 																			</div>
