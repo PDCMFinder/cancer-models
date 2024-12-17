@@ -45,7 +45,7 @@ const ProviderInfo = ({ provider }: ProviderInfoProps) => {
 						<h2 className="h3 mt-0 mr-3">{providerName}</h2>
 					</div>
 				</div>
-				<div className="row row-cols-5 mb-4">
+				<div className="row row-cols-2 row-cols-md-5 mb-4">
 					<div className="col">
 						<PieChart
 							title="Cancer system"
