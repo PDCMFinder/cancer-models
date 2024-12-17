@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { getProviderDataCounts } from "../../apis/AggregatedData.api";
 import Button from "../Button/Button";
 import PieChart from "../Charts/PieChart";
+import Loader from "../Loader/Loader";
 import styles from "./ProviderInfo.module.scss";
 
 type ProviderInfoProps = {
@@ -18,7 +19,7 @@ type ProviderInfoProps = {
 const ProviderInfo = ({ provider }: ProviderInfoProps) => {
 	const providerName = provider.name;
 
-	const { data: providerDataCounts, isLoading: isDataLoading } = useQuery(
+	const { data: providerDataCounts, isLoading } = useQuery(
 		["providerDataCounts", provider.abbreviation],
 		() => getProviderDataCounts(provider.abbreviation),
 		{
@@ -45,45 +46,53 @@ const ProviderInfo = ({ provider }: ProviderInfoProps) => {
 						<h2 className="h3 mt-0 mr-3">{providerName}</h2>
 					</div>
 				</div>
-				<div className="row row-cols-2 row-cols-md-5 mb-4">
-					<div className="col">
-						<PieChart
-							title="Cancer system"
-							values={Object.values(providerDataCounts?.histology ?? {})}
-							labels={Object.keys(providerDataCounts?.histology ?? {})}
-						/>
+				{isLoading ? (
+					<div style={{ height: "200px" }}>
+						<Loader />
 					</div>
-					<div className="col">
-						<PieChart
-							title="Patient age"
-							values={Object.values(providerDataCounts?.patient_age ?? {})}
-							labels={Object.keys(providerDataCounts?.patient_age ?? {})}
-						/>
+				) : (
+					<div className="row row-cols-2 row-cols-md-5 mb-4">
+						<div className="col">
+							<PieChart
+								title="Cancer system"
+								values={Object.values(providerDataCounts?.histology ?? {})}
+								labels={Object.keys(providerDataCounts?.histology ?? {})}
+							/>
+						</div>
+						<div className="col">
+							<PieChart
+								title="Patient age"
+								values={Object.values(providerDataCounts?.patient_age ?? {})}
+								labels={Object.keys(providerDataCounts?.patient_age ?? {})}
+							/>
+						</div>
+						<div className="col">
+							<PieChart
+								title="Model type"
+								values={Object.values(providerDataCounts?.model_type ?? {})}
+								labels={Object.keys(providerDataCounts?.model_type ?? {})}
+							/>
+						</div>
+						<div className="col">
+							<PieChart
+								title="Tumour type"
+								values={Object.values(providerDataCounts?.tumour_type ?? {})}
+								labels={Object.keys(providerDataCounts?.tumour_type ?? {})}
+							/>
+						</div>
+						<div className="col">
+							<PieChart
+								title="Ethnicity"
+								values={Object.values(
+									providerDataCounts?.patient_ethnicity ?? {}
+								)}
+								labels={Object.keys(
+									providerDataCounts?.patient_ethnicity ?? {}
+								)}
+							/>
+						</div>
 					</div>
-					<div className="col">
-						<PieChart
-							title="Model type"
-							values={Object.values(providerDataCounts?.model_type ?? {})}
-							labels={Object.keys(providerDataCounts?.model_type ?? {})}
-						/>
-					</div>
-					<div className="col">
-						<PieChart
-							title="Tumour type"
-							values={Object.values(providerDataCounts?.tumour_type ?? {})}
-							labels={Object.keys(providerDataCounts?.tumour_type ?? {})}
-						/>
-					</div>
-					<div className="col">
-						<PieChart
-							title="Ethnicity"
-							values={Object.values(
-								providerDataCounts?.patient_ethnicity ?? {}
-							)}
-							labels={Object.keys(providerDataCounts?.patient_ethnicity ?? {})}
-						/>
-					</div>
-				</div>
+				)}
 				<div className="row">
 					<div className="col-12 mb-2">
 						<Link href={`/about/providers/${provider.abbreviation}`}>
