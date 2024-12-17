@@ -1,9 +1,10 @@
 import Image from "next/image";
-import { countUniqueValues } from "../../utils/dataUtils";
+import Link from "next/link";
+import { useQuery } from "react-query";
+import { getProviderDataCounts } from "../../apis/AggregatedData.api";
 import Button from "../Button/Button";
 import PieChart from "../Charts/PieChart";
 import styles from "./ProviderInfo.module.scss";
-import providerInfoMockData from "./providerInfoMockData.json";
 
 type ProviderInfoProps = {
 	provider: {
@@ -15,17 +16,14 @@ type ProviderInfoProps = {
 };
 
 const ProviderInfo = ({ provider }: ProviderInfoProps) => {
-	const parsedProvider = provider.abbreviation.replace(" ", "-"),
-		providerName = provider.name;
+	const providerName = provider.name;
 
-	// replace for API calls
-	const histologyData = countUniqueValues(providerInfoMockData, "histology");
-	const patientAgeData = countUniqueValues(providerInfoMockData, "patient_age");
-	const modelTypeData = countUniqueValues(providerInfoMockData, "model_type");
-	const tumourTypeData = countUniqueValues(providerInfoMockData, "tumour_type");
-	const patientEthnicityData = countUniqueValues(
-		providerInfoMockData,
-		"patient_ethnicity"
+	const { data: providerDataCounts, isLoading: isDataLoading } = useQuery(
+		["providerDataCounts", provider.abbreviation],
+		() => getProviderDataCounts(provider.abbreviation),
+		{
+			enabled: !!provider.abbreviation
+		}
 	);
 
 	return (
@@ -51,47 +49,54 @@ const ProviderInfo = ({ provider }: ProviderInfoProps) => {
 					<div className="col">
 						<PieChart
 							title="Cancer system"
-							values={Object.values(histologyData)}
-							labels={Object.keys(histologyData)}
+							values={Object.values(providerDataCounts?.histology ?? {})}
+							labels={Object.keys(providerDataCounts?.histology ?? {})}
 						/>
 					</div>
 					<div className="col">
 						<PieChart
 							title="Patient age"
-							values={Object.values(patientAgeData)}
-							labels={Object.keys(patientAgeData)}
+							values={Object.values(providerDataCounts?.patient_age ?? {})}
+							labels={Object.keys(providerDataCounts?.patient_age ?? {})}
 						/>
 					</div>
 					<div className="col">
 						<PieChart
 							title="Model type"
-							values={Object.values(modelTypeData)}
-							labels={Object.keys(modelTypeData)}
+							values={Object.values(providerDataCounts?.model_type ?? {})}
+							labels={Object.keys(providerDataCounts?.model_type ?? {})}
 						/>
 					</div>
 					<div className="col">
 						<PieChart
 							title="Tumour type"
-							values={Object.values(tumourTypeData)}
-							labels={Object.keys(tumourTypeData)}
+							values={Object.values(providerDataCounts?.tumour_type ?? {})}
+							labels={Object.keys(providerDataCounts?.tumour_type ?? {})}
 						/>
 					</div>
 					<div className="col">
 						<PieChart
 							title="Ethnicity"
-							values={Object.values(patientEthnicityData)}
-							labels={Object.keys(patientEthnicityData)}
+							values={Object.values(
+								providerDataCounts?.patient_ethnicity ?? {}
+							)}
+							labels={Object.keys(providerDataCounts?.patient_ethnicity ?? {})}
 						/>
 					</div>
 				</div>
 				<div className="row">
+					<div className="col-12 mb-2">
+						<Link href={`/about/providers/${provider.abbreviation}`}>
+							Read more about {provider.abbreviation} ...
+						</Link>
+					</div>
 					<div className="col-12">
 						<h4 className="mb-0 d-inline mr-2">View models and data at:</h4>
 						<Button
 							color="dark"
 							priority="primary"
 							className="mr-2 mt-0"
-							href={`/search?filters=data_source:${parsedProvider}`}
+							href={`/search?filters=data_source:${provider.abbreviation}`}
 							htmlTag="a"
 						>
 							<>CancerModels.Org</>
@@ -100,7 +105,7 @@ const ProviderInfo = ({ provider }: ProviderInfoProps) => {
 							color="dark"
 							priority="secondary"
 							className="mt-0"
-							href={`/cbioportal/study/clinicalData?id=${parsedProvider}`}
+							href={`/cbioportal/study/clinicalData?id=${provider.abbreviation}`}
 							htmlTag="a"
 							target="_blank"
 						>

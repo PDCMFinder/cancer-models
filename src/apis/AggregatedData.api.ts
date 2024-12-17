@@ -1,5 +1,5 @@
 import { GitlabRelease } from "../../types/releaseTypes";
-import { camelCase } from "../utils/dataUtils";
+import { camelCase, countUniqueValues } from "../utils/dataUtils";
 import parseRelease from "../utils/parseRelease";
 
 export async function getCancerHierarchy(): Promise<any> {
@@ -275,4 +275,57 @@ export async function getProviderCount() {
 	}
 
 	return response.headers.get("Content-range")?.split("/")[1];
+}
+
+type ProviderDataCounts = {
+	histology: {
+		[key: string]: number;
+	};
+	patient_age: {
+		[key: string]: number;
+	};
+	model_type: {
+		[key: string]: number;
+	};
+	tumour_type: {
+		[key: string]: number;
+	};
+	patient_ethnicity: {
+		[key: string]: number;
+	};
+};
+export async function getProviderDataCounts(
+	providerId: string
+): Promise<ProviderDataCounts> {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/search_index?data_source=in.("${providerId}")&select=histology,patient_age,model_type,tumour_type,patient_ethnicity`
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+	return response.json().then(
+		(
+			d: {
+				histology: string;
+				patient_age: string;
+				model_type: string;
+				tumour_type: string;
+				patient_ethnicity: string;
+			}[]
+		) => {
+			const histologyCounts = countUniqueValues(d, "histology");
+			const patientAgeCounts = countUniqueValues(d, "patient_age");
+			const modelTypeCounts = countUniqueValues(d, "model_type");
+			const tumourTypeCounts = countUniqueValues(d, "tumour_type");
+			const patientEthnicityCounts = countUniqueValues(d, "patient_ethnicity");
+
+			return {
+				histology: histologyCounts,
+				patient_age: patientAgeCounts,
+				model_type: modelTypeCounts,
+				tumour_type: tumourTypeCounts,
+				patient_ethnicity: patientEthnicityCounts
+			};
+		}
+	);
 }
