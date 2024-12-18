@@ -1,4 +1,5 @@
 import { GitlabRelease } from "../../types/releaseTypes";
+import { ethnicityCategories } from "../utils/collapseEthnicity";
 import { camelCase, countUniqueValues } from "../utils/dataUtils";
 import parseRelease from "../utils/parseRelease";
 
@@ -277,8 +278,8 @@ export async function getProviderCount() {
 	return response.headers.get("Content-range")?.split("/")[1];
 }
 
-type ProviderDataCounts = {
-	histology: {
+export type ProviderDataCounts = {
+	cancer_system: {
 		[key: string]: number;
 	};
 	patient_age: {
@@ -294,11 +295,12 @@ type ProviderDataCounts = {
 		[key: string]: number;
 	};
 };
+
 export async function getProviderDataCounts(
 	providerId: string
 ): Promise<ProviderDataCounts> {
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/search_index?data_source=in.("${providerId}")&select=histology,patient_age,model_type,tumour_type,patient_ethnicity`
+		`${process.env.NEXT_PUBLIC_API_URL}/search_index?data_source=in.("${providerId}")&select=cancer_system,patient_age,model_type,tumour_type,patient_ethnicity`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
@@ -306,21 +308,35 @@ export async function getProviderDataCounts(
 	return response.json().then(
 		(
 			d: {
-				histology: string;
+				cancer_system: string;
 				patient_age: string;
 				model_type: string;
 				tumour_type: string;
 				patient_ethnicity: string;
 			}[]
 		) => {
-			const histologyCounts = countUniqueValues(d, "histology");
+			const groupedPatientEthnicity = d.map((item) => {
+				let ethnicity = item.patient_ethnicity;
+				for (const [category, values] of Object.entries(ethnicityCategories)) {
+					if (values.includes(ethnicity)) {
+						ethnicity = category;
+						break;
+					}
+				}
+				return { patient_ethnicity: ethnicity };
+			});
+
+			const cancerSystemCounts = countUniqueValues(d, "cancer_system");
 			const patientAgeCounts = countUniqueValues(d, "patient_age");
 			const modelTypeCounts = countUniqueValues(d, "model_type");
 			const tumourTypeCounts = countUniqueValues(d, "tumour_type");
-			const patientEthnicityCounts = countUniqueValues(d, "patient_ethnicity");
+			const patientEthnicityCounts = countUniqueValues(
+				groupedPatientEthnicity,
+				"patient_ethnicity"
+			);
 
 			return {
-				histology: histologyCounts,
+				cancer_system: cancerSystemCounts,
 				patient_age: patientAgeCounts,
 				model_type: modelTypeCounts,
 				tumour_type: tumourTypeCounts,

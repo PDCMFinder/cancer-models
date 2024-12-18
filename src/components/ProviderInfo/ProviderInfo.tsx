@@ -1,7 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useQuery } from "react-query";
-import { getProviderDataCounts } from "../../apis/AggregatedData.api";
+import {
+	getProviderDataCounts,
+	ProviderDataCounts
+} from "../../apis/AggregatedData.api";
 import Button from "../Button/Button";
 import PieChart from "../Charts/PieChart";
 import Loader from "../Loader/Loader";
@@ -16,24 +19,50 @@ type ProviderInfoProps = {
 	};
 };
 
-const ProviderInfo = ({ provider }: ProviderInfoProps) => {
-	const providerName = provider.name;
+const chartCategories: Array<{
+	title: string;
+	dataEndPoint: keyof ProviderDataCounts;
+}> = [
+	{
+		title: "Cancer system",
+		dataEndPoint: "cancer_system"
+	},
+	{
+		title: "Patient age",
+		dataEndPoint: "patient_age"
+	},
+	{
+		title: "Model type",
+		dataEndPoint: "model_type"
+	},
+	{
+		title: "Tumour type",
+		dataEndPoint: "tumour_type"
+	},
+	{
+		title: "Ethnicity",
+		dataEndPoint: "patient_ethnicity"
+	}
+];
 
+const ProviderInfo = ({
+	provider: { abbreviation, name, logo }
+}: ProviderInfoProps) => {
 	const { data: providerDataCounts, isLoading } = useQuery(
-		["providerDataCounts", provider.abbreviation],
-		() => getProviderDataCounts(provider.abbreviation),
+		["providerDataCounts", abbreviation],
+		() => getProviderDataCounts(abbreviation),
 		{
-			enabled: !!provider.abbreviation
+			enabled: !!abbreviation
 		}
 	);
 
 	return (
 		<>
 			<div className="col-12 col-md-2 text-center">
-				{provider.logo && (
+				{logo && (
 					<Image
-						src={`/${provider.logo}`}
-						alt={`${providerName} logo`}
+						src={`/${logo}`}
+						alt={`${name} logo`}
 						width={150}
 						height={150}
 						className={`mx-auto mb-2 w-auto h-auto ${styles.Providers_logo}`}
@@ -43,7 +72,7 @@ const ProviderInfo = ({ provider }: ProviderInfoProps) => {
 			<div className="col-12 col-md-9 mb-5">
 				<div className="row">
 					<div className="col-12 d-flex align-center">
-						<h2 className="h3 mt-0 mr-3">{providerName}</h2>
+						<h2 className="h3 mt-0 mr-3">{name}</h2>
 					</div>
 				</div>
 				{isLoading ? (
@@ -52,51 +81,26 @@ const ProviderInfo = ({ provider }: ProviderInfoProps) => {
 					</div>
 				) : (
 					<div className="row row-cols-2 row-cols-md-5 mb-4">
-						<div className="col">
-							<PieChart
-								title="Cancer system"
-								values={Object.values(providerDataCounts?.histology ?? {})}
-								labels={Object.keys(providerDataCounts?.histology ?? {})}
-							/>
-						</div>
-						<div className="col">
-							<PieChart
-								title="Patient age"
-								values={Object.values(providerDataCounts?.patient_age ?? {})}
-								labels={Object.keys(providerDataCounts?.patient_age ?? {})}
-							/>
-						</div>
-						<div className="col">
-							<PieChart
-								title="Model type"
-								values={Object.values(providerDataCounts?.model_type ?? {})}
-								labels={Object.keys(providerDataCounts?.model_type ?? {})}
-							/>
-						</div>
-						<div className="col">
-							<PieChart
-								title="Tumour type"
-								values={Object.values(providerDataCounts?.tumour_type ?? {})}
-								labels={Object.keys(providerDataCounts?.tumour_type ?? {})}
-							/>
-						</div>
-						<div className="col">
-							<PieChart
-								title="Ethnicity"
-								values={Object.values(
-									providerDataCounts?.patient_ethnicity ?? {}
-								)}
-								labels={Object.keys(
-									providerDataCounts?.patient_ethnicity ?? {}
-								)}
-							/>
-						</div>
+						{chartCategories.map((category) => (
+							<div className="col" key={category.dataEndPoint}>
+								<PieChart
+									title={category.title}
+									values={Object.values(
+										providerDataCounts?.[category.dataEndPoint] ?? {}
+									)}
+									labels={Object.keys(
+										providerDataCounts?.[category.dataEndPoint] ?? {}
+									)}
+									dataEndPoint={category.dataEndPoint}
+								/>
+							</div>
+						))}
 					</div>
 				)}
 				<div className="row">
 					<div className="col-12 mb-2">
-						<Link href={`/about/providers/${provider.abbreviation}`}>
-							Read more about {provider.abbreviation} ...
+						<Link href={`/about/providers/${abbreviation}`}>
+							Read more about {abbreviation} ...
 						</Link>
 					</div>
 					<div className="col-12">
@@ -105,7 +109,7 @@ const ProviderInfo = ({ provider }: ProviderInfoProps) => {
 							color="dark"
 							priority="primary"
 							className="mr-2 mt-0"
-							href={`/search?filters=data_source:${provider.abbreviation}`}
+							href={`/search?dataEndPoints=data_source:${abbreviation}`}
 							htmlTag="a"
 						>
 							<>CancerModels.Org</>
@@ -114,7 +118,7 @@ const ProviderInfo = ({ provider }: ProviderInfoProps) => {
 							color="dark"
 							priority="secondary"
 							className="mt-0"
-							href={`/cbioportal/study/clinicalData?id=${provider.abbreviation}`}
+							href={`/cbioportal/study/clinicalData?id=${abbreviation}`}
 							htmlTag="a"
 							target="_blank"
 						>

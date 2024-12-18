@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import router from "next/router";
 import { useEffect, useRef, useState } from "react";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { chartColors } from "../../utils/chartConfigs";
@@ -9,10 +10,18 @@ type PieChartProps = {
 	title?: string;
 	values: string[] | number[];
 	labels: string[];
+	dataEndPoint: string;
 	holeRadius?: number;
+	onClick?: (label: string) => void;
 };
 
-const PieChart = ({ title, values, labels, holeRadius }: PieChartProps) => {
+const PieChart = ({
+	title,
+	values,
+	labels,
+	dataEndPoint,
+	holeRadius
+}: PieChartProps) => {
 	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
 	const [plotWidth, setPlotWidth] = useState(300);
 	const { windowWidth } = useWindowDimensions();
@@ -53,6 +62,13 @@ const PieChart = ({ title, values, labels, holeRadius }: PieChartProps) => {
 					width: plotWidth
 				}}
 				config={{ displayModeBar: false, responsive: true }}
+				onClick={(e) =>
+					router.push({
+						pathname: "/search",
+						// @ts-ignore
+						search: `?filters=${dataEndPoint}:${e.points[0].label}`
+					})
+				}
 			/>
 		</div>
 	);

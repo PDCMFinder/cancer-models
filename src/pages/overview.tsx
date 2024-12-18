@@ -18,7 +18,6 @@ import {
 } from "../apis/AggregatedData.api";
 import Button from "../components/Button/Button";
 import BarChart from "../components/Charts/BarChart";
-import PieChart from "../components/Charts/PieChart";
 import Loader from "../components/Loader/Loader";
 
 const DynamicCirclePacking = dynamic(
@@ -171,48 +170,6 @@ const Overview: NextPage = () => {
 			<section>
 				<div className="container">
 					<div className="row mb-5">
-						<div className="col-12 col-md-6 col-lg-4">
-							<PieChart
-								title="Models by"
-								values={[16, 15, 12, 6, 5, 4, 42, 5, 4, 42, 5, 4, 42]}
-								labels={[
-									"US",
-									"China",
-									"European Union",
-									"Russian Federation",
-									"Brazil",
-									"India",
-									"Rest of World",
-									"Brazail",
-									"Indisa",
-									"Rest fof World",
-									"Brazails",
-									"Indisas",
-									"Rest fosf World"
-								]}
-							/>
-						</div>
-						<div className="col-md-6 col-lg-4">
-							<PieChart
-								title="Models by"
-								values={[16, 15, 12, 6, 5, 4, 42, 5, 4, 42, 5, 4, 42]}
-								labels={[
-									"US",
-									"China",
-									"European Union",
-									"Russian Federation",
-									"Brazil",
-									"India",
-									"Rest of World",
-									"Brazail",
-									"Indisa",
-									"Rest fof World",
-									"Brazails",
-									"Indisas",
-									"Rest fosf World"
-								]}
-							/>
-						</div>
 						<div className="col-md-6 col-lg-4">
 							<BarChart
 								title="Models by"
