@@ -1,7 +1,15 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import Select from "react-select";
+import Select, {
+	ClearActionMeta,
+	components,
+	CreateOptionActionMeta,
+	DeselectOptionActionMeta,
+	PopValueActionMeta,
+	RemoveValueActionMeta,
+	SelectOptionActionMeta
+} from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
 import useDebounce from "../../hooks/useDebounce";
 import { onFilterChangeType } from "../../pages/search";
@@ -26,6 +34,18 @@ type SearchBarProps = {
 		type: onFilterChangeType["type"]
 	) => void;
 };
+
+type ActionMeta<SelectOption> =
+	| SelectOptionActionMeta<SelectOption>
+	| DeselectOptionActionMeta<SelectOption>
+	| RemoveValueActionMeta<SelectOption>
+	| PopValueActionMeta<SelectOption>
+	| ClearActionMeta<SelectOption>
+	| CreateOptionActionMeta<SelectOption>;
+
+const Input = (props: any) => (
+	<components.Input {...props} data-hj-allow={true} />
+);
 
 const SearchBar = ({
 	id,
@@ -67,6 +87,7 @@ const SearchBar = ({
 				name={name}
 			/>
 			<Select
+				inputClassName="dffffffffffog"
 				isLoading={selectOptionsQuery.isLoading}
 				instanceId={id}
 				id={id}
@@ -76,6 +97,7 @@ const SearchBar = ({
 				aria-label="Search by cancer diagnosis"
 				aria-labelledby={id}
 				className="lh-1"
+				classNames={{ input: () => "data-hj-allow" }}
 				closeMenuOnSelect={isMulti}
 				blurInputOnSelect={isMulti}
 				isMulti={isMulti}
@@ -83,12 +105,15 @@ const SearchBar = ({
 				loadingMessage={() => "Loading data"}
 				noOptionsMessage={() => "Type to search"}
 				styles={typeaheadStyles}
-				components={{ DropdownIndicator: Fragment }}
+				components={{ DropdownIndicator: Fragment, Input }}
 				options={debounceValue !== debouncedValue ? [] : typeaheadData}
-				onInputChange={(inputValue) => {
+				onInputChange={(inputValue: string) => {
 					setDebounceValue(inputValue);
 				}}
-				onChange={(option, actionMeta) => {
+				onChange={(
+					option: SelectOption | null,
+					actionMeta: ActionMeta<SelectOption>
+				) => {
 					if (actionMeta.action === "pop-value") return;
 					let newOption = "",
 						action: onFilterChangeType["type"] = "add";

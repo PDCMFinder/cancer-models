@@ -6,8 +6,6 @@ import Image from "next/image";
 import Link from "next/link";
 import path from "path";
 import React from "react";
-import { remark } from "remark";
-import remarkHtml from "remark-html";
 import Button from "../../../components/Button/Button";
 import Card from "../../../components/Card/Card";
 import Loader from "../../../components/Loader/Loader";
@@ -208,7 +206,7 @@ const Providers: NextPage<ProvidersProps> = ({ allProvidersBasics }) => {
 														<Link
 															href={`/search?filters=project_name%3A${activeProjectData.project_abbreviation}`}
 														>
-															View all models and data
+															Explore project&apos;s models
 														</Link>
 													</p>
 												</div>
@@ -249,16 +247,9 @@ export const getStaticProps: GetStaticProps = async () => {
 			const fullPath = path.join(providersDirectory, providerFile);
 			const fileContents = await fs.readFile(fullPath, "utf8");
 			const matterResult = await matter(fileContents);
-			const processedContent = await remark()
-				.use(remarkHtml, { sanitize: true })
-				.process(matterResult.content);
 
 			return {
 				id: providerFile.replace(/\.md$/, "") as string,
-				text: matterResult.content,
-				parsedContent: JSON.parse(
-					JSON.stringify(processedContent.value)
-				) as string,
 				...(matterResult.data as {
 					abbreviation: string;
 					logo: string;

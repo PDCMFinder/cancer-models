@@ -29,3 +29,20 @@ export function camelCase<T extends Record<string, any>>(
 export function capitalizeFirstLetter(text: string) {
 	return text ? text.charAt(0).toUpperCase() + text.slice(1) : "";
 }
+
+export const countUniqueValues = <
+	T extends Record<string, string>,
+	K extends keyof T
+>(
+	data: T[],
+	key: K
+): Record<T[K], number> => {
+	let result = {} as Record<T[K], number>;
+
+	data.forEach((item) => {
+		const value = item[key];
+		result[value] = (result[value] || 0) + 1;
+	});
+
+	return result;
+};

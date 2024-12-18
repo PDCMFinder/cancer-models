@@ -1,5 +1,6 @@
 import { GitlabRelease } from "../../types/releaseTypes";
-import { camelCase } from "../utils/dataUtils";
+import { ethnicityCategories } from "../utils/collapseEthnicity";
+import { camelCase, countUniqueValues } from "../utils/dataUtils";
 import parseRelease from "../utils/parseRelease";
 
 export async function getCancerHierarchy(): Promise<any> {
@@ -118,7 +119,7 @@ export async function getModelsByMutatedGene() {
 
 export async function getModelsByPatientSex() {
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_sex?order=count.desc&limit=10`
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_sex?order=count.desc`
 	);
 
 	if (!response.ok) {
@@ -130,7 +131,7 @@ export async function getModelsByPatientSex() {
 
 export async function getModelsByTumourType() {
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/models_by_tumour_type?order=count.desc&limit=10`
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_tumour_type?order=count.desc`
 	);
 
 	if (!response.ok) {
@@ -154,7 +155,7 @@ export async function getModelsByPatientEthnicity() {
 
 export async function getModelsByPatientAge() {
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_age?order=count.desc&limit=10`
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_age?order=count.desc`
 	);
 
 	if (!response.ok) {
@@ -275,4 +276,72 @@ export async function getProviderCount() {
 	}
 
 	return response.headers.get("Content-range")?.split("/")[1];
+}
+
+export type ProviderDataCounts = {
+	cancer_system: {
+		[key: string]: number;
+	};
+	patient_age: {
+		[key: string]: number;
+	};
+	model_type: {
+		[key: string]: number;
+	};
+	tumour_type: {
+		[key: string]: number;
+	};
+	patient_ethnicity: {
+		[key: string]: number;
+	};
+};
+
+export async function getProviderDataCounts(
+	providerId: string
+): Promise<ProviderDataCounts> {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/search_index?data_source=in.("${providerId}")&select=cancer_system,patient_age,model_type,tumour_type,patient_ethnicity`
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+	return response.json().then(
+		(
+			d: {
+				cancer_system: string;
+				patient_age: string;
+				model_type: string;
+				tumour_type: string;
+				patient_ethnicity: string;
+			}[]
+		) => {
+			const groupedPatientEthnicity = d.map((item) => {
+				let ethnicity = item.patient_ethnicity;
+				for (const [category, values] of Object.entries(ethnicityCategories)) {
+					if (values.includes(ethnicity)) {
+						ethnicity = category;
+						break;
+					}
+				}
+				return { patient_ethnicity: ethnicity };
+			});
+
+			const cancerSystemCounts = countUniqueValues(d, "cancer_system");
+			const patientAgeCounts = countUniqueValues(d, "patient_age");
+			const modelTypeCounts = countUniqueValues(d, "model_type");
+			const tumourTypeCounts = countUniqueValues(d, "tumour_type");
+			const patientEthnicityCounts = countUniqueValues(
+				groupedPatientEthnicity,
+				"patient_ethnicity"
+			);
+
+			return {
+				cancer_system: cancerSystemCounts,
+				patient_age: patientAgeCounts,
+				model_type: modelTypeCounts,
+				tumour_type: tumourTypeCounts,
+				patient_ethnicity: patientEthnicityCounts
+			};
+		}
+	);
 }

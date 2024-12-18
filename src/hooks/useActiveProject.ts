@@ -17,23 +17,6 @@ export type ProjectData = {
 	};
 };
 
-const randomizeProjectProviders = (providers: ProjectData["providers"]) => {
-	const newProviders = [...(providers ?? [])];
-	let currentIndex = newProviders.length ?? 0;
-
-	while (currentIndex != 0 && newProviders) {
-		const randomIndex = Math.floor(Math.random() * currentIndex);
-		currentIndex--;
-
-		[newProviders[currentIndex], newProviders[randomIndex]] = [
-			newProviders[randomIndex],
-			newProviders[currentIndex]
-		];
-	}
-
-	return newProviders;
-};
-
 export const useActiveProject = () => {
 	const router = useRouter();
 	const { project: projectFromUrl } = router.query;

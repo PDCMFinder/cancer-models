@@ -121,11 +121,11 @@ const Home: NextPage = () => {
 														activeProjectData.project_abbreviation}
 												</h3>
 												<p className="mb-lg-0">
-													<a
+													<Link
 														href={`/search?filters=project_name%3A${activeProjectData.project_abbreviation}`}
 													>
 														Explore project&apos;s models
-													</a>
+													</Link>
 												</p>
 											</div>
 										</div>

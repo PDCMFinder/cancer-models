@@ -16,13 +16,9 @@ import {
 	getModelsByTumourType,
 	getProviderCount
 } from "../apis/AggregatedData.api";
-import BarChart from "../components/BarChart/BarChart";
 import Button from "../components/Button/Button";
-import DonutChart from "../components/DonutChart/DonutChart";
+import BarChart from "../components/Charts/BarChart";
 import Loader from "../components/Loader/Loader";
-import SunBurstChart from "../components/SunBurstChart/SunBurstChart";
-import { countEthnicity } from "../utils/collapseEthnicity";
-import styles from "./overview.module.scss";
 
 const DynamicCirclePacking = dynamic(
 	() => import("../components/CirclePacking/CirclePacking"),
@@ -74,9 +70,6 @@ function collapseAgeGroup(
 const Overview: NextPage = () => {
 	const notValidCategories = ["not provided", "not collected"];
 
-	let cancerHierarchyQuery = useQuery("cancerHierarchy", () => {
-		return getCancerHierarchy();
-	});
 	let modelsByCancerHierarchy = useQuery("modelsByCancerHierarchy", () => {
 		return getCancerHierarchy();
 	});
@@ -151,81 +144,48 @@ const Overview: NextPage = () => {
 			</header>
 			<section>
 				<div className="container">
-					<div className="row mb-5 align-center">
-						<div className="col-12 col-lg-6 mb-5">
-							<h2>CancerModels.Org portal features</h2>
+					<div className="row">
+						<div className="col-12">
+							<h2>Current data release</h2>
 							<ul>
-								<li>Detailed annotations including Tissue and Cancer type</li>{" "}
-								<li>Advanced filters for model selection</li>
-								<li>Links to originating model source</li>
+								{latestDataReleaseInfo.data ? (
+									<li>
+										Data release version: {latestDataReleaseInfo.data.tag_name}
+									</li>
+								) : null}
+								{latestDataReleaseInfo.data ? (
+									<li>
+										Date of publication:{" "}
+										{latestDataReleaseInfo.data?.released_at}
+									</li>
+								) : null}
+								<li>Number of models: {modelCount.data ?? 10000}</li>
+								<li>Number of providers: {providerCount.data ?? 56}</li>
 							</ul>
-							<div className="text-center">
-								<Button
-									htmlTag="a"
-									href="/search"
-									priority="primary"
-									color="dark"
-								>
-									Discover all models
-								</Button>
-							</div>
-						</div>
-						<div className={`col-12 col-lg-5 mb-5 ${styles.circlePacking_col}`}>
-							{/* Graph */}
-							<div
-								style={{
-									backgroundColor: "#085154",
-									aspectRatio: "1",
-									borderRadius: "500%"
-								}}
-							>
-								{!cancerHierarchyQuery.isLoading &&
-								cancerHierarchyQuery.data ? (
-									<DynamicCirclePacking
-										data={cancerHierarchyQuery.data}
-										onCircleClick={(circleId, circleDepth) => {
-											const searchPrefix =
-												circleDepth === 1
-													? `?filters=cancer_system:`
-													: `?filters=search_terms:`;
-											const termSuffix = circleDepth === 1 ? "Cancer" : "";
-											const search = `${searchPrefix}${encodeURIComponent(
-												circleId + termSuffix
-											)}`;
-
-											router.push({
-												pathname: "/search",
-												search
-											});
-										}}
-									/>
-								) : (
-									<Loader />
-								)}
-							</div>
+							<Link href="/about/releases">Release log</Link>
 						</div>
 					</div>
-					<div className="row mb-5 align-center">
-						<div className="col-12 col-lg-6 order-lg-1 mb-5">
-							<h2>Explore Genetic features</h2>
-							<ul>
-								<li>Find models with specific mutations</li>
-								<li>Links to cancer annotation resources</li>
-								<li>Mutation, expression and other molecular datasets</li>
-							</ul>
-						</div>
-						<div className="col-12 col-lg-6 mb-5">
-							{modelsByMutatedGene.data && modelsByMutatedGene.data.length > 0 && (
-								<div style={{ height: "600px" }}>
-									<BarChart
-										chartTitle="Models by top mutated gene"
-										onBarClick={onGraphClick}
-										data={modelsByMutatedGene.data}
-										rotateTicks={true}
-										indexKey="markers_with_mutation_data"
-									/>
-								</div>
-							)}
+				</div>
+			</section>
+			<section>
+				<div className="container">
+					<div className="row mb-5">
+						<div className="col-md-6 col-lg-4">
+							<BarChart
+								title="Models by"
+								x={[
+									"giraffes",
+									"orangutans",
+									"monkeys",
+									"girafdfes",
+									"orangsutans",
+									"monkaeys",
+									"girafdfdes",
+									"orangsuatans",
+									"monkaseys"
+								]}
+								y={[20, 14, 23, 20, 14, 23, 20, 14, 23, 20, 14, 23]}
+							/>
 						</div>
 					</div>
 					<div className="row">
@@ -249,151 +209,6 @@ const Overview: NextPage = () => {
 								Search all model data
 							</Button>
 						</div>
-					</div>
-				</div>
-			</section>
-			<section>
-				<div className="container">
-					<div className="row">
-						<div className="col-12">
-							<h2>Current data release</h2>
-							<ul>
-								{latestDataReleaseInfo.data ? (
-									<li>
-										Data release version: {latestDataReleaseInfo.data.tag_name}
-									</li>
-								) : null}
-								{latestDataReleaseInfo.data ? (
-									<li>
-										Date of publication:{" "}
-										{latestDataReleaseInfo.data?.released_at}
-									</li>
-								) : null}
-								<li>Number of models: {modelCount.data ?? 7500}</li>
-								<li>Number of providers: {providerCount.data ?? 37}</li>
-							</ul>
-							<Link href="/about/releases">Release log</Link>
-						</div>
-					</div>
-					<div className="row">
-						<div className="col-12">
-							<h2>More data reports</h2>
-						</div>
-					</div>
-					<div className="row">
-						{modelsByPatientEthnicity.data &&
-							modelsByPatientEthnicity.data.length > 0 && (
-								<div className="col-12 col-md-6">
-									<div className="text-center">
-										<h3>Models by reported ethnicity</h3>
-									</div>
-									<div style={{ height: "600px" }}>
-										<BarChart
-											chartTitle="Models by top mutated gene"
-											onBarClick={onGraphClick}
-											rotateTicks={true}
-											data={
-												countEthnicity(modelsByPatientEthnicity.data).sort(
-													(
-														a: { patient_ethnicity: string; count: number },
-														b: { patient_ethnicity: string; count: number }
-													) => b.count - a.count
-												)
-												// .filter(
-												// 	(ethnicity: {
-												// 		patient_ethnicity: string;
-												// 		count: number;
-												// 	}) =>
-												// 		!notValidCategories.includes(
-												// 			ethnicity.patient_ethnicity.toLowerCase()
-												// 		)
-												// )
-											}
-											indexKey="patient_ethnicity"
-										/>
-									</div>
-								</div>
-							)}
-						{modelsByPatientAge.data && modelsByPatientAge.data.length > 0 && (
-							<div className="col-12 col-md-6">
-								<div className="text-center">
-									<h3>Models by patient age</h3>
-								</div>
-								<div style={{ height: "600px" }}>
-									<DonutChart
-										onSliceClick={onGraphClick}
-										data={collapseAgeGroup(modelsByPatientAge.data)}
-										keyId="patient_age"
-									/>
-								</div>
-							</div>
-						)}
-					</div>
-					<div className="row">
-						{modelsByPatientSex.data && modelsByPatientSex.data.length > 0 && (
-							<div className="col-12 col-md-6">
-								<div className="text-center">
-									<h3>Models by patient sex</h3>
-								</div>
-								<div style={{ height: "600px" }}>
-									<DonutChart
-										onSliceClick={onGraphClick}
-										keyId="patient_sex"
-										data={modelsByPatientSex.data}
-									/>
-								</div>
-							</div>
-						)}
-						{modelsByTumourType.data && modelsByTumourType.data.length > 0 && (
-							<div className="col-12 col-md-6">
-								<div className="text-center">
-									<h3>Models by tumour type</h3>
-								</div>
-								<div style={{ height: "600px" }}>
-									<DonutChart
-										onSliceClick={onGraphClick}
-										keyId="tumour_type"
-										data={modelsByTumourType.data}
-									/>
-								</div>
-							</div>
-						)}
-					</div>
-					<div className="row">
-						{modelsByCancerHierarchy.data &&
-							modelsByCancerHierarchy.data.length > 0 && (
-								<div className="col-12 col-md-12">
-									<div className="text-center">
-										<h3>Models by anatomical system & diagnosis</h3>
-									</div>
-									<div style={{ height: "800px" }}>
-										<SunBurstChart
-											keyId="search_terms"
-											data={modelsByCancerHierarchy.data}
-											onSliceClick={onGraphClick}
-										/>
-									</div>
-								</div>
-							)}
-					</div>
-
-					<div className="row">
-						{modelsByTreatment.data && modelsByTreatment.data.length > 0 && (
-							<div className="col-12 col-md-12">
-								<div className="text-center">
-									<h3>Most used drugs</h3>
-								</div>
-								<div style={{ height: "600px" }}>
-									<BarChart
-										chartTitle="Models by treatment"
-										onBarClick={onGraphClick}
-										rotateTicks={true}
-										data={modelsByTreatment.data}
-										indexKey="treatment_list"
-									/>
-								</div>
-							</div>
-						)}
 					</div>
 				</div>
 			</section>
