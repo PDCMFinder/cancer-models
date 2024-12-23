@@ -1,8 +1,8 @@
 import { NextPage } from "next";
-import dynamic from "next/dynamic";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { ChangeEvent } from "react";
 import { useQuery } from "react-query";
 import {
 	getCancerHierarchy,
@@ -18,14 +18,8 @@ import {
 } from "../apis/AggregatedData.api";
 import Button from "../components/Button/Button";
 import BarChart from "../components/Charts/BarChart";
-import Loader from "../components/Loader/Loader";
-
-const DynamicCirclePacking = dynamic(
-	() => import("../components/CirclePacking/CirclePacking"),
-	{
-		loading: () => <Loader style={{ height: "300px" }} />
-	}
-);
+import Label from "../components/Input/Label";
+import Select from "../components/Input/Select";
 
 function collapseAgeGroup(
 	ageGroupList: { patient_age: string; count: number }[]
@@ -169,6 +163,26 @@ const Overview: NextPage = () => {
 			</section>
 			<section>
 				<div className="container">
+					<div className="row mb-5">
+						<div className="col-12">
+							<div className="d-flex align-center">
+								<Label
+									label="Filter by:"
+									forId="filter-by-provider"
+									name="filter-by-provider-name"
+									className="mr-1"
+								/>
+								<Select
+									id="filter-by-provider"
+									options={[{ text: "PDX", value: "PDX" }]}
+									className="w-auto mb-0"
+									onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+										console.log(e.target.value);
+									}}
+								/>
+							</div>
+						</div>
+					</div>
 					<div className="row mb-5">
 						<div className="col-md-6 col-lg-4">
 							<BarChart

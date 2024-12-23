@@ -7,6 +7,7 @@ import {
 } from "../../apis/AggregatedData.api";
 import Button from "../Button/Button";
 import PieChart from "../Charts/PieChart";
+import SunBurstChart from "../Charts/SunBurstChart";
 import Loader from "../Loader/Loader";
 import styles from "./ProviderInfo.module.scss";
 
@@ -81,20 +82,25 @@ const ProviderInfo = ({
 					</div>
 				) : (
 					<div className="row row-cols-2 row-cols-md-5 mb-4">
-						{chartCategories.map((category) => (
-							<div className="col" key={category.dataEndPoint}>
-								<PieChart
-									title={category.title}
-									values={Object.values(
-										providerDataCounts?.[category.dataEndPoint] ?? {}
-									)}
-									labels={Object.keys(
-										providerDataCounts?.[category.dataEndPoint] ?? {}
-									)}
-									dataEndPoint={category.dataEndPoint}
-								/>
-							</div>
-						))}
+						<div className="col" key={`providerDataCounts?.["cancer_system"]`}>
+							<PieChart
+								title="Cancer system"
+								values={Object.values(
+									providerDataCounts?.["cancer_system"] ?? {}
+								)}
+								labels={Object.keys(
+									providerDataCounts?.["cancer_system"] ?? {}
+								)}
+								dataEndPoint="cancer_system"
+							/>
+						</div>
+						<div className="col">
+							<SunBurstChart
+								title="Patient age"
+								dataEndPoint="patient_age"
+								data={providerDataCounts?.["patient_age"] ?? {}}
+							/>
+						</div>
 					</div>
 				)}
 				<div className="row">
@@ -112,7 +118,7 @@ const ProviderInfo = ({
 							href={`/search?dataEndPoints=data_source:${abbreviation}`}
 							htmlTag="a"
 						>
-							<>CancerModels.Org</>
+							CancerModels.Org
 						</Button>
 						<Button
 							color="dark"
@@ -122,7 +128,7 @@ const ProviderInfo = ({
 							htmlTag="a"
 							target="_blank"
 						>
-							<>cBioPortal</>
+							cBioPortal
 						</Button>
 					</div>
 				</div>
