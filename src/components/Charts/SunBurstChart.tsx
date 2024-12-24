@@ -28,15 +28,17 @@ const SunBurstChart = ({ title, data, dataEndPoint }: SunBurstChartProps) => {
 		const parents: string[] = [];
 
 		Object.entries(data).forEach(([parent, [children, parentValue]]) => {
-			labels.push(parent);
-			values.push(parentValue);
-			parents.push("");
+			if (parentValue) {
+				labels.push(parent);
+				values.push(parentValue);
+				parents.push("");
 
-			Object.entries(children).forEach(([child, value]) => {
-				labels.push(child);
-				values.push(value);
-				parents.push(parent);
-			});
+				Object.entries(children).forEach(([child, value]) => {
+					labels.push(child);
+					values.push(value);
+					parents.push(parent);
+				});
+			}
 		});
 
 		return { labels, values, parents };
