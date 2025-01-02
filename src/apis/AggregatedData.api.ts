@@ -279,19 +279,11 @@ export async function getProviderCount() {
 }
 
 export type ProviderDataCounts = {
-	cancer_system: {
-		[key: string]: number;
-	};
+	cancer_system: Record<string, number>;
 	patient_age: Record<string, [Record<string, number>, number]>;
-	model_type: {
-		[key: string]: number;
-	};
-	tumour_type: {
-		[key: string]: number;
-	};
-	patient_ethnicity: {
-		[key: string]: number;
-	};
+	model_type: Record<string, number>;
+	tumour_type: Record<string, number>;
+	patient_ethnicity: Record<string, number>;
 };
 
 export async function getProviderDataCounts(
@@ -323,16 +315,6 @@ export async function getProviderDataCounts(
 				}
 				return { patient_ethnicity: ethnicity };
 			});
-			// const groupedPatientAge = d.map((item) => {
-			// 	let age = item.patient_age;
-			// 	for (const [category, values] of Object.entries(ageCategories)) {
-			// 		if (values.includes(age)) {
-			// 			age = category;
-			// 			break;
-			// 		}
-			// 	}
-			// 	return { patient_age: age };
-			// });
 
 			const cancerSystemCounts = countUniqueValues(d, "cancer_system");
 			const patientAgeCounts = countUniqueValues(d, "patient_age");
@@ -344,14 +326,13 @@ export async function getProviderDataCounts(
 			);
 
 			return {
-				cancer_system: cancerSystemCounts as { [key: string]: number },
-				patient_age: patientAgeCounts as Record<
-					string,
-					[Record<string, number>, number]
-				>,
-				model_type: modelTypeCounts as { [key: string]: number },
-				tumour_type: tumourTypeCounts as { [key: string]: number },
-				patient_ethnicity: patientEthnicityCounts as { [key: string]: number }
+				cancer_system:
+					cancerSystemCounts as ProviderDataCounts["cancer_system"],
+				patient_age: patientAgeCounts as ProviderDataCounts["patient_age"],
+				model_type: modelTypeCounts as ProviderDataCounts["model_type"],
+				tumour_type: tumourTypeCounts as ProviderDataCounts["tumour_type"],
+				patient_ethnicity:
+					patientEthnicityCounts as ProviderDataCounts["patient_ethnicity"]
 			};
 		}
 	);

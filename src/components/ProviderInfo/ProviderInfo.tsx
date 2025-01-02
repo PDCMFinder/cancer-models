@@ -20,29 +20,46 @@ type ProviderInfoProps = {
 	};
 };
 
+const getChartDataType = <T extends keyof ProviderDataCounts>(
+	data: ProviderDataCounts[T],
+	chartType: string
+) => {
+	if (chartType === "SunBurstChart") {
+		return data as Record<string, [Record<string, number>, number]>;
+	} else {
+		return data as Record<string, number>;
+	}
+};
+
 const chartCategories: Array<{
 	title: string;
 	dataEndPoint: keyof ProviderDataCounts;
+	chartType: "PieChart" | "SunBurstChart";
 }> = [
 	{
 		title: "Cancer system",
-		dataEndPoint: "cancer_system"
+		dataEndPoint: "cancer_system",
+		chartType: "PieChart"
 	},
 	{
 		title: "Patient age",
-		dataEndPoint: "patient_age"
+		dataEndPoint: "patient_age",
+		chartType: "SunBurstChart"
 	},
 	{
 		title: "Model type",
-		dataEndPoint: "model_type"
+		dataEndPoint: "model_type",
+		chartType: "PieChart"
 	},
 	{
 		title: "Tumour type",
-		dataEndPoint: "tumour_type"
+		dataEndPoint: "tumour_type",
+		chartType: "PieChart"
 	},
 	{
 		title: "Ethnicity",
-		dataEndPoint: "patient_ethnicity"
+		dataEndPoint: "patient_ethnicity",
+		chartType: "PieChart"
 	}
 ];
 
@@ -82,60 +99,35 @@ const ProviderInfo = ({
 					</div>
 				) : (
 					<div className="row row-cols-2 row-cols-md-5 mb-4">
-						<div className="col">
-							<PieChart
-								title="Cancer system"
-								values={Object.values(
-									providerDataCounts?.["cancer_system"] ?? {}
-								)}
-								labels={Object.keys(
-									providerDataCounts?.["cancer_system"] ?? {}
-								)}
-								dataEndPoint="cancer_system"
-								provider={abbreviation}
-							/>
-						</div>
-						<div className="col">
-							<SunBurstChart
-								title="Patient age"
-								dataEndPoint="patient_age"
-								data={providerDataCounts?.["patient_age"] ?? {}}
-								provider={abbreviation}
-							/>
-						</div>
-						<div className="col">
-							<PieChart
-								title="Model type"
-								values={Object.values(providerDataCounts?.["model_type"] ?? {})}
-								labels={Object.keys(providerDataCounts?.["model_type"] ?? {})}
-								dataEndPoint="model_type"
-								provider={abbreviation}
-							/>
-						</div>
-						<div className="col">
-							<PieChart
-								title="Tumour type"
-								values={Object.values(
-									providerDataCounts?.["tumour_type"] ?? {}
-								)}
-								labels={Object.keys(providerDataCounts?.["tumour_type"] ?? {})}
-								dataEndPoint="tumour_type"
-								provider={abbreviation}
-							/>
-						</div>
-						<div className="col">
-							<PieChart
-								title="Ethnicity"
-								values={Object.values(
-									providerDataCounts?.["patient_ethnicity"] ?? {}
-								)}
-								labels={Object.keys(
-									providerDataCounts?.["patient_ethnicity"] ?? {}
-								)}
-								dataEndPoint="patient_ethnicity"
-								provider={abbreviation}
-							/>
-						</div>
+						{chartCategories.map(({ title, dataEndPoint, chartType }) => {
+							const commonProps = {
+								title,
+								dataEndPoint,
+								provider: abbreviation,
+								data: getChartDataType(
+									providerDataCounts?.[dataEndPoint] ?? {},
+									chartType
+								)
+							};
+
+							return (
+								<div className="col" key={dataEndPoint}>
+									{chartType === "SunBurstChart" ? (
+										<SunBurstChart
+											{...commonProps}
+											data={
+												commonProps.data as Record<
+													string,
+													[Record<string, number>, number]
+												>
+											}
+										/>
+									) : (
+										<PieChart {...commonProps} />
+									)}
+								</div>
+							);
+						})}
 					</div>
 				)}
 				<div className="row">

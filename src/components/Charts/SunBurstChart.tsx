@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import router from "next/router";
 import { useEffect, useRef, useState } from "react";
+import { ProviderDataCounts } from "../../apis/AggregatedData.api";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { chartColors } from "../../utils/chartConfigs";
 import { capitalizeFirstLetter } from "../../utils/dataUtils";
@@ -9,15 +10,13 @@ const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
 type SunBurstChartProps = {
 	title?: string;
-	data: Record<string, [Record<string, number>, number]>;
+	data: ProviderDataCounts["patient_age"];
 	dataEndPoint: string;
 	provider?: string;
 	onClick?: (label: string) => void;
 };
 
-const transformData = (
-	data: Record<string, [Record<string, number>, number]>
-) => {
+const transformData = (data: ProviderDataCounts["patient_age"]) => {
 	const labels: string[] = [];
 	const values: number[] = [];
 	const parents: string[] = [];

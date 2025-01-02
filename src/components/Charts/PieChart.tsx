@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import router from "next/router";
 import { useEffect, useRef, useState } from "react";
+import { ProviderDataCounts } from "../../apis/AggregatedData.api";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { chartColors } from "../../utils/chartConfigs";
 
@@ -8,8 +9,7 @@ const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
 type PieChartProps = {
 	title?: string;
-	values: string[] | number[];
-	labels: string[];
+	data: ProviderDataCounts[keyof ProviderDataCounts];
 	dataEndPoint: string;
 	holeRadius?: number;
 	provider?: string;
@@ -18,8 +18,7 @@ type PieChartProps = {
 
 const PieChart = ({
 	title,
-	values,
-	labels,
+	data,
 	dataEndPoint,
 	holeRadius,
 	provider
@@ -38,8 +37,8 @@ const PieChart = ({
 			<Plot
 				data={[
 					{
-						values: values,
-						labels: labels,
+						values: Object.values(data),
+						labels: Object.keys(data),
 						name: "",
 						hoverinfo: "label+percent",
 						textinfo: "none",
