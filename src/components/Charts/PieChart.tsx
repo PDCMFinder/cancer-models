@@ -12,6 +12,7 @@ type PieChartProps = {
 	labels: string[];
 	dataEndPoint: string;
 	holeRadius?: number;
+	provider?: string;
 	onClick?: (label: string) => void;
 };
 
@@ -20,7 +21,8 @@ const PieChart = ({
 	values,
 	labels,
 	dataEndPoint,
-	holeRadius
+	holeRadius,
+	provider
 }: PieChartProps) => {
 	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
 	const [plotWidth, setPlotWidth] = useState(300);
@@ -62,13 +64,19 @@ const PieChart = ({
 					width: plotWidth
 				}}
 				config={{ displayModeBar: false, responsive: true }}
-				onClick={(e) =>
+				onClick={(e) => {
+					// @ts-ignore
+					let searchQuery: string = `?filters=${dataEndPoint}:${e.points[0].label}`;
+					// @ts-ignore
+					if (provider) {
+						searchQuery += `+AND+data_source:${provider}`;
+					}
+
 					router.push({
 						pathname: "/search",
-						// @ts-ignore
-						search: `?filters=${dataEndPoint}:${e.points[0].label}`
-					})
-				}
+						search: searchQuery
+					});
+				}}
 			/>
 		</div>
 	);

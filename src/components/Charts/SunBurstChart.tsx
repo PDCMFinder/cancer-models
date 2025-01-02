@@ -3,6 +3,7 @@ import router from "next/router";
 import { useEffect, useRef, useState } from "react";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { chartColors } from "../../utils/chartConfigs";
+import { capitalizeFirstLetter } from "../../utils/dataUtils";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -10,10 +11,40 @@ type SunBurstChartProps = {
 	title?: string;
 	data: Record<string, [Record<string, number>, number]>;
 	dataEndPoint: string;
+	provider?: string;
 	onClick?: (label: string) => void;
 };
 
-const SunBurstChart = ({ title, data, dataEndPoint }: SunBurstChartProps) => {
+const transformData = (
+	data: Record<string, [Record<string, number>, number]>
+) => {
+	const labels: string[] = [];
+	const values: number[] = [];
+	const parents: string[] = [];
+
+	Object.entries(data).forEach(([parent, [children, parentValue]]) => {
+		if (parentValue) {
+			labels.push(capitalizeFirstLetter(parent));
+			values.push(parentValue);
+			parents.push("");
+
+			Object.entries(children).forEach(([child, value]) => {
+				labels.push(capitalizeFirstLetter(child));
+				values.push(value);
+				parents.push(capitalizeFirstLetter(parent));
+			});
+		}
+	});
+
+	return { labels, values, parents };
+};
+
+const SunBurstChart = ({
+	title,
+	data,
+	dataEndPoint,
+	provider
+}: SunBurstChartProps) => {
 	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
 	const [plotWidth, setPlotWidth] = useState(300);
 	const { windowWidth } = useWindowDimensions();
@@ -22,29 +53,7 @@ const SunBurstChart = ({ title, data, dataEndPoint }: SunBurstChartProps) => {
 		setPlotWidth(plotlyContainerRef.current?.offsetWidth ?? 300);
 	}, [plotlyContainerRef.current?.offsetWidth, windowWidth]);
 
-	const transformData = () => {
-		const labels: string[] = [];
-		const values: number[] = [];
-		const parents: string[] = [];
-
-		Object.entries(data).forEach(([parent, [children, parentValue]]) => {
-			if (parentValue) {
-				labels.push(parent);
-				values.push(parentValue);
-				parents.push("");
-
-				Object.entries(children).forEach(([child, value]) => {
-					labels.push(child);
-					values.push(value);
-					parents.push(parent);
-				});
-			}
-		});
-
-		return { labels, values, parents };
-	};
-
-	const { labels, values, parents } = transformData();
+	const { labels, values, parents } = transformData(data);
 
 	return (
 		<div className="text-center h-100 w-100" ref={plotlyContainerRef}>
@@ -78,13 +87,21 @@ const SunBurstChart = ({ title, data, dataEndPoint }: SunBurstChartProps) => {
 					width: plotWidth
 				}}
 				config={{ displayModeBar: false, responsive: true }}
-				onClick={(e) =>
-					router.push({
-						pathname: "/search",
-						// @ts-ignore
-						search: `?filters=${dataEndPoint}:${e.points[0].label}`
-					})
-				}
+				onClick={(e) => {
+					// @ts-ignore
+					let searchQuery: string = `?filters=${dataEndPoint}:${e.points[0].label}`;
+					// @ts-ignore
+					if (!parents.includes(e.points[0].label)) {
+						if (provider) {
+							searchQuery += `+AND+data_source:${provider}`;
+						}
+
+						router.push({
+							pathname: "/search",
+							search: searchQuery
+						});
+					}
+				}}
 			/>
 		</div>
 	);

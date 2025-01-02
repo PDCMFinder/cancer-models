@@ -82,7 +82,7 @@ const ProviderInfo = ({
 					</div>
 				) : (
 					<div className="row row-cols-2 row-cols-md-5 mb-4">
-						<div className="col" key={`providerDataCounts?.["cancer_system"]`}>
+						<div className="col">
 							<PieChart
 								title="Cancer system"
 								values={Object.values(
@@ -92,6 +92,7 @@ const ProviderInfo = ({
 									providerDataCounts?.["cancer_system"] ?? {}
 								)}
 								dataEndPoint="cancer_system"
+								provider={abbreviation}
 							/>
 						</div>
 						<div className="col">
@@ -99,6 +100,40 @@ const ProviderInfo = ({
 								title="Patient age"
 								dataEndPoint="patient_age"
 								data={providerDataCounts?.["patient_age"] ?? {}}
+								provider={abbreviation}
+							/>
+						</div>
+						<div className="col">
+							<PieChart
+								title="Model type"
+								values={Object.values(providerDataCounts?.["model_type"] ?? {})}
+								labels={Object.keys(providerDataCounts?.["model_type"] ?? {})}
+								dataEndPoint="model_type"
+								provider={abbreviation}
+							/>
+						</div>
+						<div className="col">
+							<PieChart
+								title="Tumour type"
+								values={Object.values(
+									providerDataCounts?.["tumour_type"] ?? {}
+								)}
+								labels={Object.keys(providerDataCounts?.["tumour_type"] ?? {})}
+								dataEndPoint="tumour_type"
+								provider={abbreviation}
+							/>
+						</div>
+						<div className="col">
+							<PieChart
+								title="Ethnicity"
+								values={Object.values(
+									providerDataCounts?.["patient_ethnicity"] ?? {}
+								)}
+								labels={Object.keys(
+									providerDataCounts?.["patient_ethnicity"] ?? {}
+								)}
+								dataEndPoint="patient_ethnicity"
+								provider={abbreviation}
 							/>
 						</div>
 					</div>
