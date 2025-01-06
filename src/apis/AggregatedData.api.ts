@@ -5,35 +5,20 @@ import parseRelease from "../utils/parseRelease";
 
 export async function getCancerHierarchy(): Promise<any> {
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/models_by_cancer`
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_cancer?select=cancer_system,count&order=count.desc`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
-		let hierarchy: any = {};
 		d.filter(
 			(i: any) =>
 				i.cancer_system !== null &&
 				i.cancer_system !== i.histology &&
 				i.cancer_system !== "Unclassified"
-		).forEach((element: any) => {
-			if (hierarchy[element.cancer_system] === undefined) {
-				hierarchy[element.cancer_system] = {
-					search_terms: element.cancer_system.replace("Cancer", ""),
-					children: []
-				};
-			}
-			hierarchy[element.cancer_system].children.push({
-				search_terms: element.histology,
-				count: element.count
-			});
-		});
+		);
 
-		return {
-			search_terms: "CancerModels.Org Models",
-			children: Object.values(hierarchy)
-		};
+		return mergeObjectsIntoCountObject(d);
 	});
 }
 
@@ -69,23 +54,34 @@ export async function getModelsByTreatment() {
 	});
 }
 
-export async function getModelsByType(): Promise<
-	{ modelType: string; count: number }[]
-> {
+export async function getModelsByType(): Promise<Record<string, number>> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_type?order=count.desc`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response
-		.json()
-		.then((d: { model_type: string; count: number }[]) =>
-			d.filter((d) => d.model_type !== "other").map(camelCase)
-		);
+	return response.json().then((d) => mergeObjectsIntoCountObject(d));
 }
 
-export async function getModelsByPrimarySite() {
+export const mergeObjectsIntoCountObject = <T extends string>(
+	obj: Record<T, number>[]
+) => {
+	return obj.reduce(
+		(acc: Record<string, number>, curr: Record<string, number>) => {
+			const key = Object.keys(curr)[0] as T; // Extract the first key so we can use it as the key in the result object
+
+			acc[curr[key]] = curr.count;
+
+			return acc;
+		},
+		{}
+	);
+};
+
+export async function getModelsByPrimarySite(): Promise<
+	Record<string, number>
+> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_primary_site?order=count.desc&limit=10`
 	);
@@ -94,7 +90,7 @@ export async function getModelsByPrimarySite() {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json();
+	return response.json().then((d) => mergeObjectsIntoCountObject(d));
 }
 
 export async function getModelsByMutatedGene() {

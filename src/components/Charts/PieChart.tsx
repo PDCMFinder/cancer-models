@@ -1,7 +1,6 @@
 import dynamic from "next/dynamic";
 import router from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { ProviderDataCounts } from "../../apis/AggregatedData.api";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { chartColors } from "../../utils/chartConfigs";
 
@@ -9,11 +8,12 @@ const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
 type PieChartProps = {
 	title?: string;
-	data: ProviderDataCounts[keyof ProviderDataCounts];
+	data: Record<string, number>;
 	dataEndPoint: string;
 	holeRadius?: number;
 	provider?: string;
 	onClick?: (label: string) => void;
+	plotClassName?: string;
 };
 
 const PieChart = ({
@@ -21,7 +21,8 @@ const PieChart = ({
 	data,
 	dataEndPoint,
 	holeRadius,
-	provider
+	provider,
+	plotClassName
 }: PieChartProps) => {
 	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
 	const [plotWidth, setPlotWidth] = useState(300);
@@ -33,7 +34,7 @@ const PieChart = ({
 
 	return (
 		<div className="text-center h-100 w-100" ref={plotlyContainerRef}>
-			{title && <h2 className="p">{title}</h2>}
+			{title && <h2 className="p mt-0 mb-3">{title}</h2>}
 			<Plot
 				data={[
 					{
@@ -66,7 +67,7 @@ const PieChart = ({
 				onClick={(e) => {
 					// @ts-ignore
 					let searchQuery: string = `?filters=${dataEndPoint}:${e.points[0].label}`;
-					// @ts-ignore
+
 					if (provider) {
 						searchQuery += `+AND+data_source:${provider}`;
 					}
