@@ -19,6 +19,7 @@ import {
 import Button from "../components/Button/Button";
 import Card from "../components/Card/Card";
 import PieChart from "../components/Charts/PieChart";
+import PolarBarChart from "../components/Charts/PolarBarChart";
 import Label from "../components/Input/Label";
 import Select from "../components/Input/Select";
 
@@ -203,6 +204,14 @@ const Overview: NextPage = () => {
 									</Card>
 								</div>
 							)}
+						<div className="col-md-6 col-lg-4">
+							<Card className="py-0 px-5">
+								<PolarBarChart
+									title="Models by cancer system"
+									dataEndPoint="cancer_system"
+								/>
+							</Card>
+						</div>
 					</div>
 					<div className="row">
 						<div className="col-12 text-center">
