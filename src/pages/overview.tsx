@@ -1,9 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { ChangeEvent } from "react";
-import { useQuery } from "react-query";
+import { useQueries } from "react-query";
 import {
 	getCancerHierarchy,
 	getLatestDataReleaseInformation,
@@ -12,102 +10,85 @@ import {
 	getModelsByPatientAge,
 	getModelsByPatientEthnicity,
 	getModelsByPatientSex,
+	getModelsByPrimarySite,
 	getModelsByTreatment,
 	getModelsByTumourType,
+	getModelsByType,
 	getProviderCount
 } from "../apis/AggregatedData.api";
 import Button from "../components/Button/Button";
-import BarChart from "../components/Charts/BarChart";
+import Card from "../components/Card/Card";
+import PieChart from "../components/Charts/PieChart";
 import Label from "../components/Input/Label";
 import Select from "../components/Input/Select";
 
-function collapseAgeGroup(
-	ageGroupList: { patient_age: string; count: number }[]
-) {
-	const pediatricAgeGroups = ["0 - 23 months", "2 - 9", "10 - 19"];
-	const adultAgeGroups = [
-		"20 - 29",
-		"30 - 39",
-		"40 - 49",
-		"50 - 59",
-		"60 - 69",
-		"70 - 79",
-		"80 - 89",
-		"90 - 99"
-	];
-	const mappedAgeGroups: any = {
-		pediatric: { label: "Pediatric", count: 0, ranges: pediatricAgeGroups },
-		adult: { label: "Adult", count: 0, ranges: adultAgeGroups },
-		"Not Provided": { count: 0, ranges: ["Not Provided"] }
-	};
-	ageGroupList.forEach((a) => {
-		if (pediatricAgeGroups.includes(a.patient_age)) {
-			mappedAgeGroups.pediatric.count += a.count;
-		} else if (adultAgeGroups.includes(a.patient_age)) {
-			mappedAgeGroups.adult.count += a.count;
-		} else {
-			mappedAgeGroups["Not Provided"].count += a.count;
-		}
-	});
-
-	return Object.keys(mappedAgeGroups).map((e) => {
-		const group = mappedAgeGroups[e];
-
-		return {
-			label: group.label,
-			patient_age: group.ranges.join(", "),
-			count: group.count
-		};
-	});
-}
+const notValidCategories = ["not provided", "not collected"];
 
 const Overview: NextPage = () => {
-	const notValidCategories = ["not provided", "not collected"];
+	const queries = useQueries([
+		{
+			queryKey: "modelsByPrimarySite",
+			queryFn: getModelsByPrimarySite
+		},
+		{
+			queryKey: "modelsByType",
+			queryFn: getModelsByType
+		},
+		{
+			queryKey: "modelsByCancerHierarchy",
+			queryFn: getCancerHierarchy
+		},
+		{
+			queryKey: "modelsByTreatment",
+			queryFn: getModelsByTreatment
+		},
+		{
+			queryKey: "modelsByMutatedGene",
+			queryFn: getModelsByMutatedGene
+		},
+		{
+			queryKey: "modelsByPatientSex",
+			queryFn: getModelsByPatientSex
+		},
+		{
+			queryKey: "modelsByTumourType",
+			queryFn: getModelsByTumourType
+		},
+		{
+			queryKey: "modelsByPatientEthnicity",
+			queryFn: getModelsByPatientEthnicity
+		},
+		{
+			queryKey: "modelsByPatientAge",
+			queryFn: getModelsByPatientAge
+		},
+		{
+			queryKey: "providerCount",
+			queryFn: getProviderCount
+		},
+		{
+			queryKey: "modelCount",
+			queryFn: getModelCount
+		},
+		{
+			queryKey: "latestDataReleaseInfo",
+			queryFn: getLatestDataReleaseInformation
+		}
+	]);
 
-	let modelsByCancerHierarchy = useQuery("modelsByCancerHierarchy", () => {
-		return getCancerHierarchy();
-	});
-	let modelsByTreatment = useQuery("modelsByTreatment", () => {
-		return getModelsByTreatment();
-	});
-	let modelsByMutatedGene = useQuery("modelsByMutatedGene", () => {
-		return getModelsByMutatedGene();
-	});
-	let modelsByPatientSex = useQuery("modelsByPatientSex", () => {
-		return getModelsByPatientSex();
-	});
-	let modelsByTumourType = useQuery("modelsByTumourType", () => {
-		return getModelsByTumourType();
-	});
-	let modelsByPatientEthnicity = useQuery("modelsByPatientEthnicity", () => {
-		return getModelsByPatientEthnicity();
-	});
-	let modelsByPatientAge = useQuery("modelsByPatientAge", () => {
-		return getModelsByPatientAge();
-	});
-	let providerCount = useQuery("providerCount", () => {
-		return getProviderCount();
-	});
-	let modelCount = useQuery("modelCount", () => {
-		return getModelCount();
-	});
-	let latestDataReleaseInfo = useQuery("latestDataReleaseInfo", () => {
-		return getLatestDataReleaseInformation();
-	});
-
-	const router = useRouter();
-
-	const onGraphClick = (
-		node: any,
-		filterId: string,
-		onClickFilters?: boolean
-	) => {
-		router.push({
-			pathname: "/search",
-			search: `?filters=${filterId}:${
-				node.data[onClickFilters ? "onClickFilters" : filterId]
-			}`
-		});
+	const queryResults = {
+		modelsByPrimarySite: queries[0],
+		modelsByType: queries[1],
+		modelsByCancerHierarchy: queries[2],
+		modelsByTreatment: queries[3],
+		modelsByMutatedGene: queries[4],
+		modelsByPatientSex: queries[5],
+		modelsByTumourType: queries[6],
+		modelsByPatientEthnicity: queries[7],
+		modelsByPatientAge: queries[8],
+		providerCount: queries[9],
+		modelCount: queries[10],
+		latestDataReleaseInfo: queries[11]
 	};
 
 	return (
@@ -142,19 +123,24 @@ const Overview: NextPage = () => {
 						<div className="col-12">
 							<h2>Current data release</h2>
 							<ul>
-								{latestDataReleaseInfo.data ? (
+								{queryResults.latestDataReleaseInfo.data ? (
 									<li>
-										Data release version: {latestDataReleaseInfo.data.tag_name}
+										Data release version:{" "}
+										{queryResults.latestDataReleaseInfo.data.tag_name}
 									</li>
 								) : null}
-								{latestDataReleaseInfo.data ? (
+								{queryResults.latestDataReleaseInfo.data ? (
 									<li>
 										Date of publication:{" "}
-										{latestDataReleaseInfo.data?.released_at}
+										{queryResults.latestDataReleaseInfo.data?.released_at}
 									</li>
 								) : null}
-								<li>Number of models: {modelCount.data ?? 10000}</li>
-								<li>Number of providers: {providerCount.data ?? 56}</li>
+								<li>
+									Number of models: {queryResults.modelCount.data ?? 10000}
+								</li>
+								<li>
+									Number of providers: {queryResults.providerCount.data ?? 56}
+								</li>
 							</ul>
 							<Link href="/about/releases">Release log</Link>
 						</div>
@@ -167,40 +153,56 @@ const Overview: NextPage = () => {
 						<div className="col-12">
 							<div className="d-flex align-center">
 								<Label
-									label="Filter by:"
+									label="Filter by provider:"
 									forId="filter-by-provider"
 									name="filter-by-provider-name"
 									className="mr-1"
 								/>
 								<Select
 									id="filter-by-provider"
-									options={[{ text: "PDX", value: "PDX" }]}
+									options={[{ text: "All", value: "all" }]}
 									className="w-auto mb-0"
-									onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-										console.log(e.target.value);
-									}}
 								/>
 							</div>
 						</div>
 					</div>
 					<div className="row mb-5">
-						<div className="col-md-6 col-lg-4">
-							<BarChart
-								title="Models by"
-								x={[
-									"giraffes",
-									"orangutans",
-									"monkeys",
-									"girafdfes",
-									"orangsutans",
-									"monkaeys",
-									"girafdfdes",
-									"orangsuatans",
-									"monkaseys"
-								]}
-								y={[20, 14, 23, 20, 14, 23, 20, 14, 23, 20, 14, 23]}
-							/>
-						</div>
+						{queryResults.modelsByPrimarySite.data &&
+							!queryResults.modelsByPrimarySite.isLoading && (
+								<div className="col-md-6 col-lg-4">
+									<Card className="py-0 px-5">
+										<PieChart
+											title="Models by primary site"
+											data={queryResults.modelsByPrimarySite.data}
+											dataEndPoint="primary_site"
+										/>
+									</Card>
+								</div>
+							)}
+						{queryResults.modelsByType.data &&
+							!queryResults.modelsByType.isLoading && (
+								<div className="col-md-6 col-lg-4">
+									<Card className="py-0 px-5">
+										<PieChart
+											title="Models by model type"
+											data={queryResults.modelsByType.data}
+											dataEndPoint="model_type"
+										/>
+									</Card>
+								</div>
+							)}
+						{queryResults.modelsByCancerHierarchy.data &&
+							!queryResults.modelsByCancerHierarchy.isLoading && (
+								<div className="col-md-6 col-lg-4">
+									<Card className="py-0 px-5">
+										<PieChart
+											title="Models by cancer system"
+											data={queryResults.modelsByCancerHierarchy.data}
+											dataEndPoint="cancer_system"
+										/>
+									</Card>
+								</div>
+							)}
 					</div>
 					<div className="row">
 						<div className="col-12 text-center">
