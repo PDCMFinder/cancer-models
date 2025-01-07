@@ -13,7 +13,6 @@ type PieChartProps = {
 	holeRadius?: number;
 	provider?: string;
 	onClick?: (label: string) => void;
-	plotClassName?: string;
 };
 
 const PieChart = ({
@@ -21,8 +20,7 @@ const PieChart = ({
 	data,
 	dataEndPoint,
 	holeRadius,
-	provider,
-	plotClassName
+	provider
 }: PieChartProps) => {
 	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
 	const [plotWidth, setPlotWidth] = useState(300);

@@ -9,9 +9,10 @@ type BarChartProps = {
 	title?: string;
 	x: string[] | number[];
 	y: string[] | number[];
+	dataEndPoint: string;
 };
 
-const BarChart = ({ title, x, y }: BarChartProps) => {
+const BarChart = ({ title, x, y, dataEndPoint }: BarChartProps) => {
 	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
 	const [plotWidth, setPlotWidth] = useState(300);
 	const { windowWidth } = useWindowDimensions();
@@ -38,11 +39,12 @@ const BarChart = ({ title, x, y }: BarChartProps) => {
 						}
 					]}
 					layout={{
-						margin: { l: 30, r: 0 },
+						margin: { l: 30, r: 0, t: 0, b: 120 },
 						xaxis: {
-							tickangle: 90
+							tickangle: -30
 						},
-						width: plotWidth
+						width: plotWidth,
+						height: plotWidth / 2.3
 					}}
 					config={{ displayModeBar: false, responsive: true }}
 				/>

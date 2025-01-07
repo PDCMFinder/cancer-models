@@ -3,9 +3,9 @@ import Head from "next/head";
 import Link from "next/link";
 import { useQueries } from "react-query";
 import {
-	getCancerHierarchy,
 	getLatestDataReleaseInformation,
 	getModelCount,
+	getModelsByCancerSystem,
 	getModelsByMutatedGene,
 	getModelsByPatientAge,
 	getModelsByPatientEthnicity,
@@ -18,12 +18,11 @@ import {
 } from "../apis/AggregatedData.api";
 import Button from "../components/Button/Button";
 import Card from "../components/Card/Card";
+import BarChart from "../components/Charts/BarChart";
 import PieChart from "../components/Charts/PieChart";
 import PolarBarChart from "../components/Charts/PolarBarChart";
 import Label from "../components/Input/Label";
 import Select from "../components/Input/Select";
-
-const notValidCategories = ["not provided", "not collected"];
 
 const Overview: NextPage = () => {
 	const queries = useQueries([
@@ -36,8 +35,8 @@ const Overview: NextPage = () => {
 			queryFn: getModelsByType
 		},
 		{
-			queryKey: "modelsByCancerHierarchy",
-			queryFn: getCancerHierarchy
+			queryKey: "modelsByCancerSystem",
+			queryFn: getModelsByCancerSystem
 		},
 		{
 			queryKey: "modelsByTreatment",
@@ -80,7 +79,7 @@ const Overview: NextPage = () => {
 	const queryResults = {
 		modelsByPrimarySite: queries[0],
 		modelsByType: queries[1],
-		modelsByCancerHierarchy: queries[2],
+		modelsByCancerSystem: queries[2],
 		modelsByTreatment: queries[3],
 		modelsByMutatedGene: queries[4],
 		modelsByPatientSex: queries[5],
@@ -170,7 +169,7 @@ const Overview: NextPage = () => {
 					<div className="row mb-5">
 						{queryResults.modelsByPrimarySite.data &&
 							!queryResults.modelsByPrimarySite.isLoading && (
-								<div className="col-md-6 col-lg-4">
+								<div className="col-md-6 col-lg-4 mb-4">
 									<Card className="py-0 px-5">
 										<PieChart
 											title="Models by primary site"
@@ -182,7 +181,7 @@ const Overview: NextPage = () => {
 							)}
 						{queryResults.modelsByType.data &&
 							!queryResults.modelsByType.isLoading && (
-								<div className="col-md-6 col-lg-4">
+								<div className="col-md-6 col-lg-4 mb-4">
 									<Card className="py-0 px-5">
 										<PieChart
 											title="Models by model type"
@@ -192,26 +191,47 @@ const Overview: NextPage = () => {
 									</Card>
 								</div>
 							)}
-						{queryResults.modelsByCancerHierarchy.data &&
-							!queryResults.modelsByCancerHierarchy.isLoading && (
-								<div className="col-md-6 col-lg-4">
+						{queryResults.modelsByCancerSystem.data &&
+							!queryResults.modelsByCancerSystem.isLoading && (
+								<div className="col-md-6 col-lg-4 mb-4">
 									<Card className="py-0 px-5">
 										<PieChart
 											title="Models by cancer system"
-											data={queryResults.modelsByCancerHierarchy.data}
+											data={queryResults.modelsByCancerSystem.data}
 											dataEndPoint="cancer_system"
 										/>
 									</Card>
 								</div>
 							)}
-						<div className="col-md-6 col-lg-4">
-							<Card className="py-0 px-5">
-								<PolarBarChart
-									title="Models by cancer system"
-									dataEndPoint="cancer_system"
-								/>
-							</Card>
-						</div>
+						{queryResults.modelsByMutatedGene.data &&
+							!queryResults.modelsByMutatedGene.isLoading && (
+								<div className="col-md-6 col-lg-4 mb-4">
+									<Card className="py-0 px-2">
+										<PolarBarChart
+											title="Models by mutated gene"
+											data={queryResults.modelsByMutatedGene.data}
+											dataEndPoint="mutated_gene"
+										/>
+									</Card>
+								</div>
+							)}
+						{queryResults.modelsByPatientEthnicity.data &&
+							!queryResults.modelsByPatientEthnicity.isLoading && (
+								<div className="col-md-12 col-lg-8 mb-4">
+									<Card className="py-0 px-2">
+										<BarChart
+											title="Models by patient ethnicity"
+											x={Object.keys(
+												queryResults.modelsByPatientEthnicity.data
+											)}
+											y={Object.values(
+												queryResults.modelsByPatientEthnicity.data
+											)}
+											dataEndPoint="patient_ethnicity"
+										/>
+									</Card>
+								</div>
+							)}
 					</div>
 					<div className="row">
 						<div className="col-12 text-center">

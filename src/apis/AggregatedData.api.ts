@@ -3,7 +3,7 @@ import { ethnicityCategories } from "../utils/collapseEthnicity";
 import { camelCase, countUniqueValues } from "../utils/dataUtils";
 import parseRelease from "../utils/parseRelease";
 
-export async function getCancerHierarchy(): Promise<any> {
+export async function getModelsByCancerSystem(): Promise<any> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_cancer?select=cancer_system,count&order=count.desc`
 	);
@@ -70,7 +70,6 @@ export const mergeObjectsIntoCountObject = <T extends string>(
 	return obj.reduce(
 		(acc: Record<string, number>, curr: Record<string, number>) => {
 			const key = Object.keys(curr)[0] as T; // Extract the first key so we can use it as the key in the result object
-
 			acc[curr[key]] = curr.count;
 
 			return acc;
@@ -95,22 +94,16 @@ export async function getModelsByPrimarySite(): Promise<
 
 export async function getModelsByMutatedGene() {
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/models_by_mutated_gene?order=count.desc&limit=10`
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_mutated_gene?order=count.desc&limit=20`
 	);
 
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json().then((d: any[]) => {
-		var i;
-		for (i = 0; i < d.length; i++) {
-			d[i]["markers_with_mutation_data"] = d[i]["mutated_gene"];
-			delete d[i]["mutated_gene"];
-		}
-
-		return d;
-	});
+	return response
+		.json()
+		.then((d: Record<string, number>[]) => mergeObjectsIntoCountObject(d));
 }
 
 export async function getModelsByPatientSex() {
@@ -137,6 +130,11 @@ export async function getModelsByTumourType() {
 	return response.json();
 }
 
+interface PatientEthnicityResponse {
+	patient_ethnicity: string;
+	count: number;
+}
+
 export async function getModelsByPatientEthnicity() {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_patient_ethnicity?order=count.desc`
@@ -146,7 +144,31 @@ export async function getModelsByPatientEthnicity() {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json();
+	return response.json().then((d: PatientEthnicityResponse[]) => {
+		const groupedData = d.reduce((acc: Record<string, number>, item) => {
+			let ethnicity = item.patient_ethnicity;
+			let topCategory = ethnicity;
+			if (
+				ethnicity?.toLocaleLowerCase() === "not provided" ||
+				ethnicity?.toLocaleLowerCase() === "not provided" ||
+				ethnicity?.toLocaleLowerCase() === "not collected" ||
+				!ethnicity
+			)
+				return acc;
+			for (const [category, values] of Object.entries(ethnicityCategories)) {
+				if (values.includes(ethnicity)) {
+					topCategory = category;
+
+					break;
+				}
+			}
+
+			acc[topCategory] = (acc[topCategory] || 0) + item.count;
+			return acc;
+		}, {});
+
+		return groupedData;
+	});
 }
 
 export async function getModelsByPatientAge() {
