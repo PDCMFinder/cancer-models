@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import router from "next/router";
 import { useEffect, useRef, useState } from "react";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { chartColors } from "../../utils/chartConfigs";
@@ -10,9 +11,10 @@ type BarChartProps = {
 	x: string[] | number[];
 	y: string[] | number[];
 	dataEndPoint: string;
+	provider?: string;
 };
 
-const BarChart = ({ title, x, y, dataEndPoint }: BarChartProps) => {
+const BarChart = ({ title, x, y, dataEndPoint, provider }: BarChartProps) => {
 	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
 	const [plotWidth, setPlotWidth] = useState(300);
 	const { windowWidth } = useWindowDimensions();
@@ -47,6 +49,19 @@ const BarChart = ({ title, x, y, dataEndPoint }: BarChartProps) => {
 						height: plotWidth / 2.3
 					}}
 					config={{ displayModeBar: false, responsive: true }}
+					onClick={(e) => {
+						// @ts-ignore
+						let searchQuery: string = `?filters=${dataEndPoint}:${e.points[0].label}`;
+
+						if (provider) {
+							searchQuery += `+AND+data_source:${provider}`;
+						}
+
+						router.push({
+							pathname: "/search",
+							search: searchQuery
+						});
+					}}
 				/>
 			</div>
 		</>

@@ -21,8 +21,39 @@ import Card from "../components/Card/Card";
 import BarChart from "../components/Charts/BarChart";
 import PieChart from "../components/Charts/PieChart";
 import PolarBarChart from "../components/Charts/PolarBarChart";
-import Label from "../components/Input/Label";
-import Select from "../components/Input/Select";
+import SunBurstChart from "../components/Charts/SunBurstChart";
+import { ageCategories } from "../utils/collapseEthnicity";
+import { capitalizeFirstLetter } from "../utils/dataUtils";
+
+const transformSunBurstData = (data: Record<string, number>) => {
+	const labels: string[] = [];
+	const values: number[] = [];
+	const parents: string[] = [];
+	let parentTotalCount = 0,
+		tempChildValues: number[] = [];
+
+	Object.entries(ageCategories).forEach(([category, categoryValues]) => {
+		// assuming all of this categories are included in our models (if not, why is it even in the dictionary?)
+		labels.push(capitalizeFirstLetter(category.toLowerCase()));
+		parents.push("");
+		parentTotalCount = 0;
+		tempChildValues = [];
+
+		Object.entries(data).forEach(([age, count]) => {
+			if (categoryValues.includes(age)) {
+				labels.push(age);
+				tempChildValues.push(count);
+				parents.push(capitalizeFirstLetter(category.toLowerCase()));
+				parentTotalCount += count;
+			}
+		});
+
+		values.push(parentTotalCount);
+		values.push(...tempChildValues);
+	});
+
+	return { labels, values, parents };
+};
 
 const Overview: NextPage = () => {
 	const queries = useQueries([
@@ -60,7 +91,8 @@ const Overview: NextPage = () => {
 		},
 		{
 			queryKey: "modelsByPatientAge",
-			queryFn: getModelsByPatientAge
+			queryFn: getModelsByPatientAge,
+			select: transformSunBurstData
 		},
 		{
 			queryKey: "providerCount",
@@ -150,23 +182,6 @@ const Overview: NextPage = () => {
 			<section>
 				<div className="container">
 					<div className="row mb-5">
-						<div className="col-12">
-							<div className="d-flex align-center">
-								<Label
-									label="Filter by provider:"
-									forId="filter-by-provider"
-									name="filter-by-provider-name"
-									className="mr-1"
-								/>
-								<Select
-									id="filter-by-provider"
-									options={[{ text: "All", value: "all" }]}
-									className="w-auto mb-0"
-								/>
-							</div>
-						</div>
-					</div>
-					<div className="row mb-5">
 						{queryResults.modelsByPrimarySite.data &&
 							!queryResults.modelsByPrimarySite.isLoading && (
 								<div className="col-md-6 col-lg-4 mb-4">
@@ -228,6 +243,45 @@ const Overview: NextPage = () => {
 												queryResults.modelsByPatientEthnicity.data
 											)}
 											dataEndPoint="patient_ethnicity"
+										/>
+									</Card>
+								</div>
+							)}
+						{queryResults.modelsByPatientAge.data &&
+							!queryResults.modelsByPatientAge.isLoading && (
+								<div className="col-md-6 col-lg-4 mb-4">
+									<Card className="py-0 px-5">
+										<SunBurstChart
+											title="Models by patient age"
+											values={queryResults.modelsByPatientAge.data.values}
+											labels={queryResults.modelsByPatientAge.data.labels}
+											parents={queryResults.modelsByPatientAge.data.parents}
+											dataEndPoint="patient_age"
+										/>
+									</Card>
+								</div>
+							)}
+						{queryResults.modelsByTreatment.data &&
+							!queryResults.modelsByTreatment.isLoading && (
+								<div className="col-md-12 col-lg-8 mb-4">
+									<Card className="py-0 px-2">
+										<BarChart
+											title="Models by treatment"
+											x={Object.keys(queryResults.modelsByTreatment.data)}
+											y={Object.values(queryResults.modelsByTreatment.data)}
+											dataEndPoint="patient_treatments"
+										/>
+									</Card>
+								</div>
+							)}
+						{queryResults.modelsByPatientSex.data &&
+							!queryResults.modelsByPatientSex.isLoading && (
+								<div className="col-md-6 col-lg-4 mb-4">
+									<Card className="py-0 px-5">
+										<PieChart
+											title="Models by patient sex"
+											data={queryResults.modelsByPatientSex.data}
+											dataEndPoint="patient_sex"
 										/>
 									</Card>
 								</div>

@@ -43,15 +43,7 @@ export async function getModelsByTreatment() {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json().then((d: any[]) => {
-		var i;
-		for (i = 0; i < d.length; i++) {
-			d[i]["treatment_list"] = d[i]["treatment"];
-			delete d[i].treatment;
-		}
-
-		return d;
-	});
+	return response.json().then((d) => mergeObjectsIntoCountObject(d));
 }
 
 export async function getModelsByType(): Promise<Record<string, number>> {
@@ -115,7 +107,7 @@ export async function getModelsByPatientSex() {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json();
+	return response.json().then((d) => mergeObjectsIntoCountObject(d));
 }
 
 export async function getModelsByTumourType() {
@@ -155,6 +147,7 @@ export async function getModelsByPatientEthnicity() {
 				!ethnicity
 			)
 				return acc;
+
 			for (const [category, values] of Object.entries(ethnicityCategories)) {
 				if (values.includes(ethnicity)) {
 					topCategory = category;
@@ -180,25 +173,19 @@ export async function getModelsByPatientAge() {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json();
+	return response.json().then((d) => mergeObjectsIntoCountObject(d));
 }
 
 export async function getModelsByDatasetAvailability() {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_dataset_availability?order=count.desc`
 	);
+
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json().then((d: any[]) =>
-		d.reverse().map((i: any) => {
-			return {
-				id: i.dataset_availability,
-				label: i.dataset_availability,
-				value: i.count
-			};
-		})
-	);
+
+	return response.json().then((d: any[]) => mergeObjectsIntoCountObject(d));
 }
 
 export async function getDataReleaseInformation() {
@@ -333,7 +320,7 @@ export async function getProviderDataCounts(
 				}
 				return { patient_ethnicity: ethnicity };
 			});
-
+			console.log({ d });
 			const cancerSystemCounts = countUniqueValues(d, "cancer_system");
 			const patientAgeCounts = countUniqueValues(d, "patient_age");
 			const modelTypeCounts = countUniqueValues(d, "model_type");

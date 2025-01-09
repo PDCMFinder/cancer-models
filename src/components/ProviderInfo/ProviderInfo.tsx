@@ -5,6 +5,7 @@ import {
 	getProviderDataCounts,
 	ProviderDataCounts
 } from "../../apis/AggregatedData.api";
+import { capitalizeFirstLetter } from "../../utils/dataUtils";
 import Button from "../Button/Button";
 import PieChart from "../Charts/PieChart";
 import SunBurstChart from "../Charts/SunBurstChart";
@@ -20,15 +21,37 @@ type ProviderInfoProps = {
 	};
 };
 
-const getChartDataType = <T extends keyof ProviderDataCounts>(
-	data: ProviderDataCounts[T],
-	chartType: string
-) => {
-	if (chartType === "SunBurstChart") {
-		return data as Record<string, [Record<string, number>, number]>;
-	} else {
-		return data as Record<string, number>;
-	}
+// const getChartDataType = <T extends keyof ProviderDataCounts>(
+// 	data: ProviderDataCounts[T],
+// 	chartType: string
+// ) => {
+// 	if (chartType === "SunBurstChart") {
+// 		return data as Record<string, [Record<string, number>, number]>;
+// 	} else {
+// 		return data as Record<string, number>;
+// 	}
+// };
+
+const transformSunBurstData = (data: ProviderDataCounts["patient_age"]) => {
+	const labels: string[] = [];
+	const values: number[] = [];
+	const parents: string[] = [];
+
+	Object.entries(data).forEach(([parent, [children, parentValue]]) => {
+		if (parentValue) {
+			labels.push(capitalizeFirstLetter(parent));
+			values.push(parentValue);
+			parents.push("");
+
+			Object.entries(children).forEach(([child, value]) => {
+				labels.push(capitalizeFirstLetter(child));
+				values.push(value);
+				parents.push(capitalizeFirstLetter(parent));
+			});
+		}
+	});
+
+	return { labels, values, parents };
 };
 
 const chartCategories: Array<{
@@ -74,6 +97,29 @@ const ProviderInfo = ({
 		}
 	);
 
+	if (providerDataCounts?.patient_age) {
+		console.log(
+			transformSunBurstData(
+				providerDataCounts?.patient_age as Record<
+					string,
+					[Record<string, number>, number]
+				>
+			).parents,
+			transformSunBurstData(
+				providerDataCounts?.patient_age as Record<
+					string,
+					[Record<string, number>, number]
+				>
+			).labels,
+			transformSunBurstData(
+				providerDataCounts?.patient_age as Record<
+					string,
+					[Record<string, number>, number]
+				>
+			).values
+		);
+	}
+
 	return (
 		<>
 			<div className="col-12 col-md-2 text-center">
@@ -104,10 +150,7 @@ const ProviderInfo = ({
 								title,
 								dataEndPoint,
 								provider: abbreviation,
-								data: getChartDataType(
-									providerDataCounts?.[dataEndPoint] ?? {},
-									chartType
-								)
+								data: providerDataCounts?.[dataEndPoint] ?? {}
 							};
 
 							return (
@@ -115,15 +158,36 @@ const ProviderInfo = ({
 									{chartType === "SunBurstChart" ? (
 										<SunBurstChart
 											{...commonProps}
-											data={
-												commonProps.data as Record<
-													string,
-													[Record<string, number>, number]
-												>
+											labels={
+												transformSunBurstData(
+													commonProps.data as Record<
+														string,
+														[Record<string, number>, number]
+													>
+												).labels
+											}
+											values={
+												transformSunBurstData(
+													commonProps.data as Record<
+														string,
+														[Record<string, number>, number]
+													>
+												).values
+											}
+											parents={
+												transformSunBurstData(
+													commonProps.data as Record<
+														string,
+														[Record<string, number>, number]
+													>
+												).parents
 											}
 										/>
 									) : (
-										<PieChart {...commonProps} />
+										<PieChart
+											{...commonProps}
+											data={commonProps.data as Record<string, number>}
+										/>
 									)}
 								</div>
 							);

@@ -1,46 +1,26 @@
 import dynamic from "next/dynamic";
 import router from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { ProviderDataCounts } from "../../apis/AggregatedData.api";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import { chartColors } from "../../utils/chartConfigs";
-import { capitalizeFirstLetter } from "../../utils/dataUtils";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
 type SunBurstChartProps = {
 	title?: string;
-	data: ProviderDataCounts["patient_age"];
+	values: number[];
+	labels: string[];
+	parents: string[];
 	dataEndPoint: string;
 	provider?: string;
 	onClick?: (label: string) => void;
 };
 
-const transformData = (data: ProviderDataCounts["patient_age"]) => {
-	const labels: string[] = [];
-	const values: number[] = [];
-	const parents: string[] = [];
-
-	Object.entries(data).forEach(([parent, [children, parentValue]]) => {
-		if (parentValue) {
-			labels.push(capitalizeFirstLetter(parent));
-			values.push(parentValue);
-			parents.push("");
-
-			Object.entries(children).forEach(([child, value]) => {
-				labels.push(capitalizeFirstLetter(child));
-				values.push(value);
-				parents.push(capitalizeFirstLetter(parent));
-			});
-		}
-	});
-
-	return { labels, values, parents };
-};
-
 const SunBurstChart = ({
 	title,
-	data,
+	values,
+	labels,
+	parents,
 	dataEndPoint,
 	provider
 }: SunBurstChartProps) => {
@@ -51,8 +31,6 @@ const SunBurstChart = ({
 	useEffect(() => {
 		setPlotWidth(plotlyContainerRef.current?.offsetWidth ?? 300);
 	}, [plotlyContainerRef.current?.offsetWidth, windowWidth]);
-
-	const { labels, values, parents } = transformData(data);
 
 	return (
 		<div className="text-center h-100 w-100" ref={plotlyContainerRef}>

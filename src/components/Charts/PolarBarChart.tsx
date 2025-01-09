@@ -21,17 +21,24 @@ const PolarBarChart = ({ title, data }: PolarBarChartProps) => {
 		setPlotWidth(plotlyContainerRef.current?.offsetWidth ?? 300);
 	}, [plotlyContainerRef.current?.offsetWidth, windowWidth]);
 
+	const sortedData = Object.keys(data)
+		.sort()
+		.reduce<Record<string, number>>((obj, key) => {
+			obj[key] = data[key];
+
+			return obj;
+		}, {});
+
 	return (
 		<div className="text-center h-100 w-100" ref={plotlyContainerRef}>
 			{title && <h2 className="p mt-0 mb-3">{title}</h2>}
 			<Plot
 				data={[
 					{
-						r: Object.values(data),
-						theta: Object.keys(data),
+						r: Object.values(sortedData),
+						theta: Object.keys(sortedData),
 						name: "",
-						type: "scatterpolar",
-						mode: "lines+markers",
+						type: "barpolar",
 						fill: "toself"
 					}
 				]}

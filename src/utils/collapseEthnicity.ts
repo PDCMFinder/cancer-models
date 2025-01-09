@@ -16,7 +16,14 @@ export const ethnicityCategories: EthnicityCategories = {
 		"Black Or African American",
 		"Black Or African American; Not Hispanic Or Latino"
 	],
-	White: ["White; Not Hispanic Or Latino", "European", "Caucasian", "White"],
+	White: [
+		"White; Not Hispanic Or Latino",
+		"European",
+		"Caucasian",
+		"White",
+		"Western European",
+		"Italian"
+	],
 	"Hispanic Or Latino": [
 		"Latino",
 		"White; Hispanic Or Latino",
