@@ -43,7 +43,7 @@ const SunBurstChart = ({
 						parents,
 						branchvalues: "total",
 						name: "",
-						textinfo: "none",
+						textinfo: "label",
 						type: "sunburst",
 						automargin: true,
 						marker: {
@@ -58,6 +58,9 @@ const SunBurstChart = ({
 							text: ""
 						}
 					],
+					font: {
+						size: 12
+					},
 					showlegend: false,
 					margin: { t: 0, b: 0, l: 0, r: 0 },
 					height: plotWidth,

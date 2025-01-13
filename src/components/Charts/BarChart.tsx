@@ -26,7 +26,7 @@ const BarChart = ({ title, x, y, dataEndPoint, provider }: BarChartProps) => {
 	return (
 		<>
 			<div className="text-center h-100 w-100" ref={plotlyContainerRef}>
-				{title && <h2 className="p">{title}</h2>}
+				{title && <h2 className="p mt-0 mb-3">{title}</h2>}
 				<Plot
 					data={[
 						{
@@ -37,16 +37,22 @@ const BarChart = ({ title, x, y, dataEndPoint, provider }: BarChartProps) => {
 							marker: {
 								color: chartColors[2]
 							},
-							automargin: true
+							automargin: true,
+							text: y.map(String),
+							textinfo: "label",
+							textposition: "auto"
 						}
 					]}
 					layout={{
-						margin: { l: 30, r: 0, t: 0, b: 120 },
+						margin: { l: 50, r: 0, t: 0, b: 120 },
 						xaxis: {
 							tickangle: -30
 						},
 						width: plotWidth,
-						height: plotWidth / 2.3
+						height: plotWidth / 2.3,
+						font: {
+							size: 12
+						}
 					}}
 					config={{ displayModeBar: false, responsive: true }}
 					onClick={(e) => {
