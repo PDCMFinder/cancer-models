@@ -28,10 +28,10 @@ const BarChart = ({ title, x, y, dataEndPoint, provider }: BarChartProps) => {
 		if (windowWidth && windowWidth < bpLarge) {
 			setPlotHeight(plotlyContainerRef.current?.offsetWidth ?? 300);
 		} else {
-			setPlotHeight(plotlyContainerRef.current?.offsetWidth ?? 300 / 2.3);
+			setPlotHeight((plotlyContainerRef.current?.offsetWidth ?? 300) / 2.3);
 		}
 	}, [plotlyContainerRef.current?.offsetWidth, windowWidth]);
-
+	console.log({ plotHeight, plotWidth });
 	return (
 		<>
 			<div className="text-center h-100 w-100" ref={plotlyContainerRef}>
