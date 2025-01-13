@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import router from "next/router";
 import { useEffect, useRef, useState } from "react";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
+import breakPoints from "../../utils/breakpoints";
 import { chartColors } from "../../utils/chartConfigs";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
@@ -17,10 +18,18 @@ type BarChartProps = {
 const BarChart = ({ title, x, y, dataEndPoint, provider }: BarChartProps) => {
 	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
 	const [plotWidth, setPlotWidth] = useState(300);
+	const [plotHeight, setPlotHeight] = useState(300);
 	const { windowWidth } = useWindowDimensions();
+	const bpLarge = breakPoints.large;
 
 	useEffect(() => {
 		setPlotWidth(plotlyContainerRef.current?.offsetWidth ?? 300);
+
+		if (windowWidth && windowWidth < bpLarge) {
+			setPlotHeight(plotlyContainerRef.current?.offsetWidth ?? 300);
+		} else {
+			setPlotHeight(plotlyContainerRef.current?.offsetWidth ?? 300 / 2.3);
+		}
 	}, [plotlyContainerRef.current?.offsetWidth, windowWidth]);
 
 	return (
@@ -49,7 +58,7 @@ const BarChart = ({ title, x, y, dataEndPoint, provider }: BarChartProps) => {
 							tickangle: -30
 						},
 						width: plotWidth,
-						height: plotWidth / 2.3,
+						height: plotHeight,
 						font: {
 							size: 12
 						}
@@ -57,7 +66,7 @@ const BarChart = ({ title, x, y, dataEndPoint, provider }: BarChartProps) => {
 					config={{ displayModeBar: false, responsive: true }}
 					onClick={(e) => {
 						// @ts-ignore
-						let searchQuery: string = `?filters=${dataEndPoint}:${e.points[0].label}`;
+						const searchQuery: string = `?filters=${dataEndPoint}:${e.points[0].label}`;
 
 						router.push({
 							pathname: "/search",
