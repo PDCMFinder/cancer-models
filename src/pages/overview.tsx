@@ -6,11 +6,14 @@ import {
 	getLatestDataReleaseInformation,
 	getModelCount,
 	getModelsByCancerSystem,
+	getModelsByDatasetAvailability,
+	getModelsByDiagnosis,
 	getModelsByMutatedGene,
 	getModelsByPatientAge,
 	getModelsByPatientEthnicity,
 	getModelsByPatientSex,
 	getModelsByPrimarySite,
+	getModelsByProvider,
 	getModelsByTreatment,
 	getModelsByTumourType,
 	getModelsByType,
@@ -105,6 +108,18 @@ const Overview: NextPage = () => {
 		{
 			queryKey: "latestDataReleaseInfo",
 			queryFn: getLatestDataReleaseInformation
+		},
+		{
+			queryKey: "modelsByDiagnosis",
+			queryFn: getModelsByDiagnosis
+		},
+		{
+			queryKey: "modelsByProvider",
+			queryFn: getModelsByProvider
+		},
+		{
+			queryKey: "modelsByDatasetAvailability",
+			queryFn: getModelsByDatasetAvailability
 		}
 	]);
 
@@ -120,7 +135,10 @@ const Overview: NextPage = () => {
 		modelsByPatientAge: queries[8],
 		providerCount: queries[9],
 		modelCount: queries[10],
-		latestDataReleaseInfo: queries[11]
+		latestDataReleaseInfo: queries[11],
+		modelsByDiagnosis: queries[12],
+		modelsByProvider: queries[13],
+		modelsByDatasetAvailability: queries[14]
 	};
 
 	return (
@@ -185,11 +203,12 @@ const Overview: NextPage = () => {
 						{queryResults.modelsByPrimarySite.data &&
 							!queryResults.modelsByPrimarySite.isLoading && (
 								<div className="col-md-6 col-lg-4 mb-4">
-									<Card className="py-0 px-5">
+									<Card className="py-0 px-5 h-100">
 										<PieChart
 											title="Models by primary site"
 											data={queryResults.modelsByPrimarySite.data}
 											dataEndPoint="primary_site"
+											holeRadius={100}
 										/>
 									</Card>
 								</div>
@@ -197,7 +216,7 @@ const Overview: NextPage = () => {
 						{queryResults.modelsByType.data &&
 							!queryResults.modelsByType.isLoading && (
 								<div className="col-md-6 col-lg-4 mb-4">
-									<Card className="py-0 px-5">
+									<Card className="py-0 px-5 h-100">
 										<PieChart
 											title="Models by model type"
 											data={queryResults.modelsByType.data}
@@ -209,11 +228,12 @@ const Overview: NextPage = () => {
 						{queryResults.modelsByCancerSystem.data &&
 							!queryResults.modelsByCancerSystem.isLoading && (
 								<div className="col-md-6 col-lg-4 mb-4">
-									<Card className="py-0 px-5">
+									<Card className="py-0 px-5 h-100">
 										<PieChart
 											title="Models by cancer system"
 											data={queryResults.modelsByCancerSystem.data}
 											dataEndPoint="cancer_system"
+											holeRadius={100}
 										/>
 									</Card>
 								</div>
@@ -225,7 +245,7 @@ const Overview: NextPage = () => {
 										<PolarBarChart
 											title="Models by mutated gene"
 											data={queryResults.modelsByMutatedGene.data}
-											dataEndPoint="mutated_gene"
+											dataEndPoint="markers_with_mutation_data"
 										/>
 									</Card>
 								</div>
@@ -233,7 +253,7 @@ const Overview: NextPage = () => {
 						{queryResults.modelsByPatientEthnicity.data &&
 							!queryResults.modelsByPatientEthnicity.isLoading && (
 								<div className="col-md-12 col-lg-8 mb-4">
-									<Card className="py-0 px-2">
+									<Card className="py-0 px-2 h-100">
 										<BarChart
 											title="Models by patient ethnicity"
 											x={Object.keys(
@@ -247,10 +267,23 @@ const Overview: NextPage = () => {
 									</Card>
 								</div>
 							)}
+						{queryResults.modelsByDiagnosis.data &&
+							!queryResults.modelsByDiagnosis.isLoading && (
+								<div className="col-md-6 col-lg-4 mb-4">
+									<Card className="py-0 px-5 h-100">
+										<PieChart
+											title="Models by diagnosis"
+											data={queryResults.modelsByDiagnosis.data}
+											dataEndPoint="search_terms"
+											holeRadius={100}
+										/>
+									</Card>
+								</div>
+							)}
 						{queryResults.modelsByPatientAge.data &&
 							!queryResults.modelsByPatientAge.isLoading && (
 								<div className="col-md-6 col-lg-4 mb-4">
-									<Card className="py-0 px-5">
+									<Card className="py-0 px-5 h-100">
 										<SunBurstChart
 											title="Models by patient age"
 											values={queryResults.modelsByPatientAge.data.values}
@@ -261,27 +294,57 @@ const Overview: NextPage = () => {
 									</Card>
 								</div>
 							)}
-						{queryResults.modelsByTreatment.data &&
-							!queryResults.modelsByTreatment.isLoading && (
+						{queryResults.modelsByPatientSex.data &&
+							!queryResults.modelsByPatientSex.isLoading && (
+								<div className="col-md-6 col-lg-4 mb-4">
+									<Card className="py-0 px-5 h-100">
+										<PieChart
+											title="Models by patient sex"
+											data={queryResults.modelsByPatientSex.data}
+											dataEndPoint="patient_sex"
+										/>
+									</Card>
+								</div>
+							)}
+						{queryResults.modelsByDatasetAvailability.data &&
+							!queryResults.modelsByDatasetAvailability.isLoading && (
 								<div className="col-md-12 col-lg-8 mb-4">
 									<Card className="py-0 px-2">
+										<BarChart
+											title="Models by dataset availability"
+											x={Object.keys(
+												queryResults.modelsByDatasetAvailability.data
+											)}
+											y={Object.values(
+												queryResults.modelsByDatasetAvailability.data
+											)}
+											dataEndPoint="dataset_available"
+										/>
+									</Card>
+								</div>
+							)}
+						{queryResults.modelsByProvider.data &&
+							!queryResults.modelsByProvider.isLoading && (
+								<div className="col-md-6 col-lg-4 mb-4">
+									<Card className="py-0 px-5 h-100">
+										<PieChart
+											title="Models by provider"
+											data={queryResults.modelsByProvider.data}
+											dataEndPoint="data_source"
+											holeRadius={100}
+										/>
+									</Card>
+								</div>
+							)}
+						{queryResults.modelsByTreatment.data &&
+							!queryResults.modelsByTreatment.isLoading && (
+								<div className="col-md-12 mb-4">
+									<Card className="py-0 px-2 h-100">
 										<BarChart
 											title="Models by treatment"
 											x={Object.keys(queryResults.modelsByTreatment.data)}
 											y={Object.values(queryResults.modelsByTreatment.data)}
 											dataEndPoint="patient_treatments"
-										/>
-									</Card>
-								</div>
-							)}
-						{queryResults.modelsByPatientSex.data &&
-							!queryResults.modelsByPatientSex.isLoading && (
-								<div className="col-md-6 col-lg-4 mb-4">
-									<Card className="py-0 px-5">
-										<PieChart
-											title="Models by patient sex"
-											data={queryResults.modelsByPatientSex.data}
-											dataEndPoint="patient_sex"
 										/>
 									</Card>
 								</div>

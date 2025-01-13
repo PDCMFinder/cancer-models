@@ -1,6 +1,7 @@
 import { GitlabRelease } from "../../types/releaseTypes";
 import { ethnicityCategories } from "../utils/collapseEthnicity";
 import { camelCase, countUniqueValues } from "../utils/dataUtils";
+import mergeObjectsIntoCountObject from "../utils/mergeObjectsIntoCountObject";
 import parseRelease from "../utils/parseRelease";
 
 export async function getModelsByCancerSystem(): Promise<any> {
@@ -46,6 +47,18 @@ export async function getModelsByTreatment() {
 	return response.json().then((d) => mergeObjectsIntoCountObject(d));
 }
 
+export async function getModelsByDiagnosis() {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_diagnosis?order=count.desc&limit=10`
+	);
+
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response.json().then((d) => mergeObjectsIntoCountObject(d));
+}
+
 export async function getModelsByType(): Promise<Record<string, number>> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_type?order=count.desc`
@@ -56,19 +69,15 @@ export async function getModelsByType(): Promise<Record<string, number>> {
 	return response.json().then((d) => mergeObjectsIntoCountObject(d));
 }
 
-export const mergeObjectsIntoCountObject = <T extends string>(
-	obj: Record<T, number>[]
-) => {
-	return obj.reduce(
-		(acc: Record<string, number>, curr: Record<string, number>) => {
-			const key = Object.keys(curr)[0] as T; // Extract the first key so we can use it as the key in the result object
-			acc[curr[key]] = curr.count;
-
-			return acc;
-		},
-		{}
+export async function getModelsByProvider(): Promise<Record<string, number>> {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_provider?order=count.desc`
 	);
-};
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+	return response.json().then((d) => mergeObjectsIntoCountObject(d));
+}
 
 export async function getModelsByPrimarySite(): Promise<
 	Record<string, number>

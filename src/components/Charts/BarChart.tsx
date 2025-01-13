@@ -59,10 +59,6 @@ const BarChart = ({ title, x, y, dataEndPoint, provider }: BarChartProps) => {
 						// @ts-ignore
 						let searchQuery: string = `?filters=${dataEndPoint}:${e.points[0].label}`;
 
-						if (provider) {
-							searchQuery += `+AND+data_source:${provider}`;
-						}
-
 						router.push({
 							pathname: "/search",
 							search: searchQuery
