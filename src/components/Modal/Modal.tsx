@@ -9,6 +9,7 @@ type ModalProps = {
 	handleClose?: () => void;
 	style?: CSSProperties;
 	strictClose?: boolean;
+	backdropOpacity?: number;
 };
 
 const Modal = ({
@@ -18,7 +19,8 @@ const Modal = ({
 	className,
 	handleClose,
 	style,
-	strictClose
+	strictClose,
+	backdropOpacity = 0.75
 }: ModalProps) => {
 	useEffect(() => {
 		document.body.classList.add("overflow-hidden");
@@ -47,6 +49,9 @@ const Modal = ({
 	return (
 		<>
 			<div
+				style={{
+					backgroundColor: `rgba(0, 0, 0, ${backdropOpacity.toString()})`
+				}}
 				className={`${styles.Modal_backdrop} h-100 w-100 top-0 position-fixed`}
 				onClick={!strictClose ? handleClose : undefined}
 			></div>
