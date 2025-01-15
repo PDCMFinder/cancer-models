@@ -43,18 +43,18 @@ const Navbar = () => {
 			</header>
 			{!modelCountData && !isLoadingModelCount && (
 				<DynamicModal strictClose backdropOpacity={0.9}>
-					<DynamicCard className="bg-white text-center">
+					<DynamicCard className="bg-white text-center px-md-5">
 						<div style={{ width: "250px" }} className="mx-auto mb-4">
 							<Logotype color="dark" />
 						</div>
 						<h1 className="h2 mt-0">
-							Sorry, we are experiencing issues with our data
+							We are experiencing issues with our data
 						</h1>
-						<p className="px-md-5">
+						<p>
 							CancerModels.Org should be back soon, we are working hard to fix
 							it. Please check back in a few minutes.
 						</p>
-						<p className="px-md-5">
+						<p>
 							If you need to contact us, please email{" "}
 							<a href="mailto:info@cancermodels.org">info@cancermodels.org</a>{" "}
 							and we&apos;ll get back to you as soon as possible.
