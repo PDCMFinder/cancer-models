@@ -24,6 +24,7 @@ import Card from "../components/Card/Card";
 import BarChart from "../components/Charts/BarChart";
 import PieChart from "../components/Charts/PieChart";
 import PolarBarChart from "../components/Charts/PolarBarChart";
+import RadialChart from "../components/Charts/RadialChart";
 import SunBurstChart from "../components/Charts/SunBurstChart";
 import { ageCategories } from "../utils/collapseEthnicity";
 import { capitalizeFirstLetter } from "../utils/dataUtils";
@@ -345,6 +346,17 @@ const Overview: NextPage = () => {
 											x={Object.keys(queryResults.modelsByTreatment.data)}
 											y={Object.values(queryResults.modelsByTreatment.data)}
 											dataEndPoint="patient_treatments"
+										/>
+									</Card>
+								</div>
+							)}
+						{queryResults.modelsByDatasetAvailability.data &&
+							!queryResults.modelsByDatasetAvailability.isLoading && (
+								<div className="col-md-6 col-lg-4 mb-4">
+									<Card className="py-0 px-5 h-100">
+										<RadialChart
+											title="Models by available data"
+											data={queryResults.modelsByDatasetAvailability.data}
 										/>
 									</Card>
 								</div>
