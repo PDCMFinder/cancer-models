@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import router from "next/router";
 import { PlotData } from "plotly.js";
 import { useEffect, useRef, useState } from "react";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
@@ -9,9 +10,10 @@ const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 interface RadialChartProps {
 	title?: string;
 	data: Record<string, number>;
+	dataEndPoint: string;
 }
 
-const RadialChart = ({ title, data }: RadialChartProps) => {
+const RadialChart = ({ title, data, dataEndPoint }: RadialChartProps) => {
 	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
 	const [plotWidth, setPlotWidth] = useState(300);
 	const { windowWidth } = useWindowDimensions();
@@ -85,6 +87,14 @@ const RadialChart = ({ title, data }: RadialChartProps) => {
 					width: plotWidth
 				}}
 				config={{ displayModeBar: false, responsive: true }}
+				onClick={(e) => {
+					let searchQuery: string = `?filters=${dataEndPoint}:${e.points[0].data.name}`;
+
+					router.push({
+						pathname: "/search",
+						search: searchQuery
+					});
+				}}
 			/>
 		</div>
 	);

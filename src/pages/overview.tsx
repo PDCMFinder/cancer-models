@@ -357,6 +357,7 @@ const Overview: NextPage = () => {
 										<RadialChart
 											title="Models by available data"
 											data={queryResults.modelsByDatasetAvailability.data}
+											dataEndPoint="dataset_available"
 										/>
 									</Card>
 								</div>
