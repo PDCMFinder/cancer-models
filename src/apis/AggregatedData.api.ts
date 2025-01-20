@@ -274,6 +274,19 @@ export async function getModelCount() {
 		);
 }
 
+export async function getModelsByRareCancer() {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_rare_cancer`
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response
+		.json()
+		.then((d: Record<string, number>[]) => mergeObjectsIntoCountObject(d));
+}
+
 export async function getProviderCount() {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/provider_group?select=id`,

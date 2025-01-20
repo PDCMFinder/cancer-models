@@ -14,6 +14,7 @@ import {
 	getModelsByPatientSex,
 	getModelsByPrimarySite,
 	getModelsByProvider,
+	getModelsByRareCancer,
 	getModelsByTreatment,
 	getModelsByTumourType,
 	getModelsByType,
@@ -121,6 +122,10 @@ const Overview: NextPage = () => {
 		{
 			queryKey: "modelsByDatasetAvailability",
 			queryFn: getModelsByDatasetAvailability
+		},
+		{
+			queryKey: "modelsByRareCancer",
+			queryFn: getModelsByRareCancer
 		}
 	]);
 
@@ -139,7 +144,8 @@ const Overview: NextPage = () => {
 		latestDataReleaseInfo: queries[11],
 		modelsByDiagnosis: queries[12],
 		modelsByProvider: queries[13],
-		modelsByDatasetAvailability: queries[14]
+		modelsByDatasetAvailability: queries[14],
+		modelsByRareCancer: queries[15]
 	};
 
 	return (
@@ -358,6 +364,19 @@ const Overview: NextPage = () => {
 											title="Models by available data"
 											data={queryResults.modelsByDatasetAvailability.data}
 											dataEndPoint="dataset_available"
+										/>
+									</Card>
+								</div>
+							)}
+						{queryResults.modelsByRareCancer.data &&
+							!queryResults.modelsByRareCancer.isLoading && (
+								<div className="col-md-6 col-lg-4 mb-4">
+									<Card className="py-0 px-5 h-100">
+										<PieChart
+											title="Models by rare cancer"
+											data={queryResults.modelsByRareCancer.data}
+											dataEndPoint="search_terms"
+											holeRadius={100}
 										/>
 									</Card>
 								</div>
