@@ -25,24 +25,39 @@ const RadialChart = ({ title, data, dataEndPoint }: RadialChartProps) => {
 	let traces: Partial<PlotData>[] = [];
 	let radius = 500;
 
-	const totalModels =
-		Object.values(data).reduce((sum, count) => sum + count, 0) / 3;
+	const totalModels = Object.values(data).reduce(
+		(sum, count) => sum + count,
+		0
+	);
 
 	Object.entries(data).forEach(([dataName, count], index) => {
 		if (!isNaN(count)) {
+			const percentage = count / totalModels;
+
+			// Calculate theta values to create the arc
+			// For the first trace (inner circle), we'll make it span from 0 to ~180 degrees if it's ~50%
+			const thetaStart = 0;
+			const thetaEnd = percentage * 360;
+			const numPoints = 50; // More points for smoother arc
+
 			const theta = Array.from(
-				{ length: count },
-				(_, index) => 360 * (count / totalModels) * (index / count)
+				{ length: numPoints },
+				(_, i) => thetaStart + (thetaEnd - thetaStart) * (i / (numPoints - 1))
 			);
 
 			traces.push({
 				type: "scatterpolar",
-				r: Array.from({ length: count }, (_, index) => radius + index * 0.01),
+				r: Array.from(
+					{ length: numPoints },
+					(_, index) => radius + index * 0.01
+				),
 				theta: theta,
 				mode: "lines",
 				name: dataName,
 				line: { width: 4, color: chartColors[index] },
-				hovertemplate: `${count.toLocaleString()}`
+				hovertemplate: `${count.toLocaleString()} (${Math.round(
+					percentage * 100
+				)}%)`
 			});
 
 			radius += 225;
