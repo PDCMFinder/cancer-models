@@ -1,7 +1,6 @@
 type EthnicityCounter = { patient_ethnicity: string; count: number };
 
 type EthnicityCategories = { [key: string]: string[] };
-
 export const ethnicityCategories: EthnicityCategories = {
 	Asian: [
 		"Eastasian",
@@ -17,7 +16,14 @@ export const ethnicityCategories: EthnicityCategories = {
 		"Black Or African American",
 		"Black Or African American; Not Hispanic Or Latino"
 	],
-	White: ["White; Not Hispanic Or Latino", "European", "Caucasian", "White"],
+	White: [
+		"White; Not Hispanic Or Latino",
+		"European",
+		"Caucasian",
+		"White",
+		"Western European",
+		"Italian"
+	],
 	"Hispanic Or Latino": [
 		"Latino",
 		"White; Hispanic Or Latino",
@@ -60,3 +66,20 @@ export function countEthnicity(subethnicityCountList: EthnicityCounter[]) {
 		};
 	});
 }
+
+type AgeCategories = { [key: string]: string[] };
+
+export const ageCategories: AgeCategories = {
+	Paediatric: ["0 - 23 months", "2 - 9", "10 - 19"],
+	Adult: [
+		"20 - 29",
+		"30 - 39",
+		"40 - 49",
+		"50 - 59",
+		"60 - 69",
+		"70 - 79",
+		"80 - 89",
+		"90 - 99"
+	],
+	"Not Provided": ["Not Provided", "Not Collected"]
+};

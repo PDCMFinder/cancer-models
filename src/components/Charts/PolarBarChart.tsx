@@ -6,22 +6,15 @@ import { chartColors } from "../../utils/chartConfigs";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
-type PieChartProps = {
+type PolarBarChartProps = {
 	title?: string;
-	data: Record<string, number>;
 	dataEndPoint: string;
-	holeRadius?: number;
 	provider?: string;
 	onClick?: (label: string) => void;
+	data: Record<string, number>;
 };
 
-const PieChart = ({
-	title,
-	data,
-	dataEndPoint,
-	holeRadius,
-	provider
-}: PieChartProps) => {
+const PolarBarChart = ({ title, data, dataEndPoint }: PolarBarChartProps) => {
 	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
 	const [plotWidth, setPlotWidth] = useState(300);
 	const { windowWidth } = useWindowDimensions();
@@ -30,50 +23,53 @@ const PieChart = ({
 		setPlotWidth(plotlyContainerRef.current?.offsetWidth ?? 300);
 	}, [plotlyContainerRef.current?.offsetWidth, windowWidth]);
 
+	const sortedData = Object.keys(data)
+		.sort()
+		.reduce<Record<string, number>>((obj, key) => {
+			obj[key] = data[key];
+
+			return obj;
+		}, {});
+
 	return (
 		<div className="text-center h-100 w-100" ref={plotlyContainerRef}>
 			{title && <h2 className="p mt-0 mb-3">{title}</h2>}
 			<Plot
 				data={[
 					{
-						values: Object.values(data),
-						labels: Object.keys(data),
+						r: Object.values(sortedData),
+						theta: Object.keys(sortedData),
 						name: "",
-						hoverinfo: "label+percent",
-						textinfo: "none",
-						textposition: "inside",
-						hole: holeRadius ?? 0.5,
-						type: "pie",
-						automargin: true,
+						type: "barpolar",
+						fill: "toself",
 						marker: {
-							colors: chartColors
+							color: chartColors
 						}
 					}
 				]}
 				layout={{
-					annotations: [
-						{
-							showarrow: false,
-							text: ""
+					polar: {
+						radialaxis: {
+							visible: false
+						},
+						angularaxis: {
+							direction: "clockwise"
 						}
-					],
-					legend: {
-						orientation: "v",
-						y: 1
+					},
+					margin: {
+						t: 0,
+						b: 0,
+						l: 50,
+						r: 50
 					},
 					showlegend: false,
-					margin: { t: 0, b: 0, l: 0, r: 0 },
 					height: plotWidth,
 					width: plotWidth
 				}}
 				config={{ displayModeBar: false, responsive: true }}
 				onClick={(e) => {
 					// @ts-ignore
-					let searchQuery: string = `?filters=${dataEndPoint}:${e.points[0].label}`;
-
-					if (provider) {
-						searchQuery += `+AND+data_source:${provider}`;
-					}
+					let searchQuery: string = `?filters=${dataEndPoint}:${e.points[0].theta}`;
 
 					router.push({
 						pathname: "/search",
@@ -85,4 +81,4 @@ const PieChart = ({
 	);
 };
 
-export default PieChart;
+export default PolarBarChart;

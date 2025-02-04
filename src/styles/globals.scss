@@ -603,3 +603,7 @@ table {
 		stroke: $color-primary-primary;
 	}
 }
+.sunburst path {
+	stroke-opacity: 0 !important;
+	stroke: transparent !important;
+}

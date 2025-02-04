@@ -6,22 +6,24 @@ import { chartColors } from "../../utils/chartConfigs";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
-type PieChartProps = {
+type SunBurstChartProps = {
 	title?: string;
-	data: Record<string, number>;
+	values: number[];
+	labels: string[];
+	parents: string[];
 	dataEndPoint: string;
-	holeRadius?: number;
 	provider?: string;
 	onClick?: (label: string) => void;
 };
 
-const PieChart = ({
+const SunBurstChart = ({
 	title,
-	data,
+	values,
+	labels,
+	parents,
 	dataEndPoint,
-	holeRadius,
 	provider
-}: PieChartProps) => {
+}: SunBurstChartProps) => {
 	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
 	const [plotWidth, setPlotWidth] = useState(300);
 	const { windowWidth } = useWindowDimensions();
@@ -36,14 +38,14 @@ const PieChart = ({
 			<Plot
 				data={[
 					{
-						values: Object.values(data),
-						labels: Object.keys(data),
+						values,
+						labels,
+						parents,
+						branchvalues: "total",
 						name: "",
-						hoverinfo: "label+percent",
 						textinfo: "none",
-						textposition: "inside",
-						hole: holeRadius ?? 0.5,
-						type: "pie",
+						type: "sunburst",
+						// insidetextorientation: "radial",
 						automargin: true,
 						marker: {
 							colors: chartColors
@@ -57,9 +59,8 @@ const PieChart = ({
 							text: ""
 						}
 					],
-					legend: {
-						orientation: "v",
-						y: 1
+					font: {
+						size: 12
 					},
 					showlegend: false,
 					margin: { t: 0, b: 0, l: 0, r: 0 },
@@ -70,19 +71,21 @@ const PieChart = ({
 				onClick={(e) => {
 					// @ts-ignore
 					let searchQuery: string = `?filters=${dataEndPoint}:${e.points[0].label}`;
+					// @ts-ignore
+					if (!parents.includes(e.points[0].label)) {
+						if (provider) {
+							searchQuery += `+AND+data_source:${provider}`;
+						}
 
-					if (provider) {
-						searchQuery += `+AND+data_source:${provider}`;
+						router.push({
+							pathname: "/search",
+							search: searchQuery
+						});
 					}
-
-					router.push({
-						pathname: "/search",
-						search: searchQuery
-					});
 				}}
 			/>
 		</div>
 	);
 };
 
-export default PieChart;
+export default SunBurstChart;

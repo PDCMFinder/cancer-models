@@ -98,14 +98,11 @@ export async function getModelKnowledgeGraph(
 	return response
 		.json()
 		.then((d: { knowledge_graph: APIKnowledgeGraph | null }[]) => {
-			if (!d[0]?.knowledge_graph) {
-				return { edges: [], nodes: [] };
-			}
-
-			const apiGraph = d[0].knowledge_graph;
 			const data: KnowledgeGraph = {
-				edges: apiGraph.edges.map((edge) => camelCase(edge)),
-				nodes: apiGraph.nodes.map((node) => camelCase(node))
+				edges:
+					d[0]?.knowledge_graph?.edges?.map((edge) => camelCase(edge)) ?? [],
+				nodes:
+					d[0]?.knowledge_graph?.nodes?.map((node) => camelCase(node)) ?? []
 			};
 
 			return data;
