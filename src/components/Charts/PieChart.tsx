@@ -40,7 +40,7 @@ const PieChart = ({
 						labels: Object.keys(data),
 						name: "",
 						hoverinfo: "label+percent",
-						textinfo: "label",
+						textinfo: "none",
 						textposition: "inside",
 						hole: holeRadius ?? 0.5,
 						type: "pie",
@@ -57,6 +57,10 @@ const PieChart = ({
 							text: ""
 						}
 					],
+					legend: {
+						orientation: "v",
+						y: 1
+					},
 					showlegend: false,
 					margin: { t: 0, b: 0, l: 0, r: 0 },
 					height: plotWidth,

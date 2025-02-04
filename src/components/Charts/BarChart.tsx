@@ -47,7 +47,7 @@ const BarChart = ({ title, x, y, dataEndPoint, provider }: BarChartProps) => {
 								color: chartColors[2]
 							},
 							automargin: true,
-							text: y.map(String),
+							// text: y.map(String),
 							textinfo: "label",
 							textposition: "auto"
 						}

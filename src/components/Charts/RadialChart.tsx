@@ -34,8 +34,6 @@ const RadialChart = ({ title, data, dataEndPoint }: RadialChartProps) => {
 		if (!isNaN(count)) {
 			const percentage = count / totalModels;
 
-			// Calculate theta values to create the arc
-			// For the first trace (inner circle), we'll make it span from 0 to ~180 degrees if it's ~50%
 			const thetaStart = 0;
 			const thetaEnd = percentage * 360;
 			const numPoints = 50; // More points for smoother arc
@@ -83,7 +81,7 @@ const RadialChart = ({ title, data, dataEndPoint }: RadialChartProps) => {
 							showline: false
 						}
 					},
-					showlegend: true,
+					showlegend: false,
 					legend: {
 						x: 1,
 						y: 1,

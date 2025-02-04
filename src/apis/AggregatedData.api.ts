@@ -311,17 +311,19 @@ export type ProviderDataCounts = {
 	model_type: Record<string, number>;
 	tumour_type: Record<string, number>;
 	patient_ethnicity: Record<string, number>;
+	dataset_available: Record<string, number>;
 };
 
 export async function getProviderDataCounts(
 	providerId: string
 ): Promise<ProviderDataCounts> {
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/search_index?data_source=in.("${providerId}")&select=cancer_system,patient_age,model_type,tumour_type,patient_ethnicity`
+		`${process.env.NEXT_PUBLIC_API_URL}/search_index?data_source=in.("${providerId}")&select=cancer_system,patient_age,model_type,tumour_type,patient_ethnicity,dataset_available`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
+
 	return response.json().then(
 		(
 			d: {
@@ -330,6 +332,7 @@ export async function getProviderDataCounts(
 				model_type: string;
 				tumour_type: string;
 				patient_ethnicity: string;
+				dataset_available: string[];
 			}[]
 		) => {
 			const groupedPatientEthnicity = d.map((item) => {
@@ -342,24 +345,43 @@ export async function getProviderDataCounts(
 				}
 				return { patient_ethnicity: ethnicity };
 			});
-			console.log({ d });
-			const cancerSystemCounts = countUniqueValues(d, "cancer_system");
-			const patientAgeCounts = countUniqueValues(d, "patient_age");
-			const modelTypeCounts = countUniqueValues(d, "model_type");
-			const tumourTypeCounts = countUniqueValues(d, "tumour_type");
+
+			const cancerSystemCounts = countUniqueValues(
+				d.map((item) => ({ cancer_system: item.cancer_system })),
+				"cancer_system"
+			);
+			const modelTypeCounts = countUniqueValues(
+				d.map((item) => ({ model_type: item.model_type })),
+				"model_type"
+			);
+			const patientAgeCounts = countUniqueValues(
+				d.map((item) => ({ patient_age: item.patient_age })),
+				"patient_age"
+			);
+			const tumourTypeCounts = countUniqueValues(
+				d.map((item) => ({ tumour_type: item.tumour_type })),
+				"tumour_type"
+			);
 			const patientEthnicityCounts = countUniqueValues(
 				groupedPatientEthnicity,
 				"patient_ethnicity"
+			);
+			const datasetAvailableCounts = countUniqueValues(
+				d.map((item) => ({ dataset_available: item.dataset_available })),
+				"dataset_available"
 			);
 
 			return {
 				cancer_system:
 					cancerSystemCounts as ProviderDataCounts["cancer_system"],
-				patient_age: patientAgeCounts as ProviderDataCounts["patient_age"],
+				patient_age:
+					patientAgeCounts as unknown as ProviderDataCounts["patient_age"], // sorry for using unknown
 				model_type: modelTypeCounts as ProviderDataCounts["model_type"],
 				tumour_type: tumourTypeCounts as ProviderDataCounts["tumour_type"],
 				patient_ethnicity:
-					patientEthnicityCounts as ProviderDataCounts["patient_ethnicity"]
+					patientEthnicityCounts as ProviderDataCounts["patient_ethnicity"],
+				dataset_available:
+					datasetAvailableCounts as ProviderDataCounts["dataset_available"]
 			};
 		}
 	);

@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import router from "next/router";
 import { useEffect, useRef, useState } from "react";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
+import { chartColors } from "../../utils/chartConfigs";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -40,7 +41,10 @@ const PolarBarChart = ({ title, data, dataEndPoint }: PolarBarChartProps) => {
 						theta: Object.keys(sortedData),
 						name: "",
 						type: "barpolar",
-						fill: "toself"
+						fill: "toself",
+						marker: {
+							color: chartColors
+						}
 					}
 				]}
 				layout={{

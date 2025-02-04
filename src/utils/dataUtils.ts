@@ -33,27 +33,45 @@ export function capitalizeFirstLetter(text: string) {
 }
 
 export const countUniqueValues = <
-	T extends Record<string, string>,
+	T extends Record<string, string | string[]>,
 	K extends keyof T
 >(
 	data: T[],
 	key: K
-): Record<T[K], number> | Record<string, [Record<string, number>, number]> => {
-	let result = {} as Record<T[K], number>;
+): Record<string, number> => {
+	let result: Record<string, number> = {};
+
+	if (Array.isArray(data[0][key])) {
+		data.forEach((item) => {
+			const values = item[key] as string[];
+
+			values?.forEach((dataset) => {
+				result[dataset] = (result[dataset] || 0) + 1;
+			});
+		});
+
+		return result;
+	}
 
 	if (key === "patient_ethnicity") {
-		result = collapseCategories(data, key, ethnicityCategories) as Record<
-			T[K],
-			number
-		>;
+		result = collapseCategories(
+			data as Record<string, string>[],
+			key,
+			ethnicityCategories
+		) as Record<string, number>;
+		return result;
 	}
 
 	if (key === "patient_age") {
-		return collapseCategories(data, key, ageCategories);
+		return collapseCategories(
+			data as Record<string, string>[],
+			key,
+			ageCategories
+		) as Record<string, number>;
 	}
 
 	data.forEach((item) => {
-		const value = item[key];
+		const value = item[key] as string;
 		result[value] = (result[value] || 0) + 1;
 	});
 

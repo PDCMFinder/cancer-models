@@ -8,7 +8,9 @@ import {
 import { capitalizeFirstLetter } from "../../utils/dataUtils";
 import Button from "../Button/Button";
 import PieChart from "../Charts/PieChart";
+import RadialChart from "../Charts/RadialChart";
 import SunBurstChart from "../Charts/SunBurstChart";
+import ModelTypeIcon from "../Icons/ModelTypeIcon";
 import Loader from "../Loader/Loader";
 import styles from "./ProviderInfo.module.scss";
 
@@ -20,17 +22,6 @@ type ProviderInfoProps = {
 		name: string;
 	};
 };
-
-// const getChartDataType = <T extends keyof ProviderDataCounts>(
-// 	data: ProviderDataCounts[T],
-// 	chartType: string
-// ) => {
-// 	if (chartType === "SunBurstChart") {
-// 		return data as Record<string, [Record<string, number>, number]>;
-// 	} else {
-// 		return data as Record<string, number>;
-// 	}
-// };
 
 const transformSunBurstData = (data: ProviderDataCounts["patient_age"]) => {
 	const labels: string[] = [];
@@ -57,7 +48,7 @@ const transformSunBurstData = (data: ProviderDataCounts["patient_age"]) => {
 const chartCategories: Array<{
 	title: string;
 	dataEndPoint: keyof ProviderDataCounts;
-	chartType: "PieChart" | "SunBurstChart";
+	chartType: "PieChart" | "SunBurstChart" | "RadialChart";
 }> = [
 	{
 		title: "Cancer system",
@@ -70,11 +61,6 @@ const chartCategories: Array<{
 		chartType: "SunBurstChart"
 	},
 	{
-		title: "Model type",
-		dataEndPoint: "model_type",
-		chartType: "PieChart"
-	},
-	{
 		title: "Tumour type",
 		dataEndPoint: "tumour_type",
 		chartType: "PieChart"
@@ -83,6 +69,11 @@ const chartCategories: Array<{
 		title: "Ethnicity",
 		dataEndPoint: "patient_ethnicity",
 		chartType: "PieChart"
+	},
+	{
+		title: "Dataset available",
+		dataEndPoint: "dataset_available",
+		chartType: "RadialChart"
 	}
 ];
 
@@ -97,46 +88,60 @@ const ProviderInfo = ({
 		}
 	);
 
-	if (providerDataCounts?.patient_age) {
-		console.log(
-			transformSunBurstData(
-				providerDataCounts?.patient_age as Record<
-					string,
-					[Record<string, number>, number]
-				>
-			).parents,
-			transformSunBurstData(
-				providerDataCounts?.patient_age as Record<
-					string,
-					[Record<string, number>, number]
-				>
-			).labels,
-			transformSunBurstData(
-				providerDataCounts?.patient_age as Record<
-					string,
-					[Record<string, number>, number]
-				>
-			).values
-		);
-	}
-
 	return (
 		<>
-			<div className="col-12 col-md-2 text-center">
-				{logo && (
-					<Image
-						src={`/${logo}`}
-						alt={`${name} logo`}
-						width={150}
-						height={150}
-						className={`mx-auto mb-2 w-auto h-auto ${styles.Providers_logo}`}
-					/>
-				)}
-			</div>
-			<div className="col-12 col-md-9 mb-5">
-				<div className="row">
-					<div className="col-12 d-flex align-center">
-						<h2 className="h3 mt-0 mr-3">{name}</h2>
+			<div className="col-12 mb-5"></div>
+			<div className="col-12 mb-5">
+				<div className="row mb-3">
+					<div className="col-12 d-flex align-center justify-content-between">
+						<div className="d-flex align-center">
+							{logo && (
+								<Image
+									src={`/${logo}`}
+									alt={`${name} logo`}
+									width={200}
+									height={200}
+									className={`mb-2 mr-5 w-auto h-auto ${styles.Providers_logo}`}
+									style={{ maxWidth: "200px" }}
+									title={name}
+								/>
+							)}
+							{/* <h2 className="h3 mt-0">{name}</h2> */}
+						</div>
+						{providerDataCounts?.model_type && (
+							<div className="d-flex" style={{ gap: "1.5em" }}>
+								{Object.entries(providerDataCounts?.model_type).map(
+									([modelType, count]) => (
+										<div className="my-3 col my-lg-0" key={modelType}>
+											<Link
+												href={`/search?filters=model_type:${modelType}+AND+data_source:${abbreviation}`}
+												className="p text-noDecoration"
+											>
+												<div className="d-flex align-center flex-column text-center">
+													<div
+														style={{ height: "1.5em", width: "1.5em" }}
+														className="d-flex align-center justify-content-center"
+													>
+														<ModelTypeIcon modelType={modelType} size="1.5em" />
+													</div>
+													<p className="mb-0 lh-1 text-small">
+														<span className="text-family-primary d-block">
+															{count.toLocaleString()}
+														</span>
+														{/* <span
+															className="text-underline d-block"
+															style={{ width: "max-content" }}
+														>
+															{`${capitalizeFirstLetter(modelType)}s`}
+														</span> */}
+													</p>
+												</div>
+											</Link>
+										</div>
+									)
+								)}
+							</div>
+						)}
 					</div>
 				</div>
 				{isLoading ? (
@@ -153,42 +158,41 @@ const ProviderInfo = ({
 								data: providerDataCounts?.[dataEndPoint] ?? {}
 							};
 
+							let sunBurstData: {
+								labels: string[];
+								values: number[];
+								parents: string[];
+							} | null = null;
+
+							if (chartType === "SunBurstChart") {
+								sunBurstData = transformSunBurstData(
+									commonProps.data as Record<
+										string,
+										[Record<string, number>, number]
+									>
+								);
+							}
+
 							return (
 								<div className="col" key={dataEndPoint}>
 									{chartType === "SunBurstChart" ? (
 										<SunBurstChart
 											{...commonProps}
-											labels={
-												transformSunBurstData(
-													commonProps.data as Record<
-														string,
-														[Record<string, number>, number]
-													>
-												).labels
-											}
-											values={
-												transformSunBurstData(
-													commonProps.data as Record<
-														string,
-														[Record<string, number>, number]
-													>
-												).values
-											}
-											parents={
-												transformSunBurstData(
-													commonProps.data as Record<
-														string,
-														[Record<string, number>, number]
-													>
-												).parents
-											}
+											labels={sunBurstData?.labels ?? []}
+											values={sunBurstData?.values ?? []}
+											parents={sunBurstData?.parents ?? []}
 										/>
-									) : (
+									) : chartType === "PieChart" ? (
 										<PieChart
 											{...commonProps}
 											data={commonProps.data as Record<string, number>}
 										/>
-									)}
+									) : chartType === "RadialChart" ? (
+										<RadialChart
+											{...commonProps}
+											data={commonProps.data as Record<string, number>}
+										/>
+									) : null}
 								</div>
 							);
 						})}

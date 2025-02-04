@@ -43,8 +43,9 @@ const SunBurstChart = ({
 						parents,
 						branchvalues: "total",
 						name: "",
-						textinfo: "label",
+						textinfo: "none",
 						type: "sunburst",
+						// insidetextorientation: "radial",
 						automargin: true,
 						marker: {
 							colors: chartColors
