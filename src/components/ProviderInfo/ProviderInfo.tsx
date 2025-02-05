@@ -94,20 +94,17 @@ const ProviderInfo = ({
 			<div className="col-12 mb-5">
 				<div className="row mb-3">
 					<div className="col-12 d-flex align-center justify-content-between">
-						<div className="d-flex align-center">
-							{logo && (
-								<Image
-									src={`/${logo}`}
-									alt={`${name} logo`}
-									width={200}
-									height={200}
-									className={`mb-2 mr-5 w-auto h-auto ${styles.Providers_logo}`}
-									style={{ maxWidth: "200px" }}
-									title={name}
-								/>
-							)}
-							{/* <h2 className="h3 mt-0">{name}</h2> */}
-						</div>
+						{logo && (
+							<Image
+								src={`/${logo}`}
+								alt={`${name} logo`}
+								width={200}
+								height={200}
+								className={`mr-5 w-auto h-auto ${styles.Providers_logo}`}
+								style={{ maxWidth: "200px" }}
+								title={name}
+							/>
+						)}
 						{providerDataCounts?.model_type && (
 							<div className="d-flex" style={{ gap: "1.5em" }}>
 								{Object.entries(providerDataCounts?.model_type).map(
@@ -128,12 +125,6 @@ const ProviderInfo = ({
 														<span className="text-family-primary d-block">
 															{count.toLocaleString()}
 														</span>
-														{/* <span
-															className="text-underline d-block"
-															style={{ width: "max-content" }}
-														>
-															{`${capitalizeFirstLetter(modelType)}s`}
-														</span> */}
 													</p>
 												</div>
 											</Link>

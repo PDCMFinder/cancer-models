@@ -31,6 +31,10 @@ const RadialChart = ({ title, data, dataEndPoint }: RadialChartProps) => {
 	);
 
 	Object.entries(data).forEach(([dataName, count], index) => {
+		if (dataName === "null") {
+			dataName = "No dataset available";
+		}
+
 		if (!isNaN(count)) {
 			const percentage = count / totalModels;
 
