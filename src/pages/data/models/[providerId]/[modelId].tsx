@@ -92,6 +92,10 @@ const ModelDetails = ({
 		MODEL_GENOMICS_STRING = "Model Genomics",
 		HLA_TYPE_STRING = "HLA type",
 		PDX_STRING = "PDX";
+	const isHCMI = metadata.projectName.toLowerCase() === "hcmi";
+	const viewDataAtStr = isHCMI
+		? "HCMI Searchable Catalog"
+		: metadata.providerId || "provider";
 
 	// Client side mol data so we have latest molecular_characterization_id that changes on every etl execution
 	const { data: molecularData, isLoading: molecularDataIsLoading } = useQuery(
@@ -607,7 +611,10 @@ const ModelDetails = ({
 											})
 										}
 									>
-										View data at {metadata.providerId || "provider"}
+										View data at{" "}
+										{isHCMI
+											? "HCMI Searchable Catalog"
+											: metadata.providerId || "provider"}
 									</Link>
 								)}
 								{extLinks.contactLink && (
@@ -622,7 +629,10 @@ const ModelDetails = ({
 											})
 										}
 									>
-										<>Contact {metadata.providerId || "provider"}</>
+										<>
+											Contact{" "}
+											{isHCMI ? "HCMI" : metadata.providerId || "provider"}
+										</>
 									</Link>
 								)}
 							</div>
@@ -754,7 +764,8 @@ const ModelDetails = ({
 											)}
 										</li>
 										<li className="mb-2">
-											{knowledgeGraph ? (
+											{knowledgeGraph.edges.length > 0 &&
+											knowledgeGraph.nodes.length > 0 ? (
 												<Link
 													replace
 													href="#related-models"
