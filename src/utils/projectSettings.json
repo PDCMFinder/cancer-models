@@ -60,6 +60,16 @@
 		"project_description": "STCC is a nationally coordinated initiative and network to synergise cancer research and translational capabilities across Singapore."
 	},
 	{
+		"project_abbreviation": "MURAL",
+		"project_full_name": "Melbourne Urology Research Alliance",
+		"project_settings": {
+			"main_color": "#6C2067",
+			"secondary_color": "#FFFFFF",
+			"logo": "/img/providers/MURAL.png"
+		},
+		"project_description": "Platform of preclinical models and world class facilities. Leading contributors to national and international networks and collaborations, integrating and co-ordinating outcomes worldwide."
+	},
+	{
 		"project_abbreviation": "Other",
 		"project_settings": {
 			"main_color": "#003e48",

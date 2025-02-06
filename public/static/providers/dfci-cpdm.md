@@ -1,6 +1,6 @@
 ---
 name: The Center for Patient Derived Models at Dana Farber Cancer Institute
-abbreviation: DFCI CPDM
+abbreviation: DFCI-CPDM
 logo: img/providers/DFCI-CPDM.png
 ---
 
