@@ -41,7 +41,10 @@ export const countUniqueValues = <
 ): Record<string, number> => {
 	let result: Record<string, number> = {};
 
-	if (Array.isArray(data[0][key])) {
+	// find first non-null value for the key
+	const firstValidItem = data.find((item) => item[key] !== null);
+
+	if (firstValidItem && Array.isArray(firstValidItem[key])) {
 		data.forEach((item) => {
 			const values = item[key] as string[];
 
