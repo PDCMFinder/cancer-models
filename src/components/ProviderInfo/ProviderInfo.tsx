@@ -179,6 +179,7 @@ const ProviderInfo = ({
 									dataEndPoint="dataset_available"
 									data={providerDataCounts?.dataset_available ?? {}}
 									colors={datasetCountColors}
+									totalModelCount={providerDataCounts.totalModelCount ?? 0}
 								/>
 							</div>
 						)}

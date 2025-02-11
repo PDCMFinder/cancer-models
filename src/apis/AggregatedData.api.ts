@@ -312,6 +312,7 @@ export type ProviderDataCounts = {
 	tumour_type: Record<string, number>;
 	patient_ethnicity: Record<string, number>;
 	dataset_available: Record<string, number>;
+	totalModelCount: number;
 };
 
 export async function getProviderDataCounts(
@@ -370,6 +371,10 @@ export async function getProviderDataCounts(
 				d.map((item) => ({ dataset_available: item.dataset_available })),
 				"dataset_available"
 			);
+			const totalModelCount = Object.values(modelTypeCounts).reduce(
+				(acc, curr) => acc + curr,
+				0
+			);
 
 			return {
 				cancer_system:
@@ -381,7 +386,8 @@ export async function getProviderDataCounts(
 				patient_ethnicity:
 					patientEthnicityCounts as ProviderDataCounts["patient_ethnicity"],
 				dataset_available:
-					datasetAvailableCounts as ProviderDataCounts["dataset_available"]
+					datasetAvailableCounts as ProviderDataCounts["dataset_available"],
+				totalModelCount
 			};
 		}
 	);

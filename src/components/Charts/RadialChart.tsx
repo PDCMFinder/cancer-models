@@ -12,13 +12,15 @@ interface RadialChartProps {
 	data: Record<string, number>;
 	dataEndPoint: string;
 	colors: Record<string, string>;
+	totalModelCount: number;
 }
 
 const RadialChart = ({
 	title,
 	data,
 	dataEndPoint,
-	colors
+	colors,
+	totalModelCount
 }: RadialChartProps) => {
 	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
 	const [plotWidth, setPlotWidth] = useState(300);
@@ -43,7 +45,7 @@ const RadialChart = ({
 		}
 
 		if (!isNaN(count)) {
-			const percentage = count / totalModels;
+			const percentage = count / totalModelCount;
 
 			const thetaStart = 0;
 			const thetaEnd = percentage * 360;
