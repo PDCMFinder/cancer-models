@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import router from "next/router";
 import { useEffect, useRef, useState } from "react";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
-import { chartColors } from "../../utils/chartConfigs";
+import { getCustomColors } from "../../utils/chartConfigs";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -14,6 +14,7 @@ type SunBurstChartProps = {
 	dataEndPoint: string;
 	provider?: string;
 	onClick?: (label: string) => void;
+	colors?: Record<string, string>;
 };
 
 const SunBurstChart = ({
@@ -22,11 +23,13 @@ const SunBurstChart = ({
 	labels,
 	parents,
 	dataEndPoint,
-	provider
+	provider,
+	colors
 }: SunBurstChartProps) => {
 	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
 	const [plotWidth, setPlotWidth] = useState(300);
 	const { windowWidth } = useWindowDimensions();
+	const customColors = getCustomColors(labels, colors);
 
 	useEffect(() => {
 		setPlotWidth(plotlyContainerRef.current?.offsetWidth ?? 300);
@@ -45,10 +48,9 @@ const SunBurstChart = ({
 						name: "",
 						textinfo: "none",
 						type: "sunburst",
-						// insidetextorientation: "radial",
 						automargin: true,
 						marker: {
-							colors: chartColors
+							colors: customColors
 						}
 					}
 				]}

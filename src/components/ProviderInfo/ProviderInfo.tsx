@@ -7,6 +7,11 @@ import {
 } from "../../apis/AggregatedData.api";
 import { capitalizeFirstLetter } from "../../utils/dataUtils";
 import Button from "../Button/Button";
+import {
+	patientAgeColors,
+	patientEthnicityColors,
+	tumourTypeColors
+} from "../Charts/colors";
 import PieChart from "../Charts/PieChart";
 import RadialChart from "../Charts/RadialChart";
 import SunBurstChart from "../Charts/SunBurstChart";
@@ -45,38 +50,6 @@ const transformSunBurstData = (data: ProviderDataCounts["patient_age"]) => {
 	return { labels, values, parents };
 };
 
-const chartCategories: Array<{
-	title: string;
-	dataEndPoint: keyof ProviderDataCounts;
-	chartType: "PieChart" | "SunBurstChart" | "RadialChart";
-}> = [
-	{
-		title: "Cancer system",
-		dataEndPoint: "cancer_system",
-		chartType: "PieChart"
-	},
-	{
-		title: "Patient age",
-		dataEndPoint: "patient_age",
-		chartType: "SunBurstChart"
-	},
-	{
-		title: "Tumour type",
-		dataEndPoint: "tumour_type",
-		chartType: "PieChart"
-	},
-	{
-		title: "Ethnicity",
-		dataEndPoint: "patient_ethnicity",
-		chartType: "PieChart"
-	},
-	{
-		title: "Dataset available",
-		dataEndPoint: "dataset_available",
-		chartType: "RadialChart"
-	}
-];
-
 const ProviderInfo = ({
 	provider: { abbreviation, name, logo }
 }: ProviderInfoProps) => {
@@ -87,6 +60,18 @@ const ProviderInfo = ({
 			enabled: !!abbreviation
 		}
 	);
+	const parsedPatientAgeData = providerDataCounts
+		? transformSunBurstData(
+				providerDataCounts?.patient_age as Record<
+					string,
+					[Record<string, number>, number]
+				>
+		  )
+		: ({} as {
+				labels: string[];
+				values: number[];
+				parents: string[];
+		  });
 
 	return (
 		<>
@@ -136,57 +121,66 @@ const ProviderInfo = ({
 					</div>
 				</div>
 				{isLoading ? (
-					<div style={{ height: "200px" }}>
+					<div style={{ height: "500px" }}>
 						<Loader />
 					</div>
 				) : (
 					<div className="row row-cols-2 row-cols-md-5 mb-4">
-						{chartCategories.map(({ title, dataEndPoint, chartType }) => {
-							const commonProps = {
-								title,
-								dataEndPoint,
-								provider: abbreviation,
-								data: providerDataCounts?.[dataEndPoint] ?? {}
-							};
-
-							let sunBurstData: {
-								labels: string[];
-								values: number[];
-								parents: string[];
-							} | null = null;
-
-							if (chartType === "SunBurstChart") {
-								sunBurstData = transformSunBurstData(
-									commonProps.data as Record<
-										string,
-										[Record<string, number>, number]
-									>
-								);
-							}
-
-							return (
-								<div className="col" key={dataEndPoint}>
-									{chartType === "SunBurstChart" ? (
-										<SunBurstChart
-											{...commonProps}
-											labels={sunBurstData?.labels ?? []}
-											values={sunBurstData?.values ?? []}
-											parents={sunBurstData?.parents ?? []}
-										/>
-									) : chartType === "PieChart" ? (
-										<PieChart
-											{...commonProps}
-											data={commonProps.data as Record<string, number>}
-										/>
-									) : chartType === "RadialChart" ? (
-										<RadialChart
-											{...commonProps}
-											data={commonProps.data as Record<string, number>}
-										/>
-									) : null}
-								</div>
-							);
-						})}
+						{providerDataCounts?.cancer_system && (
+							<div className="col">
+								<PieChart
+									title="Cancer system"
+									dataEndPoint="cancer_system"
+									provider={abbreviation}
+									data={providerDataCounts?.cancer_system ?? {}}
+								/>
+							</div>
+						)}
+						{parsedPatientAgeData && (
+							<div className="col">
+								<SunBurstChart
+									title="Patient age"
+									dataEndPoint="patient_age"
+									provider={abbreviation}
+									labels={parsedPatientAgeData.labels ?? []}
+									values={parsedPatientAgeData.values ?? []}
+									parents={parsedPatientAgeData.parents ?? []}
+									colors={patientAgeColors}
+								/>
+							</div>
+						)}
+						{providerDataCounts?.tumour_type && (
+							<div className="col">
+								<PieChart
+									title="Tumour type"
+									dataEndPoint="tumour_type"
+									provider={abbreviation}
+									data={providerDataCounts?.tumour_type ?? {}}
+									colors={tumourTypeColors}
+								/>
+							</div>
+						)}
+						{providerDataCounts?.patient_ethnicity && (
+							<div className="col">
+								<PieChart
+									title="Ethnicity"
+									dataEndPoint="patient_ethnicity"
+									provider={abbreviation}
+									data={providerDataCounts?.patient_ethnicity ?? {}}
+									colors={patientEthnicityColors}
+								/>
+							</div>
+						)}
+						{providerDataCounts?.dataset_available && (
+							<div className="col">
+								<RadialChart
+									title="Dataset available"
+									dataEndPoint="dataset_available"
+									data={providerDataCounts?.dataset_available ?? {}}
+									// colors={datasetCountColors}
+								/>
+							</div>
+						)}
 					</div>
 				)}
 				<div className="row">

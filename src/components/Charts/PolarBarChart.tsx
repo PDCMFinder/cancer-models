@@ -44,7 +44,9 @@ const PolarBarChart = ({ title, data, dataEndPoint }: PolarBarChartProps) => {
 						fill: "toself",
 						marker: {
 							color: chartColors
-						}
+						},
+						text: Object.keys(sortedData),
+						hovertemplate: "%{text} %{r}"
 					}
 				]}
 				layout={{

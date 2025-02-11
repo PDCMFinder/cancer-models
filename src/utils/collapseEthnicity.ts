@@ -7,6 +7,7 @@ export const ethnicityCategories: EthnicityCategories = {
 		"East Asian",
 		"South Asian",
 		"Southasianorhispanic",
+		"South Asian Or Hispanic",
 		"Asian"
 	],
 	"Black Or African American": [
@@ -36,6 +37,7 @@ export const ethnicityCategories: EthnicityCategories = {
 		"Not Provided",
 		"Not Collected",
 		"Mixed_or_unknown",
+		"Mixed Or Unknown",
 		"Declined To Answer"
 	],
 	Other: [

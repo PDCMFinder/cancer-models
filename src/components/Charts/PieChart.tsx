@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import router from "next/router";
 import { useEffect, useRef, useState } from "react";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
-import { chartColors } from "../../utils/chartConfigs";
+import { getCustomColors } from "../../utils/chartConfigs";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -13,6 +13,7 @@ type PieChartProps = {
 	holeRadius?: number;
 	provider?: string;
 	onClick?: (label: string) => void;
+	colors?: Record<string, string>;
 };
 
 const PieChart = ({
@@ -20,11 +21,13 @@ const PieChart = ({
 	data,
 	dataEndPoint,
 	holeRadius,
-	provider
+	provider,
+	colors
 }: PieChartProps) => {
 	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
 	const [plotWidth, setPlotWidth] = useState(300);
 	const { windowWidth } = useWindowDimensions();
+	const customColors = getCustomColors(Object.keys(data), colors);
 
 	useEffect(() => {
 		setPlotWidth(plotlyContainerRef.current?.offsetWidth ?? 300);
@@ -46,7 +49,7 @@ const PieChart = ({
 						type: "pie",
 						automargin: true,
 						marker: {
-							colors: chartColors
+							colors: customColors as string[]
 						}
 					}
 				]}
