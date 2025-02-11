@@ -8,6 +8,7 @@ import {
 import { capitalizeFirstLetter } from "../../utils/dataUtils";
 import Button from "../Button/Button";
 import {
+	datasetCountColors,
 	patientAgeColors,
 	patientEthnicityColors,
 	tumourTypeColors
@@ -177,7 +178,7 @@ const ProviderInfo = ({
 									title="Dataset available"
 									dataEndPoint="dataset_available"
 									data={providerDataCounts?.dataset_available ?? {}}
-									// colors={datasetCountColors}
+									colors={datasetCountColors}
 								/>
 							</div>
 						)}

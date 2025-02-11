@@ -3,7 +3,7 @@ import router from "next/router";
 import { PlotData } from "plotly.js";
 import { useEffect, useRef, useState } from "react";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
-import { chartColors } from "../../utils/chartConfigs";
+import { chartColors, getCustomColors } from "../../utils/chartConfigs";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -11,12 +11,19 @@ interface RadialChartProps {
 	title?: string;
 	data: Record<string, number>;
 	dataEndPoint: string;
+	colors: Record<string, string>;
 }
 
-const RadialChart = ({ title, data, dataEndPoint }: RadialChartProps) => {
+const RadialChart = ({
+	title,
+	data,
+	dataEndPoint,
+	colors
+}: RadialChartProps) => {
 	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
 	const [plotWidth, setPlotWidth] = useState(300);
 	const { windowWidth } = useWindowDimensions();
+	const customColors = getCustomColors(Object.keys(data), colors);
 
 	useEffect(() => {
 		setPlotWidth(plotlyContainerRef.current?.offsetWidth ?? 300);
@@ -92,7 +99,7 @@ const RadialChart = ({ title, data, dataEndPoint }: RadialChartProps) => {
 						font: {
 							family: "sans-serif",
 							size: 10,
-							color: chartColors[0]
+							color: customColors
 						},
 						bgcolor: "transparent",
 						bordercolor: "transparent",

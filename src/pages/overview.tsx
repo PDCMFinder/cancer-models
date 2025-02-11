@@ -23,6 +23,11 @@ import {
 import Button from "../components/Button/Button";
 import Card from "../components/Card/Card";
 import BarChart from "../components/Charts/BarChart";
+import {
+	datasetCountColors,
+	patientAgeColors,
+	tumourTypeColors
+} from "../components/Charts/colors";
 import PieChart from "../components/Charts/PieChart";
 import PolarBarChart from "../components/Charts/PolarBarChart";
 import RadialChart from "../components/Charts/RadialChart";
@@ -297,6 +302,33 @@ const Overview: NextPage = () => {
 											labels={queryResults.modelsByPatientAge.data.labels}
 											parents={queryResults.modelsByPatientAge.data.parents}
 											dataEndPoint="patient_age"
+											colors={patientAgeColors}
+										/>
+									</Card>
+								</div>
+							)}
+						{queryResults.modelsByTumourType.data &&
+							!queryResults.modelsByTumourType.isLoading && (
+								<div className="col-md-6 col-lg-4 mb-4">
+									<Card className="py-0 px-5 h-100">
+										<PieChart
+											title="Models by tumour type"
+											data={queryResults.modelsByTumourType.data}
+											dataEndPoint="tumour_type"
+											colors={tumourTypeColors}
+										/>
+									</Card>
+								</div>
+							)}
+						{queryResults.modelsByTreatment.data &&
+							!queryResults.modelsByTreatment.isLoading && (
+								<div className="col-md-12 mb-4">
+									<Card className="py-0 px-2 h-100">
+										<BarChart
+											title="Models by treatment"
+											x={Object.keys(queryResults.modelsByTreatment.data)}
+											y={Object.values(queryResults.modelsByTreatment.data)}
+											dataEndPoint="patient_treatments"
 										/>
 									</Card>
 								</div>
@@ -315,17 +347,13 @@ const Overview: NextPage = () => {
 							)}
 						{queryResults.modelsByDatasetAvailability.data &&
 							!queryResults.modelsByDatasetAvailability.isLoading && (
-								<div className="col-md-12 col-lg-8 mb-4">
-									<Card className="py-0 px-2">
-										<BarChart
-											title="Models by dataset availability"
-											x={Object.keys(
-												queryResults.modelsByDatasetAvailability.data
-											)}
-											y={Object.values(
-												queryResults.modelsByDatasetAvailability.data
-											)}
+								<div className="col-md-6 col-lg-4 mb-4">
+									<Card className="py-0 px-5 h-100">
+										<RadialChart
+											title="Models by available data"
+											data={queryResults.modelsByDatasetAvailability.data}
 											dataEndPoint="dataset_available"
+											colors={datasetCountColors}
 										/>
 									</Card>
 								</div>
@@ -339,31 +367,6 @@ const Overview: NextPage = () => {
 											data={queryResults.modelsByProvider.data}
 											dataEndPoint="data_source"
 											holeRadius={100}
-										/>
-									</Card>
-								</div>
-							)}
-						{queryResults.modelsByTreatment.data &&
-							!queryResults.modelsByTreatment.isLoading && (
-								<div className="col-md-12 mb-4">
-									<Card className="py-0 px-2 h-100">
-										<BarChart
-											title="Models by treatment"
-											x={Object.keys(queryResults.modelsByTreatment.data)}
-											y={Object.values(queryResults.modelsByTreatment.data)}
-											dataEndPoint="patient_treatments"
-										/>
-									</Card>
-								</div>
-							)}
-						{queryResults.modelsByDatasetAvailability.data &&
-							!queryResults.modelsByDatasetAvailability.isLoading && (
-								<div className="col-md-6 col-lg-4 mb-4">
-									<Card className="py-0 px-5 h-100">
-										<RadialChart
-											title="Models by available data"
-											data={queryResults.modelsByDatasetAvailability.data}
-											dataEndPoint="dataset_available"
 										/>
 									</Card>
 								</div>

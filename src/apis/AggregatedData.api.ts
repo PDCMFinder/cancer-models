@@ -128,7 +128,7 @@ export async function getModelsByTumourType() {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json();
+	return response.json().then((d) => mergeObjectsIntoCountObject(d));
 }
 
 interface PatientEthnicityResponse {
