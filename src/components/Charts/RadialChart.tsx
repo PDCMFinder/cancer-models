@@ -34,16 +34,7 @@ const RadialChart = ({
 	let traces: Partial<PlotData>[] = [];
 	let radius = 500;
 
-	const totalModels = Object.values(data).reduce(
-		(sum, count) => sum + count,
-		0
-	);
-
 	Object.entries(data).forEach(([dataName, count], index) => {
-		if (dataName === "null") {
-			dataName = "No dataset available";
-		}
-
 		if (!isNaN(count)) {
 			const percentage = count / totalModelCount;
 
@@ -78,50 +69,64 @@ const RadialChart = ({
 	return (
 		<div className="text-center h-100 w-100" ref={plotlyContainerRef}>
 			{title && <h2 className="p mt-0 mb-3">{title}</h2>}
-			<Plot
-				data={traces}
-				layout={{
-					polar: {
-						radialaxis: {
-							range: [0, data.length * 260],
-							showticklabels: false,
-							showgrid: false,
-							visible: false
+			{traces.length > 0 ? (
+				<Plot
+					data={traces}
+					layout={{
+						polar: {
+							radialaxis: {
+								range: [0, data.length * 260],
+								showticklabels: false,
+								showgrid: false,
+								visible: false
+							},
+							angularaxis: {
+								showticklabels: false,
+								direction: "clockwise",
+								showline: false
+							}
 						},
-						angularaxis: {
-							showticklabels: false,
-							direction: "clockwise",
-							showline: false
-						}
-					},
-					showlegend: false,
-					legend: {
-						x: 1,
-						y: 1,
-						font: {
-							family: "sans-serif",
-							size: 10,
-							color: customColors
+						showlegend: false,
+						legend: {
+							x: 1,
+							y: 1,
+							font: {
+								family: "sans-serif",
+								size: 10,
+								color: customColors
+							},
+							bgcolor: "transparent",
+							bordercolor: "transparent",
+							borderwidth: 2,
+							orientation: "h"
 						},
-						bgcolor: "transparent",
-						bordercolor: "transparent",
-						borderwidth: 2,
-						orientation: "h"
-					},
-					margin: { t: 0, r: 0, b: 0, l: 0 },
-					height: plotWidth,
-					width: plotWidth
-				}}
-				config={{ displayModeBar: false, responsive: true }}
-				onClick={(e) => {
-					let searchQuery: string = `?filters=${dataEndPoint}:${e.points[0].data.name}`;
+						margin: { t: 0, r: 0, b: 0, l: 0 },
+						height: plotWidth,
+						width: plotWidth
+					}}
+					config={{ displayModeBar: false, responsive: true }}
+					onClick={(e) => {
+						let searchQuery: string = `?filters=${dataEndPoint}:${e.points[0].data.name}`;
 
-					router.push({
-						pathname: "/search",
-						search: searchQuery
-					});
-				}}
-			/>
+						router.push({
+							pathname: "/search",
+							search: searchQuery
+						});
+					}}
+				/>
+			) : (
+				<div
+					className="text-center w-100 ar-1 d-flex align-center justify-content-center"
+					style={{
+						backgroundImage: "url(/img/no-datasets.png)",
+						backgroundSize: "contain",
+						backgroundPosition: "top center",
+						backgroundRepeat: "no-repeat"
+					}}
+				>
+					<h3 className="h4 m-0">No datasets for these models</h3>
+				</div>
+			)}
 		</div>
 	);
 };

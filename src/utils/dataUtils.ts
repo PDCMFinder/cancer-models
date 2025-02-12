@@ -42,15 +42,21 @@ export const countUniqueValues = <
 	let result: Record<string, number> = {};
 
 	// find first non-null value for the key
-	const firstValidItem = data.find((item) => item[key] !== null);
+	const firstValidItem = data.find(
+		(item) =>
+			item[key] !== null && item[key] !== undefined && item[key] !== "null"
+	);
 
 	if (firstValidItem && Array.isArray(firstValidItem[key])) {
 		data.forEach((item) => {
 			const values = item[key] as string[];
-
-			values?.forEach((dataset) => {
-				result[dataset] = (result[dataset] || 0) + 1;
-			});
+			if (!values) {
+				return;
+			} else {
+				values.forEach((dataset) => {
+					result[dataset] = (result[dataset] || 0) + 1;
+				});
+			}
 		});
 
 		return result;
@@ -75,7 +81,11 @@ export const countUniqueValues = <
 
 	data.forEach((item) => {
 		const value = item[key] as string;
-		result[value] = (result[value] || 0) + 1;
+		if (value === null || value === undefined || value === "null") {
+			return;
+		} else {
+			result[value] = (result[value] || 0) + 1;
+		}
 	});
 
 	return result;
