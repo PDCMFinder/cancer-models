@@ -44,7 +44,9 @@ export const ethnicityCategories: EthnicityCategories = {
 		"Other",
 		"Arabic",
 		"Native Hawaiian Or Other Pacific Islander",
-		"Not Hispanic Or Latino"
+		"Not Hispanic Or Latino",
+		"American Indian Or Alaskan Native",
+		"American Indian/Alaska Native"
 	]
 };
 
