@@ -102,12 +102,12 @@ const ProviderInfo = ({
 											>
 												<div className="d-flex align-center flex-column text-center">
 													<div
-														style={{ height: "1.5em", width: "1.5em" }}
+														style={{ height: "2em", width: "2em" }}
 														className="d-flex align-center justify-content-center"
 													>
-														<ModelTypeIcon modelType={modelType} size="1.5em" />
+														<ModelTypeIcon modelType={modelType} size="2em" />
 													</div>
-													<p className="mb-0 lh-1 text-small">
+													<p className="mb-0 lh-1">
 														<span className="text-family-primary d-block">
 															{count.toLocaleString()}
 														</span>
