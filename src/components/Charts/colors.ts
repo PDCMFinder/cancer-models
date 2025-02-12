@@ -23,7 +23,10 @@ export const datasetCountColors = {
 	expression: "#47938a",
 	"bio markers": "#7680A2",
 	"immune markers": "#504F4F",
-	"no dataset available": "#c0ede6"
+	publication: "#e9b114",
+	"patient treatment": "#5B6566",
+	"model treatment": "#5B6566",
+	"no dataset available": "#677191"
 };
 
 export const patientAgeColors = {

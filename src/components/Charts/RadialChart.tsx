@@ -3,7 +3,7 @@ import router from "next/router";
 import { PlotData } from "plotly.js";
 import { useEffect, useRef, useState } from "react";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
-import { chartColors, getCustomColors } from "../../utils/chartConfigs";
+import { getCustomColors } from "../../utils/chartConfigs";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -56,7 +56,7 @@ const RadialChart = ({
 				theta: theta,
 				mode: "lines",
 				name: dataName,
-				line: { width: 4, color: chartColors[index] },
+				line: { width: 4, color: customColors[index] },
 				hovertemplate: `${count.toLocaleString()} (${Math.round(
 					percentage * 100
 				)}%)`
