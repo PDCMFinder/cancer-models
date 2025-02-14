@@ -43,9 +43,9 @@ type ActionMeta<SelectOption> =
 	| ClearActionMeta<SelectOption>
 	| CreateOptionActionMeta<SelectOption>;
 
-const Input = (props: any) => (
-	<components.Input {...props} data-hj-allow={true} />
-);
+const Input = (props: any) => {
+	return <components.Input {...props} data-hj-allow={true} />;
+};
 
 const SearchBar = ({
 	id,
@@ -87,7 +87,6 @@ const SearchBar = ({
 				name={name}
 			/>
 			<Select
-				inputClassName="dffffffffffog"
 				isLoading={selectOptionsQuery.isLoading}
 				instanceId={id}
 				id={id}

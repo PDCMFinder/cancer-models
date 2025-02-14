@@ -13,6 +13,7 @@ interface RadialChartProps {
 	dataEndPoint: string;
 	colors: Record<string, string>;
 	totalModelCount: number;
+	provider?: string;
 }
 
 const RadialChart = ({
@@ -20,7 +21,8 @@ const RadialChart = ({
 	data,
 	dataEndPoint,
 	colors,
-	totalModelCount
+	totalModelCount,
+	provider
 }: RadialChartProps) => {
 	const plotlyContainerRef = useRef<HTMLDivElement | null>(null);
 	const [plotWidth, setPlotWidth] = useState(300);
@@ -107,6 +109,10 @@ const RadialChart = ({
 					config={{ displayModeBar: false, responsive: true }}
 					onClick={(e) => {
 						let searchQuery: string = `?filters=${dataEndPoint}:${e.points[0].data.name}`;
+
+						if (provider) {
+							searchQuery += `+AND+data_source:${provider}`;
+						}
 
 						router.push({
 							pathname: "/search",

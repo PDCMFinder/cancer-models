@@ -30,7 +30,7 @@ export const datasetCountColors = {
 };
 
 export const patientAgeColors = {
-	adult: "#003e48",
+	adult: "#504F4F",
 	paediatric: "#005363",
 	"10 - 19": "#e9b114",
 	"60 - 69": "#f7f5e2",
@@ -41,7 +41,7 @@ export const patientAgeColors = {
 	"40 - 49": "#759EC7",
 	"90 - 99": "#47938a",
 	"70 - 79": "#7680A2",
-	"50 - 59": "#504F4F",
+	"50 - 59": "#003e48",
 	"80 - 89": "#5B6566",
 	"Not Provided": "#c0ede6"
 };

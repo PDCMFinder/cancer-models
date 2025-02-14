@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import router from "next/router";
 import { useEffect, useRef, useState } from "react";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
+import breakPoints from "../../utils/breakpoints";
 import { getCustomColors } from "../../utils/chartConfigs";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
@@ -28,6 +29,7 @@ const PieChart = ({
 	const [plotWidth, setPlotWidth] = useState(300);
 	const { windowWidth } = useWindowDimensions();
 	const customColors = getCustomColors(Object.keys(data), colors);
+	const bpLarge = breakPoints.large;
 
 	useEffect(() => {
 		setPlotWidth(plotlyContainerRef.current?.offsetWidth ?? 300);
@@ -40,7 +42,9 @@ const PieChart = ({
 				data={[
 					{
 						values: Object.values(data),
-						labels: Object.keys(data),
+						labels: Object.keys(data).map((key) =>
+							key.length > 10 ? key.slice(0, 10) + "..." : key
+						),
 						name: "",
 						hoverinfo: "label+percent",
 						textinfo: "none",
@@ -49,7 +53,7 @@ const PieChart = ({
 						type: "pie",
 						automargin: true,
 						marker: {
-							colors: customColors as string[]
+							colors: customColors
 						}
 					}
 				]}
@@ -61,10 +65,12 @@ const PieChart = ({
 						}
 					],
 					legend: {
-						orientation: "v",
-						y: 1
+						orientation: "h",
+						y: -0,
+						x: 0.5,
+						xanchor: "center"
 					},
-					showlegend: false,
+					showlegend: windowWidth && windowWidth < bpLarge ? true : false,
 					margin: { t: 0, b: 0, l: 0, r: 0 },
 					height: plotWidth,
 					width: plotWidth
