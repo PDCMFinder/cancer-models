@@ -1,39 +1,25 @@
 import { GitlabRelease } from "../../types/releaseTypes";
 import { ethnicityCategories } from "../utils/collapseEthnicity";
 import { camelCase, countUniqueValues } from "../utils/dataUtils";
+import mergeObjectsIntoCountObject from "../utils/mergeObjectsIntoCountObject";
 import parseRelease from "../utils/parseRelease";
 
-export async function getCancerHierarchy(): Promise<any> {
+export async function getModelsByCancerSystem(): Promise<any> {
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/models_by_cancer`
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_cancer?select=cancer_system,count&order=count.desc`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
 	return response.json().then((d) => {
-		let hierarchy: any = {};
 		d.filter(
 			(i: any) =>
 				i.cancer_system !== null &&
 				i.cancer_system !== i.histology &&
 				i.cancer_system !== "Unclassified"
-		).forEach((element: any) => {
-			if (hierarchy[element.cancer_system] === undefined) {
-				hierarchy[element.cancer_system] = {
-					search_terms: element.cancer_system.replace("Cancer", ""),
-					children: []
-				};
-			}
-			hierarchy[element.cancer_system].children.push({
-				search_terms: element.histology,
-				count: element.count
-			});
-		});
+		);
 
-		return {
-			search_terms: "CancerModels.Org Models",
-			children: Object.values(hierarchy)
-		};
+		return mergeObjectsIntoCountObject(d);
 	});
 }
 
@@ -58,34 +44,44 @@ export async function getModelsByTreatment() {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json().then((d: any[]) => {
-		var i;
-		for (i = 0; i < d.length; i++) {
-			d[i]["treatment_list"] = d[i]["treatment"];
-			delete d[i].treatment;
-		}
-
-		return d;
-	});
+	return response.json().then((d) => mergeObjectsIntoCountObject(d));
 }
 
-export async function getModelsByType(): Promise<
-	{ modelType: string; count: number }[]
-> {
+export async function getModelsByDiagnosis() {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_diagnosis?order=count.desc&limit=10`
+	);
+
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response.json().then((d) => mergeObjectsIntoCountObject(d));
+}
+
+export async function getModelsByType(): Promise<Record<string, number>> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_type?order=count.desc`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response
-		.json()
-		.then((d: { model_type: string; count: number }[]) =>
-			d.filter((d) => d.model_type !== "other").map(camelCase)
-		);
+	return response.json().then((d) => mergeObjectsIntoCountObject(d));
 }
 
-export async function getModelsByPrimarySite() {
+export async function getModelsByProvider(): Promise<Record<string, number>> {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_provider?order=count.desc`
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+	return response.json().then((d) => mergeObjectsIntoCountObject(d));
+}
+
+export async function getModelsByPrimarySite(): Promise<
+	Record<string, number>
+> {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_primary_site?order=count.desc&limit=10`
 	);
@@ -94,27 +90,21 @@ export async function getModelsByPrimarySite() {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json();
+	return response.json().then((d) => mergeObjectsIntoCountObject(d));
 }
 
 export async function getModelsByMutatedGene() {
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/models_by_mutated_gene?order=count.desc&limit=10`
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_mutated_gene?order=count.desc&limit=20`
 	);
 
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json().then((d: any[]) => {
-		var i;
-		for (i = 0; i < d.length; i++) {
-			d[i]["markers_with_mutation_data"] = d[i]["mutated_gene"];
-			delete d[i]["mutated_gene"];
-		}
-
-		return d;
-	});
+	return response
+		.json()
+		.then((d: Record<string, number>[]) => mergeObjectsIntoCountObject(d));
 }
 
 export async function getModelsByPatientSex() {
@@ -126,7 +116,7 @@ export async function getModelsByPatientSex() {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json();
+	return response.json().then((d) => mergeObjectsIntoCountObject(d));
 }
 
 export async function getModelsByTumourType() {
@@ -138,7 +128,12 @@ export async function getModelsByTumourType() {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json();
+	return response.json().then((d) => mergeObjectsIntoCountObject(d));
+}
+
+interface PatientEthnicityResponse {
+	patient_ethnicity: string;
+	count: number;
 }
 
 export async function getModelsByPatientEthnicity() {
@@ -150,7 +145,32 @@ export async function getModelsByPatientEthnicity() {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json();
+	return response.json().then((d: PatientEthnicityResponse[]) => {
+		const groupedData = d.reduce((acc: Record<string, number>, item) => {
+			let ethnicity = item.patient_ethnicity;
+			let topCategory = ethnicity;
+			if (
+				ethnicity?.toLocaleLowerCase() === "not provided" ||
+				ethnicity?.toLocaleLowerCase() === "not provided" ||
+				ethnicity?.toLocaleLowerCase() === "not collected" ||
+				!ethnicity
+			)
+				return acc;
+
+			for (const [category, values] of Object.entries(ethnicityCategories)) {
+				if (values.includes(ethnicity)) {
+					topCategory = category;
+
+					break;
+				}
+			}
+
+			acc[topCategory] = (acc[topCategory] || 0) + item.count;
+			return acc;
+		}, {});
+
+		return groupedData;
+	});
 }
 
 export async function getModelsByPatientAge() {
@@ -162,25 +182,19 @@ export async function getModelsByPatientAge() {
 		throw new Error("Network response was not ok");
 	}
 
-	return response.json();
+	return response.json().then((d) => mergeObjectsIntoCountObject(d));
 }
 
 export async function getModelsByDatasetAvailability() {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/models_by_dataset_availability?order=count.desc`
 	);
+
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json().then((d: any[]) =>
-		d.reverse().map((i: any) => {
-			return {
-				id: i.dataset_availability,
-				label: i.dataset_availability,
-				value: i.count
-			};
-		})
-	);
+
+	return response.json().then((d: any[]) => mergeObjectsIntoCountObject(d));
 }
 
 export async function getDataReleaseInformation() {
@@ -260,6 +274,19 @@ export async function getModelCount() {
 		);
 }
 
+export async function getModelsByRareCancer() {
+	let response = await fetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/models_by_rare_cancer`
+	);
+	if (!response.ok) {
+		throw new Error("Network response was not ok");
+	}
+
+	return response
+		.json()
+		.then((d: Record<string, number>[]) => mergeObjectsIntoCountObject(d));
+}
+
 export async function getProviderCount() {
 	let response = await fetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/provider_group?select=id`,
@@ -279,32 +306,25 @@ export async function getProviderCount() {
 }
 
 export type ProviderDataCounts = {
-	cancer_system: {
-		[key: string]: number;
-	};
-	patient_age: {
-		[key: string]: number;
-	};
-	model_type: {
-		[key: string]: number;
-	};
-	tumour_type: {
-		[key: string]: number;
-	};
-	patient_ethnicity: {
-		[key: string]: number;
-	};
+	cancer_system: Record<string, number>;
+	patient_age: Record<string, [Record<string, number>, number]>;
+	model_type: Record<string, number>;
+	tumour_type: Record<string, number>;
+	patient_ethnicity: Record<string, number>;
+	dataset_available: Record<string, number>;
+	totalModelCount: number;
 };
 
 export async function getProviderDataCounts(
 	providerId: string
 ): Promise<ProviderDataCounts> {
 	let response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/search_index?data_source=in.("${providerId}")&select=cancer_system,patient_age,model_type,tumour_type,patient_ethnicity`
+		`${process.env.NEXT_PUBLIC_API_URL}/search_index?data_source=in.("${providerId}")&select=cancer_system,patient_age,model_type,tumour_type,patient_ethnicity,dataset_available`
 	);
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
+
 	return response.json().then(
 		(
 			d: {
@@ -313,6 +333,7 @@ export async function getProviderDataCounts(
 				model_type: string;
 				tumour_type: string;
 				patient_ethnicity: string;
+				dataset_available: string[];
 			}[]
 		) => {
 			const groupedPatientEthnicity = d.map((item) => {
@@ -326,21 +347,47 @@ export async function getProviderDataCounts(
 				return { patient_ethnicity: ethnicity };
 			});
 
-			const cancerSystemCounts = countUniqueValues(d, "cancer_system");
-			const patientAgeCounts = countUniqueValues(d, "patient_age");
-			const modelTypeCounts = countUniqueValues(d, "model_type");
-			const tumourTypeCounts = countUniqueValues(d, "tumour_type");
+			const cancerSystemCounts = countUniqueValues(
+				d.map((item) => ({ cancer_system: item.cancer_system })),
+				"cancer_system"
+			);
+			const modelTypeCounts = countUniqueValues(
+				d.map((item) => ({ model_type: item.model_type })),
+				"model_type"
+			);
+			const patientAgeCounts = countUniqueValues(
+				d.map((item) => ({ patient_age: item.patient_age })),
+				"patient_age"
+			);
+			const tumourTypeCounts = countUniqueValues(
+				d.map((item) => ({ tumour_type: item.tumour_type })),
+				"tumour_type"
+			);
 			const patientEthnicityCounts = countUniqueValues(
 				groupedPatientEthnicity,
 				"patient_ethnicity"
 			);
+			const datasetAvailableCounts = countUniqueValues(
+				d.map((item) => ({ dataset_available: item.dataset_available })),
+				"dataset_available"
+			);
+			const totalModelCount = Object.values(modelTypeCounts).reduce(
+				(acc, curr) => acc + curr,
+				0
+			);
 
 			return {
-				cancer_system: cancerSystemCounts,
-				patient_age: patientAgeCounts,
-				model_type: modelTypeCounts,
-				tumour_type: tumourTypeCounts,
-				patient_ethnicity: patientEthnicityCounts
+				cancer_system:
+					cancerSystemCounts as ProviderDataCounts["cancer_system"],
+				patient_age:
+					patientAgeCounts as unknown as ProviderDataCounts["patient_age"], // sorry for using unknown
+				model_type: modelTypeCounts as ProviderDataCounts["model_type"],
+				tumour_type: tumourTypeCounts as ProviderDataCounts["tumour_type"],
+				patient_ethnicity:
+					patientEthnicityCounts as ProviderDataCounts["patient_ethnicity"],
+				dataset_available:
+					datasetAvailableCounts as ProviderDataCounts["dataset_available"],
+				totalModelCount
 			};
 		}
 	);

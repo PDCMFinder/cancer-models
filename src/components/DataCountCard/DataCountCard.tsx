@@ -23,36 +23,40 @@ const DataCountCard = (props: DataCountCardProps) => {
 					isVertical ? "" : "row-cols-lg-3"
 				}`}
 			>
-				{data.map((d) => (
-					<div
-						className={`my-3 col ${isVertical ? "" : "my-lg-0"}`}
-						key={d.modelType}
-					>
-						<Link
-							href={`/search?filters=model_type:${d.modelType}`}
-							className="p text-noDecoration"
+				{Object.entries(data).map(([modelType, count]) => {
+					if (modelType === "other") return null;
+
+					return (
+						<div
+							className={`my-3 col ${isVertical ? "" : "my-lg-0"}`}
+							key={modelType}
 						>
-							<div className="d-flex align-center">
-								<ModelTypeIcon
-									modelType={d.modelType}
-									size={props.iconSize ?? "1em"}
-									className="mr-3"
-								/>
-								<p className="mb-0 lh-1">
-									<span
-										className="text-family-primary mb-1 d-block"
-										style={{ fontSize: "3.4rem" }}
-									>
-										{d.count.toLocaleString()}
-									</span>
-									<span className={"text-underline"}>
-										{capitalizeFirstLetter(d.modelType)}s
-									</span>
-								</p>
-							</div>
-						</Link>
-					</div>
-				))}
+							<Link
+								href={`/search?filters=model_type:${modelType}`}
+								className="p text-noDecoration"
+							>
+								<div className="d-flex align-center">
+									<ModelTypeIcon
+										modelType={modelType}
+										size={props.iconSize ?? "1em"}
+										className="mr-3"
+									/>
+									<p className="mb-0 lh-1">
+										<span
+											className="text-family-primary mb-1 d-block"
+											style={{ fontSize: "3.4rem" }}
+										>
+											{count.toLocaleString()}
+										</span>
+										<span className={"text-underline"}>
+											{capitalizeFirstLetter(modelType)}s
+										</span>
+									</p>
+								</div>
+							</Link>
+						</div>
+					);
+				})}
 			</div>
 		</Card>
 	) : (

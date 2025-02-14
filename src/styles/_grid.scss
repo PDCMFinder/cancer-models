@@ -21,9 +21,6 @@
 		margin-top: $col-gutter-y;
 	}
 }
-.col {
-	flex: 1 0 0%;
-}
 [class^="col-"] {
 	flex: 0 0 auto;
 	line-height: 0;

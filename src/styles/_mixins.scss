@@ -20,6 +20,9 @@
 	@for $j from 1 through length($bp-names) {
 		@include mediaOver(#{nth($bp-names, $j)}) {
 			@if #{nth($bp-names, $j)} == "xs" {
+				.col {
+					flex: 1 0 0%;
+				}
 				@for $i from 0 through $col-amount {
 					.col-#{$i} {
 						width: calc((100% / $col-amount) * $i);
@@ -40,6 +43,9 @@
 				}
 			} @else {
 				@for $i from 0 through $col-amount {
+					.col-#{nth($bp-names, $j)} {
+						flex: 1 0 0%;
+					}
 					.col-#{nth($bp-names, $j)}-#{$i} {
 						width: calc((100% / $col-amount) * $i);
 					}
@@ -69,7 +75,7 @@ $spacers-map: (
 	3: $spacing-3,
 	4: $spacing-4,
 	5: $spacing-5,
-	auto: auto,
+	auto: auto
 );
 @mixin spacing() {
 	@for $j from 1 through length($bp-names) {

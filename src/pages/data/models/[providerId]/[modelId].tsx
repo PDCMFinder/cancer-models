@@ -92,10 +92,7 @@ const ModelDetails = ({
 		MODEL_GENOMICS_STRING = "Model Genomics",
 		HLA_TYPE_STRING = "HLA type",
 		PDX_STRING = "PDX";
-	const isHCMI = metadata.projectName.toLowerCase() === "hcmi";
-	const viewDataAtStr = isHCMI
-		? "HCMI Searchable Catalog"
-		: metadata.providerId || "provider";
+	const isHCMI = metadata.projectName?.toLowerCase() === "hcmi";
 
 	// Client side mol data so we have latest molecular_characterization_id that changes on every etl execution
 	const { data: molecularData, isLoading: molecularDataIsLoading } = useQuery(
