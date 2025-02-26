@@ -6,9 +6,11 @@ import Select, {
 	components,
 	CreateOptionActionMeta,
 	DeselectOptionActionMeta,
+	MultiValue,
 	PopValueActionMeta,
 	RemoveValueActionMeta,
-	SelectOptionActionMeta
+	SelectOptionActionMeta,
+	SingleValue
 } from "react-select";
 import { autoCompleteFacetOptions } from "../../apis/Search.api";
 import useDebounce from "../../hooks/useDebounce";
@@ -43,9 +45,9 @@ type ActionMeta<SelectOption> =
 	| ClearActionMeta<SelectOption>
 	| CreateOptionActionMeta<SelectOption>;
 
-const Input = (props: any) => (
-	<components.Input {...props} data-hj-allow={true} />
-);
+const Input = (props: any) => {
+	return <components.Input {...props} data-hj-allow={true} />;
+};
 
 const SearchBar = ({
 	id,
@@ -87,7 +89,6 @@ const SearchBar = ({
 				name={name}
 			/>
 			<Select
-				inputClassName="dffffffffffog"
 				isLoading={selectOptionsQuery.isLoading}
 				instanceId={id}
 				id={id}
@@ -97,7 +98,6 @@ const SearchBar = ({
 				aria-label="Search by cancer diagnosis"
 				aria-labelledby={id}
 				className="lh-1"
-				classNames={{ input: () => "data-hj-allow" }}
 				closeMenuOnSelect={isMulti}
 				blurInputOnSelect={isMulti}
 				isMulti={isMulti}
@@ -111,17 +111,18 @@ const SearchBar = ({
 					setDebounceValue(inputValue);
 				}}
 				onChange={(
-					option: SelectOption | null,
+					newValue: MultiValue<SelectOption> | SingleValue<SelectOption>,
 					actionMeta: ActionMeta<SelectOption>
 				) => {
 					if (actionMeta.action === "pop-value") return;
 					let newOption = "",
 						action: onFilterChangeType["type"] = "add";
-					if (option && !isMulti) {
+
+					if (newValue && !isMulti) {
+						const singleValue = newValue as SelectOption;
 						router.push({
 							pathname: "search",
-							// @ts-ignore
-							search: `?filters=search_terms:${option.value}`
+							search: `?filters=search_terms:${singleValue.value}`
 						});
 					} else {
 						switch (actionMeta.action) {
