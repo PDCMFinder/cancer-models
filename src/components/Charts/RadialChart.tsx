@@ -3,6 +3,7 @@ import router from "next/router";
 import { PlotData } from "plotly.js";
 import { useEffect, useRef, useState } from "react";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
+import breakPoints from "../../utils/breakpoints";
 import { getCustomColors } from "../../utils/chartConfigs";
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
@@ -28,6 +29,7 @@ const RadialChart = ({
 	const [plotWidth, setPlotWidth] = useState(300);
 	const { windowWidth } = useWindowDimensions();
 	const customColors = getCustomColors(Object.keys(data), colors);
+	const bpLarge = breakPoints.large;
 
 	useEffect(() => {
 		setPlotWidth(plotlyContainerRef.current?.offsetWidth ?? 300);
@@ -88,18 +90,15 @@ const RadialChart = ({
 								showline: false
 							}
 						},
-						showlegend: false,
+						showlegend: windowWidth && windowWidth < bpLarge ? true : false,
 						legend: {
-							x: 1,
-							y: 1,
+							x: 0.5,
+							y: -0.5,
+							xanchor: "center",
 							font: {
 								family: "sans-serif",
-								size: 10,
 								color: customColors
 							},
-							bgcolor: "transparent",
-							bordercolor: "transparent",
-							borderwidth: 2,
 							orientation: "h"
 						},
 						margin: { t: 0, r: 0, b: 0, l: 0 },

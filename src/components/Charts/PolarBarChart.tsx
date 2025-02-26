@@ -35,6 +35,7 @@ const PolarBarChart = ({ title, data, dataEndPoint }: PolarBarChartProps) => {
 		<div className="text-center h-100 w-100" ref={plotlyContainerRef}>
 			{title && <h2 className="p mt-0 mb-3">{title}</h2>}
 			<Plot
+				className="cursor-pointer"
 				data={[
 					{
 						r: Object.values(sortedData),

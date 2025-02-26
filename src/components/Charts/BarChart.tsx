@@ -47,7 +47,6 @@ const BarChart = ({ title, x, y, dataEndPoint, provider }: BarChartProps) => {
 								color: chartColors[2]
 							},
 							automargin: true,
-							// text: y.map(String),
 							textinfo: "label",
 							textposition: "auto"
 						}
@@ -66,7 +65,11 @@ const BarChart = ({ title, x, y, dataEndPoint, provider }: BarChartProps) => {
 					config={{ displayModeBar: false, responsive: true }}
 					onClick={(e) => {
 						// @ts-ignore
-						const searchQuery: string = `?filters=${dataEndPoint}:${e.points[0].label}`;
+						let searchQuery: string = `?filters=${dataEndPoint}:${e.points[0].label}`;
+
+						if (provider) {
+							searchQuery += `+AND+data_source:${provider}`;
+						}
 
 						router.push({
 							pathname: "/search",

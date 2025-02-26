@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import router from "next/router";
 import { useEffect, useRef, useState } from "react";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
+import breakPoints from "../../utils/breakpoints";
 import { getCustomColors } from "../../utils/chartConfigs";
 import { ageCategories } from "../../utils/collapseEthnicity";
 import { capitalizeFirstLetter } from "../../utils/dataUtils";
@@ -62,6 +63,7 @@ const SunBurstChart = ({
 	const [plotWidth, setPlotWidth] = useState(300);
 	const { windowWidth } = useWindowDimensions();
 	const customColors = getCustomColors(labels, colors);
+	const bpLarge = breakPoints.large;
 
 	useEffect(() => {
 		setPlotWidth(plotlyContainerRef.current?.offsetWidth ?? 300);
@@ -71,6 +73,7 @@ const SunBurstChart = ({
 		<div className="text-center h-100 w-100" ref={plotlyContainerRef}>
 			{title && <h2 className="p mt-0 mb-3">{title}</h2>}
 			<Plot
+				className="cursor-pointer"
 				data={[
 					{
 						values,
@@ -78,25 +81,17 @@ const SunBurstChart = ({
 						parents,
 						branchvalues: "total",
 						name: "",
-						textinfo: "none",
+						textinfo:
+							windowWidth && windowWidth < bpLarge ? "label+value" : "none",
 						type: "sunburst",
 						automargin: true,
 						marker: {
 							colors: customColors
-						}
+						},
+						textposition: "inside"
 					}
 				]}
 				layout={{
-					annotations: [
-						{
-							showarrow: false,
-							text: ""
-						}
-					],
-					font: {
-						size: 12
-					},
-					showlegend: false,
 					margin: { t: 0, b: 0, l: 0, r: 0 },
 					height: plotWidth,
 					width: plotWidth

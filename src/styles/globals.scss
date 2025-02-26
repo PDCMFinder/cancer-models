@@ -279,6 +279,9 @@ a {
 	&-default {
 		cursor: default !important;
 	}
+	&-pointer {
+		cursor: pointer !important;
+	}
 }
 .position {
 	&-relative {
@@ -606,4 +609,7 @@ table {
 .sunburst path {
 	stroke-opacity: 0 !important;
 	stroke: transparent !important;
+}
+.js-plotly-plot .plotly path {
+	cursor: pointer !important;
 }
