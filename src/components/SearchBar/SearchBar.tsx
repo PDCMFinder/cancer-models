@@ -45,7 +45,7 @@ type ActionMeta<SelectOption> =
 	| ClearActionMeta<SelectOption>
 	| CreateOptionActionMeta<SelectOption>;
 
-const Input = (props: any) => {
+export const ReactSelectInput = (props: any) => {
 	return <components.Input {...props} data-hj-allow={true} />;
 };
 
@@ -105,7 +105,7 @@ const SearchBar = ({
 				loadingMessage={() => "Loading data"}
 				noOptionsMessage={() => "Type to search"}
 				styles={typeaheadStyles}
-				components={{ DropdownIndicator: Fragment, Input }}
+				components={{ DropdownIndicator: Fragment, Input: ReactSelectInput }}
 				options={debounceValue !== debouncedValue ? [] : typeaheadData}
 				onInputChange={(inputValue: string) => {
 					setDebounceValue(inputValue);

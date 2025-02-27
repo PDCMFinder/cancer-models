@@ -10,6 +10,7 @@ import { ethnicityCategories } from "../../utils/collapseEthnicity";
 import typeaheadStyles from "../../utils/typeaheadStyles";
 import InformationIcon from "../InformationIcon/InformationIcon";
 import InputAndLabel from "../Input/InputAndLabel";
+import { ReactSelectInput } from "../SearchBar/SearchBar";
 import MultivaluedSearchFilter from "./MultivaluedSearchFilter";
 
 type SearchFilterContentProps = {
@@ -142,6 +143,7 @@ const SearchFilterContent = (props: SearchFilterContentProps) => {
 								props.onFilterChange(facet.facetId, option, operator, action);
 							}}
 							styles={typeaheadStyles}
+							components={{ Input: ReactSelectInput }}
 						/>
 					);
 				} else if (facetType === "check") {
@@ -156,6 +158,7 @@ const SearchFilterContent = (props: SearchFilterContentProps) => {
 								return (
 									<li key={label}>
 										<InputAndLabel
+											data-hj-allow={true}
 											forId={label}
 											id={label}
 											name={`${label}-name`}

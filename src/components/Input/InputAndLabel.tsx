@@ -11,6 +11,7 @@ interface IInputAndLabel extends InputProps, LabelProps {
 	value?: string;
 	onChange?: InputProps["onChange"];
 	inputRef?: RefObject<HTMLInputElement>;
+	hjAllow?: boolean;
 }
 
 const InputAndLabel = (props: IInputAndLabel) => {
@@ -44,6 +45,7 @@ const InputAndLabel = (props: IInputAndLabel) => {
 				id={props.id}
 				inputRef={props.inputRef && props.inputRef}
 				required={props.required}
+				data-hj-allow={props.hjAllow}
 			/>
 			{type === "search" ? (
 				<>

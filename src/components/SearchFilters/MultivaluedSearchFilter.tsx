@@ -7,6 +7,7 @@ import { onFilterChangeType } from "../../pages/search";
 import { FacetProps, FacetSectionSelection } from "../../types/Facet.model";
 import typeaheadStyles from "../../utils/typeaheadStyles";
 import Fragment from "../Fragment/Fragment";
+import { ReactSelectInput } from "../SearchBar/SearchBar";
 import { SelectOption } from "./SearchFilterContent";
 
 type MultivaluedSearchFilterProps = {
@@ -86,7 +87,10 @@ const MultivaluedSearchFilter = ({
 				onFilterChange(facet.facetId, option, operator, action);
 			}}
 			styles={typeaheadStyles}
-			components={{ DropdownIndicator: Fragment }}
+			components={{
+				DropdownIndicator: Fragment,
+				Input: ReactSelectInput
+			}}
 		/>
 	);
 };
