@@ -3,6 +3,7 @@ type SelectProps = {
 	options: { value?: string; text: string }[];
 	className?: string;
 	onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+	hjAllow?: boolean;
 };
 
 const Select = (props: SelectProps) => {
@@ -15,6 +16,7 @@ const Select = (props: SelectProps) => {
 			id={id}
 			className={props.className}
 			onChange={props.onChange}
+			data-hj-allow={props.hjAllow}
 		>
 			{options.map((opt) => {
 				let text = opt.text,
