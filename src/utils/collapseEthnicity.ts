@@ -1,13 +1,13 @@
 type EthnicityCounter = { patient_ethnicity: string; count: number };
 
 type EthnicityCategories = { [key: string]: string[] };
-
 export const ethnicityCategories: EthnicityCategories = {
 	Asian: [
 		"Eastasian",
 		"East Asian",
 		"South Asian",
 		"Southasianorhispanic",
+		"South Asian Or Hispanic",
 		"Asian"
 	],
 	"Black Or African American": [
@@ -17,7 +17,14 @@ export const ethnicityCategories: EthnicityCategories = {
 		"Black Or African American",
 		"Black Or African American; Not Hispanic Or Latino"
 	],
-	White: ["White; Not Hispanic Or Latino", "European", "Caucasian", "White"],
+	White: [
+		"White; Not Hispanic Or Latino",
+		"European",
+		"Caucasian",
+		"White",
+		"Western European",
+		"Italian"
+	],
 	"Hispanic Or Latino": [
 		"Latino",
 		"White; Hispanic Or Latino",
@@ -30,13 +37,16 @@ export const ethnicityCategories: EthnicityCategories = {
 		"Not Provided",
 		"Not Collected",
 		"Mixed_or_unknown",
+		"Mixed Or Unknown",
 		"Declined To Answer"
 	],
 	Other: [
 		"Other",
 		"Arabic",
 		"Native Hawaiian Or Other Pacific Islander",
-		"Not Hispanic Or Latino"
+		"Not Hispanic Or Latino",
+		"American Indian Or Alaskan Native",
+		"American Indian/Alaska Native"
 	]
 };
 
@@ -60,3 +70,20 @@ export function countEthnicity(subethnicityCountList: EthnicityCounter[]) {
 		};
 	});
 }
+
+type AgeCategories = { [key: string]: string[] };
+
+export const ageCategories: AgeCategories = {
+	Paediatric: ["0 - 23 months", "2 - 9", "10 - 19"],
+	Adult: [
+		"20 - 29",
+		"30 - 39",
+		"40 - 49",
+		"50 - 59",
+		"60 - 69",
+		"70 - 79",
+		"80 - 89",
+		"90 - 99"
+	],
+	"Not Provided": ["Not Provided", "Not Collected"]
+};

@@ -1,4 +1,4 @@
-import CavendishIcon, { CavendishIconProps } from "./CavendishIcon";
+import CavendishIcon, { type CavendishIconProps } from "./CavendishIcon";
 import MouseIcon from "./MouseIcon";
 import OrganoidIcon from "./OrganoidIcon";
 
@@ -22,6 +22,14 @@ const ModelTypeIcon = ({
 	};
 
 	const IconComponent = icons[modelType] || (() => <></>);
+
+	if (modelType.toLowerCase() === "other") {
+		return (
+			<p className="m-0" style={{ fontSize: "1em" }}>
+				Other
+			</p>
+		);
+	}
 
 	return <IconComponent size={size} {...props} />;
 };
