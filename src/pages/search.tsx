@@ -514,6 +514,7 @@ const Search: NextPage = () => {
 												setSortBy(e.target.value);
 												changePage(1);
 											}}
+											hjAllow={true}
 										/>
 									</div>
 								</div>
