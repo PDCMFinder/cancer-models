@@ -533,19 +533,18 @@ const ModelDetails = ({
 									Date of submission: {metadata.dateSubmitted}
 								</p>
 							)}
-							<div className="d-flex align-center gap-2">
-								<h2
-									className={`m-0 text-family-secondary ${styles.ModelDetails_histology}`}
-									id="tour_model-histologyType"
-								>
-									{metadata.histology}
-								</h2>{" "}
-								<ModelTypeIcon
-									modelType={metadata.modelType}
-									size="1.5em"
-									className="ml-2"
-								/>
-							</div>
+							<ModelTypeIcon
+								modelType={metadata.modelType}
+								size="1.5em"
+								className="mb-1"
+								hideOther={true}
+							/>
+							<h2
+								className={`m-0 mb-1 text-family-secondary ${styles.ModelDetails_histology}`}
+								id="tour_model-histologyType"
+							>
+								{metadata.histology}
+							</h2>
 							<h1 className="m-0 mb-2" id="tour_model-id">
 								{metadata.modelId}
 							</h1>

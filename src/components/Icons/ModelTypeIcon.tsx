@@ -9,11 +9,13 @@ type IconComponent = {
 const ModelTypeIcon = ({
 	modelType,
 	size,
+  hideOther,
 	...props
 }: {
 	modelType: string;
 	size: CavendishIconProps["size"];
 	className?: string;
+	hideOther?: boolean;
 }) => {
 	const icons: IconComponent = {
 		PDX: MouseIcon,
@@ -23,7 +25,7 @@ const ModelTypeIcon = ({
 
 	const IconComponent = icons[modelType] || (() => <></>);
 
-	if (modelType.toLowerCase() === "other") {
+	if (modelType.toLowerCase() === "other" && !hideOther) {
 		return (
 			<p className="m-0" style={{ fontSize: "1em" }}>
 				Other
