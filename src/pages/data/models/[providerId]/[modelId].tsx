@@ -22,6 +22,7 @@ import Button from "../../../../components/Button/Button";
 import Card from "../../../../components/Card/Card";
 import FloatingButton from "../../../../components/FloatingWidget/FloatingButton";
 import CloseIcon from "../../../../components/Icons/CloseIcon/CloseIcon";
+import ModelTypeIcon from "../../../../components/Icons/ModelTypeIcon";
 import ImageChecker from "../../../../components/ImageChecker/ImageChecker";
 import InputAndLabel from "../../../../components/Input/InputAndLabel";
 import Loader from "../../../../components/Loader/Loader";
@@ -532,12 +533,19 @@ const ModelDetails = ({
 									Date of submission: {metadata.dateSubmitted}
 								</p>
 							)}
-							<h2
-								className={`m-0 text-family-secondary ${styles.ModelDetails_histology}`}
-								id="tour_model-histologyType"
-							>
-								{metadata.histology} - {metadata.modelType}
-							</h2>
+							<div className="d-flex align-center gap-2">
+								<h2
+									className={`m-0 text-family-secondary ${styles.ModelDetails_histology}`}
+									id="tour_model-histologyType"
+								>
+									{metadata.histology}
+								</h2>{" "}
+								<ModelTypeIcon
+									modelType={metadata.modelType}
+									size="1.5em"
+									className="ml-2"
+								/>
+							</div>
 							<h1 className="m-0 mb-2" id="tour_model-id">
 								{metadata.modelId}
 							</h1>
