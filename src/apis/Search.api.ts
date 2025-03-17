@@ -87,7 +87,7 @@ export async function autoCompleteFacetOptions(
 ) {
 	const ilikeClause = text.length > 0 ? `, option.ilike."*${text}*"` : "";
 	let response = await fetch(
-		`${API_URL}/search_facet_options?and=(facet_column.eq.${facetColumn}${ilikeClause})&limit=20&order=option.asc`
+		`${API_URL}/search_facet_options?and=(facet_column.eq.${facetColumn}${ilikeClause})&order=option.asc`
 	);
 	return response.json().then((d: Array<any>) => {
 		return d.map(({ option }) => {

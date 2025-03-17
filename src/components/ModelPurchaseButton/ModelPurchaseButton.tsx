@@ -1,3 +1,4 @@
+import ReactGA from "react-ga4";
 import { ExternalModelLink } from "../../types/ModelData.model";
 import Button from "../Button/Button";
 
@@ -15,6 +16,12 @@ const ModelPurchaseButton = ({ supplier, isLastSupplier }: Props) => {
 			htmlTag="a"
 			href={supplier.link}
 			className={isLastSupplier ? "" : "mb-2"}
+			onClick={() => {
+				ReactGA.event("provider_purchase_model", {
+					category: "event",
+					provider: supplier.resourceLabel
+				});
+			}}
 		>
 			Purchase {supplier.linkLabel}
 		</Button>

@@ -1114,6 +1114,11 @@ const ModelDetails = ({
 												>
 													<Link
 														href={`/cbioportal/patient/clinicalData?studyId=${metadata.providerId}&caseId=${metadata.patientId}`}
+														onClick={() => {
+															ReactGA.event("view_cbioportal", {
+																category: "event"
+															});
+														}}
 													>
 														<Image
 															src="/img/cbioportal.png"
