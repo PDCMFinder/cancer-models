@@ -533,12 +533,6 @@ const ModelDetails = ({
 									Date of submission: {metadata.dateSubmitted}
 								</p>
 							)}
-							<ModelTypeIcon
-								modelType={metadata.modelType}
-								size="1.5em"
-								className="mb-1"
-								hideOther={true}
-							/>
 							<h2
 								className={`m-0 mb-1 text-family-secondary ${styles.ModelDetails_histology}`}
 								id="tour_model-histologyType"
@@ -548,14 +542,24 @@ const ModelDetails = ({
 							<h1 className="m-0 mb-2" id="tour_model-id">
 								{metadata.modelId}
 							</h1>
-							{metadata.score > 0 && (
-								<QualityBadge
-									score={metadata.score}
-									containerClassName="text-white"
-									style={{ width: "10em" }}
-									id="tour_model-score"
-								/>
-							)}
+							<div className="d-flex align-items-center">
+								{metadata.modelType.toLowerCase() !== "other" && (
+									<ModelTypeIcon
+										modelType={metadata.modelType}
+										size="1.5em"
+										className="mb-1 mr-4"
+										hideOther={true}
+									/>
+								)}
+								{metadata.score > 0 && (
+									<QualityBadge
+										score={metadata.score}
+										containerClassName="text-white"
+										style={{ width: "10em" }}
+										id="tour_model-score"
+									/>
+								)}
+							</div>
 							{cellModelData?.modelName && (
 								<p className="mt-2 mb-0">
 									<b>Aliases:</b> {cellModelData.modelName}
