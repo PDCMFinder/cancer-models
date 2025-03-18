@@ -1490,6 +1490,16 @@ const ModelDetails = ({
 																									className="mr-1"
 																									target="_blank"
 																									rel="noopener"
+																									onClick={() =>
+																										ReactGA.event(
+																											"external_db_link_click",
+																											{
+																												category: "event",
+																												provider:
+																													externalDbLink.resourceLabel
+																											}
+																										)
+																									}
 																								>
 																									{externalDbLink.resourceLabel}
 																								</Link>
