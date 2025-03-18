@@ -1305,6 +1305,16 @@ const ModelDetails = ({
 																										href={externalResource.link}
 																										target="_blank"
 																										rel="noopener noreferrer"
+																										onClick={() =>
+																											ReactGA.event(
+																												"external_db_link_click",
+																												{
+																													category: "event",
+																													provider:
+																														externalResource.resource
+																												}
+																											)
+																										}
 																									>
 																										{externalResource.resource}
 																									</Link>
@@ -1605,6 +1615,16 @@ const ModelDetails = ({
 																									className="mr-1"
 																									target="_blank"
 																									rel="noopener"
+																									onClick={() =>
+																										ReactGA.event(
+																											"external_db_link_click",
+																											{
+																												category: "event",
+																												provider:
+																													externalDbLink.resourceLabel
+																											}
+																										)
+																									}
 																								>
 																									{externalDbLink.resourceLabel}
 																								</Link>
@@ -1767,6 +1787,14 @@ const ModelDetails = ({
 																	href={`https://europepmc.org/article/MED/${publication.pmid}`}
 																	target="_blank"
 																	rel="noreferrer noopener"
+																	onClick={() =>
+																		ReactGA.event(
+																			"publication_europepmc_click",
+																			{
+																				category: "event"
+																			}
+																		)
+																	}
 																>
 																	View at EuropePMC
 																</Link>
@@ -1778,6 +1806,11 @@ const ModelDetails = ({
 																	href={`https://doi.org/${publication.doi}`}
 																	target="_blank"
 																	rel="noreferrer noopener"
+																	onClick={() =>
+																		ReactGA.event("publication_doi_click", {
+																			category: "event"
+																		})
+																	}
 																>
 																	DOI:{publication.doi}
 																</Link>
@@ -1789,6 +1822,11 @@ const ModelDetails = ({
 																	href={`https://pubmed.ncbi.nlm.nih.gov/${publication.pmid}`}
 																	target="_blank"
 																	rel="noreferrer noopener"
+																	onClick={() =>
+																		ReactGA.event("publication_pubmed_click", {
+																			category: "event"
+																		})
+																	}
 																>
 																	PubMed
 																</Link>
