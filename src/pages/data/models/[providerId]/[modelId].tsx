@@ -533,12 +533,6 @@ const ModelDetails = ({
 									Date of submission: {metadata.dateSubmitted}
 								</p>
 							)}
-							<ModelTypeIcon
-								modelType={metadata.modelType}
-								size="1.5em"
-								className="mb-1"
-								hideOther={true}
-							/>
 							<h2
 								className={`m-0 mb-1 text-family-secondary ${styles.ModelDetails_histology}`}
 								id="tour_model-histologyType"
@@ -548,14 +542,24 @@ const ModelDetails = ({
 							<h1 className="m-0 mb-2" id="tour_model-id">
 								{metadata.modelId}
 							</h1>
-							{metadata.score > 0 && (
-								<QualityBadge
-									score={metadata.score}
-									containerClassName="text-white"
-									style={{ width: "10em" }}
-									id="tour_model-score"
-								/>
-							)}
+							<div className="d-flex align-items-center">
+								{metadata.modelType.toLowerCase() !== "other" && (
+									<ModelTypeIcon
+										modelType={metadata.modelType}
+										size="1.5em"
+										className="mb-1 mr-4"
+										hideOther={true}
+									/>
+								)}
+								{metadata.score > 0 && (
+									<QualityBadge
+										score={metadata.score}
+										containerClassName="text-white"
+										style={{ width: "10em" }}
+										id="tour_model-score"
+									/>
+								)}
+							</div>
 							{cellModelData?.modelName && (
 								<p className="mt-2 mb-0">
 									<b>Aliases:</b> {cellModelData.modelName}
@@ -1114,6 +1118,11 @@ const ModelDetails = ({
 												>
 													<Link
 														href={`/cbioportal/patient/clinicalData?studyId=${metadata.providerId}&caseId=${metadata.patientId}`}
+														onClick={() => {
+															ReactGA.event("view_cbioportal", {
+																category: "event"
+															});
+														}}
 													>
 														<Image
 															src="/img/cbioportal.png"
@@ -1296,6 +1305,16 @@ const ModelDetails = ({
 																										href={externalResource.link}
 																										target="_blank"
 																										rel="noopener noreferrer"
+																										onClick={() =>
+																											ReactGA.event(
+																												"external_db_link_click",
+																												{
+																													category: "event",
+																													provider:
+																														externalResource.resource
+																												}
+																											)
+																										}
 																									>
 																										{externalResource.resource}
 																									</Link>
@@ -1481,6 +1500,16 @@ const ModelDetails = ({
 																									className="mr-1"
 																									target="_blank"
 																									rel="noopener"
+																									onClick={() =>
+																										ReactGA.event(
+																											"external_db_link_click",
+																											{
+																												category: "event",
+																												provider:
+																													externalDbLink.resourceLabel
+																											}
+																										)
+																									}
 																								>
 																									{externalDbLink.resourceLabel}
 																								</Link>
@@ -1586,6 +1615,16 @@ const ModelDetails = ({
 																									className="mr-1"
 																									target="_blank"
 																									rel="noopener"
+																									onClick={() =>
+																										ReactGA.event(
+																											"external_db_link_click",
+																											{
+																												category: "event",
+																												provider:
+																													externalDbLink.resourceLabel
+																											}
+																										)
+																									}
 																								>
 																									{externalDbLink.resourceLabel}
 																								</Link>
@@ -1748,6 +1787,14 @@ const ModelDetails = ({
 																	href={`https://europepmc.org/article/MED/${publication.pmid}`}
 																	target="_blank"
 																	rel="noreferrer noopener"
+																	onClick={() =>
+																		ReactGA.event(
+																			"publication_europepmc_click",
+																			{
+																				category: "event"
+																			}
+																		)
+																	}
 																>
 																	View at EuropePMC
 																</Link>
@@ -1759,6 +1806,11 @@ const ModelDetails = ({
 																	href={`https://doi.org/${publication.doi}`}
 																	target="_blank"
 																	rel="noreferrer noopener"
+																	onClick={() =>
+																		ReactGA.event("publication_doi_click", {
+																			category: "event"
+																		})
+																	}
 																>
 																	DOI:{publication.doi}
 																</Link>
@@ -1770,6 +1822,11 @@ const ModelDetails = ({
 																	href={`https://pubmed.ncbi.nlm.nih.gov/${publication.pmid}`}
 																	target="_blank"
 																	rel="noreferrer noopener"
+																	onClick={() =>
+																		ReactGA.event("publication_pubmed_click", {
+																			category: "event"
+																		})
+																	}
 																>
 																	PubMed
 																</Link>

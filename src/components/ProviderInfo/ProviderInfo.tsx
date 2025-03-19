@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import ReactGA from "react-ga4";
 import { useQuery } from "react-query";
 import {
 	getProviderDataCounts,
@@ -208,6 +209,11 @@ const ProviderInfo = ({
 						href={`/cbioportal/study/clinicalData?id=${abbreviation}`}
 						htmlTag="a"
 						target="_blank"
+						onClick={() => {
+							ReactGA.event("view_cbioportal", {
+								category: "event"
+							});
+						}}
 					>
 						cBioPortal
 					</Button>
