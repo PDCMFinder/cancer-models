@@ -22,6 +22,7 @@ import Button from "../../../../components/Button/Button";
 import Card from "../../../../components/Card/Card";
 import FloatingButton from "../../../../components/FloatingWidget/FloatingButton";
 import CloseIcon from "../../../../components/Icons/CloseIcon/CloseIcon";
+import ModelTypeIcon from "../../../../components/Icons/ModelTypeIcon";
 import ImageChecker from "../../../../components/ImageChecker/ImageChecker";
 import InputAndLabel from "../../../../components/Input/InputAndLabel";
 import Loader from "../../../../components/Loader/Loader";
@@ -92,6 +93,7 @@ const ModelDetails = ({
 		MODEL_GENOMICS_STRING = "Model Genomics",
 		HLA_TYPE_STRING = "HLA type",
 		PDX_STRING = "PDX";
+	const isHCMI = metadata.projectName?.toLowerCase() === "hcmi";
 
 	// Client side mol data so we have latest molecular_characterization_id that changes on every etl execution
 	const { data: molecularData, isLoading: molecularDataIsLoading } = useQuery(
@@ -532,22 +534,32 @@ const ModelDetails = ({
 								</p>
 							)}
 							<h2
-								className={`m-0 text-family-secondary ${styles.ModelDetails_histology}`}
+								className={`m-0 mb-1 text-family-secondary ${styles.ModelDetails_histology}`}
 								id="tour_model-histologyType"
 							>
-								{metadata.histology} - {metadata.modelType}
+								{metadata.histology}
 							</h2>
 							<h1 className="m-0 mb-2" id="tour_model-id">
 								{metadata.modelId}
 							</h1>
-							{metadata.score > 0 && (
-								<QualityBadge
-									score={metadata.score}
-									containerClassName="text-white"
-									style={{ width: "10em" }}
-									id="tour_model-score"
-								/>
-							)}
+							<div className="d-flex align-items-center">
+								{metadata.modelType.toLowerCase() !== "other" && (
+									<ModelTypeIcon
+										modelType={metadata.modelType}
+										size="1.5em"
+										className="mb-1 mr-4"
+										hideOther={true}
+									/>
+								)}
+								{metadata.score > 0 && (
+									<QualityBadge
+										score={metadata.score}
+										containerClassName="text-white"
+										style={{ width: "10em" }}
+										id="tour_model-score"
+									/>
+								)}
+							</div>
 							{cellModelData?.modelName && (
 								<p className="mt-2 mb-0">
 									<b>Aliases:</b> {cellModelData.modelName}
@@ -607,7 +619,10 @@ const ModelDetails = ({
 											})
 										}
 									>
-										View data at {metadata.providerId || "provider"}
+										View data at{" "}
+										{isHCMI
+											? "HCMI Searchable Catalog"
+											: metadata.providerId || "provider"}
 									</Link>
 								)}
 								{extLinks.contactLink && (
@@ -622,7 +637,10 @@ const ModelDetails = ({
 											})
 										}
 									>
-										<>Contact {metadata.providerId || "provider"}</>
+										<>
+											Contact{" "}
+											{isHCMI ? "HCMI" : metadata.providerId || "provider"}
+										</>
 									</Link>
 								)}
 							</div>
@@ -754,7 +772,8 @@ const ModelDetails = ({
 											)}
 										</li>
 										<li className="mb-2">
-											{knowledgeGraph ? (
+											{knowledgeGraph.edges.length > 0 &&
+											knowledgeGraph.nodes.length > 0 ? (
 												<Link
 													replace
 													href="#related-models"
@@ -1099,6 +1118,11 @@ const ModelDetails = ({
 												>
 													<Link
 														href={`/cbioportal/patient/clinicalData?studyId=${metadata.providerId}&caseId=${metadata.patientId}`}
+														onClick={() => {
+															ReactGA.event("view_cbioportal", {
+																category: "event"
+															});
+														}}
 													>
 														<Image
 															src="/img/cbioportal.png"
@@ -1281,6 +1305,16 @@ const ModelDetails = ({
 																										href={externalResource.link}
 																										target="_blank"
 																										rel="noopener noreferrer"
+																										onClick={() =>
+																											ReactGA.event(
+																												"external_db_link_click",
+																												{
+																													category: "event",
+																													provider:
+																														externalResource.resource
+																												}
+																											)
+																										}
 																									>
 																										{externalResource.resource}
 																									</Link>
@@ -1466,6 +1500,16 @@ const ModelDetails = ({
 																									className="mr-1"
 																									target="_blank"
 																									rel="noopener"
+																									onClick={() =>
+																										ReactGA.event(
+																											"external_db_link_click",
+																											{
+																												category: "event",
+																												provider:
+																													externalDbLink.resourceLabel
+																											}
+																										)
+																									}
 																								>
 																									{externalDbLink.resourceLabel}
 																								</Link>
@@ -1571,6 +1615,16 @@ const ModelDetails = ({
 																									className="mr-1"
 																									target="_blank"
 																									rel="noopener"
+																									onClick={() =>
+																										ReactGA.event(
+																											"external_db_link_click",
+																											{
+																												category: "event",
+																												provider:
+																													externalDbLink.resourceLabel
+																											}
+																										)
+																									}
 																								>
 																									{externalDbLink.resourceLabel}
 																								</Link>
@@ -1651,20 +1705,21 @@ const ModelDetails = ({
 									</div>
 								</div>
 							)}
-							{knowledgeGraph && (
-								<div id="related-models" className="row mb-5 pt-3">
-									<div className="col-12 mb-1">
-										<h2 className="mt-0 mb-4">Related models</h2>
-										<ReactFlowProvider>
-											<DynamicHierarchyTree
-												providerId={metadata.providerId}
-												modelId={metadata.modelId}
-												data={knowledgeGraph}
-											/>
-										</ReactFlowProvider>
+							{knowledgeGraph.edges.length > 0 &&
+								knowledgeGraph.nodes.length > 0 && (
+									<div id="related-models" className="row mb-5 pt-3">
+										<div className="col-12 mb-1">
+											<h2 className="mt-0 mb-4">Related models</h2>
+											<ReactFlowProvider>
+												<DynamicHierarchyTree
+													providerId={metadata.providerId}
+													modelId={metadata.modelId}
+													data={knowledgeGraph}
+												/>
+											</ReactFlowProvider>
+										</div>
 									</div>
-								</div>
-							)}
+								)}
 							{validHistologyImages.length > 0 && (
 								<div id="histology-images" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
@@ -1732,6 +1787,14 @@ const ModelDetails = ({
 																	href={`https://europepmc.org/article/MED/${publication.pmid}`}
 																	target="_blank"
 																	rel="noreferrer noopener"
+																	onClick={() =>
+																		ReactGA.event(
+																			"publication_europepmc_click",
+																			{
+																				category: "event"
+																			}
+																		)
+																	}
 																>
 																	View at EuropePMC
 																</Link>
@@ -1743,6 +1806,11 @@ const ModelDetails = ({
 																	href={`https://doi.org/${publication.doi}`}
 																	target="_blank"
 																	rel="noreferrer noopener"
+																	onClick={() =>
+																		ReactGA.event("publication_doi_click", {
+																			category: "event"
+																		})
+																	}
 																>
 																	DOI:{publication.doi}
 																</Link>
@@ -1754,6 +1822,11 @@ const ModelDetails = ({
 																	href={`https://pubmed.ncbi.nlm.nih.gov/${publication.pmid}`}
 																	target="_blank"
 																	rel="noreferrer noopener"
+																	onClick={() =>
+																		ReactGA.event("publication_pubmed_click", {
+																			category: "event"
+																		})
+																	}
 																>
 																	PubMed
 																</Link>

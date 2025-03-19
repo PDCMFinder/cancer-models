@@ -13,3 +13,13 @@ export const chartColors = [
 	"#ffe6a6",
 	"#6e550c"
 ];
+
+export const getCustomColors = (
+	labels: string[],
+	colors?: Record<string, string>
+) => {
+	return [
+		...(colors ? labels.map((label) => colors[label.toLowerCase()]) : []),
+		...chartColors
+	];
+};

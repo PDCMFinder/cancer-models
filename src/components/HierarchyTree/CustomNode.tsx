@@ -17,7 +17,7 @@ const NodeContent = ({
 	const content = (
 		<>
 			{label}
-			{type && (
+			{type && type !== "other" && (
 				<span className="d-flex ml-1">
 					<ModelTypeIcon modelType={type} size="1em" />
 				</span>

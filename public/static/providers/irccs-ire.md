@@ -1,5 +1,5 @@
 ---
-name: Istituto Nazionale Tumori-IRCCS Fondazione G. Pascale
+name: IRCCS Regina Elena National Cancer Institute
 abbreviation: IRCCS-IRE
 logo: img/providers/IRCCS-IRE.png
 ---

@@ -1,4 +1,5 @@
 import { Fragment, memo, ReactNode } from "react";
+import ReactGA from "react-ga4";
 import {
 	ExternalModelLink,
 	ExternalModelLinkByType
@@ -26,6 +27,12 @@ const renderLinkElement = (link: ExternalModelLink) => {
 				href={link.link}
 				target="_blank"
 				rel="noreferrer"
+				onClick={() => {
+					ReactGA.event("model_identifier_click", {
+						category: "event",
+						label: link.linkLabel
+					});
+				}}
 			>
 				{link.linkLabel}
 			</a>
