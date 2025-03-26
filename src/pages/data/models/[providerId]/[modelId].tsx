@@ -1463,6 +1463,7 @@ const ModelDetails = ({
 													<tr>
 														<th>DRUG</th>
 														<th>DOSE</th>
+														<th>PASSAGE</th>
 														<th>RESPONSE</th>
 													</tr>
 												</thead>
@@ -1537,6 +1538,26 @@ const ModelDetails = ({
 																				}}
 																			>
 																				{dose.dose}
+																				<br />
+																			</div>
+																		);
+																	})}
+																</td>
+																<td>
+																	{doses.map((dose, idx) => {
+																		return (
+																			<div
+																				key={
+																					dose.response + dose.name + dose.dose
+																				}
+																				className={idx !== 0 ? "mt-1" : ""}
+																				style={{
+																					marginBottom: dose.externalDbLinks
+																						? "2em"
+																						: 0
+																				}}
+																			>
+																				{dose.passageRange}
 																				<br />
 																			</div>
 																		);

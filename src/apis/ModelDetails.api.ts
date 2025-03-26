@@ -371,11 +371,13 @@ export async function getModelEngraftments(
 	});
 }
 
-const addResponseToEntries = (
+const addDataToEntries = (
 	entry: APITreatment[number]["entries"][number],
-	response: string
+	response: string,
+	passageRange: string
 ) => {
 	entry.response = response;
+	entry.passage_range = passageRange;
 	entry.external_db_links?.sort((a, b) =>
 		a.resource_label.localeCompare(b.resource_label)
 	);
@@ -397,7 +399,7 @@ export const getPatientTreatment = async (pdcmModelId: number) => {
 	return response.json().then((d: APITreatment) =>
 		d.map((item) => {
 			item.entries.forEach((entry) => {
-				addResponseToEntries(entry, item.response);
+				addDataToEntries(entry, item.response, item.passage_range);
 			});
 
 			return camelCase(item.entries) as unknown as CamelCaseKeys<
@@ -420,7 +422,7 @@ export async function getModelDrugDosing(pdcmModelId: number) {
 	return response.json().then((d: APITreatment) => {
 		return d.map((item) => {
 			item.entries.forEach((entry) => {
-				addResponseToEntries(entry, item.response);
+				addDataToEntries(entry, item.response, item.passage_range);
 			});
 
 			return camelCase(item.entries) as unknown as CamelCaseKeys<
