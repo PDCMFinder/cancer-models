@@ -375,11 +375,13 @@ export type APITreatment = {
 	model_id: number;
 	protocol_id: number;
 	treatment: string;
+	passage_range: string;
 	response: string;
 	dose: string;
 	entries: {
 		dose: string;
 		name: string;
+		passage_range?: string;
 		response?: string;
 		external_db_links?: {
 			link: string;
