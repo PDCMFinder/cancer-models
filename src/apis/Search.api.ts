@@ -228,7 +228,7 @@ function sortOptions(facet_column: string, list: string[]) {
 export async function getDataSourcesByProject(projectName: string) {
 	let response = await fetch(
 		`${API_URL}/search_index?project_name=${
-			projectName === "Other" ? "is.null" : "in.(%22" + projectName + "%22)"
+			projectName === "More" ? "is.null" : "in.(%22" + projectName + "%22)"
 		}&select=data_source,provider_name`
 	);
 	if (!response.ok) {
