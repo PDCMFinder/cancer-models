@@ -66,6 +66,8 @@ type ParsedModelMetadata = {
 	patientSampleTreatedAtCollection: string;
 	patientSampleTreatedPriorToCollection: string;
 	pdxModelPublications: string;
+	modelGenerator?: boolean;
+	viewDataAt?: string;
 };
 
 export type ModelMetadata = {
@@ -194,7 +196,7 @@ export type APIModelMetadata = {
 	pdx_model_publications: string;
 	quality_assurance: QualityAssurance[];
 	xenograft_model_specimens: XenograftModelSpecimen[];
-	model_images: any;
+	model_images: APIModelImage[] | null;
 	markers_with_cna_data: string[];
 	markers_with_biomarker_data: string[];
 	breast_cancer_biomarkers: any;
@@ -213,6 +215,17 @@ export type APIModelMetadata = {
 	model_availability_boolean: boolean;
 	model_relationships: ModelRelationships;
 	has_relations: boolean;
+	view_data_at: string;
+	model_generator: boolean;
+};
+
+type APIModelImage = {
+	url: string;
+	description: string;
+	sample_type: string;
+	passage: string;
+	magnification: string;
+	staining: string;
 };
 
 type QualityAssurance = {
