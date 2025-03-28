@@ -202,7 +202,7 @@ export async function getDataReleaseInformation() {
 		"https://gitlab.ebi.ac.uk/api/v4/projects/1629/releases",
 		{
 			headers: {
-				"PRIVATE-TOKEN": "glpat-gbQzKFxHTWyp_jZhP5gE"
+				"PRIVATE-TOKEN": "glpat-RzUfmobNZ24MwijayAHf"
 			}
 		}
 	);
@@ -224,7 +224,7 @@ export async function getLatestDataReleaseInformation() {
 		"https://gitlab.ebi.ac.uk/api/v4/projects/1629/releases?per_page=1",
 		{
 			headers: {
-				"PRIVATE-TOKEN": "glpat-gbQzKFxHTWyp_jZhP5gE"
+				"PRIVATE-TOKEN": "glpat-RzUfmobNZ24MwijayAHf"
 			}
 		}
 	);
@@ -240,7 +240,7 @@ export async function getUIReleaseInformation() {
 		"https://gitlab.ebi.ac.uk/api/v4/projects/4135/releases",
 		{
 			headers: {
-				"PRIVATE-TOKEN": "glpat-SJR6QYyByDoaKp-wCRxL"
+				"PRIVATE-TOKEN": "glpat-28uUyE7tQZ9yU7Ad584C"
 			}
 		}
 	);
