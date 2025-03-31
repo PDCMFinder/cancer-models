@@ -202,7 +202,10 @@ export async function getDataReleaseInformation() {
 		"https://gitlab.ebi.ac.uk/api/v4/projects/1629/releases",
 		{
 			headers: {
-				"PRIVATE-TOKEN": "glpat-RzUfmobNZ24MwijayAHf"
+				"PRIVATE-TOKEN":
+					process.env.PDXFINDER_DATA_REPO_TOKEN || // Gitlab variable
+					process.env.NEXT_PUBLIC_PDXFINDER_DATA_REPO_TOKEN || // .env.local variable
+					""
 			}
 		}
 	);
@@ -224,7 +227,10 @@ export async function getLatestDataReleaseInformation() {
 		"https://gitlab.ebi.ac.uk/api/v4/projects/1629/releases?per_page=1",
 		{
 			headers: {
-				"PRIVATE-TOKEN": "glpat-RzUfmobNZ24MwijayAHf"
+				"PRIVATE-TOKEN":
+					process.env.PDXFINDER_DATA_REPO_TOKEN || // Gitlab variable
+					process.env.NEXT_PUBLIC_PDXFINDER_DATA_REPO_TOKEN || // .env.local variable
+					""
 			}
 		}
 	);
@@ -240,7 +246,10 @@ export async function getUIReleaseInformation() {
 		"https://gitlab.ebi.ac.uk/api/v4/projects/4135/releases",
 		{
 			headers: {
-				"PRIVATE-TOKEN": "glpat-28uUyE7tQZ9yU7Ad584C"
+				"PRIVATE-TOKEN":
+					process.env.CANCERMODELS_REPO_TOKEN || // Gitlab variable
+					process.env.NEXT_PUBLIC_CANCERMODELS_REPO_TOKEN || // .env.local variable
+					""
 			}
 		}
 	);
