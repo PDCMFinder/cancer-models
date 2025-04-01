@@ -198,14 +198,15 @@ export async function getModelsByDatasetAvailability() {
 }
 
 export async function getDataReleaseInformation() {
+	if (!process.env.NEXT_PUBLIC_GITLAB_DATA_TOKEN) {
+		throw new Error("NEXT_PUBLIC_GITLAB_DATA_TOKEN is not defined");
+	}
+
 	let response = await fetch(
 		"https://gitlab.ebi.ac.uk/api/v4/projects/1629/releases",
 		{
 			headers: {
-				"PRIVATE-TOKEN":
-					process.env.PDXFINDER_DATA_REPO_TOKEN || // Gitlab variable
-					process.env.NEXT_PUBLIC_PDXFINDER_DATA_REPO_TOKEN || // .env.local variable
-					""
+				"PRIVATE-TOKEN": process.env.NEXT_PUBLIC_GITLAB_DATA_TOKEN
 			}
 		}
 	);
@@ -222,15 +223,16 @@ export async function getDataReleaseInformation() {
 }
 
 export async function getLatestDataReleaseInformation() {
+	if (!process.env.NEXT_PUBLIC_GITLAB_DATA_TOKEN) {
+		throw new Error("NEXT_PUBLIC_GITLAB_DATA_TOKEN is not defined");
+	}
+
 	// pdxfinder-data repo (data)
 	let response = await fetch(
 		"https://gitlab.ebi.ac.uk/api/v4/projects/1629/releases?per_page=1",
 		{
 			headers: {
-				"PRIVATE-TOKEN":
-					process.env.PDXFINDER_DATA_REPO_TOKEN || // Gitlab variable
-					process.env.NEXT_PUBLIC_PDXFINDER_DATA_REPO_TOKEN || // .env.local variable
-					""
+				"PRIVATE-TOKEN": process.env.NEXT_PUBLIC_GITLAB_DATA_TOKEN
 			}
 		}
 	);
@@ -241,15 +243,16 @@ export async function getLatestDataReleaseInformation() {
 }
 
 export async function getUIReleaseInformation() {
+	if (!process.env.NEXT_PUBLIC_GITLAB_UI_TOKEN) {
+		throw new Error("NEXT_PUBLIC_GITLAB_UI_TOKEN is not defined");
+	}
+
 	// cancer-models repo (ui)
 	let response = await fetch(
 		"https://gitlab.ebi.ac.uk/api/v4/projects/4135/releases",
 		{
 			headers: {
-				"PRIVATE-TOKEN":
-					process.env.CANCERMODELS_REPO_TOKEN || // Gitlab variable
-					process.env.NEXT_PUBLIC_CANCERMODELS_REPO_TOKEN || // .env.local variable
-					""
+				"PRIVATE-TOKEN": process.env.NEXT_PUBLIC_GITLAB_UI_TOKEN
 			}
 		}
 	);
