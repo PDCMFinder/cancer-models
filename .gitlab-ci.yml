@@ -60,7 +60,6 @@ build_dev_image:
     - |
       echo "NEXT_PUBLIC_GITLAB_DATA_TOKEN=${GITLAB_DATA_TOKEN}" >> .env.production
       echo "NEXT_PUBLIC_GITLAB_UI_TOKEN=${GITLAB_UI_TOKEN}" >> .env.production
-      echo "NEXT_PUBLIC_API_URL=${API_URL}" >> .env.production
   script:
     - |
       if [[ "${REQUIRES_REBUILD_IMAGE}" == "true" ]]; then
@@ -123,7 +122,6 @@ build_prod_image:
     - |
       echo "NEXT_PUBLIC_GITLAB_DATA_TOKEN=${GITLAB_DATA_TOKEN}" >> .env.production
       echo "NEXT_PUBLIC_GITLAB_UI_TOKEN=${GITLAB_UI_TOKEN}" >> .env.production
-      echo "NEXT_PUBLIC_API_URL=${API_URL}" >> .env.production
   script:
     - |
       if [[ "${REQUIRES_REBUILD_IMAGE}" == "true" ]]; then
