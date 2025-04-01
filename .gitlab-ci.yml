@@ -63,7 +63,7 @@ build_dev_image:
     - |
       if [[ "${REQUIRES_REBUILD_IMAGE}" == "true" ]]; then
           echo "Building dev image: ${CI_REGISTRY_IMAGE}:dev" 
-          docker build
+          docker build \
             --build-arg NEXT_PUBLIC_GITLAB_DATA_TOKEN=${GITLAB_DATA_TOKEN} \
             --build-arg NEXT_PUBLIC_GITLAB_UI_TOKEN=${GITLAB_UI_TOKEN} \
             -t "${CI_REGISTRY_IMAGE}":dev \
@@ -128,7 +128,7 @@ build_prod_image:
     - |
       if [[ "${REQUIRES_REBUILD_IMAGE}" == "true" ]]; then
           echo "Building prod image: ${CI_REGISTRY_IMAGE}:prod" 
-          docker build
+          docker build \
             --build-arg NEXT_PUBLIC_GITLAB_DATA_TOKEN=${GITLAB_DATA_TOKEN} \
             --build-arg NEXT_PUBLIC_GITLAB_UI_TOKEN=${GITLAB_UI_TOKEN} \
             -t "${CI_REGISTRY_IMAGE}":prod \
