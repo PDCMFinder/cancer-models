@@ -17,6 +17,11 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
+ARG NEXT_PUBLIC_GITLAB_DATA_TOKEN
+ARG NEXT_PUBLIC_GITLAB_UI_TOKEN
+ENV NEXT_PUBLIC_GITLAB_DATA_TOKEN=$NEXT_PUBLIC_GITLAB_DATA_TOKEN
+ENV NEXT_PUBLIC_GITLAB_UI_TOKEN=$NEXT_PUBLIC_GITLAB_UI_TOKEN
+
 RUN yarn build
 
 # Production image, copy all the files and run next
