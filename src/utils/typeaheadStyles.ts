@@ -1,4 +1,4 @@
-export default {
+const styles = {
 	control: (baseStyles: {}) => ({
 		...baseStyles,
 		borderColor: "#47938a",
@@ -9,20 +9,20 @@ export default {
 			borderColor: "#47938a",
 			background: "#d4f0fb",
 			color: "#fff",
-			cursor: "pointer",
-		},
+			cursor: "pointer"
+		}
 	}),
 	input: (baseStyles: {}) => ({
 		...baseStyles,
 		marginTop: 0,
-		marginBottom: 0,
+		marginBottom: 0
 	}),
 	multiValueLabel: (baseStyles: {}) => ({
 		...baseStyles,
 		backgroundColor: "#003e48",
 		color: "#fff",
 		borderTopRightRadius: 0,
-		borderBottomRightRadius: 0,
+		borderBottomRightRadius: 0
 	}),
 	multiValueRemove: (baseStyles: {}) => ({
 		...baseStyles,
@@ -34,18 +34,18 @@ export default {
 			borderColor: "#003e48",
 			background: "#47938a",
 			color: "#fff",
-			cursor: "pointer",
-		},
+			cursor: "pointer"
+		}
 	}),
 	valueContainer: (baseStyles: {}) => ({
 		...baseStyles,
 		lineHeight: 1,
-		padding: "0.7rem 0.8rem",
+		padding: "0.7rem 0.8rem"
 	}),
 	indicatorSeparator: (baseStyles: {}) => ({
 		...baseStyles,
 		backgroundColor: "#fff",
-		display: "none",
+		display: "none"
 	}),
 	indicatorsContainer: (baseStyles: {}) => ({
 		...baseStyles,
@@ -53,8 +53,8 @@ export default {
 		color: "#fff",
 		padding: 0,
 		"&:hover": {
-			color: "#fff",
-		},
+			color: "#fff"
+		}
 	}),
 	dropdownIndicator: (baseStyles: {}) => ({
 		...baseStyles,
@@ -64,8 +64,8 @@ export default {
 		height: "100%",
 		alignItems: "center",
 		"&:hover": {
-			color: "#000",
-		},
+			color: "#000"
+		}
 	}),
 	clearIndicator: (baseStyles: {}) => ({
 		...baseStyles,
@@ -75,11 +75,13 @@ export default {
 		height: "100%",
 		alignItems: "center",
 		"&:hover": {
-			color: "#000",
-		},
+			color: "#000"
+		}
 	}),
 	option: (baseStyles: {}) => ({
 		...baseStyles,
-		lineHeight: 1,
-	}),
+		lineHeight: 1
+	})
 };
+
+export default styles;

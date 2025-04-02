@@ -4,7 +4,13 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { NextPage } from "next/types";
-import React, { ChangeEvent, useEffect, useReducer, useState } from "react";
+import React, {
+	ChangeEvent,
+	useEffect,
+	useReducer,
+	useRef,
+	useState
+} from "react";
 import { useQueries, useQuery, useQueryClient } from "react-query";
 import { getModelCount } from "../apis/AggregatedData.api";
 import {
@@ -79,11 +85,12 @@ const Search: NextPage = () => {
 	const [showFilters, setShowFilters] = useState<boolean>(false);
 	const [sortBy, setSortBy] = useState<string>(sortByOptions[0].value);
 	const [currentPage, setCurrentPage] = useState<number>(1);
-	const [hasSelection, setHasSelection] = useState<boolean>(false);
+	const [hasFilterSelection, setHasFilterSelection] = useState<boolean>(false);
 	const [modelsToCompare, setModelsToCompare] = useState<string[]>([]);
 	const router = useRouter();
 	const { query: routerQuery } = router;
 	const ignoredFilterValues = ["page", "search_terms"];
+	const selectedFilters = useRef<string[]>([]); // To show on no results msg. We can use a ref since the search results are still gonna rerender
 
 	const driverObj = driver({
 		showProgress: true,
@@ -310,11 +317,12 @@ const Search: NextPage = () => {
 			const onlyIgnoredFilter = ignoredFilterValues.some((value) =>
 				filterValues.every((filterValue) => filterValue.includes(value))
 			);
+			selectedFilters.current = filterValues;
 
 			if (onlyIgnoredFilter) {
-				setHasSelection(false);
+				setHasFilterSelection(false);
 			} else {
-				setHasSelection(true);
+				setHasFilterSelection(true);
 			}
 			router.replace(
 				{
@@ -324,7 +332,7 @@ const Search: NextPage = () => {
 				{ scroll: false }
 			);
 		} else {
-			setHasSelection(false);
+			setHasFilterSelection(false);
 			router.replace("/search", undefined, { shallow: true });
 		}
 	}, [searchFilterState]);
@@ -365,7 +373,7 @@ const Search: NextPage = () => {
 			className="m-0"
 			priority="secondary"
 			color="dark"
-			disabled={!hasSelection}
+			disabled={!hasFilterSelection}
 			onClick={() =>
 				searchFilterDispatch({
 					type: "init",
@@ -534,7 +542,7 @@ const Search: NextPage = () => {
 										>
 											<>
 												Filters
-												{hasSelection && (
+												{hasFilterSelection && (
 													<span
 														className={`ml-1 ${styles.Search_filterNotification}`}
 													></span>
@@ -558,27 +566,59 @@ const Search: NextPage = () => {
 						</div>
 						<div className="col-12 col-lg-9">
 							{searchResultsQuery.data ? (
-								<SearchResults
-									compareModel={compareModel}
-									modelsToCompare={modelsToCompare}
-									data={searchResultsQuery.data[1]}
-								/>
+								searchResultsQuery.data[1].length > 0 ? (
+									<>
+										<SearchResults
+											compareModel={compareModel}
+											modelsToCompare={modelsToCompare}
+											data={searchResultsQuery.data[1]}
+										/>
+										<div className="row">
+											<div className="col-12">
+												<Pagination
+													totalPages={
+														totalResults !== 0
+															? Math.ceil(totalResults / resultsPerPage)
+															: 1
+													}
+													currentPage={currentPage}
+													onPageChange={(page: number) => changePage(page)}
+												/>
+											</div>
+										</div>
+									</>
+								) : (
+									<div className="row">
+										<div className="col-12 text-center">
+											<p>
+												There are no results for your search.
+												<br />
+												Please try again with different filters.
+											</p>
+											<p>
+												Your search terms:
+												<br />
+												<ul className="ul-noStyle">
+													{selectedFilters.current &&
+														selectedFilters.current.map((filter) => (
+															<li key={filter} className="text-capitalize">
+																<span className="text-primary-tertiary">•</span>{" "}
+																{filter
+																	.replaceAll("_", " ")
+																	.replace(":", ": ")
+																	.replaceAll(",", ", ")
+																	.replaceAll(" boolean", "")}
+															</li>
+														))}
+												</ul>
+											</p>
+											{ClearFilterButtonComponent}
+										</div>
+									</div>
+								)
 							) : (
 								<SearchResultsLoader amount={resultsPerPage} />
 							)}
-							<div className="row">
-								<div className="col-12">
-									<Pagination
-										totalPages={
-											totalResults !== 0
-												? Math.ceil(totalResults / resultsPerPage)
-												: 1
-										}
-										currentPage={currentPage}
-										onPageChange={(page: number) => changePage(page)}
-									/>
-								</div>
-							</div>
 						</div>
 					</div>
 					{modelsToCompare[0] ? (
