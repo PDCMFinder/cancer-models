@@ -1,5 +1,4 @@
 @import "../../styles/vars";
-@import "../../styles/mixins";
 
 .Modal_backdrop {
 	backdrop-filter: blur(6px);
@@ -17,9 +16,6 @@
 	top: $spacing-2;
 	left: 50%;
 	transform: translateX(-50%);
-	@include mediaOver(md) {
-		width: unset;
-	}
 	&-center {
 		top: 50%;
 		left: 50%;
