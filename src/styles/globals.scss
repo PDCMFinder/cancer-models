@@ -236,6 +236,11 @@ img {
 			width: auto;
 		}
 	}
+	@include mediaOver("md") {
+		&-md-unset {
+			width: unset !important;
+		}
+	}
 }
 button {
 	background-color: transparent;
