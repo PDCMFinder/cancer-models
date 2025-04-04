@@ -133,6 +133,31 @@ const ModelDetails = ({
 		checkImages();
 	}, []);
 
+	const [driverInstance, setDriverInstance] =
+		useState<ReturnType<typeof driver> | null>(null);
+
+	useEffect(() => {
+		const loadDriver = async () => {
+			const driverModule = await import("driver.js");
+			await import("driver.js/dist/driver.css").then(() => {});
+			const driverInstance = driverModule.driver({
+				showProgress: true,
+				prevBtnText: "← Prev",
+				nextBtnText: "Next →",
+				doneBtnText: "Done"
+			});
+			setDriverInstance(driverInstance);
+		};
+		loadDriver();
+	}, []);
+
+	const startTour = () => {
+		if (driverInstance) {
+			driverInstance.setSteps(modelTourSteps);
+			driverInstance.drive();
+		}
+	};
+
 	const driverObj = driver({
 		showProgress: true,
 		prevBtnText: "← Prev",
@@ -535,7 +560,7 @@ const ModelDetails = ({
 							)}
 							<h2
 								className={`m-0 mb-1 text-family-secondary ${styles.ModelDetails_histology}`}
-								id="tour_model-histologyType"
+								id="tour_model-histology"
 							>
 								{metadata.histology}
 							</h2>
@@ -549,6 +574,7 @@ const ModelDetails = ({
 										size="1.5em"
 										className="mb-1 mr-4"
 										hideOther={true}
+										id="tour_model-type"
 									/>
 								)}
 								{metadata.score > 0 && (
@@ -1986,11 +2012,7 @@ const ModelDetails = ({
 				</DynamicModal>
 			)}
 			<ShowHide showOver={bpLarge} windowWidth={windowWidth || 0}>
-				<FloatingButton
-					onClick={driverObj.drive}
-					priority="secondary"
-					color="dark"
-				>
+				<FloatingButton onClick={startTour} priority="secondary" color="dark">
 					<p className="mb-0 lh-1">Take page tour</p>
 				</FloatingButton>
 			</ShowHide>

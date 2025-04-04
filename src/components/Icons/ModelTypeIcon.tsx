@@ -1,3 +1,4 @@
+import { HTMLAttributes } from "react";
 import CavendishIcon, { type CavendishIconProps } from "./CavendishIcon";
 import MouseIcon from "./MouseIcon";
 import OrganoidIcon from "./OrganoidIcon";
@@ -9,14 +10,14 @@ type IconComponent = {
 const ModelTypeIcon = ({
 	modelType,
 	size,
-  hideOther,
+	hideOther,
 	...props
 }: {
 	modelType: string;
 	size: CavendishIconProps["size"];
 	className?: string;
 	hideOther?: boolean;
-}) => {
+} & HTMLAttributes<SVGSVGElement>) => {
 	const icons: IconComponent = {
 		PDX: MouseIcon,
 		organoid: OrganoidIcon,
