@@ -155,10 +155,9 @@ export const compareTourSteps: DriveStep[] = [
 // /data/models/[provider]/[modelId]
 export const modelTourSteps: DriveStep[] = [
 	{
-		element: "#tour_model-histologyType",
+		element: "#tour_model-histology",
 		popover: {
-			title: "Model histology and type",
-			description: "[histology] - [type]",
+			title: "Model histology",
 			side: "top",
 			align: "center"
 		}
@@ -168,6 +167,14 @@ export const modelTourSteps: DriveStep[] = [
 		popover: {
 			title: "Model id",
 			description: "Model unique identifier given by CancerModels.Org",
+			side: "top",
+			align: "center"
+		}
+	},
+	{
+		element: "#tour_model-type",
+		popover: {
+			title: "Model type",
 			side: "top",
 			align: "center"
 		}

@@ -92,12 +92,30 @@ const Search: NextPage = () => {
 	const ignoredFilterValues = ["page", "search_terms"];
 	const selectedFilters = useRef<string[]>([]); // To show on no results msg. We can use a ref since the search results are still gonna rerender
 
-	const driverObj = driver({
-		showProgress: true,
-		prevBtnText: "← Prev",
-		steps: searchTourSteps,
-		onDestroyed: () => setModelsToCompare([])
-	});
+	const [driverInstance, setDriverInstance] =
+		useState<ReturnType<typeof driver> | null>(null);
+
+	useEffect(() => {
+		const loadDriver = async () => {
+			const driverModule = await import("driver.js");
+			await import("driver.js/dist/driver.css").then(() => {});
+			const driverInstance = driverModule.driver({
+				showProgress: true,
+				prevBtnText: "← Prev",
+				nextBtnText: "Next →",
+				doneBtnText: "Done"
+			});
+			setDriverInstance(driverInstance);
+		};
+		loadDriver();
+	}, []);
+
+	const startTour = () => {
+		if (driverInstance) {
+			driverInstance.setSteps(searchTourSteps);
+			driverInstance.drive();
+		}
+	};
 
 	const changePage = (page: number) => {
 		setCurrentPage(page);
@@ -693,7 +711,7 @@ const Search: NextPage = () => {
 				<FloatingButton
 					onClick={() => {
 						setModelsToCompare([]);
-						driverObj.drive();
+						startTour();
 					}}
 					priority="secondary"
 					color="dark"
