@@ -66,8 +66,7 @@ build_dev_image:
           docker build \
             --build-arg NEXT_PUBLIC_GITLAB_DATA_TOKEN=${GITLAB_DATA_TOKEN} \
             --build-arg NEXT_PUBLIC_GITLAB_UI_TOKEN=${GITLAB_UI_TOKEN} \
-            -t "${CI_REGISTRY_IMAGE}":dev \
-            -f Dockerfile .  | tee ${MOUNT_POINT}/build.log
+            -t "${CI_REGISTRY_IMAGE}":dev -f Dockerfile . | tee ${MOUNT_POINT}/build.log
           docker push "${CI_REGISTRY_IMAGE}":dev  | tee ${MOUNT_POINT}/push.log
           docker logout ${CI_REGISTRY}
           echo "Pushing to docker hub"
@@ -131,8 +130,7 @@ build_prod_image:
           docker build \
             --build-arg NEXT_PUBLIC_GITLAB_DATA_TOKEN=${GITLAB_DATA_TOKEN} \
             --build-arg NEXT_PUBLIC_GITLAB_UI_TOKEN=${GITLAB_UI_TOKEN} \
-            -t "${CI_REGISTRY_IMAGE}":prod \
-            -f Dockerfile .  | tee ${MOUNT_POINT}/build.log
+            -t "${CI_REGISTRY_IMAGE}":prod -f Dockerfile . | tee ${MOUNT_POINT}/build.log
           docker push "${CI_REGISTRY_IMAGE}":prod  | tee ${MOUNT_POINT}/push.log
           docker logout ${CI_REGISTRY}
           echo "Pushing to docker hub"
