@@ -377,7 +377,7 @@ const addDataToEntries = (
 	passageRange?: string
 ) => {
 	entry.response = response;
-	entry.passage_range ??= passageRange;
+	passageRange && (entry.passage_range ??= passageRange);
 	entry.external_db_links?.sort((a, b) =>
 		a.resource_label.localeCompare(b.resource_label)
 	);

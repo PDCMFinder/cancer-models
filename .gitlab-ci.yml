@@ -21,8 +21,8 @@ variables:
   # improved performance.
   DOCKER_DRIVER: overlay2
 
-  # Since the docker:dind container and the runner container don't share their root
-  # filesystem, the job's working directory can be used as a mount point for children
+  # Since the docker:dind container and the runner container don’t share their root
+  # filesystem, the job’s working directory can be used as a mount point for children
   # containers. For example, if you have files you want to share with a child container,
   # you may create a subdirectory under /builds/$CI_PROJECT_PATH and use it as your
   # mount point.
@@ -57,16 +57,11 @@ build_dev_image:
     - mkdir -p "$MOUNT_POINT"
     - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
     - rm .env.production && cp .env.staging .env.production
-    - echo "NEXT_PUBLIC_GITLAB_DATA_TOKEN=${GITLAB_DATA_TOKEN}" >> .env.production
-    - echo "NEXT_PUBLIC_GITLAB_UI_TOKEN=${GITLAB_UI_TOKEN}" >> .env.production
   script:
     - |
       if [[ "${REQUIRES_REBUILD_IMAGE}" == "true" ]]; then
           echo "Building dev image: ${CI_REGISTRY_IMAGE}:dev" 
-          docker build \
-            --build-arg NEXT_PUBLIC_GITLAB_DATA_TOKEN=${GITLAB_DATA_TOKEN} \
-            --build-arg NEXT_PUBLIC_GITLAB_UI_TOKEN=${GITLAB_UI_TOKEN} \
-            -t "${CI_REGISTRY_IMAGE}":dev -f Dockerfile . | tee ${MOUNT_POINT}/build.log
+          docker build -t "${CI_REGISTRY_IMAGE}":dev -f Dockerfile .  | tee ${MOUNT_POINT}/build.log
           docker push "${CI_REGISTRY_IMAGE}":dev  | tee ${MOUNT_POINT}/push.log
           docker logout ${CI_REGISTRY}
           echo "Pushing to docker hub"
@@ -121,16 +116,11 @@ build_prod_image:
     - sed -i "s|FROM nginx|FROM ${LOCAL_GITLAB_NGINX_IMAGE}|g" Dockerfile
     - mkdir -p "$MOUNT_POINT"
     - echo "${CI_REGISTRY_PASSWORD}" | docker login -u "${CI_REGISTRY_USER}" --password-stdin  ${CI_REGISTRY}
-    - echo "NEXT_PUBLIC_GITLAB_DATA_TOKEN=${GITLAB_DATA_TOKEN}" >> .env.production
-    - echo "NEXT_PUBLIC_GITLAB_UI_TOKEN=${GITLAB_UI_TOKEN}" >> .env.production
   script:
     - |
       if [[ "${REQUIRES_REBUILD_IMAGE}" == "true" ]]; then
           echo "Building prod image: ${CI_REGISTRY_IMAGE}:prod" 
-          docker build \
-            --build-arg NEXT_PUBLIC_GITLAB_DATA_TOKEN=${GITLAB_DATA_TOKEN} \
-            --build-arg NEXT_PUBLIC_GITLAB_UI_TOKEN=${GITLAB_UI_TOKEN} \
-            -t "${CI_REGISTRY_IMAGE}":prod -f Dockerfile . | tee ${MOUNT_POINT}/build.log
+          docker build -t "${CI_REGISTRY_IMAGE}":prod -f Dockerfile .  | tee ${MOUNT_POINT}/build.log
           docker push "${CI_REGISTRY_IMAGE}":prod  | tee ${MOUNT_POINT}/push.log
           docker logout ${CI_REGISTRY}
           echo "Pushing to docker hub"
