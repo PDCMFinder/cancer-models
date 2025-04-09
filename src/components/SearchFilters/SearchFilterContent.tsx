@@ -27,12 +27,17 @@ type SearchFilterContentProps = {
 
 export type SelectOption = { label: string; value: string };
 
-export const selectOptions = (options: string[]): SelectOption[] => {
-	return options?.map((value: string) => ({
-		label: value,
-		value: value
-	}));
+export const createSelectOptions = (options: string[]): SelectOption[] => {
+	return options
+		.map((value: string) => ({
+			label: value,
+			value: value
+		}))
+		.sort((a, b) =>
+			a.label.localeCompare(b.label, undefined, { numeric: true })
+		);
 };
+
 const SearchFilterContent = (props: SearchFilterContentProps) => {
 	return (
 		<>
@@ -47,7 +52,7 @@ const SearchFilterContent = (props: SearchFilterContentProps) => {
 					selection = selectedFacetObj?.selection,
 					operator = selectedFacetObj?.operator;
 
-				const defaultValues = selectOptions(selection);
+				const defaultValues = createSelectOptions(selection);
 
 				const displayOperators = facetType === "multivalued";
 
@@ -107,8 +112,8 @@ const SearchFilterContent = (props: SearchFilterContentProps) => {
 					// Get grouped ethnicity categories from dictionary
 					const optionsSelectObj =
 						facet.facetId !== "patient_ethnicity"
-							? selectOptions(facetOptions)
-							: selectOptions(Object.keys(ethnicityCategories));
+							? createSelectOptions(facetOptions)
+							: createSelectOptions(Object.keys(ethnicityCategories));
 
 					facetContent = (
 						<Select
