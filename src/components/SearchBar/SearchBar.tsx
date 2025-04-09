@@ -20,8 +20,8 @@ import typeaheadStyles from "../../utils/typeaheadStyles";
 import Fragment from "../Fragment/Fragment";
 import Label from "../Input/Label";
 import {
-	SelectOption,
-	selectOptions
+	createSelectOptions,
+	SelectOption
 } from "../SearchFilters/SearchFilterContent";
 
 type SearchBarProps = {
@@ -78,7 +78,9 @@ const SearchBar = ({
 		setTypeaheadData(selectOptionsQuery.data);
 	}, [selectOptionsQuery.data]);
 
-	const defaultValues = selectOptions(selection?.search_terms?.selection ?? []);
+	const defaultValues = createSelectOptions(
+		selection?.search_terms?.selection ?? []
+	);
 
 	return (
 		<>
