@@ -82,6 +82,9 @@ const HierarchyTree = ({
 					hideAttribution: true
 				}}
 				nodeTypes={nodeTypes}
+				zoomOnDoubleClick={true}
+				zoomOnScroll={false}
+				zoomOnPinch={true}
 			>
 				<Background color="#ebebeb" variant={BackgroundVariant.Lines} />
 				<MiniMap />
