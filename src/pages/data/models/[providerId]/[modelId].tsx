@@ -1128,236 +1128,247 @@ const ModelDetails = ({
 									</div>
 								</div>
 							)}
-							{!molecularDataIsLoading && molecularData.length > 0 && (
-								<div id="molecular-data" className="row mb-5 pt-3">
-									<div className="col-12 mb-1">
-										<div className="d-flex align-flex-start align-md-center flex-column flex-md-row justify-content-between">
-											<h2 className="my-0">Molecular data</h2>
-											<div className="d-flex align-center flex-column flex-md-row align-flex-start">
-												<Button
-													color="dark"
-													priority="secondary"
-													className="mb-0 ml-md-1"
-												>
-													<Link
-														href={`/cbioportal/patient/clinicalData?studyId=${metadata.providerId}&caseId=${metadata.patientId}`}
-														onClick={() => {
-															ReactGA.event("view_cbioportal", {
-																category: "event"
-															});
-														}}
+							<div id="molecular-data">
+								{!molecularDataIsLoading && molecularData.length > 0 && (
+									<div className="row mb-5 pt-3">
+										<div className="col-12 mb-1">
+											<div className="d-flex align-flex-start align-md-center flex-column flex-md-row justify-content-between">
+												<h2 className="my-0">Molecular data</h2>
+												<div className="d-flex align-center flex-column flex-md-row align-flex-start">
+													<Button
+														color="dark"
+														priority="secondary"
+														className="mb-0 ml-md-1"
 													>
-														<Image
-															src="/img/cbioportal.png"
-															alt="cBioPortal logo"
-															width={100}
-															height={50}
-															style={{ height: "1em", width: "auto" }}
-														/>
-													</Link>
-												</Button>
-												{!molecularDataIsLoading &&
-													molecularData &&
-													molecularData.some(
-														(data: MolecularData) =>
-															data.dataExists === "TRUE" &&
-															data.dataRestricted !== "TRUE"
-													) && (
-														<Button
-															priority="secondary"
-															color="dark"
-															className="ml-md-5"
-															onClick={() => downloadAllMolecularData()}
+														<Link
+															href={`/cbioportal/patient/clinicalData?studyId=${metadata.providerId}&caseId=${metadata.patientId}`}
+															onClick={() =>
+																ReactGA.event("view_cbioportal", {
+																	category: "event"
+																})
+															}
 														>
-															Download all
-														</Button>
-													)}
-											</div>
-										</div>
-										<div className="overflow-auto showScrollbar-vertical">
-											<table>
-												<caption>Molecular data</caption>
-												<thead>
-													<tr>
-														<th>SAMPLE ID</th>
-														<th>SAMPLE TYPE</th>
-														<th>ENGRAFTED TUMOUR PASSAGE</th>
-														<th>DATA TYPE</th>
-														<th>DATA AVAILABLE</th>
-														<th>PLATFORM USED</th>
-														<th>RAW DATA</th>
-													</tr>
-												</thead>
-												<tbody>
+															<Image
+																src="/img/cbioportal.png"
+																alt="cBioPortal logo"
+																width={100}
+																height={50}
+																style={{ height: "1em", width: "auto" }}
+															/>
+														</Link>
+													</Button>
 													{!molecularDataIsLoading &&
 														molecularData &&
-														molecularData.map((data: MolecularData) => {
-															let sampleType: string,
-																rawDataExternalLinks: ExternalDbLink[] = [],
-																dataAvailableContent: JSX.Element;
+														molecularData.some(
+															(data: MolecularData) =>
+																data.dataExists === "TRUE" &&
+																data.dataRestricted !== "TRUE"
+														) && (
+															<Button
+																priority="secondary"
+																color="dark"
+																className="ml-md-5"
+																onClick={() => downloadAllMolecularData()}
+															>
+																Download all
+															</Button>
+														)}
+												</div>
+											</div>
+											<div className="overflow-auto showScrollbar-vertical">
+												<table>
+													<caption>Molecular data</caption>
+													<thead>
+														<tr>
+															<th>SAMPLE ID</th>
+															<th>SAMPLE TYPE</th>
+															<th>ENGRAFTED TUMOUR PASSAGE</th>
+															<th>DATA TYPE</th>
+															<th>DATA AVAILABLE</th>
+															<th>PLATFORM USED</th>
+															<th>RAW DATA</th>
+														</tr>
+													</thead>
+													<tbody>
+														{!molecularDataIsLoading &&
+															molecularData &&
+															molecularData.map((data: MolecularData) => {
+																let sampleType: string,
+																	rawDataExternalLinks: ExternalDbLink[] = [],
+																	dataAvailableContent: JSX.Element;
 
-															switch (data.source) {
-																case "xenograft":
-																	sampleType = "Engrafted Tumour";
-																	break;
-																case "patient":
-																	sampleType = "Patient Tumour";
-																	break;
-																default:
-																	sampleType = "Tumour Cells";
-															}
+																switch (data.source) {
+																	case "xenograft":
+																		sampleType = "Engrafted Tumour";
+																		break;
+																	case "patient":
+																		sampleType = "Patient Tumour";
+																		break;
+																	default:
+																		sampleType = "Tumour Cells";
+																}
 
-															const hasExternalDbLinks =
-																data.externalDbLinks?.length > 0;
-															if (hasExternalDbLinks) {
-																data.externalDbLinks
-																	?.filter(
-																		(data) => data.column === "raw_data_url"
-																	)
-																	.forEach((obj) =>
-																		rawDataExternalLinks.push(obj)
-																	);
-															}
+																const hasExternalDbLinks =
+																	data.externalDbLinks?.length > 0;
+																if (hasExternalDbLinks) {
+																	data.externalDbLinks
+																		?.filter(
+																			(data) => data.column === "raw_data_url"
+																		)
+																		.forEach((obj) =>
+																			rawDataExternalLinks.push(obj)
+																		);
+																}
 
-															if (data.dataExists === "TRUE") {
-																if (data.dataRestricted === "TRUE") {
-																	dataAvailableContent = (
-																		<Link
-																			href={extLinks.contactLink || ""}
-																			target="_blank"
-																			rel="noreferrer noopener"
-																			onClick={() =>
-																				ReactGA.event("provider_request_data", {
-																					category: "event",
-																					provider: metadata.providerId
-																				})
-																			}
-																		>
-																			REQUEST DATA
-																		</Link>
-																	);
+																if (data.dataExists === "TRUE") {
+																	if (data.dataRestricted === "TRUE") {
+																		dataAvailableContent = (
+																			<Link
+																				href={extLinks.contactLink || ""}
+																				target="_blank"
+																				rel="noreferrer noopener"
+																				onClick={() =>
+																					ReactGA.event(
+																						"provider_request_data",
+																						{
+																							category: "event",
+																							provider: metadata.providerId
+																						}
+																					)
+																				}
+																			>
+																				REQUEST DATA
+																			</Link>
+																		);
+																	} else {
+																		dataAvailableContent = (
+																			<>
+																				<Button
+																					htmlTag="button"
+																					color="dark"
+																					priority="secondary"
+																					className="text-left link-text mt-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
+																					onClick={() => {
+																						setSelectedMolecularViewData(data);
+																						ReactGA.event("view_data", {
+																							category: "event"
+																						});
+																					}}
+																				>
+																					VIEW DATA
+																				</Button>
+																				<Button
+																					color="dark"
+																					priority="secondary"
+																					className="text-left link-text mt-0 m-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
+																					onClick={() => {
+																						// Handles GA event inside downloadData function
+																						downloadData(data);
+																					}}
+																				>
+																					DOWNLOAD DATA
+																				</Button>
+																				<InputAndLabel
+																					label="Add to batch download"
+																					name={`add-to-download-${data.molecularCharacterizationId}`}
+																					type="checkbox"
+																					forId={`add-to-download-id-${data.molecularCharacterizationId}`}
+																					checked={dataToDownload.some(
+																						(batchData) =>
+																							batchData.id ===
+																							data.molecularCharacterizationId.toString() // if this changes, update in toggleFromDownload
+																					)}
+																					onChange={() =>
+																						toggleFromDownload(data)
+																					}
+																					className="text-smaller mt-1"
+																				/>
+																			</>
+																		);
+																	}
 																} else {
 																	dataAvailableContent = (
-																		<>
-																			<Button
-																				htmlTag="button"
-																				color="dark"
-																				priority="secondary"
-																				className="text-left link-text mt-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
-																				onClick={() => {
-																					setSelectedMolecularViewData(data);
-																					ReactGA.event("view_data", {
-																						category: "event"
-																					});
-																				}}
-																			>
-																				VIEW DATA
-																			</Button>
-																			<Button
-																				color="dark"
-																				priority="secondary"
-																				className="text-left link-text mt-0 m-0 mr-3 mr-md-0 mb-md-1 mr-xxx-3 p-0 text-link"
-																				onClick={() => {
-																					// Handles GA event inside downloadData function
-																					downloadData(data);
-																				}}
-																			>
-																				DOWNLOAD DATA
-																			</Button>
-																			<InputAndLabel
-																				label="Add to batch download"
-																				name={`add-to-download-${data.molecularCharacterizationId}`}
-																				type="checkbox"
-																				forId={`add-to-download-id-${data.molecularCharacterizationId}`}
-																				checked={dataToDownload.some(
-																					(batchData) =>
-																						batchData.id ===
-																						data.molecularCharacterizationId.toString() // if this changes, update in toggleFromDownload
-																				)}
-																				onChange={() =>
-																					toggleFromDownload(data)
-																				}
-																				className="text-smaller mt-1"
-																			/>
-																		</>
+																		<Tooltip
+																			content={
+																				<>
+																					<p className={`text-small my-0`}>
+																						Available on next release
+																					</p>
+																				</>
+																			}
+																		>
+																			Pending
+																		</Tooltip>
 																	);
 																}
-															} else {
-																dataAvailableContent = (
-																	<Tooltip
-																		content={
-																			<>
-																				<p className={`text-small my-0`}>
-																					Available on next release
-																				</p>
-																			</>
-																		}
-																	>
-																		Pending
-																	</Tooltip>
-																);
-															}
 
-															return (
-																<tr key={data.molecularCharacterizationId}>
-																	<td className="white-space-nowrap">
-																		{data.sampleId}
-																	</td>
-																	<td>{sampleType}</td>
-																	<td>{data.xenograftPassage || NA_STRING}</td>
-																	<td className="text-capitalize">
-																		{data.dataType}
-																	</td>
-																	<td>{dataAvailableContent}</td>
-																	<td>{data.platformName}</td>
-																	<td>
-																		{hasExternalDbLinks
-																			? rawDataExternalLinks?.map(
-																					(externalResource) => {
-																						if (
-																							externalResource.link &&
-																							externalResource.resource
-																						) {
-																							return (
-																								<React.Fragment
-																									key={
-																										externalResource.resource
-																									}
-																								>
-																									<Link
-																										href={externalResource.link}
-																										target="_blank"
-																										rel="noopener noreferrer"
-																										onClick={() =>
-																											ReactGA.event(
-																												"external_db_link_click",
-																												{
-																													category: "event",
-																													provider:
-																														externalResource.resource
-																												}
-																											)
+																return (
+																	<tr key={data.molecularCharacterizationId}>
+																		<td className="white-space-nowrap">
+																			{data.sampleId}
+																		</td>
+																		<td>{sampleType}</td>
+																		<td>
+																			{data.xenograftPassage || NA_STRING}
+																		</td>
+																		<td className="text-capitalize">
+																			{data.dataType}
+																		</td>
+																		<td>{dataAvailableContent}</td>
+																		<td>{data.platformName}</td>
+																		<td>
+																			{hasExternalDbLinks
+																				? rawDataExternalLinks?.map(
+																						(externalResource) => {
+																							if (
+																								externalResource.link &&
+																								externalResource.resource
+																							) {
+																								return (
+																									<React.Fragment
+																										key={
+																											externalResource.resource
 																										}
 																									>
-																										{externalResource.resource}
-																									</Link>
-																									<br />
-																								</React.Fragment>
-																							);
+																										<Link
+																											href={
+																												externalResource.link
+																											}
+																											target="_blank"
+																											rel="noopener noreferrer"
+																											onClick={() =>
+																												ReactGA.event(
+																													"external_db_link_click",
+																													{
+																														category: "event",
+																														provider:
+																															externalResource.resource
+																													}
+																												)
+																											}
+																										>
+																											{
+																												externalResource.resource
+																											}
+																										</Link>
+																										<br />
+																									</React.Fragment>
+																								);
+																							}
 																						}
-																					}
-																			  )
-																			: "Not available"}
-																	</td>
-																</tr>
-															);
-														})}
-												</tbody>
-											</table>
+																				  )
+																				: "Not available"}
+																		</td>
+																	</tr>
+																);
+															})}
+													</tbody>
+												</table>
+											</div>
 										</div>
 									</div>
-								</div>
-							)}
+								)}
+							</div>
 							{immuneMarkers.length > 0 && (
 								<div id="immune-markers" className="row mb-5 pt-3">
 									<div className="col-12 mb-1">
