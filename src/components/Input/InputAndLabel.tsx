@@ -12,6 +12,7 @@ interface IInputAndLabel extends InputProps, LabelProps {
 	onChange?: InputProps["onChange"];
 	inputRef?: RefObject<HTMLInputElement>;
 	hjAllow?: boolean;
+	style?: React.CSSProperties;
 }
 
 const InputAndLabel = (props: IInputAndLabel) => {
@@ -26,7 +27,10 @@ const InputAndLabel = (props: IInputAndLabel) => {
 		className = props.className ?? "";
 
 	return (
-		<div className={`${isAlternateLayout} ${className}`.trim()}>
+		<div
+			className={`${isAlternateLayout} ${className}`.trim()}
+			style={props.style}
+		>
 			<Label
 				forId={props.id ?? name}
 				name={props.name}

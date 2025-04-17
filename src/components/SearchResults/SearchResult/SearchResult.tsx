@@ -4,6 +4,7 @@ import useWindowDimensions from "../../../hooks/useWindowDimensions";
 import { SearchResult as SearchResultType } from "../../../types/Search.model";
 import breakPoints from "../../../utils/breakpoints";
 import Card from "../../Card/Card";
+import ModelTypeIcon from "../../Icons/ModelTypeIcon";
 import InputAndLabel from "../../Input/InputAndLabel";
 import ModelNotAvailable from "../../ModelNotAvailable/ModelNotAvailable";
 import QualityBadge from "../../QualityBadge/QualityBadge";
@@ -90,7 +91,7 @@ const SearchResult = (props: SearchResultProps) => {
 			id="tour_searchResult"
 		>
 			<div className="row">
-				<div className="col-12 col-md-6 col-lg-4 d-lg-flex flex-column justify-content-between">
+				<div className="col-12 col-md-6 col-lg-4 row-gap-2 d-flex flex-column">
 					<div>
 						<h2 className="h3 m-0">
 							<Link href={modelLink}>{pdcmId}</Link>
@@ -105,32 +106,40 @@ const SearchResult = (props: SearchResultProps) => {
 								}`}
 							</Link>
 						</p>
-						{!modelAvailable && <ModelNotAvailable />}
 					</div>
+					{!modelAvailable && <ModelNotAvailable />}
+					<p className="mb-0">{histology}</p>
+					{score > 0 && (
+						<div className="d-flex flex-row col-gap-1">
+							<ModelTypeIcon modelType={modelType} size="2.5rem" />
+							<QualityBadge
+								score={score}
+								containerClassName="text-muted"
+								style={{ width: "10em" }}
+							/>
+						</div>
+					)}
 					<ShowHide showOver={bpLarge} windowWidth={windowWidth}>
-						{score > 0 && (
-							<QualityBadge
-								score={score}
-								containerClassName="text-muted"
-								style={{ width: "10em" }}
-								className="w-50"
-							/>
-						)}
-					</ShowHide>
-					<p>{histology}</p>
-					<ShowHide hideOver={bpLarge} windowWidth={windowWidth}>
-						{score > 0 && (
-							<QualityBadge
-								score={score}
-								containerClassName="text-muted"
-								style={{ width: "10em" }}
-								className="w-50"
-							/>
-						)}
+						<InputAndLabel
+							forId={pdcmId}
+							id={pdcmId}
+							name={`${pdcmId}-name`}
+							type="checkbox"
+							label="Add to compare"
+							style={{
+								padding: ".2rem .8rem",
+								alignItems: "center !important"
+							}}
+							className="border-xs w-max text-small mt-2 br-common"
+							onChange={props.addModelToCompare}
+							checked={props.compareCheck}
+						/>
 					</ShowHide>
 				</div>
-				<div className="col-12 col-md-6 col-lg-4 mt-3 mt-md-0">
-					<div className={`row ${styles.SearchResult_metadata}`}>
+				<div className="col-12 col-md-6 col-lg-4 d-flex">
+					<div
+						className={`row row-cols-2 align-content-between ${styles.SearchResult_metadata}`}
+					>
 						{metadata.map((data) => {
 							data.data =
 								typeof data.data === "string"
@@ -138,8 +147,8 @@ const SearchResult = (props: SearchResultProps) => {
 									: data.data ?? "NA";
 
 							return (
-								<div className="col-6" key={data.name}>
-									<p className="text-capitalize">
+								<div className="col h-fit" key={data.name}>
+									<p className="text-capitalize mb-0">
 										<span>{data.name}</span>
 										<br />
 										{data.data}
@@ -149,19 +158,22 @@ const SearchResult = (props: SearchResultProps) => {
 						})}
 					</div>
 				</div>
-				<div className="col-12 col-md-12 col-lg-4 mt-3 mt-lg-0 d-flex flex-column">
+				<div className="col-12 col-md-6 col-lg-4 d-flex flex-column">
 					<p
 						className={`text-center ${styles.SearchResult_availableData_title}`}
 					>
 						Available data
 					</p>
-					<div className={`row ${styles.dataAvailable_grid}`}>
+					<div
+						className={"row row-cols-2 align-content-between"}
+						style={{ flex: "1" }}
+					>
 						{dataTypes.map((dt) => {
 							const hasData = dataAvailable?.includes(dt.key),
 								name = dt.name;
 
 							return (
-								<div key={dt.key} className="col-6 h-fit">
+								<div key={dt.key} className="col h-fit">
 									<p className={`mb-0 ${!hasData ? "text-muted" : ""}`.trim()}>
 										{hasData ? (
 											<Link
@@ -180,18 +192,6 @@ const SearchResult = (props: SearchResultProps) => {
 								</div>
 							);
 						})}
-						<ShowHide showOver={bpLarge} windowWidth={windowWidth}>
-							<InputAndLabel
-								forId={pdcmId}
-								id={pdcmId}
-								name={`${pdcmId}-name`}
-								type="checkbox"
-								label="Add to compare"
-								className="text-smaller mt-2"
-								onChange={props.addModelToCompare}
-								checked={props.compareCheck}
-							/>
-						</ShowHide>
 					</div>
 				</div>
 			</div>
