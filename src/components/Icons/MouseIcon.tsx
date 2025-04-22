@@ -9,7 +9,7 @@ const MouseIcon = ({
 	return (
 		<svg
 			className="d-inline"
-			style={{ height: size ?? "1em" }}
+			style={{ height: size ?? "1em", width: size ?? "1em" }}
 			viewBox="0 0 159 148"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"

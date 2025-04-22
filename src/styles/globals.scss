@@ -184,11 +184,19 @@ img {
 			align-self: flex-start;
 		}
 	}
+	&-stretch {
+		align-items: stretch;
+	}
 	@include mediaOver("md") {
 		&-md {
 			&-center {
 				align-items: center;
 			}
+		}
+	}
+	&-content {
+		&-between {
+			align-content: space-between;
 		}
 	}
 }
@@ -230,6 +238,9 @@ img {
 	}
 	&-min {
 		width: min-content;
+	}
+	&-max {
+		width: max-content;
 	}
 	@include mediaOver("lg") {
 		&-lg-auto {

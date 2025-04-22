@@ -86,6 +86,9 @@ $spacers-map: (
 						.row-gap-#{$size} {
 							row-gap: $length !important;
 						}
+						.col-gap-#{$size} {
+							column-gap: $length !important;
+						}
 					}
 					@each $property, $abbrev in (margin: m, padding: p) {
 						.#{$abbrev}-#{$size} {
@@ -118,6 +121,9 @@ $spacers-map: (
 					@if #{$length != "auto"} {
 						.row-gap-#{nth($bp-names, $j)}-#{$size} {
 							row-gap: $length !important;
+						}
+						.col-gap-#{nth($bp-names, $j)}-#{$size} {
+							column-gap: $length !important;
 						}
 					}
 					@each $property, $abbrev in (margin: m, padding: p) {

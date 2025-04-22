@@ -18,8 +18,14 @@
 	> div {
 		padding: $spacing-2;
 	}
+  .SearchResult_compare-button {
+    transition: color 0.05s, background-color 0.4s;
+  }
 	&:hover {
 		background-color: $color-primary-quaternary-lighter;
+    .SearchResult_compare-button {
+      background-color: $color-primary-quaternary;
+    }
 	}
 	&_metadata span,
 	&_availableData_title {
@@ -32,13 +38,6 @@
 		@include mediaOver("md") {
 			width: 80%;
 		}
-	}
-}
-.dataAvailable_grid {
-	row-gap: 15px;
-	@include mediaOver("lg") {
-		row-gap: 0;
-		flex-grow: 1;
 	}
 }
 .modelNotAvailable {
