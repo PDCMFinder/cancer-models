@@ -558,6 +558,7 @@ const ModelDetails = ({
 									Date of submission: {metadata.dateSubmitted}
 								</p>
 							)}
+							<p className="text-small m-0">Diagnosis:</p>
 							<h2
 								className={`m-0 mb-1 text-family-secondary ${styles.ModelDetails_histology}`}
 								id="tour_model-histology"
@@ -569,13 +570,24 @@ const ModelDetails = ({
 							</h1>
 							<div className="d-flex align-items-center">
 								{metadata.modelType.toLowerCase() !== "other" && (
-									<ModelTypeIcon
-										modelType={metadata.modelType}
-										size="1.5em"
-										className="mb-1 mr-4"
-										hideOther={true}
-										id="tour_model-type"
-									/>
+									<Tooltip
+										content={
+											<p
+												className="text-small m-0"
+												style={{ width: "max-content", maxWidth: "300px" }}
+											>
+												{metadata.modelType}
+											</p>
+										}
+									>
+										<ModelTypeIcon
+											modelType={metadata.modelType}
+											size="1.5em"
+											className="mb-1 mr-4"
+											hideOther={true}
+											id="tour_model-type"
+										/>
+									</Tooltip>
 								)}
 								{metadata.score > 0 && (
 									<QualityBadge
