@@ -9,6 +9,7 @@ import InputAndLabel from "../../Input/InputAndLabel";
 import ModelNotAvailable from "../../ModelNotAvailable/ModelNotAvailable";
 import QualityBadge from "../../QualityBadge/QualityBadge";
 import ShowHide from "../../ShowHide/ShowHide";
+import Tooltip from "../../Tooltip/Tooltip";
 import styles from "./SearchResult.module.scss";
 
 const dataTypes = [
@@ -110,8 +111,26 @@ const SearchResult = (props: SearchResultProps) => {
 					{!modelAvailable && <ModelNotAvailable />}
 					<p className="mb-0">{histology}</p>
 					{score > 0 && (
-						<div className="d-flex flex-row col-gap-1">
-							<ModelTypeIcon modelType={modelType} size="2.5rem" />
+						<div className="d-flex align-center">
+							<Tooltip
+								content={
+									<p
+										className="text-small m-0 text-capitalize"
+										style={{ width: "max-content", maxWidth: "300px" }}
+									>
+										{modelType} model
+									</p>
+								}
+								className="w-max"
+							>
+								<ModelTypeIcon
+									modelType={modelType}
+									size="2.5rem"
+									hideOther={true}
+									id="tour_model-type"
+									className="d-block"
+								/>
+							</Tooltip>
 							<QualityBadge
 								score={score}
 								containerClassName="text-muted"
@@ -130,7 +149,9 @@ const SearchResult = (props: SearchResultProps) => {
 								padding: ".2rem .8rem",
 								alignItems: "center !important"
 							}}
-							className="border-xs w-max text-small mt-2 br-common"
+							labelClassName="cursor-pointer"
+							inputClassName="cursor-pointer"
+							className={`border-xs w-max text-small cursor-pointer mt-2 br-common ${styles["SearchResult_compare-button"]}`}
 							onChange={props.addModelToCompare}
 							checked={props.compareCheck}
 						/>
