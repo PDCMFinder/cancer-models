@@ -1,24 +1,24 @@
 import { CamelCaseKeys } from "../../types/globalTypes";
 import {
-	AllModelData,
-	APIEngraftment,
-	APIExternalModelLink,
-	APIExtLinks,
-	APIKnowledgeGraph,
-	APIModelMetadata,
-	APITreatment,
-	CellModelData,
-	Engraftment,
-	ExternalModelLinkByType,
-	ExtLinks,
-	ImmuneMarker,
-	ImmuneMarkerAPI,
-	KnowledgeGraph,
-	Marker,
-	ModelImage,
-	MolecularData,
-	Publication,
-	QualityData
+  AllModelData,
+  APIEngraftment,
+  APIExternalModelLink,
+  APIExtLinks,
+  APIKnowledgeGraph,
+  APIModelMetadata,
+  APITreatment,
+  CellModelData,
+  Engraftment,
+  ExternalModelLinkByType,
+  ExtLinks,
+  ImmuneMarker,
+  ImmuneMarkerAPI,
+  KnowledgeGraph,
+  Marker,
+  ModelImage,
+  MolecularData,
+  Publication,
+  QualityData
 } from "../types/ModelData.model";
 import { camelCase } from "../utils/dataUtils";
 
@@ -596,7 +596,8 @@ export const getAllModelData = async (
 				metadata.patientSampleTreatedPriorToCollection,
 			patientSampleVirologyStatus: metadata.patientSampleVirologyStatus,
 			pdxModelPublications: metadata.pdxModelPublications,
-			projectName: metadata.projectName
+			projectName: metadata.projectName,
+      viewDataAt: metadata.viewDataAt
 		},
 		extLinks,
 		molecularData,
