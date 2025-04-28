@@ -1,5 +1,5 @@
 ---
-name: IRCCS Istituto di ricovero e cura a carattere scientifico
+name: IRCCS Centro di Riferimento Oncologico di Aviano
 abbreviation: IRCCS-CRO
 logo: img/providers/IRCCS-CRO.png
 ---
