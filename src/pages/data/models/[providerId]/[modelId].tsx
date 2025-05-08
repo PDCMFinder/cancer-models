@@ -558,7 +558,6 @@ const ModelDetails = ({
 									Date of submission: {metadata.dateSubmitted}
 								</p>
 							)}
-							<p className="text-small m-0">Diagnosis:</p>
 							<h2
 								className={`m-0 mb-1 text-family-secondary ${styles.ModelDetails_histology}`}
 								id="tour_model-histology"
