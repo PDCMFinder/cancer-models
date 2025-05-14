@@ -8,7 +8,7 @@
 	font-family: $type-secondary;
 	font-size: inherit;
 	text-decoration: none;
-	cursor: pointer;
+	// cursor: pointer;
 	background-color: $color-white;
 	line-height: 1;
 	color: $color-black;
@@ -71,6 +71,6 @@
 		background-color: $color-lightGray !important;
 		color: darken($color-gray, 20%) !important;
 		border-color: currentColor !important;
-		cursor: default;
+		cursor: not-allowed;
 	}
 }
