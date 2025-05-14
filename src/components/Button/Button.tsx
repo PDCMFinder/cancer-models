@@ -30,7 +30,7 @@ type LinkTagProps = {
 	target?: "_blank" | "_self" | "_parent" | "_top";
 };
 
-type ButtonProps = BaseProps & (ButtonTagProps | LinkTagProps);
+export type ButtonProps = BaseProps & (ButtonTagProps | LinkTagProps);
 
 const Button: React.FC<ButtonProps> = (props) => {
 	const {
