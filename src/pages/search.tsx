@@ -80,6 +80,8 @@ const sortByOptions = [
 	resultsPerPage = 10;
 
 const Search: NextPage = () => {
+	const maxModelsToCompare = 4;
+
 	const { windowWidth = 0 } = useWindowDimensions();
 	const bpLarge = breakPoints.large;
 	const [showFilters, setShowFilters] = useState<boolean>(false);
@@ -87,6 +89,7 @@ const Search: NextPage = () => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [hasFilterSelection, setHasFilterSelection] = useState<boolean>(false);
 	const [modelsToCompare, setModelsToCompare] = useState<string[]>([]);
+	const hasMaxModelsToCompare = modelsToCompare.length >= maxModelsToCompare;
 	const router = useRouter();
 	const { query: routerQuery } = router;
 	const ignoredFilterValues = ["page", "search_terms"];
@@ -361,9 +364,6 @@ const Search: NextPage = () => {
 				return prev.filter((model) => model !== id);
 			} else {
 				if (prev.length === 4) {
-					alert(
-						"You've reached the maximum amount of models to compare. Remove a model to add another."
-					);
 					return prev;
 				} else {
 					return [...prev, id];
@@ -639,7 +639,7 @@ const Search: NextPage = () => {
 							)}
 						</div>
 					</div>
-					{modelsToCompare[0] ? (
+					{modelsToCompare.length > 0 ? (
 						<div className="row position-sticky bottom-0 mt-5">
 							<div className="col-10 offset-1">
 								<Card
@@ -647,6 +647,14 @@ const Search: NextPage = () => {
 									contentClassName="py-2"
 									id="tour_compareCard"
 								>
+									{hasMaxModelsToCompare && (
+										<div className="col-12">
+											<p className="text-bold">
+												* You've reached the maximum amount of models to
+												compare. Remove a model to add another.
+											</p>
+										</div>
+									)}
 									<div className="d-flex align-center justify-content-between">
 										<p className="m-0">
 											<b>Compare up to 4 models: </b>
@@ -688,6 +696,7 @@ const Search: NextPage = () => {
 												priority="primary"
 												className="my-1 py-1"
 												onClick={() => compareModels()}
+												disabled={hasMaxModelsToCompare}
 											>
 												Compare
 											</Button>
