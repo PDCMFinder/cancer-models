@@ -650,7 +650,7 @@ const Search: NextPage = () => {
 									{hasMaxModelsToCompare && (
 										<div className="col-12">
 											<p className="text-bold">
-												* You've reached the maximum amount of models to
+												* You&apos;ve reached the maximum amount of models to
 												compare. Remove a model to add another.
 											</p>
 										</div>
