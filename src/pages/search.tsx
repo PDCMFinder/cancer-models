@@ -89,7 +89,8 @@ const Search: NextPage = () => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [hasFilterSelection, setHasFilterSelection] = useState<boolean>(false);
 	const [modelsToCompare, setModelsToCompare] = useState<string[]>([]);
-	const hasMaxModelsToCompare = modelsToCompare.length >= maxModelsToCompare;
+	const canCompareModels =
+		modelsToCompare.length >= 2 && modelsToCompare.length <= maxModelsToCompare;
 	const router = useRouter();
 	const { query: routerQuery } = router;
 	const ignoredFilterValues = ["page", "search_terms"];
@@ -363,11 +364,7 @@ const Search: NextPage = () => {
 			if (prev.includes(id)) {
 				return prev.filter((model) => model !== id);
 			} else {
-				if (prev.length === 4) {
-					return prev;
-				} else {
-					return [...prev, id];
-				}
+				return [...prev, id];
 			}
 		});
 	};
@@ -378,8 +375,6 @@ const Search: NextPage = () => {
 			window.open(`/compare?models=${compareModelsQuery}`, "_blank");
 
 			setModelsToCompare([]);
-		} else {
-			alert("Please select at least 2 models to compare");
 		}
 	};
 
@@ -647,11 +642,10 @@ const Search: NextPage = () => {
 									contentClassName="py-2"
 									id="tour_compareCard"
 								>
-									{hasMaxModelsToCompare && (
+									{!canCompareModels && (
 										<div className="col-12">
 											<p className="text-bold">
-												* You&apos;ve reached the maximum amount of models to
-												compare. Remove a model to add another.
+												* Please add from 2 to 4 models to compare
 											</p>
 										</div>
 									)}
@@ -664,7 +658,7 @@ const Search: NextPage = () => {
 														<Button
 															color="dark"
 															priority="secondary"
-															className="text-underline m-0 ml-1"
+															className="m-0 ml-1"
 															style={{ padding: ".2rem .3rem" }}
 															onClick={() =>
 																setModelsToCompare((prev) =>
@@ -696,7 +690,7 @@ const Search: NextPage = () => {
 												priority="primary"
 												className="my-1 py-1"
 												onClick={() => compareModels()}
-												disabled={hasMaxModelsToCompare}
+												disabled={!canCompareModels}
 											>
 												Compare
 											</Button>

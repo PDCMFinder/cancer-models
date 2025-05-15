@@ -63,16 +63,24 @@ const Compare: NextPage = () => {
 		(data) => data.data !== undefined
 	);
 
-	// Set models from URL, limit models to at least 2
+	// Set models from URL, limit models to at least 2, no more than 4
 	useEffect(() => {
 		const urlModelIds = router.asPath?.split("=")[1].split("+");
 		if (urlModelIds.length < 2) {
-			alert("You need at least 2 models to compare");
 			router.replace({
 				pathname: "/search"
 			});
+
+			return;
+		} else if (urlModelIds.length > 4) {
+			setModelsToCompare(urlModelIds.slice(0, 4));
+
+			return;
+		} else {
+			setModelsToCompare(urlModelIds);
+
+			return;
 		}
-		setModelsToCompare(urlModelIds);
 	}, []);
 
 	// Update URL when a model is removed
@@ -123,30 +131,26 @@ const Compare: NextPage = () => {
 											{/* quality badge always at baseline */}
 											<div className="d-flex flex-column h-100 justify-content-between">
 												<div className="mb-1">
-													<sub>
-														<Button
-															color="dark"
-															priority="secondary"
-															className="text-underline m-0 mb-1"
-															style={{ padding: ".2rem .3rem" }}
-															onClick={() => {
-																if (modelsToCompare.length > 2) {
+													{modelsToCompare.length > 2 ? (
+														<sub>
+															<Button
+																color="dark"
+																priority="secondary"
+																className="m-0 mb-1"
+																style={{ padding: ".2rem .3rem" }}
+																onClick={() =>
 																	setModelsToCompare((prevModels) =>
 																		prevModels.filter(
 																			(prevModel) =>
 																				prevModel !== metadata.modelId
 																		)
-																	);
-																} else {
-																	alert(
-																		"Can't remove model, you need at least 2 models to compare"
-																	);
+																	)
 																}
-															}}
-														>
-															X
-														</Button>
-													</sub>
+															>
+																X
+															</Button>
+														</sub>
+													) : null}
 													<h1 className="h3 m-0">
 														<Link
 															href={`/data/models/${metadata.providerId}/${data?.metadata.modelId}`}
