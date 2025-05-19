@@ -80,6 +80,8 @@ const sortByOptions = [
 	resultsPerPage = 10;
 
 const Search: NextPage = () => {
+	const maxModelsToCompare = 4;
+
 	const { windowWidth = 0 } = useWindowDimensions();
 	const bpLarge = breakPoints.large;
 	const [showFilters, setShowFilters] = useState<boolean>(false);
@@ -87,6 +89,8 @@ const Search: NextPage = () => {
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [hasFilterSelection, setHasFilterSelection] = useState<boolean>(false);
 	const [modelsToCompare, setModelsToCompare] = useState<string[]>([]);
+	const canCompareModels =
+		modelsToCompare.length >= 2 && modelsToCompare.length <= maxModelsToCompare;
 	const router = useRouter();
 	const { query: routerQuery } = router;
 	const ignoredFilterValues = ["page", "search_terms"];
@@ -360,14 +364,7 @@ const Search: NextPage = () => {
 			if (prev.includes(id)) {
 				return prev.filter((model) => model !== id);
 			} else {
-				if (prev.length === 4) {
-					alert(
-						"You've reached the maximum amount of models to compare. Remove a model to add another."
-					);
-					return prev;
-				} else {
-					return [...prev, id];
-				}
+				return [...prev, id];
 			}
 		});
 	};
@@ -378,8 +375,6 @@ const Search: NextPage = () => {
 			window.open(`/compare?models=${compareModelsQuery}`, "_blank");
 
 			setModelsToCompare([]);
-		} else {
-			alert("Please select at least 2 models to compare");
 		}
 	};
 
@@ -639,7 +634,7 @@ const Search: NextPage = () => {
 							)}
 						</div>
 					</div>
-					{modelsToCompare[0] ? (
+					{modelsToCompare.length > 0 ? (
 						<div className="row position-sticky bottom-0 mt-5">
 							<div className="col-10 offset-1">
 								<Card
@@ -647,6 +642,13 @@ const Search: NextPage = () => {
 									contentClassName="py-2"
 									id="tour_compareCard"
 								>
+									{!canCompareModels && (
+										<div className="col-12">
+											<p className="text-bold">
+												* Please add from 2 to 4 models to compare
+											</p>
+										</div>
+									)}
 									<div className="d-flex align-center justify-content-between">
 										<p className="m-0">
 											<b>Compare up to 4 models: </b>
@@ -656,7 +658,7 @@ const Search: NextPage = () => {
 														<Button
 															color="dark"
 															priority="secondary"
-															className="text-underline m-0 ml-1"
+															className="m-0 ml-1"
 															style={{ padding: ".2rem .3rem" }}
 															onClick={() =>
 																setModelsToCompare((prev) =>
@@ -688,6 +690,7 @@ const Search: NextPage = () => {
 												priority="primary"
 												className="my-1 py-1"
 												onClick={() => compareModels()}
+												disabled={!canCompareModels}
 											>
 												Compare
 											</Button>
