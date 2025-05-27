@@ -1,7 +1,8 @@
 import Link from "next/link";
 import ReactGA from "react-ga4";
 import { NavProps } from "../../../../types/globalTypes";
-import { Route, routesWithGAEvents } from "../../../utils/routes";
+import { type Route } from "../../../types/Routes";
+import { routesWithGAEvents } from "../../../utils/routes";
 import ActiveLink from "../../ActiveLink/ActiveLink";
 import Button from "../../Button/Button";
 import Card from "../../Card/Card";

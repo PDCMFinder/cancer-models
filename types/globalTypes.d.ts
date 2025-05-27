@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import { Route } from "../src/utils/routes";
+import { type Route } from "../src/types/Routes";
 
 type CamelCase<S extends string> =
 	S extends `${infer P1}_${infer P2}${infer P3}`
