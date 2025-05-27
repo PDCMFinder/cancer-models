@@ -1326,7 +1326,22 @@ const ModelDetails = ({
 																			{data.dataType}
 																		</td>
 																		<td>{dataAvailableContent}</td>
-																		<td>{data.platformName}</td>
+																		<td>
+																			<a
+																				href={`/static/protocols/${
+																					metadata.providerId
+																				}_${data.dataType.replaceAll(
+																					" ",
+																					"_"
+																				)}_${data.platformName.replaceAll(
+																					" ",
+																					"_"
+																				)}.pdf`}
+																				target="_blank"
+																			>
+																				{data.platformName}
+																			</a>
+																		</td>
 																		<td>
 																			{hasExternalDbLinks
 																				? rawDataExternalLinks?.map(
