@@ -1,3 +1,21 @@
+const checkResources = (url: string): Promise<boolean> => {
+	return new Promise((resolve) => {
+		if (typeof window === "undefined") {
+			resolve(false);
+
+			return;
+		}
+
+		fetch(url, { method: "HEAD" })
+			.then((response) => {
+				resolve(!response.ok);
+			})
+			.catch(() => {
+				resolve(true);
+			});
+	});
+};
+
 const checkImages = (url: string): Promise<boolean> => {
 	return new Promise((resolve) => {
 		// Check if running on the client side
@@ -14,14 +32,14 @@ const checkImages = (url: string): Promise<boolean> => {
 	});
 };
 
-const imageIsBrokenChecker = async <T extends { url: string }>(
-	images: T[]
+const imgOrFileIsBrokenChecker = async <T extends { url: string, isBroken?: boolean }>(
+	images: T[], imgOrFile: string
 ): Promise<T[]> => {
 	try {
 		// map to an array of promises and resolve
 		const checkedImages = await Promise.all(
 			images.map(async (image: T) => {
-				const isBroken = await checkImages(image.url);
+				const isBroken = imgOrFile === "img" ? await checkImages(image.url) : await checkResources(image.url);
 
 				return { ...image, isBroken };
 			})
@@ -37,4 +55,4 @@ const imageIsBrokenChecker = async <T extends { url: string }>(
 	}
 };
 
-export default imageIsBrokenChecker;
+export default imgOrFileIsBrokenChecker;

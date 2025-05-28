@@ -308,6 +308,22 @@ export type MolecularData = {
 	externalDbLinks: ExternalDbLink[];
 	dataExists: string;
 	dataRestricted: string;
+  protocolFile: string;
+};
+
+export type MolecularDataAPI = {
+	model_id: string;
+	data_source: string;
+	source: string;
+	sample_id: string;
+	xenograft_passage: string;
+	raw_data_url: string;
+	data_type: string;
+	platform_name: string;
+	molecular_characterization_id: number;
+	externalD_db_links: ExternalDbLink[];
+	data_exists: string;
+	data_restricted: string;
 };
 
 export type ExternalDbLink = {

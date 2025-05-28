@@ -46,7 +46,7 @@ import {
 	constructCleanMolecularDataFilename,
 	constructMolecularDataFilename
 } from "../../../../utils/constructMolecularDataFilename";
-import imageIsBrokenChecker from "../../../../utils/imageIsBrokenChecker";
+import imgOrFileIsBrokenChecker from "../../../../utils/imgOrFileIsBrokenChecker";
 import { modelTourSteps } from "../../../../utils/tourSteps";
 import styles from "./Model.module.scss";
 
@@ -126,7 +126,7 @@ const ModelDetails = ({
 		ModelImage[]
 	>([]);
 	const checkImages = async () => {
-		const checkedImages = await imageIsBrokenChecker(modelImages);
+		const checkedImages = await imgOrFileIsBrokenChecker(modelImages, "img");
 		setValidHistologyImages(checkedImages);
 	};
 	useEffect(() => {
@@ -754,7 +754,7 @@ const ModelDetails = ({
 											)}
 										</li>
 										<li className="mb-2">
-											{!molecularDataIsLoading && molecularData.length ? (
+											{!molecularDataIsLoading && molecularData?.length ? (
 												<Link
 													replace
 													href="#molecular-data"
@@ -1140,7 +1140,7 @@ const ModelDetails = ({
 								</div>
 							)}
 							<div id="molecular-data">
-								{!molecularDataIsLoading && molecularData.length > 0 && (
+								{!molecularDataIsLoading && molecularData!.length > 0 && (
 									<div className="row mb-5 pt-3">
 										<div className="col-12 mb-1">
 											<div className="d-flex align-flex-start align-md-center flex-column flex-md-row justify-content-between">
@@ -1327,20 +1327,17 @@ const ModelDetails = ({
 																		</td>
 																		<td>{dataAvailableContent}</td>
 																		<td>
-																			<a
-																				href={`/static/protocols/${
-																					metadata.providerId
-																				}_${data.dataType.replaceAll(
-																					" ",
-																					"_"
-																				)}_${data.platformName.replaceAll(
-																					" ",
-																					"_"
-																				)}.pdf`}
-																				target="_blank"
-																			>
-																				{data.platformName}
-																			</a>
+																			{data.protocolFile ? (
+																				<a
+																					href={data.protocolFile}
+																					target="_blank"
+																					rel="noopener noreferrer"
+																				>
+																					{data.platformName}
+																				</a>
+																			) : (
+																				data.platformName
+																			)}
 																		</td>
 																		<td>
 																			{hasExternalDbLinks
