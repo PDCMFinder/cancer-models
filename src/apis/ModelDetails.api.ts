@@ -17,10 +17,12 @@ import {
   Marker,
   ModelImage,
   MolecularData,
+  MolecularDataAPI,
   Publication,
   QualityData
 } from "../types/ModelData.model";
 import { camelCase } from "../utils/dataUtils";
+import imgOrFileIsBrokenChecker from "../utils/imgOrFileIsBrokenChecker";
 
 export async function getCellModelData(pdcmModelId: number): Promise<any> {
 	let response = await fetch(
@@ -218,7 +220,7 @@ export async function getModelQualityData(
 	});
 }
 
-export async function getMolecularData(modelId: string) {
+export async function getMolecularData(modelId: string): Promise<MolecularData[]> {
 	if (!modelId) {
 		return [];
 	}
@@ -228,8 +230,14 @@ export async function getMolecularData(modelId: string) {
 	if (!response.ok) {
 		throw new Error("Network response was not ok");
 	}
-	return response.json().then((d) => {
-		return d.map((item: any) => {
+	return response.json().then(async (d) => {
+    for (const item of d) {
+      const url = `/static/protocols/${item.data_source}_${item.data_type.replaceAll(" ", "_")}_${item.platform_name.replaceAll(" ", "_")}.pdf`;
+      const checkedFile = await imgOrFileIsBrokenChecker([{ url }], "file") as { url: string, isBroken: boolean }[];
+      item["protocol_file"] = checkedFile.length > 0 && url; // imgOrFileBrokenChecker returns non-broken files
+    };
+
+		return d.map((item: MolecularDataAPI) => {
 			return camelCase(item);
 		});
 	});
