@@ -15,7 +15,7 @@ const Banner = () => {
 						<p className="mb-0 text-small">
 							Survey link:{" "}
 							<a
-								href="https://www.surveymonkey.com/r/QGFMBH8?channel=[webpage] "
+								href="https://www.surveymonkey.com/r/QGFMBH8?channel=[webpage]"
 								target="_blank"
 								rel="noopener noreferrer"
 							>
