@@ -3,6 +3,7 @@ import { useState } from "react";
 import ReactGA from "react-ga4";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import Banner from "../Banner/Banner";
 import Card from "../Card/Card";
 import CookieConsent from "../CookieConsent/CookieConsent";
 import FloatingButton from "../FloatingWidget/FloatingButton";
@@ -41,6 +42,7 @@ const Layout = (props: LayoutProps) => {
 	return (
 		<>
 			<QueryClientProvider client={queryClient}>
+				<Banner />
 				<Navbar />
 				<main>{props.children}</main>
 				<CookieConsent />
