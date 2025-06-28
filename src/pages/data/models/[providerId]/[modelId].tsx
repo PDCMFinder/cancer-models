@@ -307,6 +307,12 @@ const ModelDetails = ({
 
 		// If we pass some data, that means we just want to download that single data file
 		if (data.molecularCharacterizationId) {
+			setFileDownloadStatus({
+				downloadedFiles: 0,
+				totalFiles: 1,
+				isDownloading: true
+			});
+
 			const molecularData = await getMolecularDataDownload(data);
 
 			// Extract headers
@@ -321,6 +327,13 @@ const ModelDetails = ({
 			const tsv = [headers.join("\t")]
 				.concat(values.map((row: string[]) => row.join("\t")))
 				.join("\n");
+
+			filename = constructMolecularDataFilename(
+				metadata.modelId,
+				data.dataType,
+				data.sampleId,
+				data.platformName
+			);
 
 			zip.file(filename, tsv);
 
@@ -1938,7 +1951,6 @@ const ModelDetails = ({
 									<b>Download selected data: </b>
 									{dataToDownload.map((data, idx) => {
 										const cleanFilename = constructCleanMolecularDataFilename(
-												metadata.modelId,
 												data.data.dataType,
 												data.data.sampleId,
 												data.data.platformName
