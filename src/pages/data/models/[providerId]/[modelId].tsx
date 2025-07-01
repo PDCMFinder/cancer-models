@@ -1160,26 +1160,24 @@ const ModelDetails = ({
 												<h2 className="my-0">Molecular data</h2>
 												<div className="d-flex align-center flex-column flex-md-row align-flex-start">
 													<Button
+														htmlTag="a"
 														color="dark"
 														priority="secondary"
 														className="mb-0 ml-md-1"
+														href={`/cbioportal/patient/clinicalData?studyId=${metadata.providerId}&caseId=${metadata.patientId}`}
+														onClick={() =>
+															ReactGA.event("view_cbioportal", {
+																category: "event"
+															})
+														}
 													>
-														<Link
-															href={`/cbioportal/patient/clinicalData?studyId=${metadata.providerId}&caseId=${metadata.patientId}`}
-															onClick={() =>
-																ReactGA.event("view_cbioportal", {
-																	category: "event"
-																})
-															}
-														>
-															<Image
-																src="/img/cbioportal.png"
-																alt="cBioPortal logo"
-																width={100}
-																height={50}
-																style={{ height: "1em", width: "auto" }}
-															/>
-														</Link>
+														<Image
+															src="/img/cbioportal.png"
+															alt="cBioPortal logo"
+															width={100}
+															height={50}
+															style={{ height: "1em", width: "auto" }}
+														/>
 													</Button>
 													{!molecularDataIsLoading &&
 														molecularData &&
@@ -1796,6 +1794,104 @@ const ModelDetails = ({
 									</div>
 								</div>
 							)}
+							<div id="preclinical-imaging" className="row mb-5 pt-3">
+								<div className="col-12 mb-1">
+									<h2 className="mt-0 mb-4">Preclinical imaging</h2>
+								</div>
+								<div className="col-12">
+									<div className="w-100 d-flex align-flex-start align-md-start flex-column flex-md-row justify-content-between row-gap-1">
+										<h3 className="my-0">
+											Imaging characterization of a metastatic patient derived
+											model of melanoma
+										</h3>
+										<div className="col-gap-5 row-gap-1 d-flex flex-column flex-md-row align-flex-start">
+											<Button
+												color="dark"
+												priority="secondary"
+												className="my-0"
+												htmlTag="a"
+												href="https://pixi-demo.nrg.wustl.edu/data/projects/PDMR-425362-245-T?format=html"
+												style={{ flex: "none" }}
+											>
+												<Image
+													src="/img/pixi-logo.png"
+													alt="PIXI logo"
+													width={100}
+													height={50}
+													style={{ height: "1em", width: "auto" }}
+												/>
+											</Button>
+											<Button
+												htmlTag="a"
+												priority="secondary"
+												color="dark"
+												onClick={() => console.log("all")}
+												className="my-0"
+												href="/static/mock-preclinical_imaging_description_document.pdf"
+											>
+												Description
+											</Button>
+										</div>
+									</div>
+									<table className="table-align-top">
+										<caption>Patient treatment</caption>
+										<thead>
+											<tr>
+												<th>MODALITY</th>
+												<th>CONTRAST/SEQUENCE USED</th>
+												<th>NUMBER OF IMAGE DATASETS</th>
+												<th>ENGRAFTMENT SITE</th>
+												<th>TREATMENT</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>MR</td>
+												<td>
+													<div>
+														TSE65_trigsplit
+														<br />
+													</div>
+													<div className="mt-1">
+														TSE45split
+														<br />
+													</div>
+												</td>
+												<td>
+													<div>
+														48
+														<br />
+													</div>
+													<div className="mt-1">
+														142
+														<br />
+													</div>
+												</td>
+												<td>
+													<div>
+														Right Flank
+														<br />
+													</div>
+													<div className="mt-1">
+														Right Flank
+														<br />
+													</div>
+												</td>
+												<td>
+													<div>
+														Not Provided
+														<br />
+													</div>
+													<div className="mt-1">
+														Not Provided
+														<br />
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
 							{knowledgeGraph.edges.length > 0 &&
 								knowledgeGraph.nodes.length > 0 && (
 									<div id="related-models" className="row mb-5 pt-3">
