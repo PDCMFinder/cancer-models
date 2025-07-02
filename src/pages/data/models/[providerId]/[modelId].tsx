@@ -1805,7 +1805,7 @@ const ModelDetails = ({
 							)}
 							<div id="preclinical-imaging" className="row mb-5 pt-3">
 								<div className="col-12 mb-1">
-									<h2 className="mt-0 mb-4">Preclinical imaging</h2>
+									<h2 className="mt-0">Preclinical imaging</h2>
 								</div>
 								<div className="col-12">
 									<div className="w-100 d-flex align-flex-start align-md-start flex-column flex-md-row justify-content-between row-gap-1">
@@ -1820,7 +1820,6 @@ const ModelDetails = ({
 												className="my-0"
 												htmlTag="a"
 												href="https://pixi-demo.nrg.wustl.edu/data/projects/PDMR-425362-245-T?format=html"
-												style={{ flex: "none" }}
 											>
 												<Image
 													src="/img/pixi-logo.png"
@@ -1834,7 +1833,6 @@ const ModelDetails = ({
 												htmlTag="a"
 												priority="secondary"
 												color="dark"
-												onClick={() => console.log("all")}
 												className="my-0"
 												href="/static/mock-preclinical_imaging_description_document.pdf"
 											>

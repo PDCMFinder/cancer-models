@@ -83,7 +83,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-	const providerData = await getProviderData(params?.id as string);
+	const providerData = await getProviderData(
+		(params?.id as string).toLowerCase() // transform to lowercase so any cased abbrev works
+	);
 
 	return {
 		props: {
