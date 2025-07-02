@@ -793,6 +793,15 @@ const ModelDetails = ({
 											)}
 										</li>
 										<li className="mb-2">
+											<Link
+												replace
+												href="#preclinical-imaging"
+												className="text-primary-primary"
+											>
+												Preclinical Imaging
+											</Link>
+										</li>
+										<li className="mb-2">
 											{drugDosing.length ? (
 												<Link
 													replace
@@ -1838,6 +1847,7 @@ const ModelDetails = ({
 										<thead>
 											<tr>
 												<th>MODALITY</th>
+												<th>PASSAGE NUMBER</th>
 												<th>CONTRAST/SEQUENCE USED</th>
 												<th>NUMBER OF IMAGE DATASETS</th>
 												<th>ENGRAFTMENT SITE</th>
@@ -1847,6 +1857,16 @@ const ModelDetails = ({
 										<tbody>
 											<tr>
 												<td>MR</td>
+												<td>
+													<div>
+														3
+														<br />
+													</div>
+													<div className="mt-1">
+														3
+														<br />
+													</div>
+												</td>
 												<td>
 													<div>
 														TSE65_trigsplit
