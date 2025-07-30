@@ -57,7 +57,7 @@ const Modal = ({
 			></div>
 			<div
 				className={`${styles.Modal} ${
-					verticalAlign === "center" ? styles[`Modal-center`] : ""
+					verticalAlign === "center" && styles[`Modal-center`]
 				} ${className ?? ""} position-fixed w-${modalWidth}`}
 				style={style}
 			>
