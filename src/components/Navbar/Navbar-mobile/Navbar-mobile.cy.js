@@ -1,11 +1,10 @@
 context("Mobile navbar", () => {
 	beforeEach(() => {
-		cy.visit("");
-		cy.setCookie(
-			"cm_consent",
-			JSON.stringify({ ga: "accepted", hj: "accepted" })
-		);
-		cy.reload();
+		cy.visit("", {
+			onBeforeLoad(win) {
+				win.localStorage.setItem("seen_notice", true);
+			}
+		});
 	});
 
 	it("should open and close menu tray", () => {
