@@ -1,5 +1,4 @@
 @import "../../styles/vars";
-@import "../../styles/mixins";
 
 .Modal_backdrop {
 	backdrop-filter: blur(6px);
@@ -16,7 +15,7 @@
 	top: $spacing-2;
 	left: 50%;
 	transform: translateX(-50%);
-  @media only screen and (max-width: #{$bp-md}px) {
+  @media screen and (max-width: $bp-md) {
     width: 90% !important;
   }
 	&-center {
