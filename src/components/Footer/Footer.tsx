@@ -2,7 +2,7 @@ import Link from "next/link";
 import ReactGA from "react-ga4";
 import { useQuery } from "react-query";
 import { getLatestDataReleaseInformation } from "../../apis/AggregatedData.api";
-import { type Route } from "../../types/Routes";
+import { Route } from "../../types/Routes";
 import { routes, routesWithGAEvents } from "../../utils/routes";
 import ActiveLink from "../ActiveLink/ActiveLink";
 import SocialMediaIcons from "../Icons/SocialMediaIcons";
@@ -153,9 +153,7 @@ const Footer = () => {
 					<div className="col">
 						<p className="text-small text-center">
 							© 2017-
-							{new Date(
-								latestDataReleaseInfo.data?.released_at || Date.now()
-							).getFullYear()}
+							{new Date(Date.now()).getFullYear()}
 							<br />
 							{`Data Release ${
 								latestDataReleaseInfo.data?.tag_name

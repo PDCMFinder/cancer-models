@@ -34,7 +34,7 @@ const CookieConsentBanner = ({
 			verticalAlign="top"
 			strictClose={true}
 			style={{ maxWidth: "600px", overflow: "scroll" }}
-			modalWidth="100"
+			modalWidth="90"
 		>
 			<Card
 				className="bg-white"
