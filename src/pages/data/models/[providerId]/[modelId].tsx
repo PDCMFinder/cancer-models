@@ -2146,7 +2146,7 @@ const ModelDetails = ({
 			{selectedMolecularViewData && (
 				<DynamicModal
 					verticalAlign="top"
-					modalWidth="100"
+					modalWidth="90"
 					handleClose={() => setSelectedMolecularViewData(undefined)}
 				>
 					<Card

@@ -42,7 +42,12 @@ const Navbar = () => {
 				</ShowHide>
 			</header>
 			{!modelCountData && !isLoadingModelCount && (
-				<DynamicModal strictClose backdropOpacity={0.9} className="w-md-unset">
+				<DynamicModal
+					strictClose
+					backdropOpacity={0.9}
+					className="w-md-unset"
+					modalWidth="50"
+				>
 					<DynamicCard className="bg-white text-center px-md-5">
 						<div style={{ width: "250px" }} className="mx-auto mb-4">
 							<Logotype color="dark" />
