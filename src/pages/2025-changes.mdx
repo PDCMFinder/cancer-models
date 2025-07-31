@@ -1,0 +1,26 @@
+import MdLayout from "../components/MdLayout/MdLayout";
+
+[comment]: # "Metadata"
+[comment]: # "Page title = h1 in banner"
+
+export const meta = {
+  pageTitle: "Portal Changes",
+  metaTitle: "Portal changes for 2025 CancerModels.Org, BioStudies",
+  metaDescription:
+    "2025 CancerModels.Org Portal Changes, now using BioStudies API"
+};
+
+[comment]: # "Page content below"
+[comment]: # "Can include html tags"
+
+The following changes, **effective September 1, 2025**, enable CancerModels.Org metadata and data to remain accessible while new funding opportunities are being explored. They also allow you to continue depositing models and data into the public domain to comply with grant and publication requirements and for the benefit of the global scientific community.
+
+* CancerModels.Org Portal will remain available with a reduced number of filtering options, the [Metadata Dictionary](https://www.cancermodels.org/validation/dictionary), and the [Overview page](https://www.cancermodels.org/overview) (for Data Release 6.7).
+* All future metadata and data submissions will be done in <a href="https://www.ebi.ac.uk/biostudies/" target="_blank" rel="noreferrer">BioStudies</a>. one of the <a href="https://www.ebi.ac.uk/services/data-resources-and-tools/" target="_blank" rel="noreferrer">EMBL-EBI core data resources</a>, as part of the <a href="https://www.ebi.ac.uk/biostudies/CancerModelsOrg/studies" target="_blank" rel="noreferrer">CancerModelsOrg collection</a>. 
+* The CancerModels.Org API and helpdesk will no longer work. Please use the <a href="https://www.ebi.ac.uk/biostudies/help" target="_blank" rel="noreferrer">BioStudies API</a> and <a href="https://www.ebi.ac.uk/biostudies/help" target="_blank" rel="noreferrer">BioStudies Help</a>.
+* The [STR Profiler](https://www.cancermodels.org/strprofiler/) and the data from CancerModels.Org cBioPortal instance will be accessible via the Mouse Models of Human Cancers Database (<a href="https://tumor.informatics.jax.org/mtbwi/index.do" target="_blank" rel="noreferrer">MMHCdb</a>), which is run by our long-term colleagues at <a href="https://www.jax.org/research-and-faculty/research-labs/the-bult-lab" target="_blank" rel="noreferrer">the Jackson Laboratory</a>. 
+* All software developed during the lifetime of CancerModels.Org and PDXFinder will remain open-source and available for reuse on <a href="https://github.com/PDCMFinder" target="_blank" rel="noreferrer">GitHub</a>. All metadata and data up to Data Release 6.7 will be accessible via the public <a href="https://ftp.ebi.ac.uk/pub/databases/cancermodels/" target="_blank" rel="noreferrer">EMBL-EBI FTP site</a>.
+
+[comment]: # "End page content - do not edit below this line"
+
+export default ({ children }) => <MdLayout meta={meta}>{children}</MdLayout>;

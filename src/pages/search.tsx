@@ -417,7 +417,7 @@ const Search: NextPage = () => {
 	);
 	const ModalSearchFiltersComponent = (
 		<DynamicModal
-			modalWidth="100"
+			modalWidth="90"
 			verticalAlign="top"
 			handleClose={() => setShowFilters(false)}
 		>
